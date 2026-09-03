@@ -73,63 +73,67 @@ Gfx* func_801E229C(Gfx* glistp) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E229C.s")
 #endif
 
+#ifdef NON_MATCHING
+char D_80226210[] = "A";
+char D_80226214[] = "B";
+char D_80226218[] = "C";
+char D_8022621C[] = "D";
+char D_80226220[] = "E";
+char D_80226224[] = "F";
+char D_80226228[] = "G";
+char D_8022622C[] = "H";
+char D_80226230[] = "I";
+char D_80226234[] = "J";
+char D_80226238[] = "K";
+char D_8022623C[] = "L";
+char D_80226240[] = "M";
+char D_80226244[] = "N";
+char D_80226248[] = "O";
+char D_8022624C[] = "P";
+char D_80226250[] = "Q";
+char D_80226254[] = "R";
+char D_80226258[] = "S";
+char D_8022625C[] = "T";
+char D_80226260[] = "U";
+char D_80226264[] = "V";
+char D_80226268[] = "W";
+char D_8022626C[] = "X";
+char D_80226270[] = "Y";
+char D_80226274[] = "Z";
+char D_80226278[] = "-";
+char D_8022627C[] = ".";
+char D_80226280[] = " ";
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226210.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226214.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226218.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022621C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226220.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226224.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226228.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022622C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226230.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226234.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226238.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022623C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226240.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226244.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226248.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022624C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226250.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226254.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226258.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022625C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226260.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226264.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226268.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022626C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226270.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226274.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226278.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_8022627C.s")
-
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226280.s")
+#endif
 
 #ifdef NON_MATCHING
 void func_801E2530(void) {

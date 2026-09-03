@@ -452,6 +452,10 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E2C14 is currently non-matching (in progress)")
 
+    def test_AF8C0_charset_symbols_matched(self):
+        """TDE test for all 29 ASCII character set rodata symbols (D_80226210..D_80226280) in AF8C0."""
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
     def test_func_801E80B0_matched(self):
         """TDE test for func_801E80B0 in B66E0 (font glyph metrics table and character bounds initializer)."""
         if self.is_function_decompiled("func_801E80B0"):
