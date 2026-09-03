@@ -1,3 +1,8 @@
 #!/bin/sh
 
-python3 tools/asm-differ/diff.py -mwo3 $1 $2 $3 $4 $5
+PYTHON=python3
+if [ -f .venv/bin/python3 ]; then
+    PYTHON=.venv/bin/python3
+fi
+
+$PYTHON tools/asm-differ/diff.py -mwo3 "$@"

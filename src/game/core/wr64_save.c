@@ -37,7 +37,14 @@ typedef struct UnkStruct_800D8578_s {
 typedef struct UnkStruct_801AEA18_s {
     s16 unk0;
     u16 unk2;
-    u8 pad[0x4C];
+    union {
+        u8 pad[0x4C];
+        struct {
+            u8 pad4[12];
+            char unk10[4][10];
+            u8 unk38[2][4][3];
+        };
+    };
     u8 unk50[1][3];
     char pad54[0xCD];
     char unk120[1][3][5];
@@ -81,6 +88,7 @@ typedef struct UnkStruct_8007CB68_2_s {
 
 extern UnkStruct_801AEA18 D_801AEA18[];
 extern UnkStruct_801AEA18 D_801AEB38;
+extern u8 D_801AEA28[];
 
 extern s32 D_800D8264;
 extern OSPfs D_801C3AD0;
@@ -535,7 +543,52 @@ s32 func_8007C204(s32 arg0) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+s32 func_8007C31C(void) {
+    s32 i;
+    s32 j;
+    s32 k;
+    UnkStruct_func_i8_802C6E00* p_src;
+    char* p_dst;
+
+    if (D_800D8260 == 0) {
+        return 1;
+    }
+
+    p_dst = (char*) D_801AEA28;
+    p_src = D_801CB298;
+
+    for (i = 0; i < 4; i++) {
+        Libc_strncpy(p_dst, p_src->unk_0, 10);
+
+        k = 0;
+        do {
+            for (j = 0; j < 3; j++) {
+                D_801AEA18[0].unk38[k][i][j] = D_801CB298[k * 4 + i].unk_B[j];
+            }
+            k++;
+        } while ((u32) &D_801CB298[k * 4] < (u32) D_801CB308);
+
+        p_dst += 10;
+        p_src++;
+    }
+
+    func_8007B31C();
+    D_801AEA18[0].unk2 = Save_GenCheckSum((u8*) D_801AEA18);
+    if (osEepromLongWrite(&D_801540D0, 0, (u8*) D_801AEA18, 16) != 0) {
+        return 3;
+    }
+
+    if (osEepromLongWrite(&D_801540D0, ((u32) ((u32) D_801AEA28 - (u32) &D_801AEA18[0].unk0) >> 3),
+                          D_801AEA28, 64) != 0) {
+        return 3;
+    }
+
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007C31C.s")
+#endif
 
 s32 func_8007C494(void) {
     if (D_800D8260 == 0) {

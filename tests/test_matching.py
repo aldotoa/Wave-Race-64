@@ -72,6 +72,17 @@ class TestGameEngineCore(unittest.TestCase):
         else:
             self.skipTest("func_8007C494 is currently non-matching (in progress)")
 
+    def test_func_8007C31C_matched(self):
+        """
+        TDE test for func_8007C31C (wr64_save high score & record save).
+        Once decompiled and matched, it must not exist in nonmatchings and ROM must match.
+        """
+        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007C31C")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007C31C is currently non-matching (in progress)")
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
