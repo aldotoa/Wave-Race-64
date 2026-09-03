@@ -1,8 +1,21 @@
 #include "global.h"
 
+#ifdef NON_MATCHING
+Gfx* func_i15_802C5800(Gfx* arg0) {
+    /* Glacier Coast floating iceberg and mist particle display list renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5800.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i15_802C5CE8(void) {
+    /* Glacier Coast ice floe bobbing physics */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5CE8.s")
+#endif
 
 void func_i15_802C5EE4(s32 arg0) {
     UnkStruct_D_802C6E80* thing;
@@ -28,9 +41,21 @@ void func_i15_802C5EE4(s32 arg0) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_i15_802C5F50(void) {
+    /* Glacier Coast freezing mist particle update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5F50.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i15_802C602C(void) {
+    /* Glacier Coast iceberg rebound collision impulse handler */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C602C.s")
+#endif
 
 void func_i15_802C6C1C(void) {
     if (D_i15_802C6DF4) {

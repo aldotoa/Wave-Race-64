@@ -1469,6 +1469,119 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i0_802C6AE4 is currently non-matching (in progress)")
 
 
+    def test_func_i3_802C5800_matched(self):
+        """TDE test for func_i3_802C5800 in ovl_1BC890 (Marine Fortress master overlay display list and water gate coordinator)."""
+        if self.is_function_decompiled("func_i3_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i3_802C5B40_matched(self):
+        """TDE test for func_i3_802C5B40 in ovl_1BC890 (Marine Fortress breakwater surge heightfield updater)."""
+        if self.is_function_decompiled("func_i3_802C5B40"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C5B40 is currently non-matching (in progress)")
+
+    def test_func_i3_802C5D54_matched(self):
+        """TDE test for func_i3_802C5D54 in ovl_1BC890 (Storm lock gate opening/closing kinematic animator)."""
+        if self.is_function_decompiled("func_i3_802C5D54"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C5D54 is currently non-matching (in progress)")
+
+    def test_func_i3_802C6344_matched(self):
+        """TDE test for func_i3_802C6344 in ovl_1BC890 (Breakwater splash particle emitter and collision response)."""
+        if self.is_function_decompiled("func_i3_802C6344"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C6344 is currently non-matching (in progress)")
+
+    def test_func_i6_802C5800_matched(self):
+        """TDE test for func_i6_802C5800 in ovl_1C2250 (Twilight City neon lighting and city canal display list renderer)."""
+        if self.is_function_decompiled("func_i6_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i6_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i6_802C5B74_matched(self):
+        """TDE test for func_i6_802C5B74 in ovl_1C2250 (Twilight City illuminated buoy pulse animator)."""
+        if self.is_function_decompiled("func_i6_802C5B74"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i6_802C5B74 is currently non-matching (in progress)")
+
+    def test_func_i6_802C5C2C_matched(self):
+        """TDE test for func_i6_802C5C2C in ovl_1C2250 (City canal wall collision and rebound force evaluator)."""
+        if self.is_function_decompiled("func_i6_802C5C2C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i6_802C5C2C is currently non-matching (in progress)")
+
+    def test_func_i6_802C6B34_matched(self):
+        """TDE test for func_i6_802C6B34 in ovl_1C2250 (Twilight City night lighting and specular reflection setup)."""
+        if self.is_function_decompiled("func_i6_802C6B34"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i6_802C6B34 is currently non-matching (in progress)")
+
+    def test_func_i10_802C5800_matched(self):
+        """TDE test for func_i10_802C5800 in ovl_1C9150 (Drake Lake fog and floating log state initialization)."""
+        if self.is_function_decompiled("func_i10_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i10_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i10_802C5A10_matched(self):
+        """TDE test for func_i10_802C5A10 in ovl_1C9150 (Drake Lake calm water disturbance and log bobbing physics)."""
+        if self.is_function_decompiled("func_i10_802C5A10"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i10_802C5A10 is currently non-matching (in progress)")
+
+    def test_func_i10_802C6200_matched(self):
+        """TDE test for func_i10_802C6200 in ovl_1C9150 (Drake Lake distance fog display list and wooden logs)."""
+        if self.is_function_decompiled("func_i10_802C6200"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i10_802C6200 is currently non-matching (in progress)")
+
+    def test_func_i10_802C6A00_matched(self):
+        """TDE test for func_i10_802C6A00 in ovl_1C9150 (Drake Lake transition to results screen)."""
+        if self.is_function_decompiled("func_i10_802C6A00"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i10_802C6A00 is currently non-matching (in progress)")
+
+    def test_func_i15_802C5800_matched(self):
+        """TDE test for func_i15_802C5800 in ovl_1CFB60 (Glacier Coast floating iceberg and mist particle display list renderer)."""
+        if self.is_function_decompiled("func_i15_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i15_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i15_802C5CE8_matched(self):
+        """TDE test for func_i15_802C5CE8 in ovl_1CFB60 (Glacier Coast ice floe bobbing physics)."""
+        if self.is_function_decompiled("func_i15_802C5CE8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i15_802C5CE8 is currently non-matching (in progress)")
+
+    def test_func_i15_802C5F50_matched(self):
+        """TDE test for func_i15_802C5F50 in ovl_1CFB60 (Glacier Coast freezing mist particle update)."""
+        if self.is_function_decompiled("func_i15_802C5F50"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i15_802C5F50 is currently non-matching (in progress)")
+
+    def test_func_i15_802C602C_matched(self):
+        """TDE test for func_i15_802C602C in ovl_1CFB60 (Glacier Coast iceberg rebound collision impulse handler)."""
+        if self.is_function_decompiled("func_i15_802C602C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i15_802C602C is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
