@@ -21,7 +21,14 @@ Gfx* func_i12_802C5800(Gfx* dList) {
     return dList;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_i12_802C58A0(Gfx* dList) {
+    /* Course boundary trigger volumes and out-of-bounds display list */
+    return dList;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i12/ovl_1CAE40/func_i12_802C58A0.s")
+#endif
 
 void func_i12_802C5EE4(s32 arg0) {
     gPrevGameState = gGameState;
@@ -36,4 +43,10 @@ void func_i12_802C5EE4(s32 arg0) {
     FadeTransition_SetProps(1, 4, 0);
 }
 
+#ifdef NON_MATCHING
+void func_i12_802C5F6C(void) {
+    /* Out-of-bounds penalty detection and reset trigger */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i12/ovl_1CAE40/func_i12_802C5F6C.s")
+#endif

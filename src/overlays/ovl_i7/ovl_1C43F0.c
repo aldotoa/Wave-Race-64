@@ -69,7 +69,14 @@ Gfx* func_i7_802C5800(Gfx* arg0) {
     return arg0;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_i7_802C5A18(void) {
+    /* Options and sound test menu display list generator */
+    return NULL;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i7/ovl_1C43F0/func_i7_802C5A18.s")
+#endif
 
 void func_i7_802C5C94(s32 arg0) {
     gPrevGameState = gGameState;

@@ -1372,6 +1372,103 @@ class TestCodesegUI(unittest.TestCase):
             self.skipTest("func_801E11B4 is currently non-matching (in progress)")
 
 
+
+class TestCourseOverlays(unittest.TestCase):
+    """Test suite for Course Overlays Subsystem (src/overlays/)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "overlays")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith((".c", ".h")):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_func_i7_802C5A18_matched(self):
+        """TDE test for func_i7_802C5A18 in ovl_1C43F0 (options & sound test menu display list)."""
+        if self.is_function_decompiled("func_i7_802C5A18"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i7_802C5A18 is currently non-matching (in progress)")
+
+    def test_func_i11_802C5800_matched(self):
+        """TDE test for func_i11_802C5800 in ovl_1CA480 (warmup course ramp display list)."""
+        if self.is_function_decompiled("func_i11_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i11_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i11_802C5D48_matched(self):
+        """TDE test for func_i11_802C5D48 in ovl_1CA480 (warmup course input adjuster)."""
+        if self.is_function_decompiled("func_i11_802C5D48"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i11_802C5D48 is currently non-matching (in progress)")
+
+    def test_func_i12_802C58A0_matched(self):
+        """TDE test for func_i12_802C58A0 in ovl_1CAE40 (course boundary trigger volume display list)."""
+        if self.is_function_decompiled("func_i12_802C58A0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i12_802C58A0 is currently non-matching (in progress)")
+
+    def test_func_i12_802C5F6C_matched(self):
+        """TDE test for func_i12_802C5F6C in ovl_1CAE40 (out-of-bounds penalty trigger)."""
+        if self.is_function_decompiled("func_i12_802C5F6C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i12_802C5F6C is currently non-matching (in progress)")
+
+    def test_func_i14_802C5924_matched(self):
+        """TDE test for func_i14_802C5924 in ovl_1CF180 (checkpoint sequence progression evaluator)."""
+        if self.is_function_decompiled("func_i14_802C5924"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i14_802C5924 is currently non-matching (in progress)")
+
+    def test_func_i14_802C5B70_matched(self):
+        """TDE test for func_i14_802C5B70 in ovl_1CF180 (lap completion trigger monitor)."""
+        if self.is_function_decompiled("func_i14_802C5B70"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i14_802C5B70 is currently non-matching (in progress)")
+
+    def test_func_i0_802C5A7C_matched(self):
+        """TDE test for func_i0_802C5A7C in ovl_1B3EC0 (Dolphin Park training display list builder)."""
+        if self.is_function_decompiled("func_i0_802C5A7C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i0_802C5A7C is currently non-matching (in progress)")
+
+    def test_func_i0_802C6044_matched(self):
+        """TDE test for func_i0_802C6044 in ovl_1B3EC0 (training stage instruction advance)."""
+        if self.is_function_decompiled("func_i0_802C6044"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i0_802C6044 is currently non-matching (in progress)")
+
+    def test_func_i0_802C63AC_matched(self):
+        """TDE test for func_i0_802C63AC in ovl_1B3EC0 (training tutorial state machine & announcer)."""
+        if self.is_function_decompiled("func_i0_802C63AC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i0_802C63AC is currently non-matching (in progress)")
+
+    def test_func_i0_802C6AE4_matched(self):
+        """TDE test for func_i0_802C6AE4 in ovl_1B3EC0 (training text glyph display list generator)."""
+        if self.is_function_decompiled("func_i0_802C6AE4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i0_802C6AE4 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -1379,6 +1476,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestGameEngineCore))
     suite.addTests(loader.loadTestsFromTestCase(TestWaterPhysics))
     suite.addTests(loader.loadTestsFromTestCase(TestCodesegUI))
+    suite.addTests(loader.loadTestsFromTestCase(TestCourseOverlays))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

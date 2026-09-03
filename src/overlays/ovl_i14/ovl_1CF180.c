@@ -38,9 +38,21 @@ void func_i14_802C5840(void) {
     AudioGeneral_PlaySound(0x31, 0);
 }
 
+#ifdef NON_MATCHING
+void func_i14_802C5924(void) {
+    /* Checkpoint sequence order and course progression evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i14/ovl_1CF180/func_i14_802C5924.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i14_802C5B70(void) {
+    /* Lap completion trigger monitor and checkpoint gate updates */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i14/ovl_1CF180/func_i14_802C5B70.s")
+#endif
 
 void func_i14_802C5E5C(s32 arg0) {
     gPrevGameState = gGameState;

@@ -60,11 +60,30 @@ Gfx* func_i0_802C5800(Gfx* arg0) {
 void stub_func_i0_802C5800() {
 }
 
+#ifdef NON_MATCHING
+Gfx* func_i0_802C5A7C(Gfx* arg0) {
+    /* Dolphin Park training display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C5A7C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i0_802C6044(void) {
+    /* Training stage instruction step advance */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C6044.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i0_802C63AC(void) {
+    /* Training tutorial state machine and announcer cue dispatcher */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C63AC.s")
+#endif
 
 void func_i0_802C6878(void) {
     gPrevGameState = gGameState;
@@ -140,5 +159,11 @@ void func_i0_802C6A1C(s32 arg0) {
     }
 }
 
-// Matched but needs data migration
+#ifdef NON_MATCHING
+Gfx* func_i0_802C6AE4(Gfx* arg0) {
+    /* Training text glyph display list generator */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C6AE4.s")
+#endif

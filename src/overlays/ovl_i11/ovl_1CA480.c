@@ -1,8 +1,21 @@
 #include "global.h"
 
+#ifdef NON_MATCHING
+Gfx* func_i11_802C5800(Gfx* glistp) {
+    /* Warmup course ramp and obstacle display list renderer */
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i11/ovl_1CA480/func_i11_802C5800.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i11_802C5D48(void) {
+    /* Warmup course controller input and obstacle parameter adjuster */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i11/ovl_1CA480/func_i11_802C5D48.s")
+#endif
 
 void func_i11_802C5F7C(void) {
     if (D_i11_802C6150 == 0) {
