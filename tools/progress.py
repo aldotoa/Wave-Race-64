@@ -5,6 +5,7 @@ import git
 import os
 import subprocess
 import sys
+import shutil
 from colour import Color
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -14,11 +15,12 @@ build_dir = os.path.join(root_dir, "build")
 elf_path = os.path.join(build_dir, "waverace64.us.rev1.elf")
 
 def get_func_sizes():
+    objdump_bin = shutil.which("mips-linux-gnu-objdump") or shutil.which("mips64-elf-objdump") or shutil.which("mips64-linux-gnu-objdump") or "objdump"
     try:
-        result = subprocess.run(['objdump', '-x', elf_path], stdout=subprocess.PIPE)
+        result = subprocess.run([objdump_bin, '-t', elf_path], stdout=subprocess.PIPE)
         nm_lines = result.stdout.decode().split("\n")
     except:
-        print(f"Error: Could not run objdump on {elf_path} - make sure that the project is built")
+        print(f"Error: Could not run {objdump_bin} on {elf_path} - make sure that the project is built")
         sys.exit(1)
 
     sizes = {}

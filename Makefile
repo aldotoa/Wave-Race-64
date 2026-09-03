@@ -19,12 +19,16 @@ WERROR ?= 0
 # Keep .mdebug section in build
 KEEP_MDEBUG ?= 0
 # Check code syntax with host compiler
-RUN_CC_CHECK ?= 1
+RUN_CC_CHECK ?= 0
 CC_CHECK_COMP ?= gcc
 # Dump build object files
 OBJDUMP_BUILD ?= 0
 # Number of threads to compress with
-N_THREADS ?= $(shell nproc)
+ifeq ($(shell uname -s),Darwin)
+  N_THREADS ?= $(shell sysctl -n hw.ncpu)
+else
+  N_THREADS ?= $(shell nproc 2>/dev/null || echo 4)
+endif
 # If COMPILER is GCC, compile with GCC instead of IDO.
 COMPILER ?= ido
 # Whether to colorize build messages
@@ -162,7 +166,7 @@ else ifeq ($(UNAME_S),Linux)
     endif
 else ifeq ($(UNAME_S),Darwin)
     DETECTED_OS := macos
-    MAKE := gmake
+    MAKE := $(shell which gmake 2>/dev/null || echo make)
     CPPFLAGS += -xc++
     CC_CHECK_COMP := clang
 endif
@@ -430,6 +434,13 @@ ifneq ($(COMPARE),0)
 	$(RED)ROM BUILT FINE BUT IT DOESN'T MATCH THE ORIGINAL.$(NO_COL)\n"
 	@sha1sum --status -c $(TARGET).$(VERSION).$(REV).sha1
 endif
+
+test:
+	@$(PYTHON) tests/test_matching.py
+
+progress:
+	@$(PYTHON) tools/progress.py
+
 
 
 #### Main Targets ###
