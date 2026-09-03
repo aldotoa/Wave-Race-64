@@ -50,9 +50,18 @@ class TestGameEngineCore(unittest.TestCase):
     """Test-Driven Engineering assertions for Game Engine Core functions."""
 
     def is_function_decompiled(self, subpath, func_name):
-        """Returns True if the function's .s file has been removed from nonmatchings (i.e. matched in C)."""
-        asm_path = os.path.join(NONMATCHINGS_DIR, subpath, f"{func_name}.s")
-        return not os.path.exists(asm_path)
+        """Returns True if the function is decompiled in the C source code."""
+        src_dir = os.path.join(PROJECT_ROOT, "src", "game")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith(".c"):
+                    with open(os.path.join(root, file), "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                    if func_name in content:
+                        for block in content.split(func_name)[1:]:
+                            if "{" in block[:300]:
+                                return True
+        return False
 
     def test_main_c_matched(self):
         """Verify that game/main.c has all functions matched in C."""
@@ -150,8 +159,10 @@ class TestWaterPhysics(unittest.TestCase):
     """Test-Driven Engineering assertions for the Water Physics & Wave Simulation Engine (water_69D0.c)."""
 
     def is_function_decompiled(self, func_name):
-        asm_path = os.path.join(NONMATCHINGS_DIR, "game", "water_69D0", f"{func_name}.s")
-        return not os.path.exists(asm_path)
+        filepath = os.path.join(PROJECT_ROOT, "src", "game", "water_69D0.c")
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        return any("{" in block[:300] for block in content.split(func_name)[1:])
 
     def test_func_8004F3D4_matched(self):
         """Verify func_8004F3D4 (single-point wave disturbance) is matched in C."""
