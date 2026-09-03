@@ -237,7 +237,132 @@ void func_8004E548(struct UnkStruct_8004B0F8* arg0, f32 arg1) {
     func_8004DAF0(arg0);
 }
 
+extern s8 D_80160430[][2];
+extern s16 D_80160A98[][4];
+extern s32 D_80192494;
+
+#ifdef NON_MATCHING
+void func_8004E614(void) {
+    s32 s4;
+    s32 s1;
+    s32 s2;
+    s32 a0;
+    s32 a1;
+    s32 a2;
+    s32 a3;
+    s32 v1;
+    s32 t0;
+    s32 t3;
+    f32 fv0;
+    f32 fval;
+
+    a3 = D_80192494;
+    s2 = 0;
+    a2 = -a3;
+
+    if (a2 < 0) {
+        s4 = a2;
+        a1 = a3 * 2;
+        a0 = a1 + s4;
+        do {
+            if (a0 >= 0) {
+                s1 = 0;
+                v1 = a2;
+                do {
+                    s1++;
+                    D_80160430[s2][0] = v1;
+                    v1++;
+                    D_80160430[s2][1] = s4;
+                    s2++;
+                } while (s1 <= a0);
+            }
+            s4++;
+            a0 = a1 + s4;
+        } while (s4 < 0);
+    }
+
+    if (a3 >= 0) {
+        s4 = 0;
+        a1 = a3 * 2;
+        a0 = a1 - s4;
+        do {
+            if (a0 >= 0) {
+                s1 = 0;
+                v1 = a2 + s4;
+                do {
+                    s1++;
+                    D_80160430[s2][0] = v1;
+                    v1++;
+                    D_80160430[s2][1] = s4;
+                    s2++;
+                } while (s1 <= a0);
+            }
+            s4++;
+            a0 = a1 - s4;
+        } while (s4 <= a3);
+    }
+
+    s2 = 0;
+    if (a2 <= a3) {
+        s4 = a2;
+        do {
+            t0 = s4 * s4;
+            fv0 = sqrtf((f32) t0);
+            t3 = (s32) fv0;
+            a3 = D_80192494;
+            a1 = (a3 * 2) - t3;
+            if (a1 >= 0) {
+                for (s1 = 0; s1 <= a1; s1++) {
+                    D_80160A98[s2][2] = (s1 - (a1 / 2)) << 6;
+                    s2++;
+                }
+            }
+            s4++;
+        } while (s4 <= a3);
+    }
+
+    s2 = 0;
+    if (a2 < 0) {
+        s4 = a2;
+        do {
+            t0 = s4 * s4;
+            fv0 = sqrtf((f32) t0);
+            t3 = (s32) fv0;
+            a3 = D_80192494;
+            a1 = (a3 * 2) - t3;
+            if (a1 >= 0) {
+                for (s1 = 0; s1 <= a1; s1++) {
+                    fval = (sqrtf(3.0f) * 64.0f / 2.0f) * (f32) s4;
+                    D_80160A98[s2][3] = (s16) ((f64) fval - 0.5);
+                    s2++;
+                }
+            }
+            s4++;
+        } while (s4 < 0);
+    }
+
+    if (a3 >= 0) {
+        s4 = 0;
+        do {
+            t0 = s4 * s4;
+            fv0 = sqrtf((f32) t0);
+            t3 = (s32) fv0;
+            a3 = D_80192494;
+            a1 = (a3 * 2) - t3;
+            if (a1 >= 0) {
+                for (s1 = 0; s1 <= a1; s1++) {
+                    fval = (sqrtf(3.0f) * 64.0f / 2.0f) * (f32) s4;
+                    D_80160A98[s2][3] = (s16) ((f64) fval + 0.5);
+                    s2++;
+                }
+            }
+            s4++;
+        } while (s4 <= a3);
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004E614.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EAA4.s")
 
