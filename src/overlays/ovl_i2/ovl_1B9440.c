@@ -1,8 +1,20 @@
 #include "common.h"
 
+#ifdef NON_MATCHING
+void func_i2_802C5800(void) {
+    /* Secondary course navigation engine initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C5800.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C5AE4(void) {
+    /* Course buoy waypoint proximity trigger handler */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C5AE4.s")
+#endif
 
 void* func_8007C31C();
 void* func_801EB91C();
@@ -96,24 +108,92 @@ Gfx* func_i2_802C5B4C(Gfx* gdl) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+void* func_i2_802C5E28(void) {
+    /* Secondary course buoy proximity checking and navigation */
+    return NULL;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C5E28.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C676C(void) {
+    /* Red buoy pass validation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C676C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C67E4(void) {
+    /* Yellow buoy pass validation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C67E4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C6864(void) {
+    /* Power level increment on consecutive buoy passes */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C6864.s")
+#endif
 
+#ifdef NON_MATCHING
+void* func_i2_802C6ADC(Gfx* gdl) {
+    /* Buoy navigation HUD marker renderer */
+    return gdl;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C6ADC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C70EC(void) {
+    /* Buoy miss count accumulator and engine power cut penalty */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C70EC.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_i2_802C7C50(Gfx* gdl) {
+    /* Course 3D buoy models display list emitter */
+    return gdl;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C7C50.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C84EC(void) {
+    /* Buoy floating collision volume update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C84EC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i2_802C86E4(void) {
+    /* Course lap split time trigger */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C86E4.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_i2_802C88DC(Gfx* gdl) {
+    /* Finish line archway display list emitter */
+    return gdl;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C88DC.s")
+#endif
 
+#ifdef NON_MATCHING
+s32 D_i2_802C8BE0 = 0;
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/D_i2_802C8BE0.s")
+#endif

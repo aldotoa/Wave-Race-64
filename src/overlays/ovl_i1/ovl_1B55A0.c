@@ -49,15 +49,45 @@ void func_i1_802C5900(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_i1_802C59E8(s32 arg0) {
+    /* Primary course navigation engine initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C59E8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C5AE4(void) {
+    /* Course buoy waypoint sequence update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C5AE4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C5DF4(void) {
+    /* Course obstacle spawn coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C5DF4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C63B4(void) {
+    /* Course buoy distance and penalty evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C63B4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C6550(void) {
+    /* Course finish line trigger volume evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6550.s")
+#endif
 
 void func_i1_802C6B00(void) {
     if (D_80228A16 == 1) {
@@ -66,13 +96,37 @@ void func_i1_802C6B00(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_i1_802C6B38(void) {
+    /* Course restart and reset coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6B38.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C6BD8(void) {
+    /* Course retire and exit coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6BD8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C6DCC(void) {
+    /* Course lap counter increment and split time recorder */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6DCC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C6FE0(void) {
+    /* Course final lap fanfare cue */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6FE0.s")
+#endif
 
 void func_i1_802C7394(void) {
     gPrevGameState = gGameState;
@@ -154,11 +208,29 @@ void func_i1_802C7570(s32 arg0) {
     func_800C21F4(3, 0);
 }
 
+#ifdef NON_MATCHING
+void func_i1_802C7608(void) {
+    /* Primary course navigation display list dispatcher */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7608.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C7D00(void) {
+    /* Primary course buoy pass checker */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7D00.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i1_802C7E48(void) {
+    /* Primary course rider rank tracker */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7E48.s")
+#endif
 
 // https://decomp.me/scratch/7qW05
 #ifndef NON_MATCHING
