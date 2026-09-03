@@ -94,6 +94,56 @@ class TestGameEngineCore(unittest.TestCase):
         else:
             self.skipTest("func_80085510 is currently non-matching (in progress)")
 
+    def test_func_8007BEA4_matched(self):
+        """
+        TDE test for func_8007BEA4 in wr64_save (save single course records).
+        """
+        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007BEA4")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007BEA4 is currently non-matching (in progress)")
+
+    def test_func_8007B370_matched(self):
+        """
+        TDE test for func_8007B370 in wr64_save (factory default save data generator).
+        """
+        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007B370")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B370 is currently non-matching (in progress)")
+
+    def test_func_8007B630_matched(self):
+        """
+        TDE test for func_8007B630 in wr64_save (save data unpacker to active game memory).
+        """
+        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007B630")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B630 is currently non-matching (in progress)")
+
+    def test_func_8007B930_matched(self):
+        """
+        TDE test for func_8007B930 in wr64_save (active game memory packer to save data).
+        """
+        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007B930")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B930 is currently non-matching (in progress)")
+
+    def test_func_80088EA8_matched(self):
+        """
+        TDE test for func_80088EA8 in code_43A60 (rider order and starting position randomization).
+        """
+        is_matched = self.is_function_decompiled("game/code_43A60", "func_80088EA8")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80088EA8 is currently non-matching (in progress)")
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
