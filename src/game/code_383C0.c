@@ -142,7 +142,13 @@ void func_8007DBC0(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_8007DF4C(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3, void* arg4, void* arg5, void* arg6) {
+    /* Rider animation bone matrix blending and kinematics */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_383C0/func_8007DF4C.s")
+#endif
 
 void func_8007E8C8(UnkStruct_80192690* arg0) {
     func_8007DF4C(arg0, arg0->unk160C, arg0->unk1610, arg0->unk1614, &arg0->unk90[4], &arg0->unk90[5], &arg0->unk90[3]);
@@ -306,7 +312,13 @@ void func_8007EF80(UnkStruct_80192690* arg0) {
                   (UnkStruct_8007E938*) &arg0->unk90[9]);
 }
 
+#ifdef NON_MATCHING
+void func_8007F030(UnkStruct_80192690* arg0) {
+    /* Rider kinematic state and skeletal position evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_383C0/func_8007F030.s")
+#endif
 
 f32 func_8007F448(f32 arg0, f32 arg1, f32 arg2, f32* arg3, f32* arg4, f32* arg5) {
     UnkStruct_801C3B84* temp_a0;

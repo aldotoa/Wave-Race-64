@@ -158,7 +158,13 @@ void func_8004B0F8(struct UnkStruct_8004B0F8* arg0) {
     arg0->unk4C = (f32) (var_f0 / var_f14);
 }
 
+#ifdef NON_MATCHING
+void func_8004B1B4(void* arg0) {
+    /* Wave surface ripple generation and heightfield deformer */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_5480/func_8004B1B4.s")
+#endif
 
 void func_8004B680(void) {
 }
@@ -287,4 +293,10 @@ Gfx* func_8004BC40(Gfx* gdl) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+void func_8004BC98(void* arg0) {
+    /* Dynamic water collision response and splash impulse update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_5480/func_8004BC98.s")
+#endif

@@ -32,7 +32,14 @@ Gfx* func_1C3D00_802C5800(Gfx* gDisplayListHead) {
     return gDisplayListHead;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_1C3D00_802C58DC(Gfx* arg0) {
+    /* Segment 1C3D00 water overlay display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/seg_1C3D00/func_1C3D00_802C58DC.s")
+#endif
 
 void func_1C3D00_802C5C4C(s32 arg0) {
     gPrevGameState = gGameState;

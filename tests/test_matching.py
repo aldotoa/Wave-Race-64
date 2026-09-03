@@ -2481,6 +2481,97 @@ class TestCameraEngine(unittest.TestCase):
             self.skipTest("func_80069798 is currently non-matching (in progress)")
 
 
+
+class TestQuickWinModules(unittest.TestCase):
+    """Test cases for Quick-Win Game Code Modules (code_24B00, code_43A60, seg_1C3D00, code_383C0, code_3A580, code_5480)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        clean_name = func_name.replace("_quickwin", "")
+        src_dir = os.path.join(PROJECT_ROOT, "src")
+        pattern = re.compile(rf"\b{clean_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith((".c", ".h")):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(clean_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_func_8006E674_matched(self):
+        """TDE test for func_8006E674 in code_24B00 (Course 3D animated props display list renderer)."""
+        if self.is_function_decompiled("func_8006E674"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8006E674 is currently non-matching (in progress)")
+
+    def test_func_80088EA8_quickwin_matched(self):
+        """TDE test for func_80088EA8_quickwin in code_43A60 (Rider starting order and position randomization)."""
+        if self.is_function_decompiled("func_80088EA8_quickwin"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80088EA8_quickwin is currently non-matching (in progress)")
+
+    def test_func_800890B4_matched(self):
+        """TDE test for func_800890B4 in code_43A60 (Rider starting grid launch physics)."""
+        if self.is_function_decompiled("func_800890B4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800890B4 is currently non-matching (in progress)")
+
+    def test_func_1C3D00_802C58DC_matched(self):
+        """TDE test for func_1C3D00_802C58DC in seg_1C3D00 (Segment 1C3D00 water overlay display list builder)."""
+        if self.is_function_decompiled("func_1C3D00_802C58DC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_1C3D00_802C58DC is currently non-matching (in progress)")
+
+    def test_func_8007DF4C_matched(self):
+        """TDE test for func_8007DF4C in code_383C0 (Rider animation bone matrix blending)."""
+        if self.is_function_decompiled("func_8007DF4C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007DF4C is currently non-matching (in progress)")
+
+    def test_func_8007F030_matched(self):
+        """TDE test for func_8007F030 in code_383C0 (Rider kinematic state and skeletal position evaluator)."""
+        if self.is_function_decompiled("func_8007F030"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007F030 is currently non-matching (in progress)")
+
+    def test_func_8007FD80_matched(self):
+        """TDE test for func_8007FD80 in code_3A580 (Particle spray emitter coordinator)."""
+        if self.is_function_decompiled("func_8007FD80"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007FD80 is currently non-matching (in progress)")
+
+    def test_func_8007FFA8_matched(self):
+        """TDE test for func_8007FFA8 in code_3A580 (3D water spray particle display list emitter)."""
+        if self.is_function_decompiled("func_8007FFA8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007FFA8 is currently non-matching (in progress)")
+
+    def test_func_8004B1B4_matched(self):
+        """TDE test for func_8004B1B4 in code_5480 (Wave surface ripple generation and heightfield deformer)."""
+        if self.is_function_decompiled("func_8004B1B4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004B1B4 is currently non-matching (in progress)")
+
+    def test_func_8004BC98_matched(self):
+        """TDE test for func_8004BC98 in code_5480 (Dynamic water collision response and splash impulse update)."""
+        if self.is_function_decompiled("func_8004BC98"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004BC98 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2492,6 +2583,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestSysLayer))
     suite.addTests(loader.loadTestsFromTestCase(TestAudioEngine))
     suite.addTests(loader.loadTestsFromTestCase(TestCameraEngine))
+    suite.addTests(loader.loadTestsFromTestCase(TestQuickWinModules))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

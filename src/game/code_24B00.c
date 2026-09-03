@@ -1249,4 +1249,10 @@ void func_8006E3A8(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_8006E674(Gfx** arg0) {
+    /* Course 3D animated props display list renderer */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_24B00/func_8006E674.s")
+#endif
