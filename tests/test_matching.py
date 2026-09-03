@@ -338,6 +338,21 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E3EE0 is currently non-matching (in progress)")
 
+    def test_func_801E4C60_matched(self):
+        """TDE test for func_801E4C60 in B3290 (2D/3D polygon mesh & sprite vertex synthesizer)."""
+        if self.is_function_decompiled("func_801E4C60"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E4C60 is currently non-matching (in progress)")
+
+    def test_func_801E4FE8_matched(self):
+        """TDE test for func_801E4FE8 in B3290 (polygon mesh node traversal & sprite rasterizer)."""
+        if self.is_function_decompiled("func_801E4FE8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E4FE8 is currently non-matching (in progress)")
+
+
 
 
 
