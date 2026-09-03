@@ -147,7 +147,69 @@ void func_8004D628(struct UnkStruct_8004B0F8* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D628.s")
 #endif
 
+#define APPLY_FRICTION(pt) { \
+    f32 dot = (pt->unkC * dir_x) + (pt->unk14 * dir_z); \
+    pt->unkC = (dot * dir_x * friction_scale) + (pt->unkC * arg0->unk14); \
+    pt->unk10 *= arg0->unk10; \
+    pt->unk14 = (dot * dir_z * friction_scale) + (pt->unk14 * arg0->unk14); \
+}
+
+#ifdef NON_MATCHING
+void func_8004DAF0(struct UnkStruct_8004B0F8* arg0) {
+    f32 dir_x, dir_z;
+    f32 speed_sq;
+    f32 inv_speed;
+    f32 friction_scale;
+    struct UnkStruct_8004B0F8_1* pts = arg0->unk30;
+
+    speed_sq = (arg0->unk6C * arg0->unk6C) + (arg0->unk74 * arg0->unk74);
+    friction_scale = 1.0f - arg0->unk14;
+
+    if (speed_sq == 0.0f) {
+        dir_x = 0.0f;
+        dir_z = 0.0f;
+    } else {
+        inv_speed = 1.0f / sqrtf(speed_sq);
+        dir_x = arg0->unk6C * inv_speed;
+        dir_z = arg0->unk74 * inv_speed;
+    }
+
+    if (pts[1].unk1C & 1) {
+        APPLY_FRICTION((&pts[1]));
+    }
+    if (pts[4].unk1C & 1) {
+        APPLY_FRICTION((&pts[4]));
+    }
+    if (pts[8].unk1C & 1) {
+        APPLY_FRICTION((&pts[8]));
+    }
+    if (pts[11].unk1C & 1) {
+        APPLY_FRICTION((&pts[11]));
+    }
+
+    if ((pts[3].unk1C | pts[5].unk1C) & 1) {
+        APPLY_FRICTION((&pts[6]));
+        APPLY_FRICTION((&pts[5]));
+    }
+
+    if ((pts[6].unk1C | pts[7].unk1C) & 1) {
+        APPLY_FRICTION((&pts[9]));
+        APPLY_FRICTION((&pts[7]));
+    }
+
+    if ((pts[9].unk1C | pts[10].unk1C) & 1) {
+        APPLY_FRICTION((&pts[9]));
+        APPLY_FRICTION((&pts[2]));
+    }
+
+    if ((pts[2].unk1C | pts[0].unk1C) & 1) {
+        pts[0].unk10 *= arg0->unk10;
+        pts[2].unk10 *= arg0->unk10;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004DAF0.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004E0A4.s")
 
