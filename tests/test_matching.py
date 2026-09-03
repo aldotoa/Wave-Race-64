@@ -324,6 +324,14 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E7908 is currently non-matching (in progress)")
 
+    def test_func_801E3698_matched(self):
+        """TDE test for func_801E3698 in B17D0 (character select 3D jet ski model preview renderer)."""
+        if self.is_function_decompiled("func_801E3698"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E3698 is currently non-matching (in progress)")
+
+
 
 def run_tests():
     loader = unittest.TestLoader()

@@ -133,4 +133,61 @@ void func_801E355C(void) {
     D_802288FC = 0x28 - D_802288F8;
 }
 
+extern s32 D_801C2928;
+extern Gfx D_7000A40[];
+extern Gfx D_7000A80[];
+
+Gfx* func_80094338(Gfx* glistp, s32 arg1, s32 x, s32 y, s32 w, s32 h);
+Gfx* func_801E7E74(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
+Gfx* func_801E7FD8(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
+
+#ifdef NON_MATCHING
+Gfx* func_801E3698(Gfx* glistp) {
+    s32 i;
+    s32 y;
+    s32 s0;
+
+    gSPDisplayList(glistp++, D_106F628);
+
+    glistp = func_80094338(glistp, 0, D_802288F8 + 8, 30, 264, 24);
+    glistp = func_80094338(glistp, 0, D_802288FC + 8, 88, 264, 16);
+
+    y = 0x6E;
+    for (i = 0; i < 3; i++, y += 0x12) {
+        if (i & 1) {
+            s0 = D_802288FC;
+        } else {
+            s0 = D_802288F8;
+        }
+        glistp = func_80094338(glistp, 0, s0 + 8, y, 264, 16);
+    }
+
+    if (D_801C2928 == 0) {
+        glistp = func_80094338(glistp, 0, D_802288FC + 8, 0xB7, 264, 10);
+        glistp = func_80094338(glistp, 0, D_802288FC + 8, 0xC2, 264, 16);
+    }
+
+    glistp = func_801E7E74(glistp, 0, 0, 0, 255);
+
+    y = 0x7C;
+    s0 = 0x70;
+    for (i = 0; i < 3; i++, s0 += 0x12, y += 0x12) {
+        s32 base = (i & 1) ? D_802288FC : D_802288F8;
+        glistp = func_801E7FD8(glistp, base + 0x28, s0, base + 0x42, y);
+    }
+
+    if (D_801C2928 != 0) {
+        glistp = func_801E7FD8(glistp, D_802288FC + 0x28, 0xC4, D_802288FC + 0x42, 0xD0);
+    }
+
+    gDPPipeSync(glistp++);
+    gDPSetCycleType(glistp++, G_CYC_2CYCLE);
+    gDPSetPrimColor(glistp++, 0, 0, (D_80228900 >> 11) & 0x1F, (D_80228900 >> 6) & 0x1F, (D_80228900 >> 1) & 0x1F, 255);
+    gSPDisplayList(glistp++, D_7000A40);
+    gSPDisplayList(glistp++, D_7000A80);
+
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B17D0/func_801E3698.s")
+#endif
