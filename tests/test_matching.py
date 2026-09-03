@@ -1723,6 +1723,98 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i9_802C802C is currently non-matching (in progress)")
 
 
+    def test_func_i8_802C5800_matched(self):
+        """TDE test for func_i8_802C5800 in ovl_1C49A0 (Stunt mode ramp and floating ring display list generator)."""
+        if self.is_function_decompiled("func_i8_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i8_802C5D3C_matched(self):
+        """TDE test for func_i8_802C5D3C in ovl_1C49A0 (Stunt jump ramp trajectory and height evaluator)."""
+        if self.is_function_decompiled("func_i8_802C5D3C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C5D3C is currently non-matching (in progress)")
+
+    def test_func_i8_802C5EB8_matched(self):
+        """TDE test for func_i8_802C5EB8 in ovl_1C49A0 (Stunt floating ring collision check and ring pass sound)."""
+        if self.is_function_decompiled("func_i8_802C5EB8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C5EB8 is currently non-matching (in progress)")
+
+    def test_func_i8_802C63E4_matched(self):
+        """TDE test for func_i8_802C63E4 in ovl_1C49A0 (Stunt score multiplier and combo timer update)."""
+        if self.is_function_decompiled("func_i8_802C63E4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C63E4 is currently non-matching (in progress)")
+
+    def test_func_i8_802C6ADC_matched(self):
+        """TDE test for func_i8_802C6ADC in ovl_1C49A0 (Stunt trick recognition and rotation detector)."""
+        if self.is_function_decompiled("func_i8_802C6ADC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C6ADC is currently non-matching (in progress)")
+
+    def test_func_i8_802C6D58_matched(self):
+        """TDE test for func_i8_802C6D58 in ovl_1C49A0 (Stunt mode bonus point award animation)."""
+        if self.is_function_decompiled("func_i8_802C6D58"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C6D58 is currently non-matching (in progress)")
+
+    def test_func_i8_802C6DA8_matched(self):
+        """TDE test for func_i8_802C6DA8 in ovl_1C49A0 (Stunt high score rank evaluator)."""
+        if self.is_function_decompiled("func_i8_802C6DA8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C6DA8 is currently non-matching (in progress)")
+
+    def test_func_i8_802C6EB8_matched(self):
+        """TDE test for func_i8_802C6EB8 in ovl_1C49A0 (Stunt initials and score entry commit)."""
+        if self.is_function_decompiled("func_i8_802C6EB8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i8_802C6EB8 is currently non-matching (in progress)")
+
+    def test_func_i5_802C7090_matched(self):
+        """TDE test for func_i5_802C7090 in ovl_1C17E0 (Course floating buoys and navigation arrow display list)."""
+        if self.is_function_decompiled("func_i5_802C7090"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C7090 is currently non-matching (in progress)")
+
+    def test_func_i5_802C7484_matched(self):
+        """TDE test for func_i5_802C7484 in ovl_1C17E0 (Floating buoy wave bobbing oscillation)."""
+        if self.is_function_decompiled("func_i5_802C7484"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C7484 is currently non-matching (in progress)")
+
+    def test_func_i5_802C7594_matched(self):
+        """TDE test for func_i5_802C7594 in ovl_1C17E0 (Buoy proximity trigger and direction arrow animator)."""
+        if self.is_function_decompiled("func_i5_802C7594"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C7594 is currently non-matching (in progress)")
+
+    def test_func_i5_802C7698_matched(self):
+        """TDE test for func_i5_802C7698 in ovl_1C17E0 (Buoy pass angle verification)."""
+        if self.is_function_decompiled("func_i5_802C7698"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C7698 is currently non-matching (in progress)")
+
+    def test_func_i5_802C781C_matched(self):
+        """TDE test for func_i5_802C781C in ovl_1C17E0 (Buoy miss penalty check)."""
+        if self.is_function_decompiled("func_i5_802C781C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C781C is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
