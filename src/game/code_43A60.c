@@ -58,11 +58,15 @@ void func_80088EA8(void) {
         D_801C3C58->unk5C = -1;
     }
     for (var_s6 = var_s4 = 0; var_s4 < (gRiders - 1); var_s6++, var_s4++) {
-        rand_seed = (SysUtils_Rand(), SysUtils_Rand() / 256) % 4; // What?
+        SysUtils_Rand();
+        rand_seed = (SysUtils_Rand() >> 8) & 3;
 
-        while (D_801C3C58 = (struct_801C3C58*) &D_801C3C60[rand_seed],
-               D_801C3C58->unk5C != -1 || rand_seed == D_800D48DC) {
-            rand_seed = (rand_seed % gRiders) + 1;
+        D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[rand_seed];
+        if (D_801C3C58->unk5C != -1 || rand_seed == D_800D48DC) {
+            do {
+                rand_seed = (rand_seed % gRiders) + 1;
+                D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[rand_seed];
+            } while (D_801C3C58->unk5C != -1 || rand_seed == D_800D48DC);
         }
         D_801C3C58->unk5C = var_s6;
     }
