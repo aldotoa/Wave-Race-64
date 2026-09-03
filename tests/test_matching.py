@@ -144,14 +144,56 @@ class TestGameEngineCore(unittest.TestCase):
         else:
             self.skipTest("func_80088EA8 is currently non-matching (in progress)")
 
+
+class TestWaterPhysics(unittest.TestCase):
+    """Test-Driven Engineering assertions for the Water Physics & Wave Simulation Engine (water_69D0.c)."""
+
+    def is_function_decompiled(self, func_name):
+        asm_path = os.path.join(NONMATCHINGS_DIR, "game", "water_69D0", f"{func_name}.s")
+        return not os.path.exists(asm_path)
+
+    def test_func_8004F3D4_matched(self):
+        """Verify func_8004F3D4 (single-point wave disturbance) is matched in C."""
+        self.assertTrue(self.is_function_decompiled("func_8004F3D4"),
+                        "func_8004F3D4 must be matched in C")
+
+    def test_func_8004E548_matched(self):
+        """Verify func_8004E548 (hull contact point depth check) is matched in C."""
+        self.assertTrue(self.is_function_decompiled("func_8004E548"),
+                        "func_8004E548 must be matched in C")
+
+    def test_func_8004F1EC_matched(self):
+        """TDE test for func_8004F1EC (rider jet wake displacement)."""
+        if self.is_function_decompiled("func_8004F1EC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004F1EC is currently non-matching (in progress)")
+
+    def test_func_8004EFB4_matched(self):
+        """TDE test for func_8004EFB4 (generic object wave disturbance)."""
+        if self.is_function_decompiled("func_8004EFB4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004EFB4 is currently non-matching (in progress)")
+
+    def test_func_8004D30C_matched(self):
+        """TDE test for func_8004D30C (water surface height elevation query)."""
+        if self.is_function_decompiled("func_8004D30C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004D30C is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     suite.addTests(loader.loadTestsFromTestCase(TestRomIntegrity))
     suite.addTests(loader.loadTestsFromTestCase(TestGameEngineCore))
+    suite.addTests(loader.loadTestsFromTestCase(TestWaterPhysics))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1
 
 if __name__ == "__main__":
     sys.exit(run_tests())
+

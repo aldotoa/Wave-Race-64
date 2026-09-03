@@ -54,9 +54,95 @@ void func_8004E548(struct UnkStruct_8004B0F8* arg0, f32 arg1) {
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EAA4.s")
 
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EFB4.s")
+#ifdef NON_MATCHING
+void func_8004EFB4(f32 arg0, f32 arg1, s32 arg2) {
+    UnkStruct_80162420* var_v0;
+    UnkStruct_80162420* var_t4;
+    UnkStruct_80162420* var_a3;
+    s32 temp_a0;
+    s32 temp_a1;
+    s32 temp_hi;
+    s32 temp_hi_2;
+    s32 temp_val;
+    s32 temp_a1_plus_1;
+    s32 t0;
+    s32 t2;
 
+    temp_hi = (s32) ((DIRLIGHT_DIRECTION * arg1) + arg0) % 24576;
+    temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * arg1) % 24576;
+    temp_a0 = temp_hi_2 >> 6;
+    temp_a1 = temp_hi >> 6;
+
+    if ((temp_hi - (temp_a1 * 64)) < (temp_hi_2 - (temp_a0 * 64))) {
+        t2 = temp_a0 + (temp_a1 & ~0x7F);
+        var_v0 = D_80162420 + ((((t2 + 0x601) % 384) * 128) + (temp_a1 & 0x7F));
+        temp_a1_plus_1 = temp_a1 + 1;
+        t0 = temp_a0 + (temp_a1_plus_1 & ~0x7F);
+    } else {
+        temp_a1_plus_1 = temp_a1 + 1;
+        t0 = temp_a0 + (temp_a1_plus_1 & ~0x7F);
+        var_v0 = D_80162420 + ((((t0 + 0x600) % 384) * 128) + (temp_a1_plus_1 & 0x7F));
+        t2 = temp_a0 + (temp_a1 & ~0x7F);
+    }
+
+    var_t4 = D_80162420 + ((((t0 + 0x601) % 384) * 128) + (temp_a1_plus_1 & 0x7F));
+    var_a3 = D_80162420 + ((((t2 + 0x600) % 384) * 128) + (temp_a1 & 0x7F));
+    temp_val = arg2 * 256;
+    var_t4->unk0 = temp_val;
+    var_a3->unk0 = temp_val;
+    var_v0->unk0 = temp_val;
+    var_t4->unk2 = 0;
+    var_a3->unk2 = var_t4->unk2;
+    var_v0->unk2 = var_t4->unk2;
+}
+#else
+#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EFB4.s")
+#endif
+
+extern u32 D_801924E0[];
+extern s32 D_800D4680;
+extern u32 gFrameCounter;
+
+#ifdef NON_MATCHING
+void func_8004F1EC(f32 arg0, f32 arg1, s32 arg2, s32 arg3) {
+    UnkStruct_80162420* var_v0;
+    UnkStruct_80162420* var_t3;
+    UnkStruct_80162420* var_t4;
+    s32 temp_a0;
+    s32 temp_a1;
+    s32 temp_hi;
+    s32 temp_hi_2;
+    s32 temp_val;
+
+    temp_hi = (s32) ((DIRLIGHT_DIRECTION * arg1) + arg0) % 24576;
+    temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * arg1) % 24576;
+    temp_a0 = temp_hi_2 >> 6;
+    temp_a1 = temp_hi >> 6;
+
+    if ((temp_hi - (temp_a1 * 64)) < (temp_hi_2 - (temp_a0 * 64))) {
+        var_v0 = D_80162420 + ((((((temp_a0 + 1) + (temp_a1 & ~0x7F) + 0x600) % 384)) * 128) + (temp_a1 & 0x7F));
+    } else {
+        var_v0 = D_80162420 + (((((temp_a0 + ((temp_a1 + 1) & ~0x7F) + 0x600) % 384)) * 128) + ((temp_a1 + 1) & 0x7F));
+    }
+
+    if ((u32) (gFrameCounter - D_801924E0[arg3]) < (u32) D_800D4680) {
+        return;
+    }
+
+    var_t3 = D_80162420 + (((((temp_a0 + ((temp_a1 + 1) & ~0x7F) + 0x601) % 384)) * 128) + ((temp_a1 + 1) & 0x7F));
+    var_t4 = D_80162420 + (((((temp_a0 + (temp_a1 & ~0x7F) + 0x600) % 384)) * 128) + (temp_a1 & 0x7F));
+    D_801924E0[arg3] = gFrameCounter;
+    temp_val = arg2 * 256;
+    var_t3->unk0 = temp_val;
+    var_t4->unk0 = temp_val;
+    var_v0->unk0 = temp_val;
+    var_t3->unk2 = 0;
+    var_t4->unk2 = var_t3->unk2;
+    var_v0->unk2 = var_t3->unk2;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F1EC.s")
+#endif
 
 void func_8004F3D4(f32 arg0, f32 arg1, s32 arg2) {
     UnkStruct_80162420* var_v0;
