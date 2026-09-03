@@ -661,7 +661,91 @@ void func_8004F790(s32 arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F790.s")
 #endif
 
+extern s32 D_801CE64C;
+extern s32 D_80192420[];
+extern f32 D_800D4684[];
+extern f32 D_80192460[];
+extern s32 D_801924A0;
+extern s32 D_801924A4;
+extern s32 D_801924A8;
+extern s32 D_80192498;
+extern s32 D_8019249C;
+extern f32 D_801924AC;
+extern f32 D_801924B0;
+extern f32 D_801924B8;
+extern f32 D_801924BC;
+extern f32 D_801924B4;
+extern f32 D_801924C0;
+extern u8 D_801388D0[];
+
+#ifdef NON_MATCHING
+void func_8004F9E0(f32 arg0, f32 arg1) {
+    s32 s0;
+    s32 s7 = 2;
+    s32 a2;
+    s32 t3;
+    f32 fv0;
+    u8* t2;
+
+    if (D_801CE64C == 1) {
+        D_800D4724 = 10;
+        D_800D472C = 4;
+        D_800D4730 = 5;
+        D_80192494 = 16;
+        s0 = 0;
+    } else {
+        D_800D4724 = 9;
+        D_800D472C = 5;
+        D_800D4730 = 6;
+        if (s7 == D_801CE64C) {
+            D_80192494 = 10;
+            s0 = 26;
+        } else if (s7 == gPlayers[0]) {
+            D_80192494 = 10;
+            s0 = 26;
+        } else {
+            D_80192494 = 12;
+            s0 = 13;
+        }
+    }
+
+    D_80192420[8] = 0;
+    D_80192420[13] = 0;
+    D_80192420[7] = 0;
+    D_80192420[1] = 0;
+    D_80192420[0] = 0;
+
+    {
+        s32 i;
+        for (i = 0; i < 13; i++) {
+            D_80192460[i] = D_800D4684[s0 + i];
+        }
+    }
+
+    D_801924A0 = 0x8000;
+    D_801924A4 = 0x8000;
+    D_801924A8 = 0x800;
+    D_80192498 = D_80192494 << 6;
+    D_8019249C = ((D_80192494 * 3) * (D_80192494 + 1)) + 1;
+    gWaterLevel = arg0;
+
+    func_8004E614();
+    func_8004F790(arg1);
+
+    a2 = (s32) ((((f32) ((D_801924A8 * 2) + D_801924A0)) / 49152.0f) + 0.900000000000000022);
+    fv0 = sqrtf(3.0f);
+    t3 = (s32) ((((f32) (D_801924A4 + (D_801924A8 * 2))) / (fv0 * 2.0f * 8192.0f)) + 0.900000000000000022);
+
+    D_801924AC = (f32) (a2 * 24576) - 0.0;
+    D_801924B0 = (f32) (-a2 * 24576);
+    D_801924B8 = (fv0 * (f32) t3 * 8192.0f) - 0.0;
+    D_801924BC = (fv0 * (f32) -t3 * 8192.0f);
+    D_801924B4 = (D_801924AC - D_801924B0) + 0.0;
+    D_801924C0 = (D_801924B8 - D_801924BC) + 0.0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F9E0.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_80050204.s")
 

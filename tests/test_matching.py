@@ -218,6 +218,14 @@ class TestWaterPhysics(unittest.TestCase):
         else:
             self.skipTest("func_8004EAA4 is currently non-matching (in progress)")
 
+    def test_func_8004F9E0_matched(self):
+        """TDE test for func_8004F9E0 (2D wave PDE simulation master engine & water initializer)."""
+        if self.is_function_decompiled("func_8004F9E0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004F9E0 is currently non-matching (in progress)")
+
+
 
 
 
