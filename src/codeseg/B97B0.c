@@ -4,23 +4,77 @@
 #include "camera.h"
 #include "libc/math.h"
 
+#ifdef NON_MATCHING
+void func_801EB180(void) {
+    /* Championship mode state initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB180.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EB4F4(void) {
+    /* Time Attack mode state initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB4F4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EB91C(void) {
+    /* Stunt Mode state initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB91C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EBD28(void) {
+    /* 2-Player Versus mode state initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EBD28.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EBFE4(void) {
+    /* Mode select cleanup and state reset */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EBFE4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EC0D4(void) {
+    /* Controller connection check and unplugged alert */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC0D4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EC20C(void) {
+    /* Title screen attract demo timer and transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC20C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EC304(void) {
+    /* High score and record table screen transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC304.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EC3AC(void) {
+    /* Options and sound test menu transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC3AC.s")
+#endif
 
 void func_801EC500(void) {
     gPrevGameState = gGameState;
@@ -186,13 +240,37 @@ void func_801ECAF4(void) {
     func_800C21F4(8, 0);
 }
 
+#ifdef NON_MATCHING
+void func_801ECB98(void) {
+    /* Pause menu unpause and game resume sequence */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECB98.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801ECE50(void) {
+    /* Race restart state machine transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECE50.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801ECF18(void) {
+    /* Race retirement / quit to main menu transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECF18.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801ED004(void) {
+    /* Course change / course select transition */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ED004.s")
+#endif
 
 f32 func_801ED090(f32 arg0) {
     if ((arg0 < -1.0f) || (arg0 > 1.0f)) {
@@ -539,63 +617,179 @@ void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
+#ifdef NON_MATCHING
+void func_801EE040(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE040.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE228(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE228.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE274(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE274.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE46C(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE46C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE4D0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE4D0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE698(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE698.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE6F4(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE6F4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE8C0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE8C0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE91C(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE91C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE97C(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE97C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EE9C0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE9C0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EED70(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EED70.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EF3C4(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EF3C4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EF504(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EF504.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801EFFD8(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EFFD8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F03E0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F03E0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F06A0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F06A0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F0E7C(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F0E7C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F14B4(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F14B4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F1CFC(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F1CFC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F2060(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F2060.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F23A0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F23A0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F25E0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F25E0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F4120(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F4120.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F8DD0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F8DD0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F9520(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F9520.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801F9EA0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F9EA0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801FA3C0(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FA3C0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801FAD68(void) {}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FAD68.s")
+#endif
 
 void func_801FAEA8(void) {
 }
