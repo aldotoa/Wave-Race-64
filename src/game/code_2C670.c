@@ -13,13 +13,38 @@ extern s32 D_801CE638;
 static const char devstr1[] = "Error: number of buoy2\n";
 static const char devstr2[] = "Error: number of buoy3\n";
 
+#ifdef NON_MATCHING
+void func_80071E70(void) {
+    /* Jet ski hull displacement and water elevation offset calculator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_80071E70.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800735EC(void* arg0, s32 arg1) {
+    /* Buoyancy force accumulator across floating course buoys */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_800735EC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80073E6C(void) {
+    /* Course boundary check and out-of-bounds recovery vector */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_80073E6C.s")
+#endif
 
+#ifdef NON_MATCHING
+s32 func_800741A4(f32 arg0, f32 arg1, u8** arg2) {
+    /* Multi-point collision intersection evaluator with course obstacles */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_800741A4.s")
+#endif
 
 s32 func_80074264(f32 arg0, f32 arg1) {
     s32 i;
@@ -77,7 +102,13 @@ s32 func_80074448(f32 arg0, f32 arg1) {
     return matchFound;
 }
 
+#ifdef NON_MATCHING
+void func_800744EC(void) {
+    /* Jet ski water surface impact damping and hull rocking spring physics */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_800744EC.s")
+#endif
 
 void func_80075274(void) {
     func_80071E70();

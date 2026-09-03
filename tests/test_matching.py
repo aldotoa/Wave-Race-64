@@ -2645,6 +2645,96 @@ class TestSaveSystem(unittest.TestCase):
             self.skipTest("func_8007D614 is currently non-matching (in progress)")
 
 
+
+class TestPhysicsModules(unittest.TestCase):
+    """Test cases for Physics and Collision Modules (code_2C670.c, code_68A10.c)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "game")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file in ("code_2C670.c", "code_68A10.c"):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_func_80071E70_matched(self):
+        """TDE test for func_80071E70 in code_2C670 (Jet ski hull displacement and water elevation offset calculator)."""
+        if self.is_function_decompiled("func_80071E70"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80071E70 is currently non-matching (in progress)")
+
+    def test_func_800735EC_matched(self):
+        """TDE test for func_800735EC in code_2C670 (Buoyancy force accumulator across floating course buoys)."""
+        if self.is_function_decompiled("func_800735EC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800735EC is currently non-matching (in progress)")
+
+    def test_func_80073E6C_matched(self):
+        """TDE test for func_80073E6C in code_2C670 (Course boundary check and out-of-bounds recovery vector)."""
+        if self.is_function_decompiled("func_80073E6C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80073E6C is currently non-matching (in progress)")
+
+    def test_func_800741A4_matched(self):
+        """TDE test for func_800741A4 in code_2C670 (Multi-point collision intersection evaluator with course obstacles)."""
+        if self.is_function_decompiled("func_800741A4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800741A4 is currently non-matching (in progress)")
+
+    def test_func_800744EC_matched(self):
+        """TDE test for func_800744EC in code_2C670 (Jet ski water surface impact damping and hull rocking spring physics)."""
+        if self.is_function_decompiled("func_800744EC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800744EC is currently non-matching (in progress)")
+
+    def test_func_800AE7C4_matched(self):
+        """TDE test for func_800AE7C4 in code_68A10 (Jet ski landing water splash particle burst trigger)."""
+        if self.is_function_decompiled("func_800AE7C4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800AE7C4 is currently non-matching (in progress)")
+
+    def test_func_800AFBD0_matched(self):
+        """TDE test for func_800AFBD0 in code_68A10 (Rider water spray intensity calculator based on turning slip angle)."""
+        if self.is_function_decompiled("func_800AFBD0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800AFBD0 is currently non-matching (in progress)")
+
+    def test_func_800B08F8_matched(self):
+        """TDE test for func_800B08F8 in code_68A10 (Dynamic sound effect dispatch and audio spatialization for water splashes)."""
+        if self.is_function_decompiled("func_800B08F8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800B08F8 is currently non-matching (in progress)")
+
+    def test_func_800B2ABC_matched(self):
+        """TDE test for func_800B2ABC in code_68A10 (Particle buffer recycling and active emitter state update)."""
+        if self.is_function_decompiled("func_800B2ABC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800B2ABC is currently non-matching (in progress)")
+
+    def test_func_800B305C_matched(self):
+        """TDE test for func_800B305C in code_68A10 (3D animated spray and wake billboarding texture display list renderer)."""
+        if self.is_function_decompiled("func_800B305C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800B305C is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2658,6 +2748,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestCameraEngine))
     suite.addTests(loader.loadTestsFromTestCase(TestQuickWinModules))
     suite.addTests(loader.loadTestsFromTestCase(TestSaveSystem))
+    suite.addTests(loader.loadTestsFromTestCase(TestPhysicsModules))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

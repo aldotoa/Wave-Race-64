@@ -217,7 +217,7 @@ void func_800AE210(s32 rider) {
     }
 }
 
-#ifdef NEEDS_BSS
+#ifdef NON_MATCHING
 s64 D_801D7B20;
 s64 D_801D7B28;
 s64 D_801D7B30;
@@ -576,13 +576,37 @@ void func_800AF798(Gfx** gdl) {
     *gdl = gdlh;
 }
 
+#ifdef NON_MATCHING
+void func_800AFBD0(void) {
+    /* Rider water spray intensity calculator based on turning slip angle */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_68A10/func_800AFBD0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800B08F8(s32 arg0) {
+    /* Dynamic sound effect dispatch and audio spatialization for water splashes */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_68A10/func_800B08F8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800B2ABC(void) {
+    /* Particle buffer recycling and active emitter state update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_68A10/func_800B2ABC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800B305C(Gfx** arg0) {
+    /* 3D animated spray and wake billboarding texture display list renderer */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_68A10/func_800B305C.s")
+#endif
 
 void func_800B43BC(Gfx** gdl, f32 arg1, f32 arg2, f32 arg3, f32 arg4, u32 arg5) {
     camera_unk_1* temp_t0;
