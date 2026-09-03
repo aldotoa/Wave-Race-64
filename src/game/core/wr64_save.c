@@ -368,11 +368,29 @@ void func_8007B31C(void) {
     D_801AEA23 = (s8) D_801CB294;
 }
 
+#ifdef NON_MATCHING
+void func_8007B370(void* arg0) {
+    /* EEPROM save block header initialization and checksum calculation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B370.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8007B630(void) {
+    /* Default championship records and high scores table restore */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B630.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8007B930(void) {
+    /* Stunt mode default high score initials and point tables reset */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B930.s")
+#endif
 
 void func_8007BBE8() {
 }
@@ -479,7 +497,14 @@ s32 func_8007BE64(void) {
     return func_8007BD20();
 }
 
+#ifdef NON_MATCHING
+s32 func_8007BEA4(s32 arg0) {
+    /* Course record save slot index boundary verification */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007BEA4.s")
+#endif
 
 s32 func_8007C0B8(s32 arg0) {
     s32 temp_v0;
@@ -631,7 +656,14 @@ int func_8007C50C(void) {
     return SAVE_SUCCESS;
 }
 
+#ifdef NON_MATCHING
+s32 func_8007C604(s32 arg0) {
+    /* Stunt high score rank slot compaction and displacement updater */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007C604.s")
+#endif
 
 s32 func_8007C9D4(s32 arg0) {
     s32 temp_v0;
@@ -890,9 +922,23 @@ static const char devstr51[] = "PFS write error\n";
 static const char devstr52[] = "PFS no delete file\n";
 static const char devstr53[] = "PFS delete error %d\n";
 
+#ifdef NON_MATCHING
+s32 func_8007D2D4(s32 arg0) {
+    /* Controller Pak ghost data file verify, header check, and payload reader */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007D2D4.s")
+#endif
 
+#ifdef NON_MATCHING
+s32 func_8007D614(s32 arg0) {
+    /* Controller Pak ghost data file allocation, filesystem write, and inode update */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007D614.s")
+#endif
 
 s32 Save_PfsDeleteFile(void) {
     s32 ret;

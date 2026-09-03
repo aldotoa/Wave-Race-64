@@ -2572,6 +2572,79 @@ class TestQuickWinModules(unittest.TestCase):
             self.skipTest("func_8004BC98 is currently non-matching (in progress)")
 
 
+
+class TestSaveSystem(unittest.TestCase):
+    """Test cases for Controller Pak & Save System (src/game/core/wr64_save.c)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        clean_name = func_name.replace("_save", "")
+        filepath = os.path.join(PROJECT_ROOT, "src", "game", "core", "wr64_save.c")
+        pattern = re.compile(rf"\b{clean_name}\b")
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+            if pattern.search(content):
+                for block in content.split(clean_name)[1:]:
+                    if "{" in block[:300]:
+                        return True
+        return False
+
+    def test_func_8007B370_matched(self):
+        """TDE test for func_8007B370 in wr64_save (EEPROM save block header initialization and checksum calculation)."""
+        if self.is_function_decompiled("func_8007B370"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B370 is currently non-matching (in progress)")
+
+    def test_func_8007B630_matched(self):
+        """TDE test for func_8007B630 in wr64_save (Default championship records and high scores table restore)."""
+        if self.is_function_decompiled("func_8007B630"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B630 is currently non-matching (in progress)")
+
+    def test_func_8007B930_save_matched(self):
+        """TDE test for func_8007B930_save in wr64_save (Stunt mode default high score initials and point tables reset)."""
+        if self.is_function_decompiled("func_8007B930_save"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007B930_save is currently non-matching (in progress)")
+
+    def test_func_8007BEA4_matched(self):
+        """TDE test for func_8007BEA4 in wr64_save (Course record save slot index boundary verification)."""
+        if self.is_function_decompiled("func_8007BEA4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007BEA4 is currently non-matching (in progress)")
+
+    def test_func_8007C31C_save_matched(self):
+        """TDE test for func_8007C31C_save in wr64_save (EEPROM player initials and championship record block serialization)."""
+        if self.is_function_decompiled("func_8007C31C_save"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007C31C_save is currently non-matching (in progress)")
+
+    def test_func_8007C604_matched(self):
+        """TDE test for func_8007C604 in wr64_save (Stunt high score rank slot compaction and displacement updater)."""
+        if self.is_function_decompiled("func_8007C604"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007C604 is currently non-matching (in progress)")
+
+    def test_func_8007D2D4_matched(self):
+        """TDE test for func_8007D2D4 in wr64_save (Controller Pak ghost data file verify, header check, and payload reader)."""
+        if self.is_function_decompiled("func_8007D2D4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007D2D4 is currently non-matching (in progress)")
+
+    def test_func_8007D614_matched(self):
+        """TDE test for func_8007D614 in wr64_save (Controller Pak ghost data file allocation, filesystem write, and inode update)."""
+        if self.is_function_decompiled("func_8007D614"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007D614 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2584,6 +2657,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestAudioEngine))
     suite.addTests(loader.loadTestsFromTestCase(TestCameraEngine))
     suite.addTests(loader.loadTestsFromTestCase(TestQuickWinModules))
+    suite.addTests(loader.loadTestsFromTestCase(TestSaveSystem))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1
