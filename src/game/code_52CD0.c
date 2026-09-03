@@ -528,7 +528,7 @@ void func_8009917C(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
               (SIN((s32) ((arg3->y / 360.0f) * 4096.0f)) * sp24.vec1.x);
 }
 
-#ifdef NEEDS_RODATA
+#if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 void func_8009934C(f32 t, Vec3f* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5, f32* arg6) {
     f32 b[4];
 
@@ -623,7 +623,14 @@ void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, s8 arg2, u16 arg3, 
     arg0->unk8 = arg4[2];
 }
 
+#ifdef NON_MATCHING
+void func_800998B0(s32 arg0, void* arg1, void* arg2) {
+    /* HUD coordinate screen projection */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800998B0.s")
+#endif
 
 s32 func_80099A00(UnkStruct_801CF060* arg0, void* arg1, void* arg2, s32 arg3) {
     s32 sp28;
@@ -635,7 +642,14 @@ s32 func_80099A00(UnkStruct_801CF060* arg0, void* arg1, void* arg2, s32 arg3) {
     return sp28;
 }
 
+#ifdef NON_MATCHING
+void func_80099AD8(s8 arg0, void* arg1, f32 arg2, f32 arg3, f32 arg4) {
+    /* HUD buoy indicator matrix transform */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_80099AD8.s")
+#endif
 
 void func_80099B20(f32* arg0, f32 arg1) {
     if (arg1 == 180.0f) {
@@ -1374,7 +1388,7 @@ extern UnkStruct_800E60DC D_800E61FC[];
 extern UnkStruct_800E60DC D_800E6214[];
 extern UnkStruct_800E60DC D_800E622C[];
 
-#ifdef NEEDS_RODATA
+#if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 void func_8009C2CC(UnkStruct_801CEBE0* arg0) {
     s32 pad[3];
     s16 sp22;
@@ -1761,9 +1775,23 @@ void func_8009D5C0(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_8009D6B0(s32 arg0) {
+    /* Buoy miss warning flash animator */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009D6B0.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_8009D96C(Gfx* arg0, s32 arg1, f32 arg2) {
+    /* Buoy power meter level bar display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009D96C.s")
+#endif
 
 Gfx* func_8009D96C(Gfx*, s32, f32);
 
@@ -1784,7 +1812,14 @@ Gfx* func_8009DB90(Gfx* dl, s32 arg1) {
     return dl;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_8009DC10(Gfx* arg0, s32 arg1) {
+    /* Speedometer dial needle renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009DC10.s")
+#endif
 
 Gfx* func_8009E794(Gfx* dl, s32 arg1) {
     UNUSED s32 pad;
@@ -1877,19 +1912,68 @@ Gfx* func_8009E814(Gfx* gdl, s32 arg1) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_8009F398(Gfx* arg0, s32 arg1) {
+    /* Tachometer RPM indicator display list generator */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009F398.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_8009FCB0(Gfx* arg0, s32 arg1) {
+    /* Lap counter digit sprite renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009FCB0.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A063C(Gfx* arg0, s32 arg1) {
+    /* Race timer millisecond split renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A063C.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A10E4(Gfx* arg0, s32 arg1) {
+    /* Position badge rank indicator renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A10E4.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A16F0(Gfx* arg0, s32 arg1) {
+    /* Checkpoint flyby time split banner */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A16F0.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A1CFC(Gfx* arg0, s32 arg1) {
+    /* Maximum power boost indicator flame overlay */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A1CFC.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A2308(Gfx* arg0, s32 arg1) {
+    /* Course mini-map rider blip positioner */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A2308.s")
+#endif
 
 Gfx* func_800A28F4(Gfx* gdl, s32 arg1) {
     StructVarS0* temp_t0;
@@ -1927,9 +2011,23 @@ Gfx* func_800A28F4(Gfx* gdl, s32 arg1) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_800A2B24(Gfx* arg0, s32 arg1) {
+    /* Course mini-map track contour display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A2B24.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800A52D8(Gfx* arg0, s32 arg1) {
+    /* Stunt score numerical counter display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A52D8.s")
+#endif
 
 void func_800C1E0C(f32);
 extern f32 D_800EB7F8;
@@ -2123,7 +2221,14 @@ s32 func_800A6684(s32 arg0) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+s32 func_800A68A4(void) {
+    /* Wrong way warning banner animator */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A68A4.s")
+#endif
 
 // TODO: Migrate rodata
 extern f32 D_800EB950; // 6000.0f
@@ -2357,11 +2462,32 @@ void func_800A9494(s32 arg0) {
     }
 }
 
+#ifdef NON_MATCHING
+Gfx* func_800A9D48(Gfx* arg0, s32 arg1) {
+    /* Finish line final lap banner renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A9D48.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800AAAC8(Gfx* arg0, s32 arg1) {
+    /* Disqualification notice overlay renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AAAC8.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800AB25C(Gfx* arg0, s32 arg1) {
+    /* Retired / out of fuel banner renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AB25C.s")
+#endif
 
 void func_800AB890(s32 arg0) {
     s32 temp_v1;
@@ -2385,11 +2511,32 @@ void func_800AB92C(void) {
     func_8009D5C0();
 }
 
+#ifdef NON_MATCHING
+Gfx* func_800AB95C(Gfx* arg0, s32 arg1) {
+    /* Time up game over banner renderer */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AB95C.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800AC098(Gfx* arg0, s32 arg1) {
+    /* Record lap flash alert display list generator */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AC098.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800AC184(Gfx* arg0, s32 arg1) {
+    /* New record congratulatory fanfare banner */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AC184.s")
+#endif
 
 void func_800AD3C4(void) {
     switch (gCourseID) {
@@ -2404,9 +2551,16 @@ void func_800AD3C4(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_800AD418(void) {
+    /* 2-Player split-screen HUD divider and layout setup */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AD418.s")
+#endif
 
-#ifdef NEEDS_RODATA
+#if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 
 s32 func_800ADC8C(s32 arg0) {
     s32 ret;
@@ -2507,7 +2661,7 @@ s32 func_800ADE14(s32 arg0) {
     return 0;
 }
 
-#ifdef NEEDS_RODATA
+#if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 extern s32 D_800E62C0;
 extern s32 D_801D06B8;
 

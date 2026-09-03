@@ -249,9 +249,23 @@ void func_80089F28(void) {
     D_801C41A0.fwork[0x34] = sp40.mf[1][1] * (D_800D9924[gCourseID] - 0x1E);
 }
 
+#ifdef NON_MATCHING
+void func_8008A0E0(void) {
+    /* AI rival waypoint tracking and path spline interpolation */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008A0E0.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_8008BD2C(Gfx* arg0) {
+    /* AI rival 3D spray display list builder */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008BD2C.s")
+#endif
 
 Gfx* func_8008CFEC(Gfx* gdl) {
     UnkStruct_8008962C* var_t1;
@@ -297,17 +311,59 @@ Gfx* func_8008CFEC(Gfx* gdl) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+void func_8008D454(void) {
+    /* AI difficulty rubberbanding speed multiplier */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008D454.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8008D94C(void) {
+    /* AI rival obstacle avoidance vector calculator */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008D94C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8008DFD0(s32 arg0) {
+    /* AI rival steering angle and turn aggressiveness */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008DFD0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8008E4B0(void) {
+    /* AI state reset and grid realignment coordinator */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008E4B0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8008E794(void) {
+    /* AI waypoint progression verification */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008E794.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_8008FB74(Gfx* arg0) {
+    /* Master 3D water spray display list emitter */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008FB74.s")
+#endif
 
 Gfx* Draw_WaterEffects(Gfx* gdl) {
     s32 pad;
@@ -396,11 +452,25 @@ Gfx* Draw_WaterEffects(Gfx* gdl) {
     return gdl;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_800916B4(Gfx* arg0) {
+    /* HUD matrix projection setup */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_800916B4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80091CD8(void) {
+    /* Dynamic spray particle lifetime updater */
+    
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_80091CD8.s")
+#endif
 
-#ifdef NEEDS_DATA
+#if defined(NEEDS_DATA) || defined(NON_MATCHING)
 void* func_80091DBC(Gfx* gdl) {
     static s32 D_800DA914 = { 0 };
 
