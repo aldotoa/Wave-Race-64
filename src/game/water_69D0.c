@@ -64,7 +64,88 @@ f32 func_8004D30C(f32 arg0, f32 arg1) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D30C.s")
 #endif
 
+#define SQRT_3_OVER_2 (0.8660254f)
+
+#ifdef NON_MATCHING
+void func_8004D628(struct UnkStruct_8004B0F8* arg0) {
+    struct UnkStruct_8004B0F8_1* var_v0;
+    f32 temp_f2;
+    s32 temp_hi;
+    s32 temp_hi_2;
+    s32 temp_a0;
+    s32 temp_a3;
+    s32 temp_v0;
+    s32 temp_v1;
+    s32 a0;
+    s32 a2;
+    s32 t0;
+    s32 s3;
+    s32 s1;
+    s32 s2;
+    s32 s6 = 384;
+    f32 norm;
+    f32 inv_norm;
+    f32 norm_x, norm_y, norm_z;
+    f32 depth;
+    f32 depth_force;
+
+    temp_f2 = arg0->unk1C * arg0->unk40 * arg0->unk18;
+
+    for (var_v0 = &arg0->unk30[arg0->unk28]; (u32) var_v0 >= (u32) arg0->unk30; var_v0--) {
+        temp_hi = (s32) ((DIRLIGHT_DIRECTION * var_v0->unk8) + var_v0->unk0) % 24576;
+        temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * var_v0->unk8) % 24576;
+        temp_v1 = temp_hi >> 6;
+        temp_a3 = temp_hi_2 >> 6;
+
+        t0 = temp_a3 + (temp_v1 & ~0x7F);
+        s3 = D_80162420[(((t0 + 0x600) % s6) * 128) + (temp_v1 & 0x7F)].unk0 >> 8;
+
+        a0 = (temp_v1 * 64) - temp_hi;
+        a2 = (temp_a3 * 64) - temp_hi_2;
+
+        if (a2 < a0) {
+            s1 = D_80162420[(((t0 + 0x601) % s6) * 128) + (temp_v1 & 0x7F)].unk0 >> 8;
+            temp_v0 = temp_v1 + 1;
+            s2 = s3 - s1;
+            s1 = s1 - (D_80162420[((((temp_a3 + (temp_v0 & ~0x7F)) + 0x601) % s6) * 128) + (temp_v0 & 0x7F)].unk0 >> 8);
+        } else {
+            temp_v0 = temp_v1 + 1;
+            t0 = temp_a3 + (temp_v0 & ~0x7F);
+            s2 = D_80162420[(((t0 + 0x600) % s6) * 128) + (temp_v0 & 0x7F)].unk0 >> 8;
+            s1 = s3 - s2;
+            s2 = s2 - (D_80162420[(((t0 + 0x601) % s6) * 128) + (temp_v0 & 0x7F)].unk0 >> 8);
+        }
+
+        norm = sqrtf((f32) (((s1 * s1) + (s2 * s2) + 0x1000) << 12));
+        inv_norm = 1.0f / norm;
+        norm_x = (f32) s1 * inv_norm;
+        norm_y = 4096.0f * inv_norm;
+        norm_z = (f32) s2 * inv_norm;
+
+        depth = (((gWaterLevel + s3) - var_v0->unk4) * norm_y) + ((f32) a0 * norm_x) + ((f32) a2 * norm_z);
+
+        if (depth >= 0.0f) {
+            var_v0->unk1C |= 1;
+            var_v0->unkC *= arg0->unk14;
+            var_v0->unk10 *= arg0->unk10;
+            var_v0->unk14 *= arg0->unk14;
+
+            depth_force = depth * arg0->unk18;
+            if (depth_force > temp_f2) {
+                depth_force = temp_f2;
+            }
+
+            var_v0->unkC += depth_force * (norm_x - (0.5f * norm_z));
+            var_v0->unk10 += depth_force * norm_y;
+            var_v0->unk14 += depth_force * (norm_z * SQRT_3_OVER_2);
+        } else {
+            var_v0->unk1C &= ~1;
+        }
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D628.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004DAF0.s")
 
