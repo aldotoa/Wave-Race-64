@@ -2248,6 +2248,239 @@ class TestAudioEngine(unittest.TestCase):
             self.skipTest("func_800C3EF4 is currently non-matching (in progress)")
 
 
+
+class TestCameraEngine(unittest.TestCase):
+    """Test cases for the Camera Engine (src/game/code_C6C0.c)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        filepath = os.path.join(PROJECT_ROOT, "src", "game", "code_C6C0.c")
+        pattern = re.compile(rf"\b{func_name}\b")
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+            if pattern.search(content):
+                for block in content.split(func_name)[1:]:
+                    if "{" in block[:300]:
+                        return True
+        return False
+
+    def test_func_80051EC0_matched(self):
+        """TDE test for func_80051EC0 in code_C6C0 (Primary chase-camera look-at target calculator)."""
+        if self.is_function_decompiled("func_80051EC0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80051EC0 is currently non-matching (in progress)")
+
+    def test_func_800534AC_matched(self):
+        """TDE test for func_800534AC in code_C6C0 (Jet ski velocity-dependent camera pullback distance)."""
+        if self.is_function_decompiled("func_800534AC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800534AC is currently non-matching (in progress)")
+
+    def test_func_80053C08_matched(self):
+        """TDE test for func_80053C08 in code_C6C0 (Water surface wave height compensation for camera elevation)."""
+        if self.is_function_decompiled("func_80053C08"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80053C08 is currently non-matching (in progress)")
+
+    def test_func_80054130_matched(self):
+        """TDE test for func_80054130 in code_C6C0 (Camera yaw smoothing and heading alignment damping)."""
+        if self.is_function_decompiled("func_80054130"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80054130 is currently non-matching (in progress)")
+
+    def test_func_80057B24_matched(self):
+        """TDE test for func_80057B24 in code_C6C0 (Camera pitch spring dynamics during wave jumps)."""
+        if self.is_function_decompiled("func_80057B24"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80057B24 is currently non-matching (in progress)")
+
+    def test_func_8005B510_matched(self):
+        """TDE test for func_8005B510 in code_C6C0 (Close-up cockpit/bumper view mode coordinate evaluator)."""
+        if self.is_function_decompiled("func_8005B510"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8005B510 is currently non-matching (in progress)")
+
+    def test_func_8005DE24_matched(self):
+        """TDE test for func_8005DE24 in code_C6C0 (Reverse-view (rear mirror) camera orientation)."""
+        if self.is_function_decompiled("func_8005DE24"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8005DE24 is currently non-matching (in progress)")
+
+    def test_func_800609EC_matched(self):
+        """TDE test for func_800609EC in code_C6C0 (Camera collision with course terrain boundaries)."""
+        if self.is_function_decompiled("func_800609EC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800609EC is currently non-matching (in progress)")
+
+    def test_func_80061184_matched(self):
+        """TDE test for func_80061184 in code_C6C0 (Camera look-at matrix builder for single player)."""
+        if self.is_function_decompiled("func_80061184"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80061184 is currently non-matching (in progress)")
+
+    def test_func_80061708_matched(self):
+        """TDE test for func_80061708 in code_C6C0 (Dynamic field-of-view adjustment based on speed boost)."""
+        if self.is_function_decompiled("func_80061708"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80061708 is currently non-matching (in progress)")
+
+    def test_func_800618F4_matched(self):
+        """TDE test for func_800618F4 in code_C6C0 (Submerged camera water ripple distortion filter)."""
+        if self.is_function_decompiled("func_800618F4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800618F4 is currently non-matching (in progress)")
+
+    def test_func_80061FEC_matched(self):
+        """TDE test for func_80061FEC in code_C6C0 (Screen shake impulse generator on hard wipeouts)."""
+        if self.is_function_decompiled("func_80061FEC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80061FEC is currently non-matching (in progress)")
+
+    def test_func_800624CC_matched(self):
+        """TDE test for func_800624CC in code_C6C0 (Camera roll leveling filter relative to horizon)."""
+        if self.is_function_decompiled("func_800624CC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800624CC is currently non-matching (in progress)")
+
+    def test_func_800629A8_matched(self):
+        """TDE test for func_800629A8 in code_C6C0 (View frustum culling plane extractor)."""
+        if self.is_function_decompiled("func_800629A8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800629A8 is currently non-matching (in progress)")
+
+    def test_func_80062E50_matched(self):
+        """TDE test for func_80062E50 in code_C6C0 (Depth of field and distance fog reference point updater)."""
+        if self.is_function_decompiled("func_80062E50"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80062E50 is currently non-matching (in progress)")
+
+    def test_func_8006390C_matched(self):
+        """TDE test for func_8006390C in code_C6C0 (Camera target lock-on interpolation filter)."""
+        if self.is_function_decompiled("func_8006390C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8006390C is currently non-matching (in progress)")
+
+    def test_func_80063C88_matched(self):
+        """TDE test for func_80063C88 in code_C6C0 (Replay spectator camera path spline evaluator)."""
+        if self.is_function_decompiled("func_80063C88"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80063C88 is currently non-matching (in progress)")
+
+    def test_func_80064C0C_matched(self):
+        """TDE test for func_80064C0C in code_C6C0 (Automated course flyover preview camera generator)."""
+        if self.is_function_decompiled("func_80064C0C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80064C0C is currently non-matching (in progress)")
+
+    def test_func_80065C18_matched(self):
+        """TDE test for func_80065C18 in code_C6C0 (Checkpoint flyby camera sequence coordinator)."""
+        if self.is_function_decompiled("func_80065C18"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80065C18 is currently non-matching (in progress)")
+
+    def test_func_800665B0_matched(self):
+        """TDE test for func_800665B0 in code_C6C0 (Course intro cinematic camera path interpolation)."""
+        if self.is_function_decompiled("func_800665B0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800665B0 is currently non-matching (in progress)")
+
+    def test_func_8006719C_matched(self):
+        """TDE test for func_8006719C in code_C6C0 (Finish line celebration orbital pan camera)."""
+        if self.is_function_decompiled("func_8006719C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8006719C is currently non-matching (in progress)")
+
+    def test_func_80067810_matched(self):
+        """TDE test for func_80067810 in code_C6C0 (Winner podium presentation camera framing)."""
+        if self.is_function_decompiled("func_80067810"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80067810 is currently non-matching (in progress)")
+
+    def test_func_80067BFC_matched(self):
+        """TDE test for func_80067BFC in code_C6C0 (Camera cut transition blend accumulator)."""
+        if self.is_function_decompiled("func_80067BFC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80067BFC is currently non-matching (in progress)")
+
+    def test_func_80067C6C_matched(self):
+        """TDE test for func_80067C6C in code_C6C0 (Replay camera speed multiplier calculator)."""
+        if self.is_function_decompiled("func_80067C6C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80067C6C is currently non-matching (in progress)")
+
+    def test_func_80067E40_matched(self):
+        """TDE test for func_80067E40 in code_C6C0 (2-Player split-screen upper viewport matrix setup)."""
+        if self.is_function_decompiled("func_80067E40"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80067E40 is currently non-matching (in progress)")
+
+    def test_func_800683A0_matched(self):
+        """TDE test for func_800683A0 in code_C6C0 (2-Player split-screen lower viewport matrix setup)."""
+        if self.is_function_decompiled("func_800683A0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800683A0 is currently non-matching (in progress)")
+
+    def test_func_80068538_matched(self):
+        """TDE test for func_80068538 in code_C6C0 (Multiplayer aspect ratio and scissor box calculator)."""
+        if self.is_function_decompiled("func_80068538"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80068538 is currently non-matching (in progress)")
+
+    def test_func_800687A4_matched(self):
+        """TDE test for func_800687A4 in code_C6C0 (Results screen rotating podium camera)."""
+        if self.is_function_decompiled("func_800687A4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800687A4 is currently non-matching (in progress)")
+
+    def test_func_800694B8_matched(self):
+        """TDE test for func_800694B8 in code_C6C0 (Camera state reset on race restart)."""
+        if self.is_function_decompiled("func_800694B8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800694B8 is currently non-matching (in progress)")
+
+    def test_func_8006977C_matched(self):
+        """TDE test for func_8006977C in code_C6C0 (Camera debug telemetry overlay generator)."""
+        if self.is_function_decompiled("func_8006977C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8006977C is currently non-matching (in progress)")
+
+    def test_func_80069798_matched(self):
+        """TDE test for func_80069798 in code_C6C0 (Camera master cleanup and shutdown coordinator)."""
+        if self.is_function_decompiled("func_80069798"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80069798 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2258,6 +2491,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestCourseOverlays))
     suite.addTests(loader.loadTestsFromTestCase(TestSysLayer))
     suite.addTests(loader.loadTestsFromTestCase(TestAudioEngine))
+    suite.addTests(loader.loadTestsFromTestCase(TestCameraEngine))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

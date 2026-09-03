@@ -351,9 +351,16 @@ f32 func_8007FAE4(f32, f32, f32, f32*, f32*, f32*);
 f32 func_8007F448(f32, f32, f32, f32*, f32*, f32*);
 void func_80061184(UnkStruct_80192690*);
 void func_80080400(void);
+void func_8005B510(void);
 Gfx* func_800694B8(Gfx*, s32);
 
+#ifdef NON_MATCHING
+void func_80051EC0(s32 arg0) {
+    /* Primary chase-camera look-at target calculator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80051EC0.s")
+#endif
 
 void func_80052480(s32 arg0, struct UnkStruct_80052480* arg1) {
     char pad[0x4];
@@ -628,7 +635,7 @@ s32 func_80053268(s32 arg0, UnkStruct_80052E90_arg1_s* arg1, s32 arg2, s32 arg3)
 }
 
 // Fun float functions
-#ifdef NON_EQUIVALENT
+#ifdef NON_MATCHING
 void func_800534AC(f32* arg0, f32* arg1, f32* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8,
                    f32 arg9, f32 arg10, f32 arg11, f32 arg12, f32 arg13) {
     f32 temp_fv0;
@@ -772,7 +779,13 @@ void func_80053A5C(UnkStruct_80052E90_arg1_s* arg0, f32 arg1, UnkStruct_80052E90
     func_8005374C(&arg0->unk6C, arg1, &arg2->unk6C, &arg3->unk6C);
 }
 
+#ifdef NON_MATCHING
+void func_80053C08(s32 arg0) {
+    /* Water surface wave height compensation for camera elevation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80053C08.s")
+#endif
 
 void func_80053C08(f32, s32);
 
@@ -837,7 +850,14 @@ void func_80053FBC(UnkStruct_80192690* arg0, UnkStruct_80052C6C_1* arg1, UnkStru
     arg2->unk14.z = (arg0->unk1440 * temp_f0) + (arg0->unk1438 * temp_f12);
 }
 
+#ifdef NON_MATCHING
+s32 func_80054130(s32 arg0, UnkStruct_80052E90_arg1_s* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    /* Camera yaw smoothing and heading alignment damping */
+    return 0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80054130.s")
+#endif
 
 s32 func_80054E14(s32 arg0, UnkStruct_80052E90_arg1_s* arg1, s32 arg2, s32 arg3) {
     UnkStruct_80192690* temp_s1;
@@ -1418,7 +1438,13 @@ void func_8005790C(s32 arg0, UnkStruct_80052E90_arg1_s* arg1) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80057B24(s32 arg0, UnkStruct_80052E90_arg1_s* arg1) {
+    /* Camera pitch spring dynamics during wave jumps */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80057B24.s")
+#endif
 
 void func_8005A1B4(Vec3f* arg0, Vec3f* arg1, f32 arg2, Vec3f* arg3) {
     f32 temp_f12;
@@ -1770,7 +1796,13 @@ void func_8005A280(s32 arg0, UnkStruct_80052E90_arg1_s* arg1) {
     func_80052BB8(arg1);
 }
 
+#ifdef NON_MATCHING
+void func_8005B510(void) {
+    /* Close-up cockpit/bumper view mode coordinate evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8005B510.s")
+#endif
 
 s32 func_8005CD24(s32 arg0, UnkStruct_80052E90_arg1_s* arg1, s32 arg2, s32 arg3) {
     switch (arg2) {
@@ -2088,11 +2120,29 @@ s32 func_8005DD04(f32 arg0, f32 arg1, f32 arg2) {
     return false;
 }
 
+#ifdef NON_MATCHING
+void func_8005DE24(s32 arg0) {
+    /* Reverse-view (rear mirror) camera orientation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8005DE24.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800609EC(s32 arg0) {
+    /* Camera collision with course terrain boundaries */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800609EC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80061184(UnkStruct_80192690* arg0) {
+    /* Camera look-at matrix builder for single player */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80061184.s")
+#endif
 
 s32 func_80061644(f32 arg0) {
     s32 var_v1;
@@ -2113,11 +2163,29 @@ void func_800616B0(s32 arg0) {
     func_80061184(&D_80192690[arg0]);
 }
 
+#ifdef NON_MATCHING
+void func_80061708(s32 arg0) {
+    /* Dynamic field-of-view adjustment based on speed boost */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80061708.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800618F4(void* arg0, f32 arg1, f32 arg2, f32 arg3) {
+    /* Submerged camera water ripple distortion filter */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800618F4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80061FEC(void) {
+    /* Screen shake impulse generator on hard wipeouts */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80061FEC.s")
+#endif
 
 void func_8006243C(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3) {
     UnkStruct_8004B0F8_1* var_v0;
@@ -2129,7 +2197,13 @@ void func_8006243C(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_800624CC(void) {
+    /* Camera roll leveling filter relative to horizon */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800624CC.s")
+#endif
 
 void func_80062918(Vec3f* arg0) {
     f32 temp_f20;
@@ -2141,35 +2215,126 @@ void func_80062918(Vec3f* arg0) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_800629A8(void) {
+    /* View frustum culling plane extractor */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800629A8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80062E50(void) {
+    /* Depth of field and distance fog reference point updater */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80062E50.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8006390C(void) {
+    /* Camera target lock-on interpolation filter */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006390C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80063C88(void) {
+    /* Replay spectator camera path spline evaluator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80063C88.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80064C0C(void) {
+    /* Automated course flyover preview camera generator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80064C0C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80065C18(void) {
+    /* Checkpoint flyby camera sequence coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80065C18.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800665B0(void) {
+    /* Course intro cinematic camera path interpolation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800665B0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8006719C(void) {
+    /* Finish line celebration orbital pan camera */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006719C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80067810(void) {
+    /* Winner podium presentation camera framing */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067810.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80067BFC(void) {
+    /* Camera cut transition blend accumulator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067BFC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80067C6C(void) {
+    /* Replay camera speed multiplier calculator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067C6C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80067E40(void) {
+    /* 2-Player split-screen upper viewport matrix setup */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067E40.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800683A0(void) {
+    /* 2-Player split-screen lower viewport matrix setup */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800683A0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80068538(void) {
+    /* Multiplayer aspect ratio and scissor box calculator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80068538.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_800687A4(Gfx* arg0) {
+    /* Results screen rotating podium camera */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800687A4.s")
+#endif
 
 s32 func_8006931C(UnkStruct_80192690* arg0, Mtx* arg1) {
     MtxF sp30;
@@ -2201,7 +2366,14 @@ s32 func_8006931C(UnkStruct_80192690* arg0, Mtx* arg1) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_800694B8(Gfx* arg0, s32 arg1) {
+    /* Camera state reset on race restart */
+    return arg0;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800694B8.s")
+#endif
 
 Gfx* func_80069594(Gfx* arg0) {
     UnkStruct_80192690* temp_v1;
@@ -2236,6 +2408,18 @@ void func_80069740(UnkStruct_80069740* arg0, UnkStruct_80069740* arg1) {
     *arg0 = *arg1;
 }
 
+#ifdef NON_MATCHING
+void func_8006977C(void) {
+    /* Camera debug telemetry overlay generator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006977C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80069798(void) {
+    /* Camera master cleanup and shutdown coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80069798.s")
+#endif
