@@ -204,6 +204,21 @@ class TestWaterPhysics(unittest.TestCase):
         else:
             self.skipTest("func_8004E614 is currently non-matching (in progress)")
 
+    def test_func_8004E0A4_matched(self):
+        """TDE test for func_8004E0A4 (global ocean swell + local wave buoyancy integrator)."""
+        if self.is_function_decompiled("func_8004E0A4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004E0A4 is currently non-matching (in progress)")
+
+    def test_func_8004EAA4_matched(self):
+        """TDE test for func_8004EAA4 (radial disturbance kernel blending on water heightfield)."""
+        if self.is_function_decompiled("func_8004EAA4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004EAA4 is currently non-matching (in progress)")
+
+
 
 
 
