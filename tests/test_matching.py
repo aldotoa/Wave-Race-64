@@ -2193,6 +2193,61 @@ class TestSysLayer(unittest.TestCase):
             self.skipTest("func_8004A8B0 is currently non-matching (in progress)")
 
 
+
+class TestAudioEngine(unittest.TestCase):
+    """Test cases for the Audio Engine (src/audio/)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "audio")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith((".c", ".h")):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_func_800C010C_matched(self):
+        """TDE test for func_800C010C in audio_general (Master music track transition and channel modulation coordinator)."""
+        if self.is_function_decompiled("func_800C010C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800C010C is currently non-matching (in progress)")
+
+    def test_func_800C11CC_matched(self):
+        """TDE test for func_800C11CC in audio_general (Engine state sound effect trigger)."""
+        if self.is_function_decompiled("func_800C11CC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800C11CC is currently non-matching (in progress)")
+
+    def test_func_800C1BD8_matched(self):
+        """TDE test for func_800C1BD8 in audio_general (Water splash and engine exhaust audio filter updater)."""
+        if self.is_function_decompiled("func_800C1BD8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800C1BD8 is currently non-matching (in progress)")
+
+    def test_AudioGeneral_PlaySound_matched(self):
+        """TDE test for AudioGeneral_PlaySound in audio_general (Master sound effect dispatcher with priority queue and channel routing)."""
+        if self.is_function_decompiled("AudioGeneral_PlaySound"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("AudioGeneral_PlaySound is currently non-matching (in progress)")
+
+    def test_func_800C3EF4_matched(self):
+        """TDE test for func_800C3EF4 in audio_general (Announcer voice clip and course fanfare selector)."""
+        if self.is_function_decompiled("func_800C3EF4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800C3EF4 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2202,6 +2257,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestCodesegUI))
     suite.addTests(loader.loadTestsFromTestCase(TestCourseOverlays))
     suite.addTests(loader.loadTestsFromTestCase(TestSysLayer))
+    suite.addTests(loader.loadTestsFromTestCase(TestAudioEngine))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

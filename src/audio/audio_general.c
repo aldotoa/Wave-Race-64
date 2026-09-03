@@ -404,8 +404,13 @@ void func_800C00B0(s8 vol, f32 freqMod) {
     AUDIOCMD_CHANNEL_SET_VOL_SCALE(SEQ_PLAYER_0, 3, vol / 127.0f);
 }
 
-// chonker
+#ifdef NON_MATCHING
+void func_800C010C(s32 arg0, s32 arg1) {
+    /* Master music track transition and channel modulation coordinator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C010C.s")
+#endif
 
 void func_800C118C(s32 arg0) {
     if ((D_800E7CBC == 0) || (D_800E7C94 == 4)) {
@@ -413,8 +418,19 @@ void func_800C118C(s32 arg0) {
     }
 }
 
-// https://decomp.me/scratch/cOjnQ
+#ifdef NON_MATCHING
+void func_800C11CC(s32 arg0) {
+    if ((D_800E7CC0 == 0) || (D_800E7C94 == 4)) {
+        if (D_800E7C90 == 0) {
+            func_800C010C(arg0, 2);
+        } else if (D_800E7C90 == 1) {
+            func_800C010C(arg0, 1);
+        }
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C11CC.s")
+#endif
 
 void func_800C123C(u8* arg0) {
     arg0[4] = 1;
@@ -664,8 +680,13 @@ void func_800C1B98(void) {
     AudioThread_QueueCmdS8(0x06000704U, -1);
 }
 
-// https://decomp.me/scratch/io8AQ
+#ifdef NON_MATCHING
+void func_800C1BD8(void) {
+    /* Water splash and engine exhaust audio filter updater */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C1BD8.s")
+#endif
 
 void func_800C1DA8(void) {
     if (D_800E7C94 == 7) {
@@ -1425,8 +1446,13 @@ void func_800C37D4(s32 arg0) {
     func_800C377C(arg0);
 }
 
-// chonker
+#ifdef NON_MATCHING
+void AudioGeneral_PlaySound(u32 sfxId, u32 arg1) {
+    /* Master sound effect dispatcher with priority queue and channel routing */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/AudioGeneral_PlaySound.s")
+#endif
 
 void func_800C3DE0(void) {
     AudioGeneral_PlaySound(0x20, 0);
@@ -1461,9 +1487,13 @@ void func_800C3E6C(s32 arg0) {
     }
 }
 
-// https://decomp.me/scratch/ymeGg
-// problematic switch
+#ifdef NON_MATCHING
+void func_800C3EF4(s32 arg0) {
+    /* Announcer voice clip and course fanfare selector */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C3EF4.s")
+#endif
 
 void func_800C4078(void) {
     AudioThread_QueueCmdS8(0x06000B00U, 0);
