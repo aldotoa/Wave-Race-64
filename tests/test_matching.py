@@ -176,6 +176,34 @@ class TestWaterPhysics(unittest.TestCase):
         else:
             self.skipTest("func_8004EFB4 is currently non-matching (in progress)")
 
+    def test_func_8004C1D0_matched(self):
+        """TDE test for func_8004C1D0 (master water surface display list renderer)."""
+        if self.is_function_decompiled("func_8004C1D0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004C1D0 is currently non-matching (in progress)")
+
+    def test_func_8004C998_matched(self):
+        """TDE test for func_8004C998 (water surface perspective texture coordinate synthesizer)."""
+        if self.is_function_decompiled("func_8004C998"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004C998 is currently non-matching (in progress)")
+
+    def test_func_8004CC7C_matched(self):
+        """TDE test for func_8004CC7C (shoreline breaking surf & rolling wave animator)."""
+        if self.is_function_decompiled("func_8004CC7C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004CC7C is currently non-matching (in progress)")
+
+    def test_func_8004D018_matched(self):
+        """TDE test for func_8004D018 (harmonic wave swell train disturbance generator)."""
+        if self.is_function_decompiled("func_8004D018"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004D018 is currently non-matching (in progress)")
+
     def test_func_8004D30C_matched(self):
         """TDE test for func_8004D30C (water surface height elevation query)."""
         if self.is_function_decompiled("func_8004D30C"):

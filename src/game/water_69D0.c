@@ -10,13 +10,258 @@ typedef struct UnkStruct_80162420_s {
 
 extern UnkStruct_80162420 D_80162420[];
 
+extern f32 D_800D4740;
+extern f32 D_800D4744;
+
+#ifdef NON_MATCHING
+Gfx* func_8004C1D0(s32 arg0, Gfx* glistp) {
+    struct camera_unk_1* cam;
+    s32 angle_idx;
+    f32 sin_val, cos_val;
+    f32 tan_val;
+    f32 fv1, ft0;
+
+    if (arg0 != 0) {
+        cam = &gCameraPerspective[D_80223934];
+    } else {
+        cam = &gCameraPerspective[D_80223930];
+    }
+
+    angle_idx = SysUtils_Round((*(f32*) ((u8*) cam + 0x88) / 180.0f) * 1024.0f);
+    sin_val = gSinTable[angle_idx & 0xFFF];
+    cos_val = gSinTable[(angle_idx + 0x400) & 0xFFF];
+
+    tan_val = (*(f32*) ((u8*) cam + 0x9C) * sin_val) / cos_val;
+    fv1 = tan_val;
+    ft0 = (tan_val * 320.0f) / 240.0f;
+
+    if (gPlayers == 2 && D_801CE638 == 1) {
+        fv1 *= 0.5f;
+    }
+
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004C1D0.s")
+#endif
 
+extern s32 D_80223934;
+extern s32 D_80223930;
+extern s32 D_800D476C;
+extern f32 D_801924B4;
+extern f32 D_801924CC;
+extern s32 D_800D4770;
+extern f32 D_801924C0;
+extern f32 D_801924D0;
+extern f32 D_800D4768;
+extern s32 D_80192478[];
+extern f32 D_800D477C;
+extern s32 D_800D4774;
+extern s32 D_800D4778;
+
+#ifdef NON_MATCHING
+void func_8004C998(s32 arg0, Vtx* arg1) {
+    struct camera_unk_1* cam;
+    Vtx* src_vtx;
+    Vtx* dst_vtx;
+    s32 s1;
+    f32 fs0;
+    f32 diff_y;
+    f32 f_scale;
+
+    if (arg0 != 0) {
+        cam = &gCameraPerspective[D_80223934];
+        src_vtx = (Vtx*) ((u8*) gGfxPool + 0x170D8);
+    } else {
+        cam = &gCameraPerspective[D_80223930];
+        src_vtx = (Vtx*) ((u8*) gGfxPool + 0x13D68);
+    }
+
+    D_801924CC = D_801924B4 / (f32) (D_800D476C << 10);
+    D_801924D0 = D_801924C0 / (f32) (D_800D4770 << 13);
+
+    diff_y = gWaterLevel - *(f32*) ((u8*) cam + 0x50);
+    if (diff_y == 0.0f) {
+        fs0 = 1.0f;
+    } else {
+        fs0 = (D_800D4768 - *(f32*) ((u8*) cam + 0x50)) / diff_y;
+    }
+
+    dst_vtx = arg1;
+    for (s1 = 6; s1 >= 0; s1--) {
+        s32 idx = D_80192478[s1];
+        dst_vtx[s1].ob[0] = src_vtx[idx].ob[0];
+        dst_vtx[s1].ob[1] = (s16) gWaterLevel;
+
+        if (s1 != 0) {
+            dst_vtx[s1].ob[2] = src_vtx[idx].ob[2];
+        } else {
+            f_scale = (f32) D_80192498 * D_800D477C;
+            dst_vtx[s1].ob[0] -= (s16) (f_scale * *(f32*) ((u8*) cam + 0xF0));
+            dst_vtx[s1].ob[2] = src_vtx[idx].ob[2] - (s16) (f_scale * *(f32*) ((u8*) cam + 0xF4));
+        }
+
+        dst_vtx[s1].tc[0] = SysUtils_Round((((f32) dst_vtx[s1].ob[0] - *(f32*) ((u8*) cam + 0x4C)) * fs0 + *(f32*) ((u8*) cam + 0x4C)) / D_801924CC) + D_800D4778;
+        dst_vtx[s1].tc[1] = SysUtils_Round((((f32) dst_vtx[s1].ob[2] - *(f32*) ((u8*) cam + 0x54)) * fs0 + *(f32*) ((u8*) cam + 0x54)) / D_801924D0) + D_800D4774;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004C998.s")
+#endif
 
+typedef struct ShorelineWaveStruct {
+    f32 unk0;
+    f32 unk4;
+    char pad8[0x10];
+    f32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+    s32 unk28;
+    s32 unk2C;
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+} ShorelineWaveStruct;
+
+#ifdef NON_MATCHING
+void func_8004CC7C(ShorelineWaveStruct* arg0) {
+    s32 t5, s2, s3;
+    s32 t3;
+    s32 s4;
+    s32 a3;
+    f32 fa0, fa1;
+    f32 ft2;
+    s32 a2;
+    s32 temp_hi, temp_hi_2;
+    s32 s6, s7;
+    s32 s5 = 384;
+    s32 step;
+    UnkStruct_80162420* var_v0;
+
+    if (D_801CE72C == 1) {
+        return;
+    }
+
+    t5 = arg0->unk30 << 11;
+    s2 = arg0->unk34 << 11;
+    s3 = arg0->unk38 << 11;
+
+    arg0->unk28 -= (arg0->unk2C << 2);
+    if (arg0->unk28 < 0) {
+        arg0->unk28 += t5;
+    }
+
+    t3 = arg0->unk28;
+    s4 = arg0->unk24 << 2;
+
+    if (arg0->unk20 <= 0) {
+        return;
+    }
+
+    for (step = 0; step < arg0->unk20; step++) {
+        t3 += s4;
+        if (t3 >= t5) {
+            t3 -= t5;
+        }
+
+        if (t3 >= s2 && t3 <= s3) {
+            ft2 = gSinTable[t3 & 0xFFF] * arg0->unk18;
+            a2 = (s32) ft2 << 8;
+            fa0 = arg0->unk0;
+            fa1 = arg0->unk4;
+
+            for (a3 = 0; a3 < arg0->unk1C; a3++) {
+                temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * fa1) % 24576;
+                temp_hi = (s32) ((DIRLIGHT_DIRECTION * fa1) + fa0) % 24576;
+
+                s6 = temp_hi_2 >> 6;
+                s7 = temp_hi >> 6;
+
+                var_v0 = &D_80162420[(((s7 + (s6 & ~0x7F) + 0x600) % s5) * 128) + (s6 & 0x7F)];
+                var_v0->unk0 += a2;
+                var_v0->unk2 = 0;
+
+                fa0 += 64.0f;
+            }
+        }
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004CC7C.s")
+#endif
 
+extern s32 D_800D47C0;
+
+#ifdef NON_MATCHING
+void func_8004D018(f32 arg0, f32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 phase;
+    s32 sin_idx;
+    f32 amp;
+    s32 disp;
+    f32 half_rad;
+    f32 max_x;
+    f32 curr_x, curr_z;
+    s32 temp_hi, temp_hi_2;
+    s32 a0_val, a1_val, t9_val;
+    s32 t8_diff, t6_diff;
+    s32 s5 = 384;
+    UnkStruct_80162420* var_v1;
+    UnkStruct_80162420* var_t1;
+    UnkStruct_80162420* var_a2;
+
+    phase = D_800D47C0 + arg4;
+    if (phase >= arg3) {
+        phase -= arg3;
+    }
+    D_800D47C0 = phase;
+
+    sin_idx = ((phase << 12) / arg3) & 0xFFF;
+    amp = gSinTable[sin_idx] * (f32) arg2;
+    disp = (s32) amp << 8;
+
+    half_rad = (f32) (D_80192498 >> 2);
+    max_x = arg0 + half_rad;
+    curr_x = arg0 - half_rad;
+    curr_z = arg1 - half_rad;
+
+    while (curr_x <= max_x) {
+        temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * curr_z) % 24576;
+        temp_hi = (s32) ((DIRLIGHT_DIRECTION * curr_z) + curr_x);
+
+        a0_val = temp_hi_2 >> 6;
+        curr_x += 64.0f;
+
+        temp_hi %= 24576;
+        t9_val = a0_val << 6;
+        a1_val = a0_val;
+        t8_diff = temp_hi_2 - t9_val;
+
+        a0_val = temp_hi >> 6;
+        t6_diff = temp_hi - (a0_val << 6);
+
+        if (t8_diff < t6_diff) {
+            var_v1 = &D_80162420[(((a0_val + (a1_val & ~0x7F) + 0x601) % s5) * 128) + (a1_val & 0x7F)];
+        } else {
+            a1_val++;
+            var_v1 = &D_80162420[(((a0_val + (a1_val & ~0x7F) + 0x600) % s5) * 128) + (a1_val & 0x7F)];
+        }
+
+        var_t1 = &D_80162420[(((a0_val + ((a0_val + 1) & ~0x7F) + 0x601) % s5) * 128) + ((a0_val + 1) & 0x7F)];
+        var_a2 = &D_80162420[(((a0_val + (a0_val & ~0x7F) + 0x600) % s5) * 128) + (a0_val & 0x7F)];
+
+        var_t1->unk0 += disp;
+        var_a2->unk0 += disp;
+        var_v1->unk0 += disp;
+
+        var_t1->unk2 = 0;
+        var_a2->unk2 = 0;
+        var_v1->unk2 = 0;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D018.s")
+#endif
 
 #ifdef NON_MATCHING
 f32 func_8004D30C(f32 arg0, f32 arg1) {
