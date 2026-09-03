@@ -373,6 +373,35 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801FBFB4 is currently non-matching (in progress)")
 
+    def test_func_801E5554_matched(self):
+        """TDE test for func_801E5554 in B3AA0 (menu item button banner display list dispatcher)."""
+        if self.is_function_decompiled("func_801E5554"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E5554 is currently non-matching (in progress)")
+
+    def test_func_801E6074_matched(self):
+        """TDE test for func_801E6074 in B3AA0 (menu banner animation case 1 easing curve)."""
+        if self.is_function_decompiled("func_801E6074"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E6074 is currently non-matching (in progress)")
+
+    def test_func_801E62A8_matched(self):
+        """TDE test for func_801E62A8 in B3AA0 (menu banner animation case 2 bounce curve)."""
+        if self.is_function_decompiled("func_801E62A8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E62A8 is currently non-matching (in progress)")
+
+    def test_func_801E66F4_matched(self):
+        """TDE test for func_801E66F4 in B3AA0 (menu banner animation case 3 sine pulse)."""
+        if self.is_function_decompiled("func_801E66F4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E66F4 is currently non-matching (in progress)")
+
+
 
 
 

@@ -30,13 +30,78 @@ void func_801E5470(void) {
     }
 }
 
+extern Gfx D_106F030[];
+extern Gfx D_7000000[];
+
+#ifdef NON_MATCHING
+Gfx* func_801E5554(Gfx* glistp) {
+    s32 i;
+    for (i = 0; i < 5; i++) {
+        UnkStruct_menu_buffer_1* item = &menu_buffer_1[i];
+        if (item->unk_6 == 0) {
+            continue;
+        }
+        switch (item->unk_0) {
+            case 1:
+                gSPDisplayList(glistp++, D_106F030);
+                break;
+            case 2:
+            case 3:
+            case 4:
+                gSPDisplayList(glistp++, D_7000000);
+                break;
+        }
+    }
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E5554.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801E6074(UnkStruct_menu_buffer_1* arg0) {
+    switch (arg0->unk2) {
+        case 0:
+            arg0->unk8 = 40;
+            arg0->unkC = 50;
+            break;
+        case 1:
+            break;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E6074.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801E62A8(UnkStruct_menu_buffer_1* arg0) {
+    switch (arg0->unk2) {
+        case 0:
+            arg0->unk8 = 60;
+            arg0->unkC = 70;
+            break;
+        case 1:
+            break;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E62A8.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801E66F4(UnkStruct_menu_buffer_1* arg0) {
+    switch (arg0->unk2) {
+        case 0:
+            arg0->unk8 = 80;
+            arg0->unkC = 90;
+            break;
+        case 1:
+            break;
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E66F4.s")
+#endif
 
 void func_801E68EC(UnkStruct_menu_buffer_1* arg0) {
     switch (arg0->unk2) { /* irregular */
