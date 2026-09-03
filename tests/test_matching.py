@@ -83,6 +83,17 @@ class TestGameEngineCore(unittest.TestCase):
         else:
             self.skipTest("func_8007C31C is currently non-matching (in progress)")
 
+    def test_func_80085510_matched(self):
+        """
+        TDE test for func_80085510 in code_3AC00 (rider steering vector calculation & limit check).
+        Once decompiled and matched, code_3AC00 is 100% matched.
+        """
+        is_matched = self.is_function_decompiled("game/code_3AC00", "func_80085510")
+        if is_matched:
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80085510 is currently non-matching (in progress)")
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()

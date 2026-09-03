@@ -1326,14 +1326,14 @@ void func_80085510(void) {
         var_f0 = (sp4C * sp44) + (sp48 * sp40);
     }
 
-    // temp_f18 = ((D_801C3C58->pad54 * 70.0f) / D_801C3C50->unkBB8);
+    temp_f18 = (D_801C3C58->unk64 * 70.0f) / D_801C3C50->unkBB8;
 
     var_f12 = var_f0;
-    D_801C3C58->pad58 = var_f0;
+    D_801C3C58->unk68 = var_f0;
 
     temp = ((D_801C3C58->unkD4 * sp4C) - (sp48 * D_801C3C58->unkD0));
 
-    if ((temp * var_f12) < 0.0f) {
+    if ((var_f12 * temp) < 0.0f) {
 
         sp4C = 0.0f;
         D_801C3C50->unkB53 = 0;
@@ -1355,9 +1355,9 @@ void func_80085510(void) {
                     sp4C = (s32) (var_f0 * temp_f18);
                     D_801C3C50->unkB53 = (s32) (var_f0 * -35.0f);
                 } else {
-                    temp = var_f12 / 0.5f;
-                    sp4C = (s32) (-temp_f18 * temp);
-                    D_801C3C50->unkB53 = (u8) (s32) (temp * -35.0f);
+                    var_f0 = var_f12 / 0.5f;
+                    sp4C = (s32) (-temp_f18 * var_f0);
+                    D_801C3C50->unkB53 = (s8) (s32) (var_f0 * -35.0f);
                 }
             } else {
                 sp4C = 0.0f;
