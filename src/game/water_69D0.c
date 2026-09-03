@@ -18,7 +18,51 @@ extern UnkStruct_80162420 D_80162420[];
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D018.s")
 
+#ifdef NON_MATCHING
+f32 func_8004D30C(f32 arg0, f32 arg1) {
+    s32 temp_hi;
+    s32 temp_hi_2;
+    s32 temp_a1;
+    s32 temp_a0;
+    s32 t5;
+    s32 t4;
+    s32 a3;
+    s32 a2;
+    s32 t2;
+    s32 v0;
+    s32 v1;
+    f32 norm;
+
+    temp_hi = (s32) (TWO_OVER_SQRT_3 * arg1) % 24576;
+    temp_a1 = temp_hi >> 6;
+    temp_hi_2 = (s32) ((DIRLIGHT_DIRECTION * arg1) + arg0) % 24576;
+    temp_a0 = temp_hi_2 >> 6;
+
+    a3 = temp_a1 + (temp_a0 & ~0x7F);
+    t2 = D_80162420[(((a3 + 0x600) % 384) * 128) + (temp_a0 & 0x7F)].unk0 >> 8;
+
+    t5 = (temp_a1 * 64) - temp_hi;
+    t4 = (temp_a0 * 64) - temp_hi_2;
+
+    if (t5 < t4) {
+        v0 = D_80162420[(((a3 + 0x601) % 384) * 128) + (temp_a0 & 0x7F)].unk0 >> 8;
+        a2 = temp_a0 + 1;
+        v1 = t2 - v0;
+        v0 = v0 - (D_80162420[((((temp_a1 + (a2 & ~0x7F)) + 0x601) % 384) * 128) + (a2 & 0x7F)].unk0 >> 8);
+    } else {
+        a2 = temp_a0 + 1;
+        a3 = temp_a1 + (a2 & ~0x7F);
+        v1 = D_80162420[(((a3 + 0x600) % 384) * 128) + (a2 & 0x7F)].unk0 >> 8;
+        v0 = t2 - v1;
+        v1 = v1 - (D_80162420[(((a3 + 0x601) % 384) * 128) + (a2 & 0x7F)].unk0 >> 8);
+    }
+
+    norm = sqrtf((f32) (((v0 * v0) + (v1 * v1) + 0x1000) << 12));
+    return (f32) ((v0 * t4) + ((gWaterLevel + t2) << 12) + (v1 * t5)) / norm;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D30C.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D628.s")
 
