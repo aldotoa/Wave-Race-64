@@ -225,6 +225,45 @@ class TestWaterPhysics(unittest.TestCase):
         else:
             self.skipTest("func_8004F9E0 is currently non-matching (in progress)")
 
+    def test_func_8004F520_matched(self):
+        """TDE test for func_8004F520 (continuous linear wake disturbance ray generator)."""
+        if self.is_function_decompiled("func_8004F520"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004F520 is currently non-matching (in progress)")
+
+    def test_func_80050B78_matched(self):
+        """TDE test for func_80050B78 (water surface camera perspective projection & horizon clipping)."""
+        if self.is_function_decompiled("func_80050B78"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80050B78 is currently non-matching (in progress)")
+
+    def test_func_80051238_matched(self):
+        """TDE test for func_80051238 (per-frame water engine update & dynamic course tide drain)."""
+        if self.is_function_decompiled("func_80051238"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80051238 is currently non-matching (in progress)")
+
+    def test_func_80050F8C_matched(self):
+        """TDE test for func_80050F8C (runtime object disturbance origin tracking & wave splat offset updater)."""
+        if self.is_function_decompiled("func_80050F8C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80050F8C is currently non-matching (in progress)")
+
+    def test_func_80050204_matched(self):
+        """TDE test for func_80050204 (dynamic water vertex buffer and normal lighting rasterizer)."""
+        if self.is_function_decompiled("func_80050204"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80050204 is currently non-matching (in progress)")
+
+
+
+
+
 
 
 
