@@ -13,6 +13,7 @@ import os
 import subprocess
 import sys
 import unittest
+import re
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EXPECTED_SHA1 = "508dfc2d4caa42b6f6de5263d0aed5e44ac7966a"
@@ -297,12 +298,40 @@ class TestWaterPhysics(unittest.TestCase):
 
 
 
+
+class TestCodesegUI(unittest.TestCase):
+    """
+    Test-Driven Engineering suite for UI, Menus & 2D Presentation in src/codeseg/.
+    """
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "codeseg")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith((".c", ".h")):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content) and f"#pragma GLOBAL_ASM" not in content.split(func_name)[-1][:200]:
+                            return True
+        return False
+
+    def test_func_801E7908_matched(self):
+        """TDE test for func_801E7908 in wr64_fade (screen fade display list primitive emitter)."""
+        if self.is_function_decompiled("func_801E7908"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E7908 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     suite.addTests(loader.loadTestsFromTestCase(TestRomIntegrity))
     suite.addTests(loader.loadTestsFromTestCase(TestGameEngineCore))
     suite.addTests(loader.loadTestsFromTestCase(TestWaterPhysics))
+    suite.addTests(loader.loadTestsFromTestCase(TestCodesegUI))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

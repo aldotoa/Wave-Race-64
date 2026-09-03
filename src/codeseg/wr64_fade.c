@@ -294,8 +294,104 @@ void func_801E76C0(FadeTransition* fade) {
     }
 }
 
-// https://decomp.me/scratch/udOjy 86.02%
+extern s16 D_80228A14;
+extern s16 D_80228A36;
+extern s16 D_80228A20;
+extern s16 D_80228A22;
+extern s16 D_80228A24;
+extern s16 D_80228A26;
+extern u16 D_80228A34;
+extern s16 D_80228A1C;
+extern s16 D_80228A18;
+extern Gfx D_80226CE4[];
+extern Gfx D_80226CF4[];
+extern Gfx D_7001300[];
+extern Gfx D_7001340[];
+extern Gfx D_106F5B0[];
+
+Gfx* func_801E7C58(Gfx* dList, u32 ulx, u32 uly, u32 lrx, u32 lry, u32 r, u32 g, u32 b, u32 a);
+
+#ifdef NON_MATCHING
+Gfx* func_801E7908(Gfx* glistp) {
+    Gfx* temp_a2;
+
+    if (sCurrentFadeTransitionProps.state == 0 || D_80228A14 == 0 || D_80228A36 != D_80228A30) {
+        return glistp;
+    }
+
+    switch (sCurrentFadeTransitionProps.state) {
+        case 1:
+        case 2:
+            if (gPlayers == ONE_PLAYER) {
+                glistp = func_801E7C58(glistp, 8, 20, 310, 218, D_80228A20, D_80228A22, D_80228A24, D_80228A26);
+            } else {
+                glistp = func_801E7C58(glistp, 8, 12, 310, 228, D_80228A20, D_80228A22, D_80228A24, D_80228A26);
+            }
+            break;
+        case 3:
+        case 7:
+            if (gPlayers == ONE_PLAYER) {
+                glistp = func_801E7C58(glistp, 8, 20, 310, 218, D_80228A20, D_80228A22, D_80228A24, D_80228A26);
+            } else {
+                glistp = func_801E7C58(glistp, 8, 12, 310, 228, D_80228A20, D_80228A22, D_80228A24, D_80228A26);
+            }
+            break;
+        case 4:
+        case 5:
+        case 6:
+            glistp->words.w0 = 0xB4000000;
+            glistp->words.w1 = D_80228A34;
+            glistp++;
+
+            glistp->words.w0 = 0x01030040;
+            glistp->words.w1 = (uintptr_t) D_7001300;
+            glistp++;
+
+            glistp->words.w0 = 0x01020040;
+            glistp->words.w1 = (uintptr_t) D_7001340;
+            glistp++;
+
+            glistp->words.w0 = 0x06000000;
+            glistp->words.w1 = (uintptr_t) &D_106F5B0;
+            glistp++;
+
+            if (D_80228A1C == 0) {
+                temp_a2 = &D_80226CE4[D_80228A18 & 1];
+            } else {
+                temp_a2 = &D_80226CF4[D_80228A18 & 1];
+            }
+
+            glistp->words.w0 = 0xE7000000;
+            glistp->words.w1 = 0;
+            glistp++;
+
+            glistp->words.w0 = 0x06000000;
+            glistp->words.w1 = temp_a2->words.w0;
+            glistp++;
+
+            glistp->words.w0 = 0xE7000000;
+            glistp->words.w1 = 0;
+            glistp++;
+
+            glistp->words.w0 = 0xB900031D;
+            glistp->words.w1 = 0x0C184240;
+            glistp++;
+
+            glistp->words.w0 = 0xED000000;
+            glistp->words.w1 = 0x004FC3BC;
+            glistp++;
+
+            glistp->words.w0 = 0x06000000;
+            glistp->words.w1 = temp_a2->words.w1;
+            glistp++;
+            break;
+    }
+
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/wr64_fade/func_801E7908.s")
+#endif
 
 Gfx* func_801E7C58(Gfx* dList, u32 ulx, u32 uly, u32 lrx, u32 lry, u32 r, u32 g, u32 b, u32 a) {
     if (r > 255) {
