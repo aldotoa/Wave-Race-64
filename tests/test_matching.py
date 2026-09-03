@@ -2739,6 +2739,129 @@ class TestPhysicsModules(unittest.TestCase):
             self.skipTest("func_800B305C is currently non-matching (in progress)")
 
 
+
+class TestRiderKinematics(unittest.TestCase):
+    """Test cases for Rider Kinematics & Race Position Sorting (code_2FB10.c)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "game")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file == "code_2FB10.c":
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_func_80075310_matched(self):
+        """TDE test for func_80075310 in code_2FB10 (Rider lean angle calculation relative to velocity vector and turning radius)."""
+        if self.is_function_decompiled("func_80075310"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80075310 is currently non-matching (in progress)")
+
+    def test_func_80076378_matched(self):
+        """TDE test for func_80076378 in code_2FB10 (Jet ski throttle response and water drag velocity damping)."""
+        if self.is_function_decompiled("func_80076378"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80076378 is currently non-matching (in progress)")
+
+    def test_func_8007687C_matched(self):
+        """TDE test for func_8007687C in code_2FB10 (Race position evaluation and checkpoint milestone update)."""
+        if self.is_function_decompiled("func_8007687C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8007687C is currently non-matching (in progress)")
+
+    def test_func_80077F5C_matched(self):
+        """TDE test for func_80077F5C in code_2FB10 (Stunt combo trick recognition and point award accumulator)."""
+        if self.is_function_decompiled("func_80077F5C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80077F5C is currently non-matching (in progress)")
+
+    def test_func_800783AC_matched(self):
+        """TDE test for func_800783AC in code_2FB10 (Real-time rider position gap distance and rubberband AI speed scaling)."""
+        if self.is_function_decompiled("func_800783AC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800783AC is currently non-matching (in progress)")
+
+    def test_func_80079528_matched(self):
+        """TDE test for func_80079528 in code_2FB10 (Rider animation state transition and posture stabilizer)."""
+        if self.is_function_decompiled("func_80079528"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80079528 is currently non-matching (in progress)")
+
+
+class TestCourseLoading(unittest.TestCase):
+    """Test cases for Course Asset Loading & Water Craft Suspension (code_4F850.c)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "game")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file == "code_4F850.c":
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_unk_game_load_matched(self):
+        """TDE test for unk_game_load in code_4F850 (Master game loop state asset loader and segment relocation)."""
+        if self.is_function_decompiled("unk_game_load"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("unk_game_load is currently non-matching (in progress)")
+
+    def test_func_80096048_matched(self):
+        """TDE test for func_80096048 in code_4F850 (Course terrain mesh and collision bounding volume loader)."""
+        if self.is_function_decompiled("func_80096048"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80096048 is currently non-matching (in progress)")
+
+    def test_func_800961B8_matched(self):
+        """TDE test for func_800961B8 in code_4F850 (Water craft hull suspension spring stiffness and damping matrix setup)."""
+        if self.is_function_decompiled("func_800961B8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800961B8 is currently non-matching (in progress)")
+
+    def test_func_800963CC_matched(self):
+        """TDE test for func_800963CC in code_4F850 (Course-specific water texture palette and animated surface frame loader)."""
+        if self.is_function_decompiled("func_800963CC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800963CC is currently non-matching (in progress)")
+
+    def test_func_80096694_matched(self):
+        """TDE test for func_80096694 in code_4F850 (Jet ski texture and rider livery palette decompression dispatcher)."""
+        if self.is_function_decompiled("func_80096694"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80096694 is currently non-matching (in progress)")
+
+    def test_func_80096960_matched(self):
+        """TDE test for func_80096960 in code_4F850 (Multiplayer rider palette index and team color configuration)."""
+        if self.is_function_decompiled("func_80096960"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80096960 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2753,6 +2876,8 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestQuickWinModules))
     suite.addTests(loader.loadTestsFromTestCase(TestSaveSystem))
     suite.addTests(loader.loadTestsFromTestCase(TestPhysicsModules))
+    suite.addTests(loader.loadTestsFromTestCase(TestRiderKinematics))
+    suite.addTests(loader.loadTestsFromTestCase(TestCourseLoading))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

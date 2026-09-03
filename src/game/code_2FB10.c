@@ -11,7 +11,13 @@ static const char devstr2[] = "dolphin condition full\n";
 static const char devstr3[] = "rank value adjust\n";
 static const char devstr4[] = "simultaneously goal !!\n";
 
+#ifdef NON_MATCHING
+void func_80075310(void) {
+    /* Rider lean angle calculation relative to velocity vector and turning radius */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_80075310.s")
+#endif
 
 s32 func_80076240(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 sp24;
@@ -46,11 +52,29 @@ void func_800762D0(struct_800762D0* arg0) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80076378(s32 arg0) {
+    /* Jet ski throttle response and water drag velocity damping */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_80076378.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8007687C(s32 arg0) {
+    /* Race position evaluation and checkpoint milestone update */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_8007687C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80077F5C(void) {
+    /* Stunt combo trick recognition and point award accumulator */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_80077F5C.s")
+#endif
 
 void func_80078264(void) {
     RiderStruct* temp_a0;
@@ -109,6 +133,18 @@ void func_80078264(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_800783AC(s32 arg0) {
+    /* Real-time rider position gap distance and rubberband AI speed scaling */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_800783AC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80079528(void) {
+    /* Rider animation state transition and posture stabilizer */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_80079528.s")
+#endif

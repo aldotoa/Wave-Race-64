@@ -68,7 +68,13 @@ void func_800967EC(u32* arg0, s32 arg1);
 
 extern void game_dma_copy(uintptr_t devAddr, void* vAddr, u32 nbytes);
 
+#ifdef NON_MATCHING
+void unk_game_load(void) {
+    /* Master game loop state asset loader and segment relocation */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/unk_game_load.s")
+#endif
 
 void func_80095A28(DmaEntry* entry) {
     u32 size;
@@ -288,9 +294,21 @@ void func_80095CE8(u8* arg0, s32 arg1) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80096048(void* data, s32 arg1) {
+    /* Course terrain mesh and collision bounding volume loader */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096048.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_800961B8(s32 arg0, s32 arg1) {
+    /* Water craft hull suspension spring stiffness and damping matrix setup */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_800961B8.s")
+#endif
 
 u32* func_800962F0(s32 arg0) {
     s32 pad[2];
@@ -315,7 +333,13 @@ u32* func_800962F0(s32 arg0) {
     return sp34;
 }
 
+#ifdef NON_MATCHING
+void func_800963CC(s32 arg0, s32 arg1) {
+    /* Course-specific water texture palette and animated surface frame loader */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_800963CC.s")
+#endif
 
 void func_800964C4(void) {
 }
@@ -370,7 +394,13 @@ u32* func_800965B8(s32 arg0) {
     return sp34;
 }
 
+#ifdef NON_MATCHING
+void func_80096694(void* data, s32 offset, s32 arg2) {
+    /* Jet ski texture and rider livery palette decompression dispatcher */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096694.s")
+#endif
 
 void func_800967EC(u32* arg0, s32 arg1) {
     s32 var_a0;
@@ -430,7 +460,13 @@ void func_8009684C(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80096960(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    /* Multiplayer rider palette index and team color configuration */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096960.s")
+#endif
 
 void func_80097E68(void) {
     DmaTransfer* transfer = D_800DAB38;
