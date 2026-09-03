@@ -1582,6 +1582,147 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i15_802C602C is currently non-matching (in progress)")
 
 
+    def test_func_i5_802C5850_matched(self):
+        """TDE test for func_i5_802C5850 in ovl_1BFF50 (Port Blue container ship wake disturbance simulation)."""
+        if self.is_function_decompiled("func_i5_802C5850"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C5850 is currently non-matching (in progress)")
+
+    def test_func_i5_802C5A98_matched(self):
+        """TDE test for func_i5_802C5A98 in ovl_1BFF50 (Port Blue harbor waterway current state reset)."""
+        if self.is_function_decompiled("func_i5_802C5A98"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C5A98 is currently non-matching (in progress)")
+
+    def test_func_i5_802C5C1C_matched(self):
+        """TDE test for func_i5_802C5C1C in ovl_1BFF50 (Port Blue harbor crane and dock surface display list)."""
+        if self.is_function_decompiled("func_i5_802C5C1C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C5C1C is currently non-matching (in progress)")
+
+    def test_func_i5_802C5DC0_matched(self):
+        """TDE test for func_i5_802C5DC0 in ovl_1BFF50 (Port Blue moving container barge kinematic update)."""
+        if self.is_function_decompiled("func_i5_802C5DC0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C5DC0 is currently non-matching (in progress)")
+
+    def test_func_i5_802C6CC4_matched(self):
+        """TDE test for func_i5_802C6CC4 in ovl_1BFF50 (Port Blue canal lock water height adjust)."""
+        if self.is_function_decompiled("func_i5_802C6CC4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C6CC4 is currently non-matching (in progress)")
+
+    def test_func_i5_802C6F84_matched(self):
+        """TDE test for func_i5_802C6F84 in ovl_1BFF50 (Port Blue finish line gantry and buoy beacon renderer)."""
+        if self.is_function_decompiled("func_i5_802C6F84"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i5_802C6F84 is currently non-matching (in progress)")
+
+    def test_func_i4_802C58F8_matched(self):
+        """TDE test for func_i4_802C58F8 in ovl_1BE0B0 (Sunny Beach shallow reef water surface state reset)."""
+        if self.is_function_decompiled("func_i4_802C58F8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C58F8 is currently non-matching (in progress)")
+
+    def test_func_i4_802C5CDC_matched(self):
+        """TDE test for func_i4_802C5CDC in ovl_1BE0B0 (Sunny Beach shoreline surf swell display list emitter)."""
+        if self.is_function_decompiled("func_i4_802C5CDC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C5CDC is currently non-matching (in progress)")
+
+    def test_func_i4_802C6778_matched(self):
+        """TDE test for func_i4_802C6778 in ovl_1BE0B0 (Sunny Beach shallow sandbar grounding depth check)."""
+        if self.is_function_decompiled("func_i4_802C6778"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C6778 is currently non-matching (in progress)")
+
+    def test_func_i4_802C69C4_matched(self):
+        """TDE test for func_i4_802C69C4 in ovl_1BE0B0 (Sunny Beach umbrella and palm tree prop animations)."""
+        if self.is_function_decompiled("func_i4_802C69C4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C69C4 is currently non-matching (in progress)")
+
+    def test_func_i4_802C6C2C_matched(self):
+        """TDE test for func_i4_802C6C2C in ovl_1BE0B0 (Sunny Beach course setup phase 0)."""
+        if self.is_function_decompiled("func_i4_802C6C2C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C6C2C is currently non-matching (in progress)")
+
+    def test_func_i4_802C6ED0_matched(self):
+        """TDE test for func_i4_802C6ED0 in ovl_1BE0B0 (Sunny Beach course setup phase 1)."""
+        if self.is_function_decompiled("func_i4_802C6ED0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C6ED0 is currently non-matching (in progress)")
+
+    def test_func_i4_802C70C0_matched(self):
+        """TDE test for func_i4_802C70C0 in ovl_1BE0B0 (Sunny Beach course setup phase 2)."""
+        if self.is_function_decompiled("func_i4_802C70C0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i4_802C70C0 is currently non-matching (in progress)")
+
+    def test_func_i9_802C5800_matched(self):
+        """TDE test for func_i9_802C5800 in ovl_1C66D0 (Sunset Bay sunset lighting and water specular display list renderer)."""
+        if self.is_function_decompiled("func_i9_802C5800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C5800 is currently non-matching (in progress)")
+
+    def test_func_i9_802C5D24_matched(self):
+        """TDE test for func_i9_802C5D24 in ovl_1C66D0 (Sunset Bay dynamic tide level drain and shoreline waves)."""
+        if self.is_function_decompiled("func_i9_802C5D24"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C5D24 is currently non-matching (in progress)")
+
+    def test_func_i9_802C5E5C_matched(self):
+        """TDE test for func_i9_802C5E5C in ovl_1C66D0 (Sunset Bay beach breaker wave height calculation)."""
+        if self.is_function_decompiled("func_i9_802C5E5C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C5E5C is currently non-matching (in progress)")
+
+    def test_func_i9_802C6750_matched(self):
+        """TDE test for func_i9_802C6750 in ovl_1C66D0 (Sunset Bay sunset sky color palette interpolation)."""
+        if self.is_function_decompiled("func_i9_802C6750"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C6750 is currently non-matching (in progress)")
+
+    def test_func_i9_802C6CC8_matched(self):
+        """TDE test for func_i9_802C6CC8 in ovl_1C66D0 (Sunset Bay water surface specular highlight reflection map)."""
+        if self.is_function_decompiled("func_i9_802C6CC8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C6CC8 is currently non-matching (in progress)")
+
+    def test_func_i9_802C71AC_matched(self):
+        """TDE test for func_i9_802C71AC in ovl_1C66D0 (Sunset Bay shoreline surf particle emission and audio cue)."""
+        if self.is_function_decompiled("func_i9_802C71AC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C71AC is currently non-matching (in progress)")
+
+    def test_func_i9_802C802C_matched(self):
+        """TDE test for func_i9_802C802C in ovl_1C66D0 (Sunset Bay sunset course exit and results transition)."""
+        if self.is_function_decompiled("func_i9_802C802C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i9_802C802C is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()

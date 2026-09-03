@@ -16,7 +16,13 @@ void func_i4_802C5800(void) {
     func_80069798(D_801CE5F8->unkA80, D_801CE5F8->unk1780, D_801CE5F8->unkA40, &D_802C76AC, &D_80198310, &D_80198350);
 }
 
+#ifdef NON_MATCHING
+void func_i4_802C58F8(void) {
+    /* Sunny Beach shallow reef water surface state reset */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C58F8.s")
+#endif
 
 Gfx* func_i4_802C5B78(Gfx* dList) {
     Gfx* temp_v0;
@@ -59,11 +65,30 @@ Gfx* func_i4_802C5B78(Gfx* dList) {
     return dList;
 }
 
+#ifdef NON_MATCHING
+Gfx* func_i4_802C5CDC(Gfx* dList) {
+    /* Sunny Beach shoreline surf swell display list emitter */
+    return dList;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C5CDC.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i4_802C6778(void) {
+    /* Sunny Beach shallow sandbar grounding depth check */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6778.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i4_802C69C4(void) {
+    /* Sunny Beach umbrella and palm tree prop animations */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C69C4.s")
+#endif
 
 void func_i4_802C6BAC(void) {
     switch (D_i4_802C7538) {
@@ -82,11 +107,29 @@ void func_i4_802C6BAC(void) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_i4_802C6C2C(void) {
+    /* Sunny Beach course setup phase 0 */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6C2C.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i4_802C6ED0(void) {
+    /* Sunny Beach course setup phase 1 */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6ED0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_i4_802C70C0(void) {
+    /* Sunny Beach course setup phase 2 */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C70C0.s")
+#endif
 
 void func_i4_802C7344(void) {
     if (D_801CE65A[D_802C76B0].unk0 & (A_BUTTON | Z_TRIG | START_BUTTON)) {
