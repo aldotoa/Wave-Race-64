@@ -452,6 +452,133 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E2C14 is currently non-matching (in progress)")
 
+    def test_func_801E80B0_matched(self):
+        """TDE test for func_801E80B0 in B66E0 (font glyph metrics table and character bounds initializer)."""
+        if self.is_function_decompiled("func_801E80B0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E80B0 is currently non-matching (in progress)")
+
+    def test_func_801E8800_matched(self):
+        """TDE test for func_801E8800 in B66E0 (character spacing and kerning metrics calculator)."""
+        if self.is_function_decompiled("func_801E8800"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E8800 is currently non-matching (in progress)")
+
+    def test_func_801E8A84_matched(self):
+        """TDE test for func_801E8A84 in B66E0 (string width in pixels calculator)."""
+        if self.is_function_decompiled("func_801E8A84"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E8A84 is currently non-matching (in progress)")
+
+    def test_func_801E8B24_matched(self):
+        """TDE test for func_801E8B24 in B66E0 (text centering and string bounding box calculator)."""
+        if self.is_function_decompiled("func_801E8B24"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E8B24 is currently non-matching (in progress)")
+
+    def test_func_801E92FC_matched(self):
+        """TDE test for func_801E92FC in B66E0 (standard 1.0x unscaled text string renderer)."""
+        if self.is_function_decompiled("func_801E92FC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E92FC is currently non-matching (in progress)")
+
+    def test_func_801E93B4_matched(self):
+        """TDE test for func_801E93B4 in B66E0 (scaled text string renderer with custom scale factor)."""
+        if self.is_function_decompiled("func_801E93B4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E93B4 is currently non-matching (in progress)")
+
+    def test_func_801E946C_matched(self):
+        """TDE test for func_801E946C in B66E0 (font palette and color gradient setup)."""
+        if self.is_function_decompiled("func_801E946C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E946C is currently non-matching (in progress)")
+
+    def test_func_801E9858_matched(self):
+        """TDE test for func_801E9858 in B66E0 (main string glyph display list generator)."""
+        if self.is_function_decompiled("func_801E9858"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E9858 is currently non-matching (in progress)")
+
+    def test_func_801E9B04_matched(self):
+        """TDE test for func_801E9B04 in B66E0 (formatted integer digit printer)."""
+        if self.is_function_decompiled("func_801E9B04"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E9B04 is currently non-matching (in progress)")
+
+    def test_func_801E9D6C_matched(self):
+        """TDE test for func_801E9D6C in B66E0 (formatted lap timer display printer mm:ss.ms)."""
+        if self.is_function_decompiled("func_801E9D6C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E9D6C is currently non-matching (in progress)")
+
+    def test_func_801EA0B0_matched(self):
+        """TDE test for func_801EA0B0 in B66E0 (2D text quad texture rectangle emitter)."""
+        if self.is_function_decompiled("func_801EA0B0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EA0B0 is currently non-matching (in progress)")
+
+    def test_func_801EA3EC_matched(self):
+        """TDE test for func_801EA3EC in B66E0 (Fast3D font texture tile loader)."""
+        if self.is_function_decompiled("func_801EA3EC"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EA3EC is currently non-matching (in progress)")
+
+    def test_func_801EA730_matched(self):
+        """TDE test for func_801EA730 in B66E0 (variable-width proportional font mapper)."""
+        if self.is_function_decompiled("func_801EA730"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EA730 is currently non-matching (in progress)")
+
+    def test_func_801EAA6C_matched(self):
+        """TDE test for func_801EAA6C in B66E0 (font tile cache and texture buffer manager)."""
+        if self.is_function_decompiled("func_801EAA6C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EAA6C is currently non-matching (in progress)")
+
+    def test_func_801EADB0_matched(self):
+        """TDE test for func_801EADB0 in B66E0 (text blinking and pulsing opacity animator)."""
+        if self.is_function_decompiled("func_801EADB0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EADB0 is currently non-matching (in progress)")
+
+    def test_func_801EAF78_matched(self):
+        """TDE test for func_801EAF78 in B66E0 (font configuration parameter loader)."""
+        if self.is_function_decompiled("func_801EAF78"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EAF78 is currently non-matching (in progress)")
+
+    def test_func_801EAFB4_matched(self):
+        """TDE test for func_801EAFB4 in B66E0 (font kerning and inter-character spacing animator)."""
+        if self.is_function_decompiled("func_801EAFB4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EAFB4 is currently non-matching (in progress)")
+
+    def test_func_801EB00C_matched(self):
+        """TDE test for func_801EB00C in B66E0 (formatted integer text formatter)."""
+        if self.is_function_decompiled("func_801EB00C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801EB00C is currently non-matching (in progress)")
+
+
 
 
 
