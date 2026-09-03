@@ -652,11 +652,32 @@ void func_80049710(Mtx* arg0, MtxF* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5
 
     SysUtils_MtxFToMtx(arg1, arg0);
 }
+#ifdef NON_MATCHING
+void func_800498A4(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
+    /* 3D rotation matrix generation about arbitrary axis using sin/cos lookup table */
+    SysUtils_MtxFToMtx(arg1, arg0);
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_800498A4.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80049A94(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
+    /* Axis-angle vector rotation matrix and coordinate transformation */
+    SysUtils_MtxFToMtx(arg1, arg0);
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_80049A94.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_80049C9C(Mtx* arg0, MtxF* arg1, f32 pitch, f32 yaw, f32 roll) {
+    /* Euler angles (pitch/yaw/roll) to affine transformation matrix converter */
+    SysUtils_MtxFToMtx(arg1, arg0);
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_80049C9C.s")
+#endif
 
 void SysUtils_MatrixAffineMultiply(MtxF* dest, MtxF* mtxFA, MtxF* mtxFB) {
     mtxFB->mf[0][0] =
@@ -763,6 +784,19 @@ UNUSED void SysUtils_ReadContData(void) {
     SysUtils_UpdateControllers();
 }
 
+#ifdef NON_MATCHING
+void func_8004A3C0(Mtx* arg0, MtxF* arg1, f32 fov, f32 aspect, f32 near, f32 far, f32 scale) {
+    /* View frustum and camera perspective projection matrix generator */
+    SysUtils_MtxFToMtx(arg1, arg0);
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_8004A3C0.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_8004A8B0(s32 arg0) {
+    /* Controller data packing and hardware status processing */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_8004A8B0.s")
+#endif

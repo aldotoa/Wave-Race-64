@@ -102,7 +102,7 @@ void SysMain_GfxInitBuffers(void) {
 // These need to be separate symbols for this function to compile
 // D_801DAFA0 & D_801DAFA0_2
 // D_1008290 & D_1008290_2
-#if 1
+#ifndef NON_MATCHING
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_main/SysMain_Thread.s")
 #else
 void* SysMain_Thread(void* entry) {

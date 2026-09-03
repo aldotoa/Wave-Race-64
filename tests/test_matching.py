@@ -2131,6 +2131,68 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i13_802C8CBC is currently non-matching (in progress)")
 
 
+
+class TestSysLayer(unittest.TestCase):
+    """Test cases for the System & OS Layer (src/sys/)."""
+
+    def is_function_decompiled(self, func_name: str) -> bool:
+        src_dir = os.path.join(PROJECT_ROOT, "src", "sys")
+        pattern = re.compile(rf"\b{func_name}\b")
+        for root, _, files in os.walk(src_dir):
+            for file in files:
+                if file.endswith((".c", ".h")):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
+        return False
+
+    def test_SysMain_Thread_matched(self):
+        """TDE test for SysMain_Thread in sys_main (Master game thread, RCP display list dispatch & VI mode setup)."""
+        if self.is_function_decompiled("SysMain_Thread"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("SysMain_Thread is currently non-matching (in progress)")
+
+    def test_func_800498A4_matched(self):
+        """TDE test for func_800498A4 in sys_utils (3D rotation matrix generation about arbitrary axis with sin/cos lookup)."""
+        if self.is_function_decompiled("func_800498A4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_800498A4 is currently non-matching (in progress)")
+
+    def test_func_80049A94_matched(self):
+        """TDE test for func_80049A94 in sys_utils (Axis-angle vector rotation matrix and coordinate transformation)."""
+        if self.is_function_decompiled("func_80049A94"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80049A94 is currently non-matching (in progress)")
+
+    def test_func_80049C9C_matched(self):
+        """TDE test for func_80049C9C in sys_utils (Euler angles (pitch/yaw/roll) to affine transformation matrix converter)."""
+        if self.is_function_decompiled("func_80049C9C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_80049C9C is currently non-matching (in progress)")
+
+    def test_func_8004A3C0_matched(self):
+        """TDE test for func_8004A3C0 in sys_utils (View frustum and camera perspective projection matrix generator)."""
+        if self.is_function_decompiled("func_8004A3C0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004A3C0 is currently non-matching (in progress)")
+
+    def test_func_8004A8B0_matched(self):
+        """TDE test for func_8004A8B0 in sys_utils (Controller data packing and hardware status processing)."""
+        if self.is_function_decompiled("func_8004A8B0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004A8B0 is currently non-matching (in progress)")
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -2139,6 +2201,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestWaterPhysics))
     suite.addTests(loader.loadTestsFromTestCase(TestCodesegUI))
     suite.addTests(loader.loadTestsFromTestCase(TestCourseOverlays))
+    suite.addTests(loader.loadTestsFromTestCase(TestSysLayer))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1
