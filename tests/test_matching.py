@@ -331,6 +331,14 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E3698 is currently non-matching (in progress)")
 
+    def test_func_801E3EE0_matched(self):
+        """TDE test for func_801E3EE0 in B2510 (menu text banner layout & texture rectangle renderer)."""
+        if self.is_function_decompiled("func_801E3EE0"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E3EE0 is currently non-matching (in progress)")
+
+
 
 
 def run_tests():
