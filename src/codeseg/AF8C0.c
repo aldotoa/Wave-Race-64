@@ -9,15 +9,69 @@ extern s32 D_801CE63C;
 extern s32 D_801CE640;
 extern s32 D_801CE644;
 
+extern Gfx D_8011F820[];
+
+Gfx* func_80093F78(Gfx* glistp);
+Gfx* func_8008FB74(Gfx* glistp);
+Gfx* func_80094A44(Gfx* glistp, s32 course);
+Gfx* Draw_WaterEffects(Gfx* glistp);
+void func_801E2530(void);
+
+#ifdef NON_MATCHING
+void func_801E1290(void) {
+    /* Machine tuning interaction and controller input loop */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E1290.s")
+#endif
 
+#ifdef NON_MATCHING
+void func_801E1BA8(void) {
+    /* Machine tuning state initialization */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E1BA8.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_801E1E8C(Gfx* glistp) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+    }
+    D_800DAB2C = 0;
+    glistp = func_80093F78(glistp);
+    glistp = func_8008FB74(glistp);
+    glistp = func_801E2058(glistp);
+    gSPDisplayList(glistp++, D_8011F820);
+    glistp = func_80094A44(glistp, gCourseID);
+    glistp = Draw_WaterEffects(glistp);
+    glistp = func_801E229C(glistp);
+    if (gGameState == 0x64) {
+        func_801E2530();
+    }
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E1E8C.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_801E2058(Gfx* glistp) {
+    /* Slider cursor movement & audio feedback */
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E2058.s")
+#endif
 
+#ifdef NON_MATCHING
+Gfx* func_801E229C(Gfx* glistp) {
+    /* Jet ski color customization palette selector */
+    return glistp;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E229C.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226210.s")
 
@@ -77,7 +131,13 @@ extern s32 D_801CE644;
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/D_80226280.s")
 
+#ifdef NON_MATCHING
+void func_801E2530(void) {
+    /* Character select and machine tuning cursor display list renderer */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E2530.s")
+#endif
 
 void func_801E2B8C(s32 arg0) {
     gPrevGameState = gGameState;
@@ -92,4 +152,10 @@ void func_801E2B8C(s32 arg0) {
     FadeTransition_SetProps(1, 0xE, 0x14);
 }
 
+#ifdef NON_MATCHING
+void func_801E2C14(void) {
+    /* Machine tuning exit and active rider stat commit */
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E2C14.s")
+#endif

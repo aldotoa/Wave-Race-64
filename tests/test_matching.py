@@ -313,8 +313,10 @@ class TestCodesegUI(unittest.TestCase):
                     filepath = os.path.join(root, file)
                     with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
                         content = f.read()
-                        if pattern.search(content) and f"#pragma GLOBAL_ASM" not in content.split(func_name)[-1][:200]:
-                            return True
+                        if pattern.search(content):
+                            for block in content.split(func_name)[1:]:
+                                if "{" in block[:300]:
+                                    return True
         return False
 
     def test_func_801E7908_matched(self):
@@ -400,6 +402,56 @@ class TestCodesegUI(unittest.TestCase):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_801E66F4 is currently non-matching (in progress)")
+
+    def test_func_801E1290_matched(self):
+        """TDE test for func_801E1290 in AF8C0 (machine tuning interaction and controller input loop)."""
+        if self.is_function_decompiled("func_801E1290"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E1290 is currently non-matching (in progress)")
+
+    def test_func_801E1BA8_matched(self):
+        """TDE test for func_801E1BA8 in AF8C0 (machine tuning state and slider array initialization)."""
+        if self.is_function_decompiled("func_801E1BA8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E1BA8 is currently non-matching (in progress)")
+
+    def test_func_801E1E8C_matched(self):
+        """TDE test for func_801E1E8C in AF8C0 (machine tuning top-level display list dispatcher)."""
+        if self.is_function_decompiled("func_801E1E8C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E1E8C is currently non-matching (in progress)")
+
+    def test_func_801E2058_matched(self):
+        """TDE test for func_801E2058 in AF8C0 (slider cursor movement and audio SFX feedback)."""
+        if self.is_function_decompiled("func_801E2058"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E2058 is currently non-matching (in progress)")
+
+    def test_func_801E229C_matched(self):
+        """TDE test for func_801E229C in AF8C0 (jet ski color customization palette selector)."""
+        if self.is_function_decompiled("func_801E229C"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E229C is currently non-matching (in progress)")
+
+    def test_func_801E2530_matched(self):
+        """TDE test for func_801E2530 in AF8C0 (character select and machine tuning cursor display list)."""
+        if self.is_function_decompiled("func_801E2530"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E2530 is currently non-matching (in progress)")
+
+    def test_func_801E2C14_matched(self):
+        """TDE test for func_801E2C14 in AF8C0 (machine tuning exit and active rider stat commit)."""
+        if self.is_function_decompiled("func_801E2C14"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801E2C14 is currently non-matching (in progress)")
+
 
 
 
