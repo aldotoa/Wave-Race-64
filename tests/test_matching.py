@@ -352,6 +352,28 @@ class TestCodesegUI(unittest.TestCase):
         else:
             self.skipTest("func_801E4FE8 is currently non-matching (in progress)")
 
+    def test_func_801FAEB8_matched(self):
+        """TDE test for func_801FAEB8 in C94E0 (in-race speedometer & RPM gauge display list emitter)."""
+        if self.is_function_decompiled("func_801FAEB8"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801FAEB8 is currently non-matching (in progress)")
+
+    def test_func_801FB514_matched(self):
+        """TDE test for func_801FB514 in C94E0 (lap time and record counter display list generator)."""
+        if self.is_function_decompiled("func_801FB514"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801FB514 is currently non-matching (in progress)")
+
+    def test_func_801FBFB4_matched(self):
+        """TDE test for func_801FBFB4 in C94E0 (minimap rider position markers & track path display list)."""
+        if self.is_function_decompiled("func_801FBFB4"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_801FBFB4 is currently non-matching (in progress)")
+
+
 
 
 

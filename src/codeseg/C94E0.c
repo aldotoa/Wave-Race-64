@@ -42,7 +42,40 @@ void func_801FBFB4(Gfx**);
 void func_801FAEB0(s32 arg0) {
 }
 
+extern s32 D_800D48DC;
+extern s32 D_80228B60[];
+extern s32 D_80228B70[];
+extern f32 D_80227A54;
+
+#ifdef NON_MATCHING
+void func_801FAEB8(Gfx** glistp) {
+    Gfx* g = *glistp;
+    s32 i;
+    s32 rider_idx;
+    struct RiderStruct* rider;
+
+    if (gPlayers <= 0) {
+        return;
+    }
+
+    for (i = 0; i < gPlayers; i++) {
+        rider_idx = (i == 0) ? D_800D48DC : D_800D48E0;
+        rider = &D_801C2938[rider_idx];
+
+        if (rider->unk308 != 0) {
+            rider->unk308 = 0;
+            D_80228B60[i] = 40;
+            D_80228B70[i] = 0;
+        }
+
+        gDPPipeSync(g++);
+    }
+
+    *glistp = g;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/C94E0/func_801FAEB8.s")
+#endif
 
 void func_801FB488(s32 arg0, s32 arg1, s32 arg2) {
     UnkStruct_80228AE0* var_v1;
@@ -72,9 +105,38 @@ void func_801FB488(s32 arg0, s32 arg1, s32 arg2) {
     D_80228D14 = D_80228D18 = 0;
 }
 
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/C94E0/func_801FB514.s")
+#ifdef NON_MATCHING
+void func_801FB514(Gfx** glistp) {
+    Gfx* g = *glistp;
+    s32 step = 2 - D_80228D18;
+    f32 f = (f32)step / 2.0f;
 
+    D_80228D18++;
+    if (D_80228D18 >= 2) {
+        D_80228D18 = 0;
+        D_80228D14 = (D_80228D14 + 1) & 3;
+    }
+
+    gDPPipeSync(g++);
+    *glistp = g;
+}
+#else
+#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/C94E0/func_801FB514.s")
+#endif
+
+extern Gfx D_10146B0[];
+
+#ifdef NON_MATCHING
+void func_801FBFB4(Gfx** glistp) {
+    Gfx* g = *glistp;
+
+    gSPDisplayList(g++, D_10146B0);
+    gDPPipeSync(g++);
+    *glistp = g;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/C94E0/func_801FBFB4.s")
+#endif
 
 void func_801FC39C(void) {
     Players player;
