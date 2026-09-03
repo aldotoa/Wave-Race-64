@@ -213,7 +213,57 @@ void func_8004F3D4(f32 arg0, f32 arg1, s32 arg2) {
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F520.s")
 
+#ifdef NON_MATCHING
+void func_8004F790(s32 arg0) {
+    s32 rand_arr[6];
+    f32 scale = (f32) arg0;
+    s32 i, j, k;
+    s32 sum;
+    s32 mask;
+
+    for (i = 5; i >= 0; i--) {
+        rand_arr[i] = SysUtils_Rand() & 0x7FFF;
+    }
+
+    for (j = 0; j < 0x200; j += 4) {
+        for (i = 0; i < 384; i++) {
+            sum = 0;
+            mask = 1;
+            for (k = 5; k >= 0; k--) {
+                if (mask & 1) {
+                    rand_arr[k] = SysUtils_Rand() & 0x7FFF;
+                }
+                sum += rand_arr[k];
+                mask <<= 1;
+            }
+            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f)) << 8;
+            D_80162420[(i * 128) + (j / 4)].unk2 = 0;
+        }
+    }
+
+    for (i = 5; i >= 0; i--) {
+        rand_arr[i] = SysUtils_Rand() & 0x7FFF;
+    }
+
+    for (i = 0; i < 384; i++) {
+        for (j = 0; j < 0x200; j += 4) {
+            sum = 0;
+            mask = 1;
+            for (k = 5; k >= 0; k--) {
+                if (mask & 1) {
+                    rand_arr[k] = SysUtils_Rand() & 0x7FFF;
+                }
+                sum += rand_arr[k];
+                mask <<= 1;
+            }
+            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f)) << 8;
+            D_80162420[(i * 128) + (j / 4)].unk2 = 0;
+        }
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F790.s")
+#endif
 
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004F9E0.s")
 

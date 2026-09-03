@@ -183,6 +183,14 @@ class TestWaterPhysics(unittest.TestCase):
         else:
             self.skipTest("func_8004D30C is currently non-matching (in progress)")
 
+    def test_func_8004F790_matched(self):
+        """TDE test for func_8004F790 (procedural wave heightfield noise generator)."""
+        if self.is_function_decompiled("func_8004F790"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_8004F790 is currently non-matching (in progress)")
+
+
 
 def run_tests():
     loader = unittest.TestLoader()
