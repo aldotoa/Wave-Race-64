@@ -23,16 +23,12 @@ void func_801E8800(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E8800.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801E8A84(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 arg10, u8 arg11, u8 arg12, u8 arg13, u8 arg14, u8 arg15, u8 arg16, u8 arg17) {
     arg0 = func_801E946C(arg0, arg5, (s32)arg6, (s32)arg7, (s32)arg8, (s32)arg9, (s32)arg10, (s32)arg11,
                          (s32)arg12, (s32)arg13, (s32)arg14, (s32)arg15, (s32)arg16, (s32)arg17);
     func_801E8B24(arg0, arg1, buf, arg3, arg4);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E8A84.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801E8B24(Gfx* glistp, s32 a1, char* buf, s32 a3, s32 a4) {
@@ -54,9 +50,18 @@ void func_801E92FC(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5,
 extern s32 D_80226E2C;
 extern s32 D_80228A44;
 extern s32 D_80226E30[];
-extern s32 D_80228A78[];
 
-#ifdef NON_MATCHING
+typedef struct UnkStruct_801EAF78_s {
+    s16 unk0;
+    s16 unk2;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+} UnkStruct_801EAF78;
+
+extern UnkStruct_801EAF78 D_80228A78;
+
 void func_801E93B4(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 arg10, u8 arg11, u8 arg12, u8 arg13, u8 arg14, u8 arg15, u8 arg16, u8 arg17, f32 scale) {
     D_80226E24 = scale;
@@ -65,9 +70,6 @@ void func_801E93B4(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5,
     D_80226E28 = 1;
     func_801E9858(arg0, arg1, buf, arg3, arg4);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E93B4.s")
-#endif
 
 #ifdef NON_MATCHING
 Gfx* func_801E946C(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10, s32 a11, s32 a12, s32 a13) {
@@ -144,24 +146,22 @@ void func_801EADB0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EADB0.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EAF78(void) {
-    s32 i;
-    for (i = 0; i < 5; i++) {
-        D_80228A78[i] = D_80226E30[i];
+    D_80228A78 = *(UnkStruct_801EAF78*)D_80226E30;
+}
+
+void func_801EAFB4(void) {
+    if (D_80228A78.unk0 != 0) {
+        D_80228A78.unk4++;
+        if (D_80228A78.unk4 >= D_80228A78.unk8) {
+            D_80228A78.unk4 = 0;
+            D_80228A78.unk2++;
+            if (D_80228A78.unk2 == 4) {
+                D_80228A78.unk2 = 0;
+            }
+        }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EAF78.s")
-#endif
-
-#ifdef NON_MATCHING
-void func_801EAFB4(void) {
-    /* Font kerning and inter-character spacing animator */
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EAFB4.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801EB00C(void) {

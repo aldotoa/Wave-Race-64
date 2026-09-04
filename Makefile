@@ -14,6 +14,8 @@ find-command = $(shell which $(1) 2>/dev/null)
 COMPARE ?= 1
 # If NON_MATCHING is 1, define the NON_MATCHING C flag when building
 NON_MATCHING ?= 0
+# Build native macOS Apple Silicon standalone executable
+TARGET_MAC ?= 0
 # if WERROR is 1, pass -Werror to CC_CHECK, so warnings would be treated as errors
 WERROR ?= 0
 # Keep .mdebug section in build
@@ -40,6 +42,7 @@ PRINT ?= printf
 
 # Set prefix to mips binutils binaries (mips-linux-gnu-ld => 'mips-linux-gnu-') - Change at your own risk!
 # Auto-detect prefix for MIPS toolchain
+ifeq ($(TARGET_MAC),0)
 ifneq      ($(call find-command,mips-linux-gnu-ld),)
   MIPS_BINUTILS_PREFIX := mips-linux-gnu-
 else ifneq ($(call find-command,mips64-linux-gnu-ld),)
@@ -48,6 +51,7 @@ else ifneq ($(call find-command,mips64-elf-ld),)
   MIPS_BINUTILS_PREFIX := mips64-elf-
 else
   $(error Unable to detect a suitable MIPS toolchain installed)
+endif
 endif
 
 VERSION ?= us
@@ -198,8 +202,10 @@ define print
 endef
 
 #### Tools ####
+ifeq ($(TARGET_MAC),0)
 ifneq ($(shell type $(MIPS_BINUTILS_PREFIX)ld >/dev/null 2>/dev/null; echo $$?), 0)
 $(error Unable to find $(MIPS_BINUTILS_PREFIX)ld. Please install or build MIPS binutils, commonly mips-linux-gnu. (or set MIPS_BINUTILS_PREFIX if your MIPS binutils install uses another prefix))
+endif
 endif
 
 
@@ -403,7 +409,13 @@ else # GCC
 
 endif
 
-all: finalrom
+ifeq ($(TARGET_MAC),1)
+DEFAULT_TARGET := mac
+else
+DEFAULT_TARGET := finalrom
+endif
+
+all: $(DEFAULT_TARGET)
 
 toolchain:
 	@$(MAKE) -s -C $(TOOLS)
@@ -547,4 +559,57 @@ build/src/libultra/libc/ll.o: src/libultra/libc/ll.c
 # Print target for debugging
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
 
-.PHONY: all finalrom clean init extract expected format checkformat assets context disasm toolchain
+#### Native macOS Apple Silicon Standalone Target (TARGET_MAC=1) ####
+
+MAC_BUILD_DIR := $(BUILD_DIR)/mac
+MAC_CC        := clang
+MAC_ARCH      := -arch arm64
+MAC_CFLAGS    := $(MAC_ARCH) -O2 -fms-extensions -std=gnu89 \
+                 -Wno-implicit-function-declaration -Wno-incompatible-pointer-types \
+                 -Wno-pointer-to-int-cast -Wno-int-conversion -Wno-unused-variable \
+                 -DF3D_OLD -D_LANGUAGE_C -D_FINALROM -DTARGET_MAC=1 -DNON_MATCHING=1 -DAVOID_UB=1 \
+                 -DIS_64_BIT=1 -DIS_BIG_ENDIAN=0
+
+MAC_INCLUDES  := -Iport/include -Iport/ultra64 -Iinclude -Iinclude/PR
+
+MAC_PORT_SRCS := port/main.c \
+                 port/ultra64/os_thread.c \
+                 port/ultra64/os_message.c \
+                 port/ultra64/os_time.c \
+                 port/ultra64/os_stubs.c \
+                 port/ultra64/rom_assets.c
+
+MAC_GAME_SRCS := src/sys/sys_utils.c \
+                 src/codeseg/wr64_pause_menu.c \
+                 src/codeseg/wr64_fade.c \
+                 src/game/code_5480.c \
+                 src/game/core/wr64_save.c
+
+MAC_PORT_OBJS := $(patsubst port/%.c,$(MAC_BUILD_DIR)/port/%.o,$(MAC_PORT_SRCS))
+MAC_GAME_OBJS := $(patsubst src/%.c,$(MAC_BUILD_DIR)/src/%.o,$(MAC_GAME_SRCS))
+MAC_LIBGAME   := $(MAC_BUILD_DIR)/libgame_mac.a
+MAC_TARGET    := $(MAC_BUILD_DIR)/waverace64_mac
+
+$(MAC_BUILD_DIR)/port/%.o: port/%.c
+	@mkdir -p $(dir $@)
+	$(call print,Compiling Native Port (arm64):,$<,$@)
+	$(V)$(MAC_CC) -c $(MAC_CFLAGS) $(MAC_INCLUDES) -o $@ $<
+
+$(MAC_BUILD_DIR)/src/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(call print,Compiling Native Game (arm64):,$<,$@)
+	$(V)$(MAC_CC) -c $(MAC_CFLAGS) $(MAC_INCLUDES) -Iinclude/libc -Isrc -Isrc/game -Isrc/sys -o $@ $<
+
+$(MAC_LIBGAME): $(MAC_GAME_OBJS)
+	$(call print,Archiving Native Game Library:,$^,$@)
+	$(V)ar rcs $@ $^
+
+$(MAC_TARGET): $(MAC_PORT_OBJS)
+	$(call print,Linking Native Executable:,$^,$@)
+	$(V)$(MAC_CC) $(MAC_ARCH) $^ -o $@
+	@printf "$(GREEN)Successfully built native macOS Apple Silicon executable: $(BLUE)$@$(NO_COL)\n"
+
+mac: $(MAC_TARGET) $(MAC_LIBGAME)
+	@printf "$(GREEN)Successfully built Wave Race 64 Native macOS targets.$(NO_COL)\n"
+
+.PHONY: all finalrom clean init extract expected format checkformat assets context disasm toolchain mac

@@ -6,6 +6,7 @@ tools/ido5.3_recomp/
 .vscode/
 __pycache__/
 .venv/
+.DS_Store
 
 # Ignore the baserom so it doesn't get accidentally added
 *.z64

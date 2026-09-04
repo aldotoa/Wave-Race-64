@@ -41,21 +41,32 @@ void func_i8_802C6ADC(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C6ADC.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_i8_802C6D58(void) {
-    /* Stunt mode bonus point award animation */
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C6D58.s")
-#endif
+    s32 i = 0;
+    s8 *ptr = &D_802C7548;
 
-#ifdef NON_MATCHING
-void func_i8_802C6DA8(void) {
-    /* Stunt high score rank evaluator */
+    D_802C7564 = 0;
+    do {
+        *ptr = 0;
+        ptr++;
+        i++;
+    } while (i < 11);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C6DA8.s")
-#endif
+
+void func_i8_802C6DA8(void) {
+    if (D_802C7564 > 0) {
+        s8 *src = &D_802C7548 + D_802C7564;
+        s8 *dst;
+
+        D_802C7564--;
+        dst = &D_802C7548 + D_802C7564;
+
+        while (*src != 0) {
+            *dst++ = *src++;
+        }
+        *dst = 0;
+    }
+}
 
 void func_i8_802C6E00(void) {
     if ((D_802C7548) != 0) {
@@ -72,13 +83,27 @@ void func_i8_802C6E68(void* arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_i8_802C6EB8(void) {
-    /* Stunt initials and score entry commit */
+extern u8 D_80226DC4[];
+s32 func_801E9B04(s32, s32);
+
+s32 func_i8_802C6EB8(s8 *str, s32 arg1) {
+    s32 total = 0;
+    s32 i = 0;
+
+    while (str[i] != 0) {
+        s32 glyph = func_801E9B04(arg1, str[i]);
+        s32 width;
+
+        if (glyph == 0xFF) {
+            width = 12;
+        } else {
+            width = D_80226DC4[glyph];
+        }
+        total += width;
+        i++;
+    }
+    return total;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C6EB8.s")
-#endif
 
 void func_i8_802C6F4C(void) {
     gPrevGameState = gGameState;

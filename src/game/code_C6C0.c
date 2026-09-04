@@ -2287,13 +2287,16 @@ void func_80067810(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067810.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_80067BFC(void) {
-    /* Camera cut transition blend accumulator */
+Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2);
+
+Gfx* func_80067BFC(Gfx* glistp, s32 arg1, s32 arg2) {
+    glistp = func_80067810(glistp, arg1, arg2);
+    gSPEndDisplayList(glistp++);
+    if (D_80193D5C[arg2].unk0.h != 0) {
+        glistp += 6;
+    }
+    return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067BFC.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_80067C6C(void) {
@@ -2366,14 +2369,18 @@ s32 func_8006931C(UnkStruct_80192690* arg0, Mtx* arg1) {
     return 0;
 }
 
-#ifdef NON_MATCHING
+extern u8 D_3000000[];
+extern Gfx D_10068B0[];
+
 Gfx* func_800694B8(Gfx* arg0, s32 arg1) {
-    /* Camera state reset on race restart */
+    if (D_80192690[arg1].unkC78 < 4) {
+        if (func_8006931C(&D_80192690[arg1], (Mtx*)((u8*)gGfxPool + 0xF808 + (arg1 * sizeof(Mtx)))) == 0) {
+            gSPMatrix(arg0++, (u8*)D_3000000 + 0xF808 + (arg1 * sizeof(Mtx)), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(arg0++, D_10068B0);
+        }
+    }
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800694B8.s")
-#endif
 
 Gfx* func_80069594(Gfx* arg0) {
     UnkStruct_80192690* temp_v1;
@@ -2408,13 +2415,13 @@ void func_80069740(UnkStruct_80069740* arg0, UnkStruct_80069740* arg1) {
     *arg0 = *arg1;
 }
 
-#ifdef NON_MATCHING
-void func_8006977C(void) {
-    /* Camera debug telemetry overlay generator */
+typedef struct UnkStruct_8006977C_s {
+    s32 pad[3];
+} UnkStruct_8006977C;
+
+void func_8006977C(void* arg0, s32 arg1) {
+    *(UnkStruct_8006977C*)arg0 = *(UnkStruct_8006977C*)arg1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006977C.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_80069798(void) {

@@ -642,14 +642,17 @@ s32 func_80099A00(UnkStruct_801CF060* arg0, void* arg1, void* arg2, s32 arg3) {
     return sp28;
 }
 
-#ifdef NON_MATCHING
-void func_80099AD8(s8 arg0, void* arg1, f32 arg2, f32 arg3, f32 arg4) {
-    /* HUD buoy indicator matrix transform */
-    
+void func_80099AD8(s32 arg0, void* arg1, f32 arg2, f32 arg3, f32 arg4) {
+    if (arg0 >= 0 && arg0 < 3) {
+        u8* ptr = (u8*)arg1 + (arg0 * sizeof(f32));
+
+        if (*(f32*)(ptr + 0x44) < arg2) {
+            *(f32*)(ptr + 0x44) = arg2;
+            *(f32*)(ptr + 0x68) = arg3;
+            *(f32*)(ptr + 0x5C) = arg4;
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_80099AD8.s")
-#endif
 
 void func_80099B20(f32* arg0, f32 arg1) {
     if (arg1 == 180.0f) {

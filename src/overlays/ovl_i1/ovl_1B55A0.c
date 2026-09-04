@@ -96,9 +96,29 @@ void func_i1_802C6B00(void) {
     }
 }
 
+extern s32 D_800D817C;
+extern s32 D_802C96A0;
+extern s32 D_802C96A4;
+
 #ifdef NON_MATCHING
-void func_i1_802C6B38(void) {
-    /* Course restart and reset coordinator */
+s32 func_i1_802C6B38(s32 arg0) {
+    if (gGameState != 0x2A) {
+        if (gGameState == 0x29) {
+            if (D_802C96A4 < 30) {
+                if (D_801CE6F0 == 1) {
+                    D_800D817C = 1;
+                }
+            }
+            if (++D_802C96A4 >= 61) {
+                if (!D_802C96A0) {
+                    D_802C96A0 = 1;
+                }
+            }
+        }
+    } else if (D_801CE6F0 == 1) {
+        return arg0;
+    }
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6B38.s")

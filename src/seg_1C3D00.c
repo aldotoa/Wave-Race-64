@@ -32,10 +32,61 @@ Gfx* func_1C3D00_802C5800(Gfx* gDisplayListHead) {
     return gDisplayListHead;
 }
 
+typedef struct {
+    s16 unk0;
+    s16 unk2;
+    s32 unk4;
+} Struct_1C3D00_802C5EB0;
+
+extern Struct_1C3D00_802C5EB0 D_1C3D00_802C5EB0[];
+extern s32 D_801CB3F0[];
+Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
+Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
+
 #ifdef NON_MATCHING
-Gfx* func_1C3D00_802C58DC(Gfx* arg0) {
-    /* Segment 1C3D00 water overlay display list builder */
-    return arg0;
+Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
+    Struct_1C3D00_802C5EB0* ptr;
+    s32 i;
+    char sp60[0x20];
+
+    gSPDisplayList(gDisplayListHead++, D_106F628);
+    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x35, 0x26, 0xD6, 0x1A);
+    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, 0x49, 0xAE, 0x10);
+    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, 0x5A, 0xAE, 0x19);
+
+    for (i = 0x8C; i < 0xD4; i += 0x12) {
+        gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, i, 0xAE, 0x10);
+    }
+
+    gDisplayListHead = func_801E946C(gDisplayListHead, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gDisplayListHead = func_801E3EE0(gDisplayListHead, 2, 0x12, 0x46, 0x2A, 0);
+    gDisplayListHead = func_801E9858(gDisplayListHead, 2, "1P", 0x63, 0x4B);
+    gDisplayListHead = func_801E9858(gDisplayListHead, 2, "2P", 0xCA, 0x4B);
+    gDisplayListHead = func_801E9858(gDisplayListHead, 2, "-", 0x99, 0x5F);
+    gDisplayListHead = func_801E3EE0(gDisplayListHead, 0, 0x15, 0x90, 0x4D, 0);
+    gDisplayListHead = func_801EB00C(gDisplayListHead, 0, D_801CB3F0[0], 0x63, 0x5C);
+
+    sprintf(sp60, "%d", D_801CB3F0[1]);
+
+    gDisplayListHead = func_801E9858(gDisplayListHead, 0, sp60, 0xC1, 0x5C);
+
+    for (ptr = D_1C3D00_802C5EB0, i = 0; i < 4; i++, ptr++) {
+        if (i != D_802C5EF0) {
+            gDisplayListHead = func_801E3EE0(
+                gDisplayListHead, 1,
+                ptr->unk4,
+                ptr->unk0 + 0x8A,
+                i * 0x12 + 0x8F, 0);
+        }
+    }
+
+    gDisplayListHead = func_801E946C(gDisplayListHead, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    ptr = &D_1C3D00_802C5EB0[D_802C5EF0];
+    return func_801E3EE0(
+        gDisplayListHead, 1,
+        ptr->unk4,
+        ptr->unk0 + 0x8A,
+        D_802C5EF0 * 0x12 + 0x8F, 0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/seg_1C3D00/func_1C3D00_802C58DC.s")

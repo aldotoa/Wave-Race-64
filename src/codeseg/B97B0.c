@@ -60,13 +60,21 @@ void func_801EC20C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC20C.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EC304(void) {
-    /* High score and record table screen transition */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 0x3C;
+    D_801CE638 = 7;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    FadeTransition_SetProps(2, 4, 0);
+    func_801E6A4C(0, 0);
+    D_800E5134 = 0;
+    func_800C21F4(9, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC304.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801EC3AC(void) {
@@ -248,29 +256,64 @@ void func_801ECB98(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECB98.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801ECE50(void) {
-    /* Race restart state machine transition */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 0x36;
+    D_801CE638 = 0x12;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    FadeTransition_SetProps(4, 1, 0);
+    func_801E6A4C(0, 0);
+    gRiderGameModes = 1;
+    D_801CE64C = 1;
+    gGameModeState = 0;
+    gCameraPerspective->viewMode = 1;
+    osViBlack(true);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECE50.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801ECF18(void) {
-    /* Race retirement / quit to main menu transition */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 0x38;
+    D_801CE638 = 0x16;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    gRiderGameModes = 1;
+    D_801CE64C = 1;
+    gGameModeState = 0;
+    func_80096960(2, 0, 1, 2, 3);
+    FadeTransition_SetProps(4, 1, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective->viewMode = 1;
+    func_800C21F4(3, 0);
+    osViBlack(true);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECF18.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801ED004(void) {
-    /* Course change / course select transition */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 0x39;
+    D_801CE638 = 0x17;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    gRiderGameModes = 1;
+    D_801CE64C = 1;
+    gGameModeState = 0;
+    gCameraPerspective->viewMode = 1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ED004.s")
-#endif
 
 f32 func_801ED090(f32 arg0) {
     if ((arg0 < -1.0f) || (arg0 > 1.0f)) {
@@ -623,11 +666,15 @@ void func_801EE040(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE040.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801EE228(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE228.s")
-#endif
+void func_801EE040(float (*)[4], f32, f32, f32, f32);
+
+void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+    MtxF mtx;
+
+    func_801EE040((float (*)[4]) & mtx, arg1, arg2, arg3, arg4);
+
+    _MtxF_to_Mtx(&mtx, arg0);
+}
 
 #ifdef NON_MATCHING
 void func_801EE274(void) {}
@@ -635,11 +682,14 @@ void func_801EE274(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE274.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801EE46C(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE46C.s")
-#endif
+void func_801EE274(float (*)[4], f32, f32, f32, f32, f32, f32, f32);
+
+void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
+    MtxF mtx;
+
+    func_801EE274((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    _MtxF_to_Mtx(&mtx, arg0);
+}
 
 #ifdef NON_MATCHING
 void func_801EE4D0(void) {}
@@ -647,11 +697,14 @@ void func_801EE4D0(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE4D0.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801EE698(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE698.s")
-#endif
+void func_801EE4D0(float (*)[4], f32, f32, f32, f32, f32, f32);
+
+void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    MtxF mtx;
+
+    func_801EE4D0((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    _MtxF_to_Mtx(&mtx, arg0);
+}
 
 #ifdef NON_MATCHING
 void func_801EE6F4(void) {}
@@ -659,23 +712,46 @@ void func_801EE6F4(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE6F4.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801EE8C0(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE8C0.s")
-#endif
+void func_801EE6F4(float (*)[4], f32, f32, f32, f32, f32, f32);
 
-#ifdef NON_MATCHING
-void func_801EE91C(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE91C.s")
-#endif
+void func_801EE8C0(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    MtxF mtx;
 
-#ifdef NON_MATCHING
-void func_801EE97C(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE97C.s")
-#endif
+    func_801EE6F4((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    _MtxF_to_Mtx(&mtx, arg0);
+}
+
+void func_801EE91C(MtxF_t mf, f32 x, f32 y, f32 z) {
+    mf[0][0] = x;
+    mf[1][1] = y;
+    mf[2][2] = z;
+
+    mf[1][0] = 0.0f;
+    mf[2][0] = 0.0f;
+
+    mf[0][1] = 0.0f;
+    mf[2][1] = 0.0f;
+
+    mf[0][2] = 0.0f;
+    mf[1][2] = 0.0f;
+
+    mf[0][3] = 0.0f;
+    mf[1][3] = 0.0f;
+    mf[2][3] = 0.0f;
+
+    mf[3][0] = 0.0f;
+    mf[3][1] = 0.0f;
+    mf[3][2] = 0.0f;
+
+    mf[3][3] = 1.0f;
+}
+
+void func_801EE97C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
+    MtxF sp18;
+
+    func_801EE91C((float (*)[4]) &sp18, arg1, arg2, arg3);
+    _MtxF_to_Mtx(&sp18, arg0);
+}
 
 #ifdef NON_MATCHING
 void func_801EE9C0(void) {}

@@ -22,7 +22,7 @@ void func_80071E70(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_800735EC(void* arg0, s32 arg1) {
+void func_800735EC(UnkStruct_801AEE20* arg0, s32 arg1) {
     /* Buoyancy force accumulator across floating course buoys */
 }
 #else
@@ -37,14 +37,25 @@ void func_80073E6C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_80073E6C.s")
 #endif
 
-#ifdef NON_MATCHING
+extern f32 D_801C1CE8;
+extern f32 D_801C1CEC;
+extern f32 D_801C1CF8;
+extern f32 D_801C1CFC;
+extern u8 D_801C1D00[];
+extern s32 D_801C1F00[4][4];
+extern s32 D_801C1F40[4][4];
+
 s32 func_800741A4(f32 arg0, f32 arg1, u8** arg2) {
-    /* Multi-point collision intersection evaluator with course obstacles */
-    return 0;
+    s32 row = (s32) (((arg0 - D_801C1CE8) / D_801C1CF8) * 4.0f);
+    s32 col = (s32) (((arg1 - D_801C1CEC) / D_801C1CFC) * 4.0f);
+
+    if (row < 0 || row >= 4 || col < 0 || col >= 4) {
+        return 0;
+    }
+
+    *arg2 = (u8*) &D_801C1D00 + D_801C1F00[row][col];
+    return D_801C1F40[row][col];
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2C670/func_800741A4.s")
-#endif
 
 s32 func_80074264(f32 arg0, f32 arg1) {
     s32 i;

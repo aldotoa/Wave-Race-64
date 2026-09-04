@@ -72,11 +72,43 @@ void func_i13_802C6CE4(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6CE4.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i13_802C6E48(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6E48.s")
-#endif
+extern s32 D_i13_802C8D54;
+extern s32 D_i13_802C8D74;
+extern s32 D_i13_802C8D80;
+extern s32 D_i13_802C8D84;
+s32 func_8007D2D4(s32);
+s32 func_8007D614(s32);
+void func_800C3E6C(s32);
+
+s32 func_i13_802C6E48(void) {
+    s32 temp = 0;
+
+    if (D_i13_802C8D80 == 0) {
+        return 0;
+    }
+
+    D_i13_802C8D80 = 0;
+    D_i13_802C8D84 = 0;
+
+    if (D_i13_802C8D54 == 0) {
+        D_i13_802C8D74 = func_8007D2D4(5);
+    } else {
+        D_i13_802C8D74 = func_8007D614(5);
+    }
+
+    if (D_i13_802C8D74 == 0) {
+        D_801CE640 = 1;
+        temp = 1;
+    } else {
+        D_801CE640 = 3;
+    }
+
+    if (temp != 0) {
+        func_800C3E6C(1);
+    }
+
+    return 0;
+}
 
 #ifdef NON_MATCHING
 void func_i13_802C6F0C(void) {}
@@ -122,11 +154,31 @@ void func_i13_802C81AC(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C81AC.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i13_802C82A4(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C82A4.s")
-#endif
+extern s32 D_i13_802C8D80;
+extern s32 D_i13_802C8D84;
+extern s32 D_802C8E90;
+extern s32 D_802C8E94;
+extern s32 D_802C8E98;
+extern s32 D_802C8E9C;
+
+void func_i13_802C82A4(s32 arg0) {
+    D_i13_802C8D80 = 0;
+    D_i13_802C8D84 = 1;
+    D_802C8E90 = 0x1C;
+    D_802C8E94 = 0x44;
+    D_802C8E98 = 0;
+    switch (arg0) {
+        case 2:
+            D_802C8E9C = 5;
+            break;
+        case 3:
+            D_802C8E9C = 7;
+            break;
+        case 4:
+            D_802C8E9C = 8;
+            break;
+    }
+}
 
 #ifdef NON_MATCHING
 void func_i13_802C832C(void) {}
@@ -140,8 +192,15 @@ void func_i13_802C8484(void) {}
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C8484.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i13_802C8CBC(void) {}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C8CBC.s")
-#endif
+void func_i13_802C8CBC(void) {
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 0x41;
+    D_801CE638 = 0xB;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    FadeTransition_SetProps(1, 4, 0);
+}
