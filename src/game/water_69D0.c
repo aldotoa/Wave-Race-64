@@ -101,8 +101,14 @@ void func_8004C998(s32 arg0, Vtx* arg1) {
             dst_vtx[s1].ob[2] = src_vtx[idx].ob[2] - (s16) (f_scale * *(f32*) ((u8*) cam + 0xF4));
         }
 
-        dst_vtx[s1].tc[0] = SysUtils_Round((((f32) dst_vtx[s1].ob[0] - *(f32*) ((u8*) cam + 0x4C)) * fs0 + *(f32*) ((u8*) cam + 0x4C)) / D_801924CC) + D_800D4778;
-        dst_vtx[s1].tc[1] = SysUtils_Round((((f32) dst_vtx[s1].ob[2] - *(f32*) ((u8*) cam + 0x54)) * fs0 + *(f32*) ((u8*) cam + 0x54)) / D_801924D0) + D_800D4774;
+        dst_vtx[s1].tc[0] =
+            SysUtils_Round((((f32) dst_vtx[s1].ob[0] - *(f32*) ((u8*) cam + 0x4C)) * fs0 + *(f32*) ((u8*) cam + 0x4C)) /
+                           D_801924CC) +
+            D_800D4778;
+        dst_vtx[s1].tc[1] =
+            SysUtils_Round((((f32) dst_vtx[s1].ob[2] - *(f32*) ((u8*) cam + 0x54)) * fs0 + *(f32*) ((u8*) cam + 0x54)) /
+                           D_801924D0) +
+            D_800D4774;
     }
 }
 #else
@@ -392,12 +398,13 @@ void func_8004D628(struct UnkStruct_8004B0F8* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004D628.s")
 #endif
 
-#define APPLY_FRICTION(pt) { \
-    f32 dot = (pt->unkC * dir_x) + (pt->unk14 * dir_z); \
-    pt->unkC = (dot * dir_x * friction_scale) + (pt->unkC * arg0->unk14); \
-    pt->unk10 *= arg0->unk10; \
-    pt->unk14 = (dot * dir_z * friction_scale) + (pt->unk14 * arg0->unk14); \
-}
+#define APPLY_FRICTION(pt)                                                      \
+    {                                                                           \
+        f32 dot = (pt->unkC * dir_x) + (pt->unk14 * dir_z);                     \
+        pt->unkC = (dot * dir_x * friction_scale) + (pt->unkC * arg0->unk14);   \
+        pt->unk10 *= arg0->unk10;                                               \
+        pt->unk14 = (dot * dir_z * friction_scale) + (pt->unk14 * arg0->unk14); \
+    }
 
 #ifdef NON_MATCHING
 void func_8004DAF0(struct UnkStruct_8004B0F8* arg0) {
@@ -937,7 +944,8 @@ void func_8004F790(s32 arg0) {
                 sum += rand_arr[k];
                 mask <<= 1;
             }
-            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f)) << 8;
+            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f))
+                                                   << 8;
             D_80162420[(i * 128) + (j / 4)].unk2 = 0;
         }
     }
@@ -957,7 +965,8 @@ void func_8004F790(s32 arg0) {
                 sum += rand_arr[k];
                 mask <<= 1;
             }
-            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f)) << 8;
+            D_80162420[(i * 128) + (j / 4)].unk0 = SysUtils_Round(scale * ((((f32) sum / 6.0f) / 16383.5f) - 1.0f))
+                                                   << 8;
             D_80162420[(i * 128) + (j / 4)].unk2 = 0;
         }
     }

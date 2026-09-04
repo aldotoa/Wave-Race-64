@@ -604,8 +604,8 @@ s32 func_8007C31C(void) {
         return 3;
     }
 
-    if (osEepromLongWrite(&D_801540D0, ((u32) ((u32) D_801AEA28 - (u32) &D_801AEA18[0].unk0) >> 3),
-                          D_801AEA28, 64) != 0) {
+    if (osEepromLongWrite(&D_801540D0, ((u32) ((u32) D_801AEA28 - (u32) &D_801AEA18[0].unk0) >> 3), D_801AEA28, 64) !=
+        0) {
         return 3;
     }
 

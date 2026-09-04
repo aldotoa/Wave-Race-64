@@ -8,7 +8,6 @@ extern s32 D_802C7718;
 #ifdef NON_MATCHING
 void func_1B1FB0_802C5800(void) {
     /* Flight mode debug camera controller */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C5800.s")
@@ -17,7 +16,6 @@ void func_1B1FB0_802C5800(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C5BA4(void) {
     /* Flight mode terrain height lookup */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C5BA4.s")
@@ -26,7 +24,6 @@ void func_1B1FB0_802C5BA4(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C5DF4(void) {
     /* Flight velocity integration and aerodynamic lift */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C5DF4.s")
@@ -35,7 +32,6 @@ void func_1B1FB0_802C5DF4(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C62E4(void) {
     /* Debug flight matrix transform setup */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C62E4.s")
@@ -44,7 +40,6 @@ void func_1B1FB0_802C62E4(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C67BC(void* arg0, s32 arg1) {
     /* Debug flight collision boundary detector */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C67BC.s")
@@ -53,7 +48,6 @@ void func_1B1FB0_802C67BC(void* arg0, s32 arg1) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C6970(void) {
     /* Flight mode player input interpreter */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6970.s")
@@ -62,7 +56,6 @@ void func_1B1FB0_802C6970(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C6C1C(void) {
     /* Debug flight HUD coordinates */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6C1C.s")
@@ -71,7 +64,6 @@ void func_1B1FB0_802C6C1C(void) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C6E40(void* arg0, s32 arg1) {
     /* Flight telemetry state update */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6E40.s")
@@ -80,7 +72,6 @@ void func_1B1FB0_802C6E40(void* arg0, s32 arg1) {
 #ifdef NON_MATCHING
 void func_1B1FB0_802C6FF8(void) {
     /* Onscreen debug font glyph index lookup */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6FF8.s")

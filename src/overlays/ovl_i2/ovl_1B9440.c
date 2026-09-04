@@ -28,7 +28,9 @@ void func_i2_802C5AE4(void) {
         D_801CE6F4[i] = i;
     }
 
-    for (i = 0; i < 4; i++) D_802C8C70[i] = 0;
+    for (i = 0; i < 4; i++) {
+        D_802C8C70[i] = 0;
+}
     D_802C8C68 = 0;
     D_802C8C6A = 0;
 }
@@ -133,7 +135,7 @@ void* func_i2_802C5E28(void) {
 
 s32 func_i2_802C676C(s32 player, s32 param) {
     s32 ret = 1;
-    UnkStruct_func_i8_802C6E00 (*arr)[4] = (UnkStruct_func_i8_802C6E00 (*)[4]) D_801CB298;
+    UnkStruct_func_i8_802C6E00(*arr)[4] = (UnkStruct_func_i8_802C6E00(*)[4]) D_801CB298;
     s32 idx = D_i2_802C8BD8[D_800DA9C0[player]];
 
     arr[player][idx].unk_B[param]--;
@@ -146,7 +148,7 @@ s32 func_i2_802C676C(s32 player, s32 param) {
 
 s32 func_i2_802C67E4(s32 player, s32 param) {
     s32 ret = 1;
-    UnkStruct_func_i8_802C6E00 (*arr)[4] = (UnkStruct_func_i8_802C6E00 (*)[4]) D_801CB298;
+    UnkStruct_func_i8_802C6E00(*arr)[4] = (UnkStruct_func_i8_802C6E00(*)[4]) D_801CB298;
     s32 idx = D_i2_802C8BD8[D_800DA9C0[player]];
 
     arr[player][idx].unk_B[param]++;
@@ -215,10 +217,10 @@ Gfx* func_i2_802C86E4(Gfx* gdl, s32 x, s32 y) {
             height = 2;
         }
 
-        gDPLoadTextureTile(gdl++, (u8*)img + (tex_offset << 1), G_IM_FMT_RGBA, G_IM_SIZ_16b, 130, 0,
-                           0, 0, 130 - 1, height - 1, 0,
-                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gdl++, (x + 8) << 2, y2 << 2, (x + 138) << 2, (cur_y + height + 20) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gDPLoadTextureTile(gdl++, (u8*) img + (tex_offset << 1), G_IM_FMT_RGBA, G_IM_SIZ_16b, 130, 0, 0, 0, 130 - 1,
+                           height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, (x + 8) << 2, y2 << 2, (x + 138) << 2, (cur_y + height + 20) << 2, G_TX_RENDERTILE,
+                            0, 0, 1 << 10, 1 << 10);
     }
 
     return gdl;

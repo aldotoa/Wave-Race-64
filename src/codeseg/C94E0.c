@@ -109,7 +109,7 @@ void func_801FB488(s32 arg0, s32 arg1, s32 arg2) {
 void func_801FB514(Gfx** glistp) {
     Gfx* g = *glistp;
     s32 step = 2 - D_80228D18;
-    f32 f = (f32)step / 2.0f;
+    f32 f = (f32) step / 2.0f;
 
     D_80228D18++;
     if (D_80228D18 >= 2) {

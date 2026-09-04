@@ -208,7 +208,7 @@ void func_8009A04C(s32, s16);
 s32 func_800C85C0(OSMesgQueue*, void*);
 s32 func_800C8C10(void*, s32*);
 s32 func_800C9F60(void*, s32, void*);
-void func_801EE46C(Mtx* gdl, f32 arg1, f32 arg2,
+void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2,
 f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7);
 void configSignalRectangle(Gfx**);
 Gfx* func_80068538(Gfx*);         

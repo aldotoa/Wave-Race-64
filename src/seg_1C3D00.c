@@ -58,7 +58,8 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
         gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, i, 0xAE, 0x10);
     }
 
-    gDisplayListHead = func_801E946C(gDisplayListHead, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gDisplayListHead =
+        func_801E946C(gDisplayListHead, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     gDisplayListHead = func_801E3EE0(gDisplayListHead, 2, 0x12, 0x46, 0x2A, 0);
     gDisplayListHead = func_801E9858(gDisplayListHead, 2, "1P", 0x63, 0x4B);
     gDisplayListHead = func_801E9858(gDisplayListHead, 2, "2P", 0xCA, 0x4B);
@@ -72,21 +73,14 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
 
     for (ptr = D_1C3D00_802C5EB0, i = 0; i < 4; i++, ptr++) {
         if (i != D_802C5EF0) {
-            gDisplayListHead = func_801E3EE0(
-                gDisplayListHead, 1,
-                ptr->unk4,
-                ptr->unk0 + 0x8A,
-                i * 0x12 + 0x8F, 0);
+            gDisplayListHead = func_801E3EE0(gDisplayListHead, 1, ptr->unk4, ptr->unk0 + 0x8A, i * 0x12 + 0x8F, 0);
         }
     }
 
-    gDisplayListHead = func_801E946C(gDisplayListHead, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gDisplayListHead =
+        func_801E946C(gDisplayListHead, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     ptr = &D_1C3D00_802C5EB0[D_802C5EF0];
-    return func_801E3EE0(
-        gDisplayListHead, 1,
-        ptr->unk4,
-        ptr->unk0 + 0x8A,
-        D_802C5EF0 * 0x12 + 0x8F, 0);
+    return func_801E3EE0(gDisplayListHead, 1, ptr->unk4, ptr->unk0 + 0x8A, D_802C5EF0 * 0x12 + 0x8F, 0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/seg_1C3D00/func_1C3D00_802C58DC.s")

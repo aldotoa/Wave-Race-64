@@ -2374,8 +2374,8 @@ extern Gfx D_10068B0[];
 
 Gfx* func_800694B8(Gfx* arg0, s32 arg1) {
     if (D_80192690[arg1].unkC78 < 4) {
-        if (func_8006931C(&D_80192690[arg1], (Mtx*)((u8*)gGfxPool + 0xF808 + (arg1 * sizeof(Mtx)))) == 0) {
-            gSPMatrix(arg0++, (u8*)D_3000000 + 0xF808 + (arg1 * sizeof(Mtx)), G_MTX_LOAD | G_MTX_NOPUSH);
+        if (func_8006931C(&D_80192690[arg1], (Mtx*) ((u8*) gGfxPool + 0xF808 + (arg1 * sizeof(Mtx)))) == 0) {
+            gSPMatrix(arg0++, (u8*) D_3000000 + 0xF808 + (arg1 * sizeof(Mtx)), G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(arg0++, D_10068B0);
         }
     }
@@ -2420,7 +2420,7 @@ typedef struct UnkStruct_8006977C_s {
 } UnkStruct_8006977C;
 
 void func_8006977C(void* arg0, s32 arg1) {
-    *(UnkStruct_8006977C*)arg0 = *(UnkStruct_8006977C*)arg1;
+    *(UnkStruct_8006977C*) arg0 = *(UnkStruct_8006977C*) arg1;
 }
 
 #ifdef NON_MATCHING

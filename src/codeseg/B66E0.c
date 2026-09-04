@@ -25,8 +25,8 @@ void func_801E8800(void) {
 
 void func_801E8A84(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 arg10, u8 arg11, u8 arg12, u8 arg13, u8 arg14, u8 arg15, u8 arg16, u8 arg17) {
-    arg0 = func_801E946C(arg0, arg5, (s32)arg6, (s32)arg7, (s32)arg8, (s32)arg9, (s32)arg10, (s32)arg11,
-                         (s32)arg12, (s32)arg13, (s32)arg14, (s32)arg15, (s32)arg16, (s32)arg17);
+    arg0 = func_801E946C(arg0, arg5, (s32) arg6, (s32) arg7, (s32) arg8, (s32) arg9, (s32) arg10, (s32) arg11,
+                         (s32) arg12, (s32) arg13, (s32) arg14, (s32) arg15, (s32) arg16, (s32) arg17);
     func_801E8B24(arg0, arg1, buf, arg3, arg4);
 }
 
@@ -65,14 +65,15 @@ extern UnkStruct_801EAF78 D_80228A78;
 void func_801E93B4(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 arg10, u8 arg11, u8 arg12, u8 arg13, u8 arg14, u8 arg15, u8 arg16, u8 arg17, f32 scale) {
     D_80226E24 = scale;
-    arg0 = func_801E946C(arg0, arg5, (s32)arg6, (s32)arg7, (s32)arg8, (s32)arg9, (s32)arg10, (s32)arg11,
-                         (s32)arg12, (s32)arg13, (s32)arg14, (s32)arg15, (s32)arg16, (s32)arg17);
+    arg0 = func_801E946C(arg0, arg5, (s32) arg6, (s32) arg7, (s32) arg8, (s32) arg9, (s32) arg10, (s32) arg11,
+                         (s32) arg12, (s32) arg13, (s32) arg14, (s32) arg15, (s32) arg16, (s32) arg17);
     D_80226E28 = 1;
     func_801E9858(arg0, arg1, buf, arg3, arg4);
 }
 
 #ifdef NON_MATCHING
-Gfx* func_801E946C(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10, s32 a11, s32 a12, s32 a13) {
+Gfx* func_801E946C(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10,
+                   s32 a11, s32 a12, s32 a13) {
     D_80226E2C = 100;
     D_80228A44 = a1;
     D_80226E28 = 0;
@@ -147,7 +148,7 @@ void func_801EADB0(void) {
 #endif
 
 void func_801EAF78(void) {
-    D_80228A78 = *(UnkStruct_801EAF78*)D_80226E30;
+    D_80228A78 = *(UnkStruct_801EAF78*) D_80226E30;
 }
 
 void func_801EAFB4(void) {

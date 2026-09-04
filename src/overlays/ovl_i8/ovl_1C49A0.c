@@ -43,7 +43,7 @@ void func_i8_802C6ADC(void) {
 
 void func_i8_802C6D58(void) {
     s32 i = 0;
-    s8 *ptr = &D_802C7548;
+    s8* ptr = &D_802C7548;
 
     D_802C7564 = 0;
     do {
@@ -55,8 +55,8 @@ void func_i8_802C6D58(void) {
 
 void func_i8_802C6DA8(void) {
     if (D_802C7564 > 0) {
-        s8 *src = &D_802C7548 + D_802C7564;
-        s8 *dst;
+        s8* src = &D_802C7548 + D_802C7564;
+        s8* dst;
 
         D_802C7564--;
         dst = &D_802C7548 + D_802C7564;
@@ -86,7 +86,7 @@ void func_i8_802C6E68(void* arg0) {
 extern u8 D_80226DC4[];
 s32 func_801E9B04(s32, s32);
 
-s32 func_i8_802C6EB8(s8 *str, s32 arg1) {
+s32 func_i8_802C6EB8(s8* str, s32 arg1) {
     s32 total = 0;
     s32 i = 0;
 

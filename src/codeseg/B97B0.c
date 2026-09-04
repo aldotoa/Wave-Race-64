@@ -661,7 +661,8 @@ void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE040(void) {}
+void func_801EE040(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE040.s")
 #endif
@@ -677,7 +678,8 @@ void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE274(void) {}
+void func_801EE274(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE274.s")
 #endif
@@ -692,7 +694,8 @@ void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
 }
 
 #ifdef NON_MATCHING
-void func_801EE4D0(void) {}
+void func_801EE4D0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE4D0.s")
 #endif
@@ -707,7 +710,8 @@ void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
 }
 
 #ifdef NON_MATCHING
-void func_801EE6F4(void) {}
+void func_801EE6F4(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE6F4.s")
 #endif
@@ -749,120 +753,139 @@ void func_801EE91C(MtxF_t mf, f32 x, f32 y, f32 z) {
 void func_801EE97C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     MtxF sp18;
 
-    func_801EE91C((float (*)[4]) &sp18, arg1, arg2, arg3);
+    func_801EE91C((float (*)[4]) & sp18, arg1, arg2, arg3);
     _MtxF_to_Mtx(&sp18, arg0);
 }
 
 #ifdef NON_MATCHING
-void func_801EE9C0(void) {}
+void func_801EE9C0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE9C0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801EED70(void) {}
+void func_801EED70(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EED70.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801EF3C4(void) {}
+void func_801EF3C4(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EF3C4.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801EF504(void) {}
+void func_801EF504(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EF504.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801EFFD8(void) {}
+void func_801EFFD8(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EFFD8.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F03E0(void) {}
+void func_801F03E0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F03E0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F06A0(void) {}
+void func_801F06A0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F06A0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F0E7C(void) {}
+void func_801F0E7C(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F0E7C.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F14B4(void) {}
+void func_801F14B4(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F14B4.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F1CFC(void) {}
+void func_801F1CFC(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F1CFC.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F2060(void) {}
+void func_801F2060(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F2060.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F23A0(void) {}
+void func_801F23A0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F23A0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F25E0(void) {}
+void func_801F25E0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F25E0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F4120(void) {}
+void func_801F4120(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F4120.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F8DD0(void) {}
+void func_801F8DD0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F8DD0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F9520(void) {}
+void func_801F9520(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F9520.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801F9EA0(void) {}
+void func_801F9EA0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F9EA0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801FA3C0(void) {}
+void func_801FA3C0(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FA3C0.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801FAD68(void) {}
+void func_801FAD68(void) {
+}
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FAD68.s")
 #endif

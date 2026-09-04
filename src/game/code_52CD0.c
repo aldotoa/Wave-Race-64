@@ -626,7 +626,6 @@ void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, s8 arg2, u16 arg3, 
 #ifdef NON_MATCHING
 void func_800998B0(s32 arg0, void* arg1, void* arg2) {
     /* HUD coordinate screen projection */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800998B0.s")
@@ -644,12 +643,12 @@ s32 func_80099A00(UnkStruct_801CF060* arg0, void* arg1, void* arg2, s32 arg3) {
 
 void func_80099AD8(s32 arg0, void* arg1, f32 arg2, f32 arg3, f32 arg4) {
     if (arg0 >= 0 && arg0 < 3) {
-        u8* ptr = (u8*)arg1 + (arg0 * sizeof(f32));
+        u8* ptr = (u8*) arg1 + (arg0 * sizeof(f32));
 
-        if (*(f32*)(ptr + 0x44) < arg2) {
-            *(f32*)(ptr + 0x44) = arg2;
-            *(f32*)(ptr + 0x68) = arg3;
-            *(f32*)(ptr + 0x5C) = arg4;
+        if (*(f32*) (ptr + 0x44) < arg2) {
+            *(f32*) (ptr + 0x44) = arg2;
+            *(f32*) (ptr + 0x68) = arg3;
+            *(f32*) (ptr + 0x5C) = arg4;
         }
     }
 }
@@ -1781,7 +1780,6 @@ void func_8009D5C0(void) {
 #ifdef NON_MATCHING
 void func_8009D6B0(s32 arg0) {
     /* Buoy miss warning flash animator */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009D6B0.s")
@@ -2557,7 +2555,6 @@ void func_800AD3C4(void) {
 #ifdef NON_MATCHING
 void func_800AD418(void) {
     /* 2-Player split-screen HUD divider and layout setup */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AD418.s")

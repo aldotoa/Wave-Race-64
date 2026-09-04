@@ -67,7 +67,8 @@ Gfx* func_801E3EE0(Gfx* glistp, s32 type, s32 idx, s32 x, s32 y) {
         gDPPipeSync(glistp++);
         gDPSetTile(glistp++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_RENDERTILE, 0, 0, 0, 0, 0, 0, 0);
         gDPSetTileSize(glistp++, G_TX_RENDERTILE, 0, 0, 0, 0);
-        gSPTextureRectangle(glistp++, x << 2, y << 2, (x + width_param) << 2, (y + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(glistp++, x << 2, y << 2, (x + width_param) << 2, (y + 16) << 2, G_TX_RENDERTILE, 0, 0,
+                            1 << 10, 1 << 10);
     }
 
     return glistp;

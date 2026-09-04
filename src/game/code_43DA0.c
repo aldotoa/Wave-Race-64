@@ -78,7 +78,7 @@ extern UnkStruct_8008962C D_801C4278[];
 
 extern UnkStruct_801C41A0 D_801C41A0;
 
-void* func_80091DBC(Gfx* arg0);
+void* func_80091DBC(Gfx* gdl);
 
 void func_800895A0(f64* arg0, f64* arg1, f32 arg2, f32 arg3) {
     f64 sp0;
@@ -252,7 +252,6 @@ void func_80089F28(void) {
 #ifdef NON_MATCHING
 void func_8008A0E0(void) {
     /* AI rival waypoint tracking and path spline interpolation */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008A0E0.s")
@@ -314,7 +313,6 @@ Gfx* func_8008CFEC(Gfx* gdl) {
 #ifdef NON_MATCHING
 void func_8008D454(void) {
     /* AI difficulty rubberbanding speed multiplier */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008D454.s")
@@ -323,7 +321,6 @@ void func_8008D454(void) {
 #ifdef NON_MATCHING
 void func_8008D94C(void) {
     /* AI rival obstacle avoidance vector calculator */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008D94C.s")
@@ -332,7 +329,6 @@ void func_8008D94C(void) {
 #ifdef NON_MATCHING
 void func_8008DFD0(s32 arg0) {
     /* AI rival steering angle and turn aggressiveness */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008DFD0.s")
@@ -341,7 +337,6 @@ void func_8008DFD0(s32 arg0) {
 #ifdef NON_MATCHING
 void func_8008E4B0(void) {
     /* AI state reset and grid realignment coordinator */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008E4B0.s")
@@ -350,7 +345,6 @@ void func_8008E4B0(void) {
 #ifdef NON_MATCHING
 void func_8008E794(void) {
     /* AI waypoint progression verification */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008E794.s")
@@ -464,7 +458,6 @@ Gfx* func_800916B4(Gfx* arg0) {
 #ifdef NON_MATCHING
 void func_80091CD8(void) {
     /* Dynamic spray particle lifetime updater */
-    
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_80091CD8.s")
