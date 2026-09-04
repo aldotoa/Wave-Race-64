@@ -69,10 +69,41 @@ gcc -E -DNON_MATCHING -Iinclude -Iinclude/libc <path/to/file.c> | grep -c "#prag
    - Remove `#ifdef NON_MATCHING` / `#pragma GLOBAL_ASM` wrapper in the `.c` file.
    - Delete `asm/us/rev1/nonmatchings/.../<func_name>.s` from disk.
    - Verify: `make && make test && make progress`.
+   - Or use the automated promotion script: `python3 tools/promote.py <func_name> <path/to/source.c>`
 5. **`NON_MATCHING=1` Object File Hygiene**:
    Compiling a target with `make NON_MATCHING=1 build/src/<file>.o` leaves an unmatching object file in `build/`. A subsequent standard `make` may treat this `.o` as up-to-date and fail at the link stage with unresolved symbols. Always invalidate the object cache before running matching verification:
    ```bash
    touch src/<file>.c && make
+   ```
+
+### Token-Efficient Diffing & Testing Protocols
+
+To prevent context saturation and token waste when iterating on functions:
+
+1. **Compressed Assembly Diffs (`-U 2`)**:
+   Always pass `-U 2` (`--compress-matching 2`) to collapse runs of identical instructions, displaying only the diff regions with 2 lines of context:
+   ```bash
+   .venv/bin/python3 tools/asm-differ/diff.py -m -o -s -U 2 <func_name>
+   ```
+2. **Terse Test Output**:
+   Avoid running verbose `make test` which prints 700+ lines into context. Pipe through `tail`:
+   ```bash
+   make test 2>&1 | tail -n 5
+   ```
+3. **Quick Match Score Check**:
+   Inspect whether a function matches without printing full disassembly:
+   ```bash
+   .venv/bin/python3 tools/asm-differ/diff.py -m -o -s <func_name> 2>/dev/null | head -n 3
+   ```
+   A matching function shows `TARGET ... CURRENT (0)` with no diff lines below.
+   **WARNING**: For functions still under `#ifdef NON_MATCHING`, the standard `diff.py -m -o -s` will show `CURRENT (0)` because asm-processor substitutes the raw assembly from the `#pragma GLOBAL_ASM` path. This is a false positive — it's comparing the assembly against itself. To test the **C code**, either:
+   - Use `make NON_MATCHING=1 build/src/<file>.o && diff.py -o -s <func>` (builds with C code), or
+   - Use `tools/promote.py --dry-run <func> <file.c>` which temporarily removes the wrapper, rebuilds, diffs, and auto-reverts.
+4. **Batch Promotion with `tools/promote.py`**:
+   Automate the entire promotion sequence (wrapper removal → 0-diff verification → `.s` deletion → build → test → progress) in a single command:
+   ```bash
+   python3 tools/promote.py <func_name> <path/to/source.c>
+   python3 tools/promote.py --dry-run <func_name> <path/to/source.c>  # check only, auto-revert
    ```
 
 ## IDO 5.3 C89 Optimization & Register Matching Techniques
@@ -118,6 +149,33 @@ gcc -E -DNON_MATCHING -Iinclude -Iinclude/libc <path/to/file.c> | grep -c "#prag
 - **Loop Body Statement Order & Negative-Offset Delay Slot Stores**:
   - In loops updating multiple arrays or pointers, the relative order of statements determines whether IDO emits strength-reduced pointer post-increments with negative offsets (`sw $zero, -4($reg)`).
   - Storing the induction variable last (e.g., `arr1[i] = 0; arr2[i] = 0; arr3[i] = i;`) causes IDO to emit the dependent store `sh $v0, 0($a1)` first, increment `$v0`, test the loop condition, increment the pointers (`addiu $v1, 4; addiu $a0, 4; addiu $a1, 2`), and schedule the final zero store into the branch delay slot with a `-4` offset (`bnez $at, .Lloop; sw $zero, -4($a0)`).
+- **IDO 5.3 Stack Frame Layout & Local Variable Ordering**:
+  - *High-to-Low Stack Order*: Local variables are allocated on the stack in descending address order based on their declaration sequence. The first declared locals occupy the highest stack addresses (directly below caller arguments); later declared variables sit closer to `$sp` (just above the callee-saved register save area).
+  - *Alignment & Buffer Padding Management*: When large buffers (e.g., `MtxF`, `Mtx`) are shifted by 8 bytes due to alignment constraints, declare small scalar variables (such as loop index `i`) **after** the matrix structures. IDO absorbs scalars declared last into the bottom padding area above the saved registers, preventing an unwanted `+8` byte shift across all earlier stack buffers.
+  - *Example (504-byte frame with five nested matrices)*:
+    ```c
+    s32 angle;      /* 0x1F0 - top of stack, declared first */
+    s32 cond;       /* 0x1EC */
+    s32 j;          /* 0x1E8 - intentionally above floats */
+    f32 var_fs1;    /* 0x1E4 */
+    f32 var_fs2;    /* 0x1E0 */
+    MtxF sp1A4;     /* 0x1A4 */
+    MtxF sp164;     /* 0x164 */
+    MtxF sp124;     /* 0x124 */
+    Mtx spE0;       /* 0xE0 */
+    Mtx spA0;       /* 0xA0 */
+    s32 i;          /* 0x88 - declared last, absorbs padding above saved regs */
+    ```
+- **Loop Counter Variable Reuse Across Scopes**:
+  - *The Invariant*: If two or more loops in a function are disjoint, IDO reuses the same register and stack slot for their induction counters when the same variable is used.
+  - *The Pitfall*: Introducing distinct variables (e.g., `i` for loop 1 and `j` for loop 2) forces `uopt` to allocate separate stack slots and distinct register webs, triggering cascade register spills across the entire function.
+  - *Rule*: Always reuse `i` across consecutive, non-overlapping loops unless target assembly explicitly uses a second induction register.
+- **Triggering Callee-Saved Float Registers (`$f20`, `$f22`)**:
+  - In functions calling external subroutines, local `f32` variables whose values must survive across function calls force IDO to allocate callee-saved floating-point registers (`$f20`, `$f22`) and emit the corresponding `s.d` / `l.d` (or `swc1` / `lwc1`) save/restore sequence in the prologue and epilogue.
+- **Loop Construct Selection (`for` vs `while` vs `do-while`)**:
+  - Standard `for (i = 0; i < N; i++)` produces a test-at-bottom structure with an unconditional initial branch (`b .test; nop`), matching retail N64 assembly patterns.
+  - `while` loops produce top-of-loop branch conditions, while `do-while` loops omit the entry branch entirely, producing branch misalignments.
+  - *Diagnostic*: If a diff shows a leading unconditional `b` to a `blt`/`bne` at loop bottom → use `for`. If the loop starts with `blt`/`bne` directly → use `while`. If there is no entry guard → use `do-while`.
 
 ## Common Engine Architecture Patterns
 
