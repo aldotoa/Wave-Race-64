@@ -37,3 +37,6 @@ ctx.c
 ctx_includes.c
 ctx.c.m2c
 venv/*
+# Ignore compiled object files and scratch build artifacts
+*.o
+scratch/*.o
