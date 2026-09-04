@@ -104,6 +104,20 @@ gcc -E -DNON_MATCHING -Iinclude -Iinclude/libc <path/to/file.c> | grep -c "#prag
     - In simpler functions where IDO swaps registers between incoming parameters and local variables, the `register` keyword (e.g. `register s32 s0 = arg1->unk4;`) or initialization order can also prioritize `$s0`.
 - **Unmigrated Rodata Guard**:
   Functions containing jump tables (`switch`) whose tables reside in unmigrated `.rodata.s` (e.g. `A5CC0.rodata.s`) must be kept under `#if defined(NEEDS_RODATA) || defined(NON_MATCHING)` until the file's rodata is fully migrated into C to prevent linker collisions.
+- **Loop Induction Variable Elimination Suppression (`blt` vs `li $reg, limit; bne`)**:
+  - *Problem*: In small counted loops like `for (i = 0; i < 2; i++)`, IDO's global optimizer (`uopt`) frequently converts the inequality into `!= limit`, hoists the bound into a dedicated register before the loop (`li $a2, 2`), and branches with `bne $v0, $a2, .Lloop`. In target functions without a hoisted limit register, the assembly instead uses `slti $at, $v0, limit; bnez $at, .Lloop` (the pseudo-instruction `blt $v0, limit, .Lloop`).
+  - *Heuristic*: If the induction variable `i` is dead after the loop, `uopt` eliminates it and hoists the bound. Reusing the same counter variable `i` across subsequent logic (e.g. an immediately following loop `for (i = 0; i < 4; i++)`) marks `i` as live across loop boundaries, suppressing bound hoisting and forcing `uopt` to emit the canonical `blt` (`slti` / `bnez`).
+- **Single-Line Statement Binding for Assembler Store Ordering (`.loc` Directive Quirk)**:
+  - *Problem*: When zeroing or initializing contiguous array elements (e.g., `s16 D_802C8C70[4]`), explicit indexed assignments (`arr[0] = 0; arr[1] = 0; ...`) cause IDO to load the base address into a temporary register (`$v0`) and emit relative stores. In contrast, an unrolled loop (`for (i = 0; i < 4; i++) arr[i] = 0;`) enables IDO to emit direct stores sharing a single `%hi` register (`sh $zero, %lo(arr)(at)`).
+  - *Assembler Quirk*: When written across multiple lines, IDO attaches distinct `.loc` source line directives to the loop header and unrolled body iterations. The SGI assembler (`as1`) scheduler treats `.loc` transitions as instruction reordering boundaries, often emitting stores out of offset order (e.g. `2($at)`, `4($at)`, `6($at)`, `0($at)`).
+  - *Solution*: Placing the entire unrolled loop on a **single line**:
+    ```c
+    for (i = 0; i < 4; i++) D_802C8C70[i] = 0;
+    ```
+    binds all unrolled stores to a single `.loc` directive, compelling `as1` to emit the stores in strictly sequential offset order (`0($at)`, `2($at)`, `4($at)`, `6($at)`).
+- **Loop Body Statement Order & Negative-Offset Delay Slot Stores**:
+  - In loops updating multiple arrays or pointers, the relative order of statements determines whether IDO emits strength-reduced pointer post-increments with negative offsets (`sw $zero, -4($reg)`).
+  - Storing the induction variable last (e.g., `arr1[i] = 0; arr2[i] = 0; arr3[i] = i;`) causes IDO to emit the dependent store `sh $v0, 0($a1)` first, increment `$v0`, test the loop condition, increment the pointers (`addiu $v1, 4; addiu $a0, 4; addiu $a1, 2`), and schedule the final zero store into the branch delay slot with a `-4` offset (`bnez $at, .Lloop; sw $zero, -4($a0)`).
 
 ## Common Engine Architecture Patterns
 

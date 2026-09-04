@@ -15,33 +15,23 @@ struct SelectionState {
 
 extern struct SelectionState D_802C8C58;
 extern s32 D_802C8C60[];
-s16 D_802C8C70;
-s16 D_802C8C72;
-s16 D_802C8C74;
-s16 D_802C8C76;
+s16 D_802C8C70[4];
 extern s16 D_802C8C68;
 extern s16 D_802C8C6A;
 
-#ifdef NON_MATCHING
 void func_i2_802C5AE4(void) {
-    s32 i = 0;
+    s32 i;
 
-    do {
-        D_801CE6F4[i] = i;
+    for (i = 0; i < 2; i++) {
         ((s32*) &D_802C8C58)[i] = 0;
         D_802C8C60[i] = 0;
-    } while (++i < 2);
+        D_801CE6F4[i] = i;
+    }
 
-    D_802C8C70 = 0;
-    D_802C8C72 = 0;
-    D_802C8C74 = 0;
-    D_802C8C76 = 0;
+    for (i = 0; i < 4; i++) D_802C8C70[i] = 0;
     D_802C8C68 = 0;
     D_802C8C6A = 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i2/ovl_1B9440/func_i2_802C5AE4.s")
-#endif
 
 void* func_8007C31C();
 void* func_801EB91C();
