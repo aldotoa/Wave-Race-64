@@ -40,3 +40,5 @@ venv/*
 # Ignore compiled object files and scratch build artifacts
 *.o
 scratch/*.o
+scratch/*.dis
+scratch/*.err
