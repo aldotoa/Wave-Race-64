@@ -27,6 +27,7 @@ description: >-
 | `./diff <func_name>` | Interactive assembly differ comparing compiled C against retail ROM |
 | `python3 tools/m2ctx.py <file.c>` | Generates preprocessed C context (`ctx.c`) for decomp.me and m2c |
 | `python3 tools/m2c/m2c.py --target mips-ido-c89 --context ctx.c <func.s>` | Converts raw assembly to an initial IDO C89 candidate function |
+| `python3 tools/stack_diff.py <func> <target.s> [current.o]` | Side-by-side stack layout and frame size differ (<50ms feedback) |
 
 ---
 
@@ -148,6 +149,26 @@ touch src/<file>.c && make
   ```bash
   .venv/bin/python3 tools/asm-differ/diff.py -m -o -s <func_name> 2>/dev/null | head -n 3
   ```
+- **Automated Micro-Permutation Search (Score < 50)**:
+  When a function is 90%+ matched and differences are restricted to small setup blocks, declaration orders, or comma expression sequences:
+  - **Do NOT** manually edit and recompile in a multi-turn conversation loop (costs ~3,800 tokens and 5s roundtrip per test).
+  - **Do** write a standalone Python script in `scratch/test_perm.py` that invokes `tools/ido-static-recomp/build/5.3/out/cc` directly against permutations of the candidate expression. Testing 100+ permutations locally in under 5 seconds consumes <1,000 tokens total (~70x efficiency gain).
+- **Stack Layout Inspection via `tools/stack_diff.py`**:
+  Instead of manual `objdump` and decimal offset calculations, run:
+  ```bash
+  python3 tools/stack_diff.py <func_name> <path/to/target.s> <path/to/current.o>
+  ```
+  to immediately verify frame sizes, identify shifted offsets, detect missing slots, and map padding gaps in under 50 tokens.
+- **Compact Metric Diffing (`tools/diff_summary.py`)**:
+  Avoid printing full assembly diffs into the terminal/context window. Run:
+  ```bash
+  python3 tools/diff_summary.py <func_name> <path/to/current.o>
+  ```
+  to output diff score, frame size match status, saved register mapping, and the first divergent instruction block in <50 tokens.
+- **Automated Regalloc & Stack Search (`tools/regalloc_search.py`)**:
+  When tuning variable declarations to match target stack frame size (e.g., 0x58 vs 0x60) or register allocations ($s0-$s8), let `tools/regalloc_search.py` evaluate permutations locally against direct IDO 5.3 rather than manual multi-turn trial-and-error.
+- **No Multi-Line Inline Python via Shell**:
+  Never execute multiline scripts or complex regex via `python3 -c '...'` in `zsh` as shell expansions (`[]`, `\`, quotes) trigger syntax errors and waste conversational turns. Always save helper scripts to `.py` files in `tools/` or `scratch/`.
 
 ---
 
@@ -170,7 +191,8 @@ Registers (`$s0`, `$s1`, `$s2`, ...) are assigned in descending priority order a
 - **Live-Range Dilution Across Calls**: Reusing a pointer or local variable after a function call extends its live range length (increasing the denominator) and lowers its priority. This causes another variable with tight loop references to steal `$s0`.
 - **Remediation Techniques**:
   - *Scope Isolation*: Restrict variable declarations to inner blocks (`{ ... }`) to prevent `uopt` from coalescing disjoint webs across calls.
-  - *Pointer Arithmetic vs. Array Indexing*: Explicit pointer increments (`ptr++`) generate distinct induction webs compared to indexed access (`arr[i]`), which triggers strength reduction and induction variable creation.
+  - *Syntactic Address-of Indexing (`&arr[idx]`) vs Pointer Arithmetic*: Accessing arrays via pointer arithmetic `*(arr + offset)` or `ARR_PTR` increments references to `offset`, causing `offset` to steal higher-priority callee-saved registers (`$s0`). Writing direct array indexing with address-of `&arr[index]` increments the reference count of `index`. This boosts `index`'s priority score in Chow-Hennessy coloring, ensuring it claims `$s0` over dependent pointers or offsets.
+  - *Register Caching Across Branch Fan-out*: In complex branching logic (e.g. D-pad Left/Right), explicitly caching `state = *s2;` binds `state` to a temporary register (`$a2`), preventing `uopt` from placing global pointers into `$a2` and locking globals into target registers (`$t0`).
   - *Priority Equalization*: Reusing or extending the live range of a competing variable after a loop can artificially degrade its priority score and restore the desired register ordering.
   - In leaf functions, the `register` keyword (e.g., `register s32 s0 = arg1->unk4;`) or declaration ordering can guide initial register selection.
 
@@ -216,6 +238,16 @@ Storing the induction variable last (e.g., `arr1[i] = 0; arr2[i] = 0; arr3[i] = 
   Mtx spA0;       /* 0xA0 */
   s32 i;          /* 0x88 - declared last, absorbs padding above saved regs */
   ```
+- **`cfe` Outer-Scope Variable Stack Inflation & Offset Shifting**:
+  - In IDO 5.3 C89, `cfe` reserves stack slots for **all** scalar variables declared in the outer function scope, even if `uopt` later keeps them purely in registers or eliminates them entirely.
+  - In m2c output, extraneous intermediate assignment variables (e.g. `s32 ready = *ready_ptr;`, `s32 v0;`, or scratch pointers `p`) can cause the total variable count to cross an 8-byte alignment boundary. This triggers an unwanted 8- or 16-byte stack frame expansion (e.g. `0x58` inflated to `0x60`, or `0xF8` to `0x100`) and shifts subsequent stack offsets by 4 or 8 bytes (`0x40 -> 0x44`, `0x48 -> 0x4c`).
+  - *Remediation*: Audit variables used only locally. Eliminate intermediate scalar holders (evaluating `*ready_ptr` directly) or isolate temporary holders inside inner `{ ... }` blocks (e.g., inside `do { ... }` or `if`). Moving variable declarations to inner scopes completely suppresses their outer stack allocation.
+- **4-Tier Stack Zone Architecture**:
+  IDO stack frames adhere to a predictable 4-tier layout:
+  1. *Top Zone* (`$sp + FrameSize - 4` down): Declared outer locals in descending declaration sequence.
+  2. *Middle Zone*: Large structs, matrix buffers, or padding gaps.
+  3. *Spill Zone* (`$sp + 0x48` up): Low temporary spill slots allocated dynamically by `uopt`.
+  4. *Base Zone* (`$sp + 0x00` to `0x44`): Outgoing argument space (minimum 0x10 or 0x40 aligned) followed by callee-saved registers (`$s0`, `$ra`).
 
 ### Pointer Materialization & Offset Folding
 - **Base Pointer Materialization**: IDO at `-O2` eagerly folds constant offsets (e.g., `(base + 0x5C) + 0x18` folds into `0x74(base)`). To force IDO to materialize the base pointer into a register (`addiu $v0, $a0, 0x5c`) and emit relative stores (`0x18($v0)`, `0x24($v0)`), initialize the sub-struct pointer at declaration (`Struct_B* b = (Struct_B*)(dst + 0x5C);`) and access `b` across multiple conditional branch blocks (`if (src1 != NULL) ... if (src2 != NULL) ...`). IDO treats `b` as live across blocks and preserves the pointer in `$v0`.

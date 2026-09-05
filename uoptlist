@@ -1,0 +1,213 @@
+ * *    0.259 SECONDS IN LOCAL OPTIMIZATION OF func_i2_802C86E4
+EQ_INEQ at BB:           6
+   flow graph for func_i2_802C86E4:
+           0           0
+suc::::           1          12
+           1          12
+pre::::           6           0
+pre::::           0           0
+suc::::           2           0
+suc::::           3          14
+           2           0
+pre::::           1          12
+suc::::           4          15
+           4          15
+pre::::           3          14
+pre::::           2           0
+suc::::           5           0
+           5           0
+pre::::           4          15
+suc::::           6           0
+           6           0
+pre::::           5           0
+suc::::           7           0
+suc::::           1          12
+           7           0
+pre::::           6           0
+suc::::           8          11
+           8          11
+pre::::           7           0
+           3          14
+pre::::           1          12
+suc::::           4          15
+ * *    0.152 SECONDS IN Patchvectors OF func_i2_802C86E4
+ * *    0. 39 SECONDS IN COPY PROPAGATION OF func_i2_802C86E4
+ * *    0. 12 SECONDS IN REMOVAL OF REDUNDANT STORES OF func_i2_802C86E4
+ index      bit kind    op      l      r  
+{ 816|0}      0 isvar   M    3   -16vreg
+"""           1
+{ 166|0}      2 isop    ustr{ 816|0} {   0|0}
+{ 752|0}      3 isvar   M    3   -20vreg
+"""           4
+{ 605|0}      5 isvar   P    3     8vreg
+"""           6
+{ 376|0}      7 isop    ustr{ 752|0} { 605|0}
+{ 880|0}      8 isvar   M    3   -12vreg
+"""           9
+{ 166|1}     10 isop    ustr{ 880|0} {   0|0}
+{ 944|0}     11 isvar   M    3    -8vreg
+"""          12
+{1314|0}     13 isop    uadd{ 605|0} {  20|0}
+{1167|0}     14 isop    ustr{ 944|0} {1314|0}
+{1473|0}     15 isop    uneq{ 880|0} {  90|0}
+{ 223|0}     16 isop    ucg1{ 880|0} 
+{1008|0}     17 isvar   M    3    -4vreg
+"""          18
+{ 799|0}     19 isop    ustr{1008|0} {  15|0}
+{ 898|0}     20 isop    ustr{1008|0} {   2|0}
+{ 688|0}     21 isvar   M    3   -24vreg
+"""          22
+{ 477|0}     23 isvar   P    3     0vreg
+"""          24
+{ 213|0}     25 isop    ustr{ 688|0} { 477|0}
+{1043|0}     26 isop    uadd{ 477|0} {   8|0}
+{  89|0}     27 isop    ustr{ 477|0} {1043|0}
+{1065|0}     28 isop    uistr{ 688|0} {1036|0}
+{1210|0}     29 isop    ushl{ 816|0} {   1|0}
+{1410|0}     30 isop    uadd{ 922|0} {1210|0}
+{ 978|0}     31 isop    ucvt{1410|0} 
+{ 299|0}     32 isop    uistr{ 688|0} { 978|0}
+{ 624|0}     33 isvar   M    3   -28vreg
+"""          34
+{ 924|0}     35 isop    ustr{ 624|0} { 477|0}
+{ 151|0}     36 isop    uistr{ 624|0} { 604|0}
+{ 606|0}     37 isop    uistr{ 624|0} { 115|0}
+{ 560|0}     38 isvar   M    3   -32vreg
+"""          39
+{  16|0}     40 isop    ustr{ 560|0} { 477|0}
+{ 740|0}     41 isop    uistr{ 560|0} {1173|0}
+{ 243|0}     42 isop    uistr{ 560|0} {   0|1}
+{ 496|0}     43 isvar   M    3   -36vreg
+"""          44
+{ 727|0}     45 isop    ustr{ 496|0} { 477|0}
+{ 566|0}     46 isop    uistr{ 496|0} { 915|0}
+{1373|0}     47 isop    uadd{1008|0} {1618|0}
+{1082|0}     48 isop    ushl{1373|0} {   2|0}
+{ 894|0}     49 isop    ucvt{1082|0} 
+{ 832|0}     50 isop    uand{ 894|0} { 857|0}
+{1145|0}     51 isop    ushl{ 832|0} {   0|0}
+{ 351|0}     52 isop    uior{1145|0} { 612|0}
+{ 758|0}     53 isop    uistr{ 496|0} { 351|0}
+{ 432|0}     54 isvar   M    3   -40vreg
+"""          55
+{1438|0}     56 isop    ustr{ 432|0} { 477|0}
+{ 989|0}     57 isop    uistr{ 432|0} { 692|0}
+{ 243|1}     58 isop    uistr{ 432|0} {   0|1}
+{ 368|0}     59 isvar   M    3   -44vreg
+"""          60
+{ 530|0}     61 isop    ustr{ 368|0} { 477|0}
+{  56|0}     62 isop    uistr{ 368|0} { 604|0}
+{1217|0}     63 isop    uistr{ 368|0} { 244|0}
+{ 304|0}     64 isvar   M    3   -48vreg
+"""          65
+{1241|0}     66 isop    ustr{ 304|0} { 477|0}
+{ 947|0}     67 isop    uistr{ 304|0} { 258|0}
+{ 873|0}     68 isop    uior{1145|0} { 741|0}
+{ 602|0}     69 isop    uistr{ 304|0} { 873|0}
+{ 240|0}     70 isvar   M    3   -52vreg
+"""          71
+{ 333|0}     72 isop    ustr{ 240|0} { 477|0}
+{ 541|0}     73 isvar   P    3     4vreg
+"""          74
+{ 341|0}     75 isop    uadd{ 541|0} { 138|0}
+{1489|0}     76 isop    ushl{ 341|0} {   2|0}
+{ 939|0}     77 isop    ucvt{1489|0} 
+{1160|0}     78 isop    uand{ 939|0} { 857|0}
+{1111|0}     79 isop    ushl{1160|0} {  12|0}
+{1483|0}     80 isop    uior{1111|0} { 516|0}
+{ 122|0}     81 isop    uadd{ 752|0} {1008|0}
+{ 235|0}     82 isop    uadd{ 122|0} {  20|0}
+{ 988|0}     83 isop    ushl{ 235|0} {   2|0}
+{ 633|0}     84 isop    ucvt{ 988|0} 
+{1520|0}     85 isop    uand{ 633|0} { 857|0}
+{1145|1}     86 isop    ushl{1520|0} {   0|0}
+{ 281|0}     87 isop    uior{1483|0} {1145|1}
+{1119|0}     88 isop    uistr{ 240|0} { 281|0}
+{1326|0}     89 isop    uadd{ 541|0} {   8|1}
+{ 142|0}     90 isop    ushl{1326|0} {   2|0}
+{1522|0}     91 isop    ucvt{ 142|0} 
+{1236|0}     92 isop    uand{1522|0} { 857|0}
+{ 517|0}     93 isop    ushl{1236|0} {  12|0}
+{ 597|0}     94 isop    ushl{ 944|0} {   2|0}
+{ 908|0}     95 isop    ucvt{ 597|0} 
+{1006|0}     96 isop    uand{ 908|0} { 857|0}
+{1145|2}     97 isop    ushl{1006|0} {   0|0}
+{ 609|0}     98 isop    uior{ 517|0} {1145|2}
+{1485|0}     99 isop    uistr{ 240|0} { 609|0}
+{ 176|0}    100 isvar   M    3   -56vreg
+"""         101
+{1044|0}    102 isop    ustr{ 176|0} { 477|0}
+{1165|0}    103 isop    uistr{ 176|0} {1419|0}
+{ 243|2}    104 isop    uistr{ 176|0} {   0|1}
+{ 112|0}    105 isvar   M    3   -60vreg
+"""         106
+{ 136|0}    107 isop    ustr{ 112|0} { 477|0}
+{ 877|0}    108 isop    uistr{ 112|0} { 281|1}
+{ 860|0}    109 isop    uistr{ 112|0} { 719|0}
+{ 981|0}    110 isop    uadd{ 880|0} {  15|0}
+{ 458|0}    111 isop    ustr{ 880|0} { 981|0}
+{ 867|0}    112 isop    uadd{ 944|0} {  15|0}
+{ 601|0}    113 isop    ustr{ 944|0} { 867|0}
+{1209|0}    114 isop    uadd{ 752|0} {  15|0}
+{1161|0}    115 isop    ustr{ 752|0} {1209|0}
+{ 588|0}    116 isop    uadd{ 816|0} { 331|0}
+{1149|0}    117 isop    ustr{ 816|0} { 588|0}
+{ 715|0}    118 isop    uneq{ 880|0} { 105|0}
+{ 233|0}    119 isop    ucg1{ 880|0} 
+{1485|1}    120 isvar   R    0     2vreg
+"""         121
+{ 511|0}    122 isop    ustr{1485|1} { 477|0}
+ * *    0.238 SECONDS IN CODE MOTION OF func_i2_802C86E4
+ * *    0. 79 SECONDS IN INDUCTION VARIABLE ELIM. OF func_i2_802C86E4
+ * *    0.272 SECONDS IN reg alloc preparation of func_i2_802C86E4
+  23:   23 assigned (constrained)   3
+  21:   21 assigned (constrained)   1
+  33:   33 assigned (constrained)   2
+  38:   38 assigned (constrained)   4
+  43:   43 assigned (constrained)   5
+  59:   59 assigned (constrained)   1
+  64:   64 assigned (constrained)   2
+  70:   70 assigned (constrained)   4
+ 100:  100 assigned (constrained)   1
+ 105:  105 assigned (constrained)   2
+  17:   17 assigned (constrained)   6
+  51:   51 assigned (constrained)   7
+  54:   54 assigned (constrained)   8
+   8:    8 assigned (constrained)   9
+   0:    0 assigned (constrained)  10
+   3:    3 assigned (constrained)  11
+  11:   11 assigned (constrained)  12
+ 126:  126 assigned (constrained)  14
+  80:   80 assigned (constrained)  15
+  93:   93 assigned (constrained)  16
+ 123:  123 assigned (constrained)  17
+ 124:  124 assigned (constrained)  18
+ 125:  125 assigned (constrained)  19
+ 127:  127 assigned (constrained)  20
+ 128:  128 assigned (constrained)  21
+ 129:  129 assigned (constrained)  22
+ 130:  130 assigned (constrained)  23
+live range 138:  138 split out  139
+ 138:  139 impossible to color 
+live range 137:  137 split out  140
+ 137:  140 impossible to color 
+live range 136:  136 split out  141
+ 136:  141 impossible to color 
+live range 135:  135 split out  142
+ 135:  142 impossible to color 
+live range 134:  134 split out  143
+ 134:  143 impossible to color 
+live range 133:  133 split out  144
+ 133:  144 impossible to color 
+live range 132:  132 split out  145
+ 132:  145 impossible to color 
+live range 131:  131 split out  146
+ 131:  146 impossible to color 
+ 131:  131 not colored (-ve save)
+ 132:  132 not colored (-ve save)
+ 133:  133 not colored (-ve save)
+ 134:  134 not colored (-ve save)
+ 135:  135 not colored (-ve save)
+ 136:  136 not colored (-ve save)
+ 137:  137 not colored (-ve save)
+ 138:  138 n
