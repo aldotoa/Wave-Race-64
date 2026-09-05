@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Use virtualenv python if available, else system python3
+if [ -f ".venv/bin/python3" ]; then
+    PYTHON=".venv/bin/python3"
+else
+    PYTHON="python3"
+fi
+
+exec "$PYTHON" tools/asm-differ/diff.py -m -o -s -U 2 "$@"

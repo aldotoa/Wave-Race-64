@@ -102,22 +102,28 @@ extern s32 D_802C96A4;
 
 #ifdef NON_MATCHING
 s32 func_i1_802C6B38(s32 arg0) {
-    if (gGameState != 0x2A) {
-        if (gGameState == 0x29) {
-            if (D_802C96A4 < 30) {
-                if (D_801CE6F0 == 1) {
-                    D_800D817C = 1;
-                }
-            }
-            if (++D_802C96A4 >= 61) {
-                if (!D_802C96A0) {
-                    D_802C96A0 = 1;
-                }
+    s32 temp;
+
+    if (gGameState == 0x2A) {
+        if (D_801CE6F0 != 1) {
+            goto end;
+        }
+        return arg0;
+    } else if (gGameState == 0x29) {
+        temp = D_802C96A4 + 1;
+        if (D_802C96A4 < 30) {
+            if (D_801CE6F0 == 1) {
+                D_800D817C = 1;
             }
         }
-    } else if (D_801CE6F0 == 1) {
-        return arg0;
+        D_802C96A4 = temp;
+        if (temp >= 61) {
+            if (D_802C96A0 == 0) {
+                D_802C96A0 = 1;
+            }
+        }
     }
+end:
     return arg0;
 }
 #else
