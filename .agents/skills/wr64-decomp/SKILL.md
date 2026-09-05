@@ -135,6 +135,11 @@ Compiling a target with `make NON_MATCHING=1 build/src/<file>.o` leaves an unmat
 ```bash
 touch src/<file>.c && make
 ```
+- **Stale-build guard**: `touch` + immediate `make` in the same second can silently skip recompilation (coarse mtime comparison) and diff a stale `.o`, producing identical scores across different sources. Always `sleep 2` before `touch`, and confirm the `Compiling:` line appears in make output before trusting any diff score.
+- A stale `NON_MATCHING=1` object linked into the ROM changes its SHA-1 and fails all 400+ ROM-dependent tests in `make test`. If the suite suddenly fails with SHA mismatches, rebuild the matching object (`touch src/<file>.c && make build/src/<file>.o`) and re-run.
+
+### Step 7: Switch Case Order Must Match Jump-Table Layout
+IDO emits switch-case bodies in source order. If `diff.py` shows a whole case body misaligned (stores where the target loads, `|` chaos across a case), check the jump-table label addresses in the target `.s`: if a later case number's label sits EARLIER in the binary (e.g. case 5 at `0x6150` before case 2 at `0x6174`), move that `case N:` block earlier in source (keeping its number). One reorder fixed ~1600 diff points in `ovl_1B9440`.
 
 ---
 
