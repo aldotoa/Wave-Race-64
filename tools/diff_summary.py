@@ -79,9 +79,14 @@ def main():
         elif re.search(r"\s+[rsib]\s+[0-9a-fA-F]+:", line):
             is_diff = True
 
+        if is_diff:
+            diff_count += 1
+            if first_diff is None:
+                cleaned = " ".join(line.strip().split())
+                first_diff = cleaned
+
         # Check saved registers in prologue
         reg_target = re.findall(r"sw\s+([a-z0-9]+),\s*0x[0-9a-fA-F]+\(sp\)", line)
-        # Also check lines with blez or bnez to stop prologue checking
         if "blez" in line or "bnez" in line:
             prologue_done = True
 
