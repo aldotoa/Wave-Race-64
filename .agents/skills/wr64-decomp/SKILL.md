@@ -272,6 +272,8 @@ Functions containing jump tables (`switch`) whose tables reside in unmigrated `.
 #if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 ```
 Do not migrate individual jump tables to C until all functions referencing that specific `.rodata` block are ready to be matched, preventing linker collisions and section misalignments.
+- **Diagnostic fingerprint**: a text-identical switch body still scores ~100 (`105`) from a single phantom row `> .rodata+0x0` (compiler's private table vs the blob's named `jtbl_`). Re-run with `-R` (`--no-show-rodata-refs`) to see through it; near-0 with `-R` means the C is correct.
+- **Do not `--force` promote blob-table switches**: even after repointing blob entries to `func+offset` (links fine), the ROM mismatches because compiled code references the private table copy (`lui`/`lw` point at the `.o`'s own address, e.g. `0x800EB4C0` instead of the blob's `0x800EBAE4`). Proven 2026-09: `func_800ADC8C` text-identical yet unpromotable; parked under `NEEDS_RODATA || NON_MATCHING`.
 
 ---
 

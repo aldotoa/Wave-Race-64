@@ -455,13 +455,12 @@ Gfx* func_800916B4(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_800916B4.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_80091CD8(void) {
-    /* Dynamic spray particle lifetime updater */
+Gfx* func_80091CD8(Gfx* gdl) {
+    gSPNumLights(gdl++, NUMLIGHTS_1);
+    gSPLight(gdl++, &D_801C43F8[D_8011F8E0].unk35D8[D_800DAB2C].l[0], LIGHT_1);
+    gSPLight(gdl++, &D_801C43F8[D_8011F8E0].unk35D8[D_800DAB2C].a, LIGHT_2);
+    return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_80091CD8.s")
-#endif
 
 #if defined(NEEDS_DATA) || defined(NON_MATCHING)
 void* func_80091DBC(Gfx* gdl) {
