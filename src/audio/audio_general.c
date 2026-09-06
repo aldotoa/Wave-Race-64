@@ -680,8 +680,54 @@ void func_800C1B98(void) {
 }
 
 #ifdef NON_MATCHING
-void func_800C1BD8(void) {
-    /* Water splash and engine exhaust audio filter updater */
+void func_800C1BD8(f32 arg0, f32 arg1) {
+    f32 var_fv0;
+    s32 temp_v0;
+    s8 var_a1;
+
+    if (D_800E7C9C != 0) {
+        if (arg0 >= 256.0f) {
+            var_fv0 = 0.0f;
+        } else if (arg0 <= 48.0f) {
+            var_fv0 = 1.0f;
+        } else {
+            var_fv0 = (256.0f - arg0) / 208.0f;
+        }
+        if (D_801D7DC0 != 1) {
+            if (D_801D7DE8 != 0) {
+                var_fv0 *= 0.3f;
+            }
+            AudioThread_QueueCmdF32(0x01000700U, var_fv0);
+        } else {
+            var_a1 = 0x40;
+            temp_v0 = D_801D7DEC[0] + (D_801D7DEC[1] * 2);
+            switch (temp_v0) { /* irregular */
+                case 0:
+                    break;
+                case 1:
+                    var_a1 = 0x20;
+                    var_fv0 *= 0.8f;
+                    break;
+                case 2:
+                    var_a1 = 0x60;
+                    var_fv0 *= 0.8f;
+                    break;
+                case 3:
+                    var_fv0 *= 0.3f;
+                    break;
+            }
+            AudioThread_QueueCmdS8(0x03000700, var_a1);
+        }
+        AudioThread_QueueCmdF32(0x01000700U, var_fv0);
+        if (arg1 > 0.0f) {
+            AudioThread_QueueCmdF32(0x04000700U, 1.0f);
+        } else {
+            AudioThread_QueueCmdF32(0x04000700U, 0.96f);
+        }
+        D_800E7C9C = 5;
+    } else {
+        func_800C1B98();
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C1BD8.s")
