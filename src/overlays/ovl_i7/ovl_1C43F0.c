@@ -18,7 +18,7 @@ Gfx* func_i7_802C5800(Gfx* arg0) {
             if (gPrevGameState == 4) {
                 gCurrentOptionsMenuItem = 0;
             }
-            return func_80093C44(arg0);
+            return Gfx_ClearFrameBuffers(arg0);
         }
     }
     D_800DAB2C = 0;

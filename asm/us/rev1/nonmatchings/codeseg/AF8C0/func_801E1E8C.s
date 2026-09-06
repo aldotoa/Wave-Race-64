@@ -17,7 +17,7 @@ glabel func_801E1E8C
     /* B04F0 801E1EC0 AC400000 */  sw         $zero, 0x0($v0)
   .L801E1EC4:
     /* B04F4 801E1EC4 3C01800E */  lui        $at, %hi(D_800DAB2C)
-    /* B04F8 801E1EC8 0C024FDE */  jal        func_80093F78
+    /* B04F8 801E1EC8 0C024FDE */  jal        Gfx_ClearCurrentBuffer
     /* B04FC 801E1ECC AC20AB2C */   sw        $zero, %lo(D_800DAB2C)($at)
     /* B0500 801E1ED0 0C023EDD */  jal        func_8008FB74
     /* B0504 801E1ED4 00402025 */   or        $a0, $v0, $zero
@@ -31,7 +31,7 @@ glabel func_801E1E8C
     /* B0524 801E1EF4 AC580004 */  sw         $t8, 0x4($v0)
     /* B0528 801E1EF8 3C05800E */  lui        $a1, %hi(gCourseID)
     /* B052C 801E1EFC 8CA58170 */  lw         $a1, %lo(gCourseID)($a1)
-    /* B0530 801E1F00 0C025291 */  jal        func_80094A44
+    /* B0530 801E1F00 0C025291 */  jal        Gfx_DrawCoursePanel
     /* B0534 801E1F04 24440008 */   addiu     $a0, $v0, 0x8
     /* B0538 801E1F08 0C0243D6 */  jal        Draw_WaterEffects
     /* B053C 801E1F0C 00402025 */   or        $a0, $v0, $zero

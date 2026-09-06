@@ -36,7 +36,7 @@ glabel func_i0_802C5A7C
     /* 1B41B4 802C5AF4 3C01802C */   lui       $at, %hi(D_i0_802C6BC0)
     /* 1B41B8 802C5AF8 AC266BC0 */  sw         $a2, %lo(D_i0_802C6BC0)($at)
   .Li0_802C5AFC:
-    /* 1B41BC 802C5AFC 0C024CA3 */  jal        func_8009328C
+    /* 1B41BC 802C5AFC 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1B41C0 802C5B00 02002025 */   or        $a0, $s0, $zero
     /* 1B41C4 802C5B04 3C03802C */  lui        $v1, %hi(D_i0_802C6BE0)
     /* 1B41C8 802C5B08 8C636BE0 */  lw         $v1, %lo(D_i0_802C6BE0)($v1)

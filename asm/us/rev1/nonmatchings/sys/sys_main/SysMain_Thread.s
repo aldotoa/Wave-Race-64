@@ -254,7 +254,7 @@ glabel SysMain_Thread
     /* 1988 80047188 3C048015 */  lui        $a0, %hi(sGfxTask)
     /* 198C 8004718C 0C011B3E */  jal        SysMain_SendGfxTaskSetMesg
     /* 1990 80047190 8C841940 */   lw        $a0, %lo(sGfxTask)($a0)
-    /* 1994 80047194 0C0247D4 */  jal        func_80091F50
+    /* 1994 80047194 0C0247D4 */  jal        Main_InitGameState
     /* 1998 80047198 00000000 */   nop
     /* 199C 8004719C 3C018015 */  lui        $at, %hi(gFrameCounter)
     /* 19A0 800471A0 3C11801D */  lui        $s1, %hi(D_801CE63C)
@@ -270,18 +270,18 @@ glabel SysMain_Thread
     /* 19C4 800471C4 24844100 */  addiu      $a0, $a0, %lo(D_80154100)
     /* 19C8 800471C8 0C031718 */  jal        osRecvMesg
     /* 19CC 800471CC 24060001 */   addiu     $a2, $zero, 0x1
-    /* 19D0 800471D0 0C011EC0 */  jal        func_80047B00
+    /* 19D0 800471D0 0C011EC0 */  jal        Main_UpdateAudio
     /* 19D4 800471D4 00000000 */   nop
     /* 19D8 800471D8 0C011B4B */  jal        SysMain_GfxInitBuffers
     /* 19DC 800471DC 00000000 */   nop
-    /* 19E0 800471E0 0C0248B9 */  jal        func_800922E4
+    /* 19E0 800471E0 0C0248B9 */  jal        Game_UpdateFrame
     /* 19E4 800471E4 00000000 */   nop
     /* 19E8 800471E8 0C011A14 */  jal        func_80046850
     /* 19EC 800471EC 00000000 */   nop
     /* 19F0 800471F0 0C011A38 */  jal        func_800468E0
     /* 19F4 800471F4 00000000 */   nop
     /* 19F8 800471F8 3C048015 */  lui        $a0, %hi(gDisplayListHead)
-    /* 19FC 800471FC 0C024B3C */  jal        func_80092CF0
+    /* 19FC 800471FC 0C024B3C */  jal        Game_BuildDisplayList
     /* 1A00 80047200 8C841944 */   lw        $a0, %lo(gDisplayListHead)($a0)
     /* 1A04 80047204 3C018015 */  lui        $at, %hi(gDisplayListHead)
     /* 1A08 80047208 0C011AFD */  jal        SysMain_GfxFullSync

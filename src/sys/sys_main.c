@@ -185,18 +185,18 @@ void* SysMain_Thread(void* entry) {
     SysMain_CreateGfxTask(sGfxTask);
     SysMain_SendGfxTaskSetMesg(sGfxTask);
 
-    func_80091F50();
+    Main_InitGameState();
 
     for (gFrameCounter = 0; /* Empty? */; gFrameCounter++) {
         osContStartReadData(&D_801540D0);
         osRecvMesg(&D_80154100, D_80151958, OS_MESG_BLOCK);
-        func_80047B00();
+        Main_UpdateAudio();
         SysMain_GfxInitBuffers();
-        func_800922E4();
+        Game_UpdateFrame();
         func_80046850();
         func_800468E0();
 
-        gDisplayListHead = func_80092CF0(gDisplayListHead);
+        gDisplayListHead = Game_BuildDisplayList(gDisplayListHead);
 
         SysMain_GfxFullSync();
 

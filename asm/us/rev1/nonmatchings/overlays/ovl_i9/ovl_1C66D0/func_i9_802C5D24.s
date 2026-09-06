@@ -15,7 +15,7 @@ glabel func_i9_802C5D24
     /* 1C6C20 802C5D50 24010042 */  addiu      $at, $zero, 0x42
     /* 1C6C24 802C5D54 15E10005 */  bne        $t7, $at, .Li9_802C5D6C
     /* 1C6C28 802C5D58 00000000 */   nop
-    /* 1C6C2C 802C5D5C 0C024F11 */  jal        func_80093C44
+    /* 1C6C2C 802C5D5C 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1C6C30 802C5D60 00000000 */   nop
     /* 1C6C34 802C5D64 10000039 */  b          .Li9_802C5E4C
     /* 1C6C38 802C5D68 8FBF001C */   lw        $ra, 0x1C($sp)

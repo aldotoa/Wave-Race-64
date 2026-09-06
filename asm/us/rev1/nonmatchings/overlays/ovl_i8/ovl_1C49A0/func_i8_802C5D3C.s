@@ -13,7 +13,7 @@ glabel func_i8_802C5D3C
     /* 1C4F00 802C5D60 2401003E */  addiu      $at, $zero, 0x3E
     /* 1C4F04 802C5D64 15E10005 */  bne        $t7, $at, .Li8_802C5D7C
     /* 1C4F08 802C5D68 00000000 */   nop
-    /* 1C4F0C 802C5D6C 0C024F11 */  jal        func_80093C44
+    /* 1C4F0C 802C5D6C 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1C4F10 802C5D70 00000000 */   nop
     /* 1C4F14 802C5D74 1000004D */  b          .Li8_802C5EAC
     /* 1C4F18 802C5D78 8FBF0014 */   lw        $ra, 0x14($sp)
@@ -55,7 +55,7 @@ glabel func_i8_802C5D3C
     /* 1C4FA4 802C5E04 3C0D0600 */  lui        $t5, (0x6000000 >> 16)
     /* 1C4FA8 802C5E08 ACED0000 */  sw         $t5, 0x0($a3)
     /* 1C4FAC 802C5E0C ACEE0004 */  sw         $t6, 0x4($a3)
-    /* 1C4FB0 802C5E10 0C024CA3 */  jal        func_8009328C
+    /* 1C4FB0 802C5E10 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1C4FB4 802C5E14 24840008 */   addiu     $a0, $a0, 0x8
     /* 1C4FB8 802C5E18 3C18ED02 */  lui        $t8, (0xED020050 >> 16)
     /* 1C4FBC 802C5E1C 3C19004D */  lui        $t9, (0x4DC36C >> 16)

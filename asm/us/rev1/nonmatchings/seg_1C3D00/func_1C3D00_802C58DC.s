@@ -67,7 +67,7 @@ glabel func_1C3D00_802C58DC
     /* 1C3E24 802C5924 02402025 */  or         $a0, $s2, $zero
     /* 1C3E28 802C5928 00002825 */  or         $a1, $zero, $zero
     /* 1C3E2C 802C592C 24060035 */  addiu      $a2, $zero, 0x35
-    /* 1C3E30 802C5930 0C0250CE */  jal        func_80094338
+    /* 1C3E30 802C5930 0C0250CE */  jal        Menu_DrawFrame
     /* 1C3E34 802C5934 24070026 */   addiu     $a3, $zero, 0x26
     /* 1C3E38 802C5938 240800AE */  addiu      $t0, $zero, 0xAE
     /* 1C3E3C 802C593C 24090010 */  addiu      $t1, $zero, 0x10
@@ -76,7 +76,7 @@ glabel func_1C3D00_802C58DC
     /* 1C3E48 802C5948 00402025 */  or         $a0, $v0, $zero
     /* 1C3E4C 802C594C 00002825 */  or         $a1, $zero, $zero
     /* 1C3E50 802C5950 24060049 */  addiu      $a2, $zero, 0x49
-    /* 1C3E54 802C5954 0C0250CE */  jal        func_80094338
+    /* 1C3E54 802C5954 0C0250CE */  jal        Menu_DrawFrame
     /* 1C3E58 802C5958 24070049 */   addiu     $a3, $zero, 0x49
     /* 1C3E5C 802C595C 240A00AE */  addiu      $t2, $zero, 0xAE
     /* 1C3E60 802C5960 240B0019 */  addiu      $t3, $zero, 0x19
@@ -85,7 +85,7 @@ glabel func_1C3D00_802C58DC
     /* 1C3E6C 802C596C 00402025 */  or         $a0, $v0, $zero
     /* 1C3E70 802C5970 00002825 */  or         $a1, $zero, $zero
     /* 1C3E74 802C5974 24060049 */  addiu      $a2, $zero, 0x49
-    /* 1C3E78 802C5978 0C0250CE */  jal        func_80094338
+    /* 1C3E78 802C5978 0C0250CE */  jal        Menu_DrawFrame
     /* 1C3E7C 802C597C 2407005A */   addiu     $a3, $zero, 0x5A
     /* 1C3E80 802C5980 00409025 */  or         $s2, $v0, $zero
     /* 1C3E84 802C5984 2410008C */  addiu      $s0, $zero, 0x8C
@@ -97,7 +97,7 @@ glabel func_1C3D00_802C58DC
     /* 1C3E98 802C5998 02402025 */  or         $a0, $s2, $zero
     /* 1C3E9C 802C599C 00002825 */  or         $a1, $zero, $zero
     /* 1C3EA0 802C59A0 24060049 */  addiu      $a2, $zero, 0x49
-    /* 1C3EA4 802C59A4 0C0250CE */  jal        func_80094338
+    /* 1C3EA4 802C59A4 0C0250CE */  jal        Menu_DrawFrame
     /* 1C3EA8 802C59A8 02003825 */   or        $a3, $s0, $zero
     /* 1C3EAC 802C59AC 26100012 */  addiu      $s0, $s0, 0x12
     /* 1C3EB0 802C59B0 2A0100D4 */  slti       $at, $s0, 0xD4

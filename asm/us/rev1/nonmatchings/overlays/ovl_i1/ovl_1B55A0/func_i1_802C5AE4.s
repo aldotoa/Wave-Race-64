@@ -63,12 +63,12 @@ glabel func_i1_802C5AE4
     /* 1B58A8 802C5B08 24010028 */  addiu      $at, $zero, 0x28
     /* 1B58AC 802C5B0C 15E10005 */  bne        $t7, $at, .Li1_802C5B24
     /* 1B58B0 802C5B10 00000000 */   nop
-    /* 1B58B4 802C5B14 0C024F11 */  jal        func_80093C44
+    /* 1B58B4 802C5B14 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1B58B8 802C5B18 00000000 */   nop
     /* 1B58BC 802C5B1C 100000B2 */  b          .Li1_802C5DE8
     /* 1B58C0 802C5B20 8FBF0014 */   lw        $ra, 0x14($sp)
   .Li1_802C5B24:
-    /* 1B58C4 802C5B24 0C024CA3 */  jal        func_8009328C
+    /* 1B58C4 802C5B24 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1B58C8 802C5B28 00000000 */   nop
     /* 1B58CC 802C5B2C 3C18801D */  lui        $t8, %hi(gCurrentPauseMenuOption)
     /* 1B58D0 802C5B30 8718E624 */  lh         $t8, %lo(gCurrentPauseMenuOption)($t8)
@@ -196,7 +196,7 @@ glabel func_i1_802C5AE4
     /* 1B5A90 802C5CF0 1000003C */  b          .Li1_802C5DE4
     /* 1B5A94 802C5CF4 8FA20018 */   lw        $v0, 0x18($sp)
   .Li1_802C5CF8:
-    /* 1B5A98 802C5CF8 0C024D17 */  jal        func_8009345C
+    /* 1B5A98 802C5CF8 0C024D17 */  jal        Game_EnterGameplay
     /* 1B5A9C 802C5CFC 00000000 */   nop
     /* 1B5AA0 802C5D00 0C02B4F1 */  jal        func_800AD3C4
     /* 1B5AA4 802C5D04 00000000 */   nop

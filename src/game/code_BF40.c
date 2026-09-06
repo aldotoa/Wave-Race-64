@@ -13,158 +13,173 @@ extern s16* D_80192530;
 extern u8* D_80192534;
 extern struct UnkStruct_8004B0F8_1* D_80192538;
 
-void func_80051740(struct UnkStruct_801C3C50* arg0, struct UnkStruct_8004B0F8* arg1);
+/* 2D course-wall collision on a spatial-hash grid.
+ * D_801924F4/D_80192500 hold the grid origin (x/z), D_801924FC/D_80192508
+ * the grid extents; D_801924F0 swaps the cell-index orientation.
+ * D_80192530 is the cell table, D_80192534 the per-cell segment-index
+ * lists (zero-terminated), D_80192538 the wall segment array.
+ * Shared struct field names (UnkStruct_8004B0F8*) are left as-is: they are
+ * also used by game/code_39F00.c and need a coordinated rename pass.
+ * The `(0, D_80192538)` comma expressions below are load-bearing for
+ * byte-match; do not simplify them. */
+void Wall_CollideRider(struct UnkStruct_801C3C50* rider, struct UnkStruct_8004B0F8* walls);
+void Wall_CollideRider(struct UnkStruct_801C3C50* rider, struct UnkStruct_8004B0F8* walls) {
+    f32 penDepth;
+    f32 edgeDist;
+    s16* cellSeg;
+    s32 relX;
+    s32 relZ;
+    struct UnkStruct_8004B0F8_1* cursor;
+    struct UnkStruct_8004B0F8_1* hullPt;
+    u8* cellByte;
+    struct UnkStruct_8004B0F8_1* hullBase = walls->unk30;
+    struct UnkStruct_8004B0F8_1* wallSeg;
 
-// TODO: Improve this match
-void func_80051740(struct UnkStruct_801C3C50* arg0, struct UnkStruct_8004B0F8* arg1) {
-    f32 temp_f0;
-    f32 temp_f2;
-    s16* var_s3;
-    s32 temp_s1;
-    s32 temp_s2;
-    struct UnkStruct_8004B0F8_1* test;
-    struct UnkStruct_8004B0F8_1* var_v1;
-    u8* var_s1;
-    struct UnkStruct_8004B0F8_1* var_s0_2 = arg1->unk30;
-    struct UnkStruct_8004B0F8_1* var_s0;
+    /* Test every hull point from last to first. */
+    for (hullPt = &walls->unk30[walls->unk28]; hullPt >= hullBase; hullPt--) {
 
-    for (var_v1 = &arg1->unk30[arg1->unk28]; var_v1 >= var_s0_2; var_v1--) {
-
-        temp_s1 = (s32) var_v1->unk0 - D_801924F4;
-        if ((temp_s1 >= 0) && (temp_s1 < D_801924FC)) {
-            temp_s2 = (s32) var_v1->unk8 - D_80192500;
-            if ((temp_s2 >= 0) && (temp_s2 < D_80192508)) {
+        relX = (s32) hullPt->unk0 - D_801924F4;
+        if ((relX >= 0) && (relX < D_801924FC)) {
+            relZ = (s32) hullPt->unk8 - D_80192500;
+            if ((relZ >= 0) && (relZ < D_80192508)) {
                 if (D_801924F0 != 0) {
-                    var_s3 = &(0, D_80192530)[((temp_s2 >> D_80192528) | ((temp_s1 >> D_80192520) << D_80192518))];
+                    cellSeg = &(0, D_80192530)[((relZ >> D_80192528) | ((relX >> D_80192520) << D_80192518))];
                 } else {
-                    var_s3 = &(0, D_80192530)[((temp_s1 >> D_80192520) | ((temp_s2 >> D_80192528) << D_80192510))];
+                    cellSeg = &(0, D_80192530)[((relX >> D_80192520) | ((relZ >> D_80192528) << D_80192510))];
                 }
-                var_s1 = &D_80192534[*var_s3];
+                cellByte = &D_80192534[*cellSeg];
 
-                while (*var_s1 != 0) {
-                    var_s0 = (*var_s1) + (0, D_80192538); // FAKE
+                while (*cellByte != 0) {
+                    wallSeg = (*cellByte) + (0, D_80192538); // FAKE
 
-                    temp_f2 =
-                        ((var_s0->unk0 - var_v1->unk0) * var_s0->unk8) + ((var_s0->unk4 - var_v1->unk8) * var_s0->unkC);
+                    edgeDist =
+                        ((wallSeg->unk0 - hullPt->unk0) * wallSeg->unk8) + ((wallSeg->unk4 - hullPt->unk8) * wallSeg->unkC);
 
-                    if ((temp_f2 > 0.0f) && (temp_f2 < 16.0f)) {
+                    if ((edgeDist > 0.0f) && (edgeDist < 16.0f)) {
 
-                        temp_f0 = ((var_v1->unk0 - var_s0->unk0) * var_s0->unk10) +
-                                  ((var_v1->unk8 - var_s0->unk4) * var_s0->unk14);
+                        penDepth = ((hullPt->unk0 - wallSeg->unk0) * wallSeg->unk10) +
+                                  ((hullPt->unk8 - wallSeg->unk4) * wallSeg->unk14);
 
-                        if ((temp_f0 > 0.0f) && (temp_f0 < var_s0->unk18)) {
-                            temp_f0 = (-var_v1->unkC * var_s0->unk8) - (var_v1->unk14 * var_s0->unkC);
-                            if (temp_f0 > 0.0f) {
-                                if (arg0->unkC44 < temp_f0) {
-                                    arg0->unkC44 = temp_f0;
-                                    arg0->unk15B4 = var_s0->unk8;
-                                    arg0->unk15B8 = 0;
-                                    arg0->unk15BC = var_s0->unkC;
+                        if ((penDepth > 0.0f) && (penDepth < wallSeg->unk18)) {
+                            penDepth = (-hullPt->unkC * wallSeg->unk8) - (hullPt->unk14 * wallSeg->unkC);
+                            if (penDepth > 0.0f) {
+                                /* Strongest hit so far: record depth + wall normal. */
+                                if (rider->unkC44 < penDepth) {
+                                    rider->unkC44 = penDepth;
+                                    rider->unk15B4 = wallSeg->unk8;
+                                    rider->unk15B8 = 0;
+                                    rider->unk15BC = wallSeg->unkC;
                                 }
 
-                                var_v1->unkC = (f32) (var_v1->unkC + (temp_f0 * var_s0->unk8));
+                                hullPt->unkC = (f32) (hullPt->unkC + (penDepth * wallSeg->unk8));
 
-                                var_v1->unk14 = (f32) (var_v1->unk14 + (temp_f0 * var_s0->unkC));
+                                hullPt->unk14 = (f32) (hullPt->unk14 + (penDepth * wallSeg->unkC));
 
-                                temp_f0 = (var_s0->unk8 * temp_f2);
-                                temp_f2 = (var_s0->unkC * temp_f2);
+                                penDepth = (wallSeg->unk8 * edgeDist);
+                                edgeDist = (wallSeg->unkC * edgeDist);
 
-                                for (test = arg1->unk30; test < &arg1->unk30[12]; test++) {
+                                /* Shove the whole hull along the wall tangent. */
+                                for (cursor = walls->unk30; cursor < &walls->unk30[12]; cursor++) {
 
-                                    test->unk0 += temp_f0;
-                                    test->unk8 += temp_f2;
+                                    cursor->unk0 += penDepth;
+                                    cursor->unk8 += edgeDist;
                                 }
                             }
                         }
                     }
 
-                    var_s1++;
+                    cellByte++;
                 }
-                var_s0_2 = arg1->unk30;
+                hullBase = walls->unk30;
             }
         }
     }
 }
 
-s32 func_80051A88(f32* arg0, f32* arg1) {
-    f32 temp_f12;
-    f32 temp_f20;
-    f32 temp_f2;
-    s16* var_a2;
-    s32 temp_v0;
-    s32 temp_v1;
-    s32 var_v1;
-    u8* var_a3;
-    struct UnkStruct_8004B0F8_1* temp_a2;
+/* Tests one (x, z) point against the wall grid, pushing it out of any
+ * wall it penetrates. Returns 1 if a wall was hit, 0 otherwise. */
+s32 Wall_CollidePoint(f32* x, f32* z) {
+    f32 edgeDist;
+    f32 penDepth;
+    f32 alongWall;
+    s16* cellSeg;
+    s32 relX;
+    s32 relZ;
+    s32 hit;
+    u8* cellByte;
+    struct UnkStruct_8004B0F8_1* wallSeg;
 
-    temp_v0 = (s32) *arg0 - D_801924F4;
-    if ((temp_v0 < 0) || (temp_v0 >= D_801924FC)) {
+    relX = (s32) *x - D_801924F4;
+    if ((relX < 0) || (relX >= D_801924FC)) {
         return 0;
     }
-    temp_v1 = (s32) *arg1 - D_80192500;
-    if ((temp_v1 < 0) || (temp_v1 >= D_80192508)) {
+    relZ = (s32) *z - D_80192500;
+    if ((relZ < 0) || (relZ >= D_80192508)) {
         return 0;
     }
 
     if (D_801924F0 != 0) {
-        var_a2 = &(0, D_80192530)[((temp_v1 >> D_80192528) | ((temp_v0 >> D_80192520) << D_80192518))];
+        cellSeg = &(0, D_80192530)[((relZ >> D_80192528) | ((relX >> D_80192520) << D_80192518))];
     } else {
-        var_a2 = &(0, D_80192530)[((temp_v0 >> D_80192520) | ((temp_v1 >> D_80192528) << D_80192510))];
+        cellSeg = &(0, D_80192530)[((relX >> D_80192520) | ((relZ >> D_80192528) << D_80192510))];
     }
 
-    var_v1 = 0;
-    var_a3 = D_80192534 + *var_a2;
-    while (*var_a3 != 0) {
-        temp_a2 = (*var_a3 + (0, D_80192538)); // FAKE
-        temp_f12 = ((temp_a2->unk0 - *arg0) * temp_a2->unk8) + ((temp_a2->unk4 - *arg1) * temp_a2->unkC);
-        if ((temp_f12 > 0.0f) && (temp_f12 < 32.0f)) {
-            temp_f20 = ((*arg0 - temp_a2->unk0) * temp_a2->unk10) + ((*arg1 - temp_a2->unk4) * temp_a2->unk14);
-            if ((temp_f20 > 0.0f) && (temp_f20 < temp_a2->unk18)) {
-                var_v1 = 1;
-                *arg0 += temp_f12 * temp_a2->unk8;
-                *arg1 += (temp_f12 * temp_a2->unkC);
+    hit = 0;
+    cellByte = D_80192534 + *cellSeg;
+    while (*cellByte != 0) {
+        wallSeg = (*cellByte + (0, D_80192538)); // FAKE
+        edgeDist = ((wallSeg->unk0 - *x) * wallSeg->unk8) + ((wallSeg->unk4 - *z) * wallSeg->unkC);
+        if ((edgeDist > 0.0f) && (edgeDist < 32.0f)) {
+            alongWall = ((*x - wallSeg->unk0) * wallSeg->unk10) + ((*z - wallSeg->unk4) * wallSeg->unk14);
+            if ((alongWall > 0.0f) && (alongWall < wallSeg->unk18)) {
+                hit = 1;
+                *x += edgeDist * wallSeg->unk8;
+                *z += (edgeDist * wallSeg->unkC);
             }
         }
-        var_a3++;
+        cellByte++;
     }
-    return var_v1;
+    return hit;
 }
 
-f32 func_80051CB4(f32 arg0, f32 arg1, f32* arg2, f32* arg3) {
-    UnkStruct_8004B0F8_1* temp_a0;
-    f32 temp_f20;
-    f32 temp_f2;
-    s16* var_a0;
-    s32 temp_v0;
-    s32 temp_v1;
-    u8* var_v1;
+/* Tests one (x, z) point against the wall grid without moving it.
+ * On a hit, writes the wall normal to (normalX, normalZ) and returns the
+ * edge distance; otherwise returns 0.0f. */
+f32 Wall_QueryPoint(f32 x, f32 z, f32* normalX, f32* normalZ) {
+    UnkStruct_8004B0F8_1* wallSeg;
+    f32 edgeDist;
+    f32 alongWall;
+    s16* cellSeg;
+    s32 relX;
+    s32 relZ;
+    u8* cellByte;
 
-    temp_v0 = (s32) arg0 - D_801924F4;
-    if ((temp_v0 < 0) || (temp_v0 >= D_801924FC)) {
+    relX = (s32) x - D_801924F4;
+    if ((relX < 0) || (relX >= D_801924FC)) {
         return 0.0f;
     }
-    temp_v1 = (s32) arg1 - D_80192500;
-    if ((temp_v1 < 0) || (temp_v1 >= D_80192508)) {
+    relZ = (s32) z - D_80192500;
+    if ((relZ < 0) || (relZ >= D_80192508)) {
         return 0.0f;
     }
     if (D_801924F0 != 0) {
-        var_a0 = &(0, D_80192530)[((temp_v1 >> D_80192528) | ((temp_v0 >> D_80192520) << D_80192518))];
+        cellSeg = &(0, D_80192530)[((relZ >> D_80192528) | ((relX >> D_80192520) << D_80192518))];
     } else {
-        var_a0 = &(0, D_80192530)[((temp_v0 >> D_80192520) | ((temp_v1 >> D_80192528) << D_80192510))];
+        cellSeg = &(0, D_80192530)[((relX >> D_80192520) | ((relZ >> D_80192528) << D_80192510))];
     }
-    var_v1 = &D_80192534[*var_a0];
-    while (*var_v1 != 0) {
-        temp_a0 = (*var_v1 + (0, D_80192538)); // FAKE
-        temp_f2 = ((temp_a0->unk0 - arg0) * temp_a0->unk8) + ((temp_a0->unk4 - arg1) * temp_a0->unkC);
-        if ((temp_f2 > 0.0f) && (temp_f2 < 32.0f)) {
-            temp_f20 = ((arg0 - temp_a0->unk0) * temp_a0->unk10) + ((arg1 - temp_a0->unk4) * temp_a0->unk14);
-            if ((temp_f20 > 0.0f) && (temp_f20 < temp_a0->unk18)) {
-                *arg2 = temp_a0->unk8;
-                *arg3 = temp_a0->unkC;
-                return temp_f2;
+    cellByte = &D_80192534[*cellSeg];
+    while (*cellByte != 0) {
+        wallSeg = (*cellByte + (0, D_80192538)); // FAKE
+        edgeDist = ((wallSeg->unk0 - x) * wallSeg->unk8) + ((wallSeg->unk4 - z) * wallSeg->unkC);
+        if ((edgeDist > 0.0f) && (edgeDist < 32.0f)) {
+            alongWall = ((x - wallSeg->unk0) * wallSeg->unk10) + ((z - wallSeg->unk4) * wallSeg->unk14);
+            if ((alongWall > 0.0f) && (alongWall < wallSeg->unk18)) {
+                *normalX = wallSeg->unk8;
+                *normalZ = wallSeg->unkC;
+                return edgeDist;
             }
         }
-        var_v1++;
+        cellByte++;
     }
     return 0.0f;
 }

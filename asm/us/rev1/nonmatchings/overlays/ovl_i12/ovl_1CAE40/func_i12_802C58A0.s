@@ -49,7 +49,7 @@ glabel func_i12_802C58A0
     /* 1CAF90 802C5950 02802025 */  or         $a0, $s4, $zero
     /* 1CAF94 802C5954 00002825 */  or         $a1, $zero, $zero
     /* 1CAF98 802C5958 02003025 */  or         $a2, $s0, $zero
-    /* 1CAF9C 802C595C 0C0250CE */  jal        func_80094338
+    /* 1CAF9C 802C595C 0C0250CE */  jal        Menu_DrawFrame
     /* 1CAFA0 802C5960 2407003A */   addiu     $a3, $zero, 0x3A
     /* 1CAFA4 802C5964 26100059 */  addiu      $s0, $s0, 0x59
     /* 1CAFA8 802C5968 2A010127 */  slti       $at, $s0, 0x127
@@ -99,7 +99,7 @@ glabel func_i12_802C58A0
     /* 1CB048 802C5A08 0006000D */  break      6
   .Li12_802C5A0C:
     /* 1CB04C 802C5A0C 25A70055 */  addiu      $a3, $t5, 0x55
-    /* 1CB050 802C5A10 0C0250CE */  jal        func_80094338
+    /* 1CB050 802C5A10 0C0250CE */  jal        Menu_DrawFrame
     /* 1CB054 802C5A14 00000000 */   nop
     /* 1CB058 802C5A18 26310001 */  addiu      $s1, $s1, 0x1
     /* 1CB05C 802C5A1C 2A210009 */  slti       $at, $s1, 0x9
@@ -112,7 +112,7 @@ glabel func_i12_802C58A0
     /* 1CB078 802C5A38 02802025 */  or         $a0, $s4, $zero
     /* 1CB07C 802C5A3C 00002825 */  or         $a1, $zero, $zero
     /* 1CB080 802C5A40 24060042 */  addiu      $a2, $zero, 0x42
-    /* 1CB084 802C5A44 0C0250CE */  jal        func_80094338
+    /* 1CB084 802C5A44 0C0250CE */  jal        Menu_DrawFrame
     /* 1CB088 802C5A48 240700B5 */   addiu     $a3, $zero, 0xB5
     /* 1CB08C 802C5A4C 2408005A */  addiu      $t0, $zero, 0x5A
     /* 1CB090 802C5A50 24090010 */  addiu      $t1, $zero, 0x10
@@ -121,7 +121,7 @@ glabel func_i12_802C58A0
     /* 1CB09C 802C5A5C 00402025 */  or         $a0, $v0, $zero
     /* 1CB0A0 802C5A60 00002825 */  or         $a1, $zero, $zero
     /* 1CB0A4 802C5A64 240600A4 */  addiu      $a2, $zero, 0xA4
-    /* 1CB0A8 802C5A68 0C0250CE */  jal        func_80094338
+    /* 1CB0A8 802C5A68 0C0250CE */  jal        Menu_DrawFrame
     /* 1CB0AC 802C5A6C 240700B5 */   addiu     $a3, $zero, 0xB5
     /* 1CB0B0 802C5A70 240A00FF */  addiu      $t2, $zero, 0xFF
     /* 1CB0B4 802C5A74 240B00FF */  addiu      $t3, $zero, 0xFF

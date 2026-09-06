@@ -65,7 +65,7 @@ class TestGameEngineCore(unittest.TestCase):
 
     def test_main_c_matched(self):
         """Verify that game/main.c has all functions matched in C."""
-        main_funcs = ["func_80047470", "func_800474A0", "func_800474E4", "Main_Thread", "Main_IdleThread", "bootproc"]
+        main_funcs = ["Sched_YieldGfxTask", "Sched_StartAudioTask", "Sched_StartGfxTask", "Main_Thread", "Main_IdleThread", "bootproc"]
         for func in main_funcs:
             self.assertTrue(self.is_function_decompiled("game/main", func),
                             f"Expected {func} in main.c to be decompiled")

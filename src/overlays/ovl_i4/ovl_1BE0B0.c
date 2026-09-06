@@ -31,12 +31,12 @@ Gfx* func_i4_802C5B78(Gfx* dList) {
         D_801CE63C = 0;
         if (gGameState == 0x14) {
             osViBlack(0);
-            return func_80093C44(dList);
+            return Gfx_ClearFrameBuffers(dList);
         }
     }
     D_802C76A8 = D_800DA9D0;
     D_800DAB2C = 0;
-    temp_v0 = func_i4_802C5CDC(Draw_WaterEffects(func_800949B8(func_8008FB74(dList), gCourseID)));
+    temp_v0 = func_i4_802C5CDC(Draw_WaterEffects(Gfx_FillCourseColor(func_8008FB74(dList), gCourseID)));
 
     dList = temp_v0 + 1;
 
@@ -51,7 +51,7 @@ Gfx* func_i4_802C5B78(Gfx* dList) {
                 if (D_800D8240 != 0) {
                     gCourseID = D_801C3A10;
                 }
-                func_8009345C();
+                Game_EnterGameplay();
                 break;
 
             case 10:

@@ -64,7 +64,7 @@ glabel func_i9_802C6CC8
     /* 1C7C78 802C6DA8 0006000D */  break      6
   .Li9_802C6DAC:
     /* 1C7C7C 802C6DAC 2507005F */  addiu      $a3, $t0, 0x5F
-    /* 1C7C80 802C6DB0 0C0250CE */  jal        func_80094338
+    /* 1C7C80 802C6DB0 0C0250CE */  jal        Menu_DrawFrame
     /* 1C7C84 802C6DB4 00000000 */   nop
     /* 1C7C88 802C6DB8 26100001 */  addiu      $s0, $s0, 0x1
     /* 1C7C8C 802C6DBC 2A010009 */  slti       $at, $s0, 0x9
@@ -77,7 +77,7 @@ glabel func_i9_802C6CC8
     /* 1C7CA8 802C6DD8 02802025 */  or         $a0, $s4, $zero
     /* 1C7CAC 802C6DDC 00002825 */  or         $a1, $zero, $zero
     /* 1C7CB0 802C6DE0 26E6001C */  addiu      $a2, $s7, 0x1C
-    /* 1C7CB4 802C6DE4 0C0250CE */  jal        func_80094338
+    /* 1C7CB4 802C6DE4 0C0250CE */  jal        Menu_DrawFrame
     /* 1C7CB8 802C6DE8 24070044 */   addiu     $a3, $zero, 0x44
     /* 1C7CBC 802C6DEC 240D0057 */  addiu      $t5, $zero, 0x57
     /* 1C7CC0 802C6DF0 240E0010 */  addiu      $t6, $zero, 0x10
@@ -86,7 +86,7 @@ glabel func_i9_802C6CC8
     /* 1C7CCC 802C6DFC 00402025 */  or         $a0, $v0, $zero
     /* 1C7CD0 802C6E00 00002825 */  or         $a1, $zero, $zero
     /* 1C7CD4 802C6E04 26E60075 */  addiu      $a2, $s7, 0x75
-    /* 1C7CD8 802C6E08 0C0250CE */  jal        func_80094338
+    /* 1C7CD8 802C6E08 0C0250CE */  jal        Menu_DrawFrame
     /* 1C7CDC 802C6E0C 24070044 */   addiu     $a3, $zero, 0x44
     /* 1C7CE0 802C6E10 240F0057 */  addiu      $t7, $zero, 0x57
     /* 1C7CE4 802C6E14 24180010 */  addiu      $t8, $zero, 0x10
@@ -95,7 +95,7 @@ glabel func_i9_802C6CC8
     /* 1C7CF0 802C6E20 00402025 */  or         $a0, $v0, $zero
     /* 1C7CF4 802C6E24 00002825 */  or         $a1, $zero, $zero
     /* 1C7CF8 802C6E28 26E600CE */  addiu      $a2, $s7, 0xCE
-    /* 1C7CFC 802C6E2C 0C0250CE */  jal        func_80094338
+    /* 1C7CFC 802C6E2C 0C0250CE */  jal        Menu_DrawFrame
     /* 1C7D00 802C6E30 24070044 */   addiu     $a3, $zero, 0x44
     /* 1C7D04 802C6E34 241900FF */  addiu      $t9, $zero, 0xFF
     /* 1C7D08 802C6E38 240800FF */  addiu      $t0, $zero, 0xFF

@@ -22,7 +22,7 @@ glabel func_i1_802C6BD8
     /* 1B69C0 802C6C20 02402025 */  or         $a0, $s2, $zero
     /* 1B69C4 802C6C24 00002825 */  or         $a1, $zero, $zero
     /* 1B69C8 802C6C28 24060016 */  addiu      $a2, $zero, 0x16
-    /* 1B69CC 802C6C2C 0C0250CE */  jal        func_80094338
+    /* 1B69CC 802C6C2C 0C0250CE */  jal        Menu_DrawFrame
     /* 1B69D0 802C6C30 240700C5 */   addiu     $a3, $zero, 0xC5
     /* 1B69D4 802C6C34 3C10802D */  lui        $s0, %hi(D_802C96A8)
     /* 1B69D8 802C6C38 261096A8 */  addiu      $s0, $s0, %lo(D_802C96A8)

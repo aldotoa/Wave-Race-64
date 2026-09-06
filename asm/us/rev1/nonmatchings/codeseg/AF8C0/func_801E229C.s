@@ -30,7 +30,7 @@ glabel func_801E229C
     /* B0930 801E2300 AFB80010 */  sw         $t8, 0x10($sp)
     /* B0934 801E2304 00002825 */  or         $a1, $zero, $zero
     /* B0938 801E2308 24060036 */  addiu      $a2, $zero, 0x36
-    /* B093C 801E230C 0C0250CE */  jal        func_80094338
+    /* B093C 801E230C 0C0250CE */  jal        Menu_DrawFrame
     /* B0940 801E2310 24070020 */   addiu     $a3, $zero, 0x20
     /* B0944 801E2314 24080075 */  addiu      $t0, $zero, 0x75
     /* B0948 801E2318 2409001C */  addiu      $t1, $zero, 0x1C
@@ -39,7 +39,7 @@ glabel func_801E229C
     /* B0954 801E2324 00402025 */  or         $a0, $v0, $zero
     /* B0958 801E2328 00002825 */  or         $a1, $zero, $zero
     /* B095C 801E232C 24060065 */  addiu      $a2, $zero, 0x65
-    /* B0960 801E2330 0C0250CE */  jal        func_80094338
+    /* B0960 801E2330 0C0250CE */  jal        Menu_DrawFrame
     /* B0964 801E2334 240700B1 */   addiu     $a3, $zero, 0xB1
     /* B0968 801E2338 3C118022 */  lui        $s1, %hi(D_802261EC)
     /* B096C 801E233C 3C128022 */  lui        $s2, %hi(D_802261E4)

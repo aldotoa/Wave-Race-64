@@ -81,10 +81,10 @@ Gfx* func_i0_802C5800(Gfx* arg0) {
             D_i0_802C6BEC = 1;
         }
 
-        arg0 = func_80093C44(arg0);
+        arg0 = Gfx_ClearFrameBuffers(arg0);
         return arg0;
     }
-    arg0 = func_8009328C(arg0);
+    arg0 = Game_BuildRaceScene(arg0);
 
     gSPDisplayList(arg0++, &D_805AF88);
     gSPDisplayList(arg0++, &D_106F168);
@@ -277,7 +277,7 @@ Gfx* func_i0_802C6044(Gfx* arg0) {
         do {
             s32 x = (s5 + s1) - 2;
 
-            s2 = func_80094338(s2, 0, 0x5A, x, 0x8C, 0xF);
+            s2 = Menu_DrawFrame(s2, 0, 0x5A, x, 0x8C, 0xF);
             s0 += 1;
             s1 += 0x14;
         } while (s0 < D_802C6F0C);
@@ -530,7 +530,7 @@ Gfx* func_i0_802C6944(Gfx* arg0) {
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
     }
-    arg0 = func_8009328C(arg0);
+    arg0 = Game_BuildRaceScene(arg0);
     gSPDisplayList(arg0++, &D_106F168);
 
     if (D_80228A16 == 1) {

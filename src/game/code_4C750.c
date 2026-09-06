@@ -6,12 +6,12 @@ typedef struct UnkStruct_801CB6C8 {
 } UnkStruct_801CB6C8;
 
 void func_8004BA18(void);
-void func_80051530(void);
+void Splash_Init(void);
 void func_8007BD70(void);
 s32 func_8007BE00(void);
 void func_80088EA0(void);
 void func_801DD85C(void);
-void func_80094FE8(void);
+void Game_EnterBootState(void);
 s32 func_8009684C(s32, s16, s16);
 
 extern s16 D_800DAB74;
@@ -130,8 +130,11 @@ const s16 D_800EAC44[] = { 0x0000, 0x0002, 0x0001, 0x0003, 0x0002, 0x0003, 0x000
 s8* sRidersInitials[] = { "R.H", "D.M", "A.S", "M.J" };
 s16 D_800DAB0C = 0;
 
-void func_80091F50(void) {
-    s8 temp_t3;
+/* One-time boot initialization: display-list buffer descriptors, ortho
+ * matrices, subsystem inits, and default controller/pause state. Runs
+ * once before the main loop. */
+void Main_InitGameState(void) {
+    s8 modeBits;
     s32 i;
     s32 j;
     s32 one = 1;
@@ -173,18 +176,18 @@ void func_80091F50(void) {
     guOrtho(D_801CB6C8->unk0, 0.0f, 319.0f, 239.0f, 0.0f, 100.0f, -100.0f, 1.0f);
     guOrtho(&D_801CCE60, 0.0f, 319.0f, 239.0f, 0.0f, 100.0f, -100.0f, 1.0f);
     func_8004BA18();
-    func_80051530();
+    Splash_Init();
     func_80088EA0();
     func_801DD85C();
-    func_80094FE8();
+    Game_EnterBootState();
     func_8007BD70();
     func_8007BE00();
 
-    temp_t3 = D_801CB280 & 0xC0;
-    if (temp_t3 & 0x40) {
+    modeBits = D_801CB280 & 0xC0;
+    if (modeBits & 0x40) {
         D_800DA9EC[0] = 1;
         func_800C2FDC(3);
-    } else if (temp_t3 & 0x80) {
+    } else if (modeBits & 0x80) {
         D_800DA9EC[0] = 2;
         func_800C2FDC(1);
     } else {
@@ -207,11 +210,11 @@ void func_80091F50(void) {
 
 void func_80051238(void);
 void func_800665B0(void);
-void func_8006A264(void);
+void Game_AdvanceFrameState(void);
 void func_8006E3A8(void);
 void func_8008E794(void);
-void func_800926F4(void);
-void func_80092938(void);
+void Game_SetupState(void);
+void Controller_AssignPlayers(void);
 void func_800AD418(void);
 void func_800B2ABC(void);
 void func_801DDE48(void);
@@ -226,9 +229,12 @@ extern s32 D_800D47E0;
 extern s8 D_801CB400;
 extern s8 D_801CB401;
 
-void func_800922E4(void) {
+/* Per-frame update dispatcher: polls controllers, advances frame state,
+ * runs state-entry setup on state changes, then ticks the subsystems for
+ * the current game state. Runs once per main-loop iteration. */
+void Game_UpdateFrame(void) {
     SysUtils_UpdateControllers();
-    func_8006A264();
+    Game_AdvanceFrameState();
     D_801CE5F8 = (u8*) &D_801CB6C8[D_8011F8E0];
     if (D_801CE63C != 0) {
         D_800D47E0 = 0;
@@ -239,9 +245,9 @@ void func_800922E4(void) {
         } else if (gGameState == 0xA) {
             D_801CB400 = 0x3C;
         }
-        func_800926F4();
+        Game_SetupState();
     }
-    func_80092938();
+    Controller_AssignPlayers();
     switch (gGameState) {
         case GAME_STATE_TITLE_SCREEN:
         case GAME_STATE_MAIN_MENU:
@@ -388,9 +394,11 @@ extern s32 D_800D49B0;
 extern s32 gPrevGameState;
 extern s32 D_801CE6F8;
 
-void func_800926F4(void) {
-    s32 sp14;
-    s32 sp18;
+/* State-entry setup: initializes wave, buoy, rider and HUD subsystems for
+ * game states that need them, with extra conditions on state transitions. */
+void Game_SetupState(void) {
+    s32 frameKeep; /* unused; preserves the original stack frame */
+    s32 shouldSetup;
 
     switch (gGameState) {
         case 40:
@@ -455,19 +463,19 @@ void func_800926F4(void) {
             break;
 
         case 80:
-            sp18 = 1;
+            shouldSetup = 1;
 
             if (D_801CE608.gameMode == 4) {
                 if (gPrevGameState != 67) {
-                    sp18 = 0;
+                    shouldSetup = 0;
                 }
             } else {
                 if ((gPrevGameState == 100) || (gPrevGameState == 50) || (gPrevGameState == 57)) {
-                    sp18 = 0;
+                    shouldSetup = 0;
                 }
             }
 
-            if (sp18 != 0) {
+            if (shouldSetup != 0) {
                 func_8004F9E0(0, D_800D49B0);
                 func_8008E4B0();
                 func_801DDA24();
@@ -476,85 +484,93 @@ void func_800926F4(void) {
     }
 }
 
-void func_80092938(void) {
-    UnkStruct_801CE658* var_v1;
+/* Maps the connected physical controllers onto the three logical player
+ * slots, then synthesizes L/R/U/D pad presses from stick deflection past
+ * the per-axis thresholds (edge triggers pressed + resets the hold
+ * counter, holding keeps held and counts up). Slot 2 also merges slot 1's
+ * buttons when two controllers are connected. */
+void Controller_AssignPlayers(void) {
+    UnkStruct_801CE658* slot;
     s32 i;
 
-    for (i = 0, var_v1 = &D_801CE658[i]; i < 3; i++, var_v1++) {
-        var_v1->unk_0A = var_v1->unk_00;
+    for (i = 0, slot = &D_801CE658[i]; i < 3; i++, slot++) {
+        slot->unk_0A = slot->unk_00;
 
         switch (i) {
             case 0:
                 if (D_80154344 < 1) {
-                    var_v1->unk_00 = D_800DAB10;
+                    slot->unk_00 = D_800DAB10;
                 } else {
-                    var_v1->unk_00 = gControllerOne[D_80154330[0]];
+                    slot->unk_00 = gControllerOne[D_80154330[0]];
                 }
                 break;
 
             case 1:
                 if (D_80154344 == 0) {
-                    var_v1->unk_00 = D_800DAB10;
+                    slot->unk_00 = D_800DAB10;
                 } else if (D_80154344 == 1) {
-                    var_v1->unk_00 = gControllerOne[D_80154330[0]];
+                    slot->unk_00 = gControllerOne[D_80154330[0]];
                 } else {
-                    var_v1->unk_00 = gControllerOne[D_80154330[1]];
+                    slot->unk_00 = gControllerOne[D_80154330[1]];
                 }
                 break;
 
             case 2:
                 if (D_80154344 < 1) {
-                    var_v1->unk_00 = D_800DAB10;
+                    slot->unk_00 = D_800DAB10;
                 } else {
-                    var_v1->unk_00 = gControllerOne[D_80154330[0]];
+                    slot->unk_00 = gControllerOne[D_80154330[0]];
                 }
                 if (D_80154344 >= 2) {
-                    var_v1->unk_00.unk_0 |= D_801CE658[1].unk_00.unk_0;
-                    var_v1->unk_00.unk_2 |= D_801CE658[1].unk_00.unk_2;
+                    slot->unk_00.unk_0 |= D_801CE658[1].unk_00.unk_0;
+                    slot->unk_00.unk_2 |= D_801CE658[1].unk_00.unk_2;
                 }
                 break;
         }
 
-        if (var_v1->unk_00.unk_8 >= D_801CB400) {
-            if (var_v1->unk_0A.unk_8 < D_801CB400) {
-                var_v1->unk_00.unk_2 |= R_JPAD;
-                var_v1->unk_14 = 0;
+        if (slot->unk_00.unk_8 >= D_801CB400) {
+            if (slot->unk_0A.unk_8 < D_801CB400) {
+                slot->unk_00.unk_2 |= R_JPAD;
+                slot->unk_14 = 0;
             } else {
-                var_v1->unk_00.unk_0 |= R_JPAD;
-                var_v1->unk_14++;
+                slot->unk_00.unk_0 |= R_JPAD;
+                slot->unk_14++;
             }
-        } else if (var_v1->unk_00.unk_8 <= -D_801CB400) {
-            if (var_v1->unk_0A.unk_8 > -D_801CB400) {
-                var_v1->unk_00.unk_2 |= L_JPAD;
-                var_v1->unk_14 = 0;
+        } else if (slot->unk_00.unk_8 <= -D_801CB400) {
+            if (slot->unk_0A.unk_8 > -D_801CB400) {
+                slot->unk_00.unk_2 |= L_JPAD;
+                slot->unk_14 = 0;
             } else {
-                var_v1->unk_00.unk_0 |= L_JPAD;
-                var_v1->unk_14++;
+                slot->unk_00.unk_0 |= L_JPAD;
+                slot->unk_14++;
             }
         }
 
-        if (var_v1->unk_00.unk_9 >= D_801CB401) {
-            if (var_v1->unk_0A.unk_9 < D_801CB401) {
-                var_v1->unk_00.unk_2 |= U_JPAD;
-                var_v1->unk_18 = 0;
+        if (slot->unk_00.unk_9 >= D_801CB401) {
+            if (slot->unk_0A.unk_9 < D_801CB401) {
+                slot->unk_00.unk_2 |= U_JPAD;
+                slot->unk_18 = 0;
             } else {
-                var_v1->unk_00.unk_0 |= U_JPAD;
-                var_v1->unk_18++;
+                slot->unk_00.unk_0 |= U_JPAD;
+                slot->unk_18++;
             }
-        } else if (var_v1->unk_00.unk_9 <= -D_801CB401) {
-            if (var_v1->unk_0A.unk_9 > -D_801CB401) {
-                var_v1->unk_00.unk_2 |= D_JPAD;
-                var_v1->unk_18 = 0;
+        } else if (slot->unk_00.unk_9 <= -D_801CB401) {
+            if (slot->unk_0A.unk_9 > -D_801CB401) {
+                slot->unk_00.unk_2 |= D_JPAD;
+                slot->unk_18 = 0;
             } else {
-                var_v1->unk_00.unk_0 |= D_JPAD;
-                var_v1->unk_18++;
+                slot->unk_00.unk_0 |= D_JPAD;
+                slot->unk_18++;
             }
         }
     }
 }
 
-Gfx* func_80092CF0(Gfx* dList) {
-    s32 pad;
+/* Master display-list builder: dispatches to the current game state's
+ * screen builder overlay, then appends the pause menu and the fade/wave
+ * post effects. Runs once per frame from the main loop. */
+Gfx* Game_BuildDisplayList(Gfx* dList) {
+    s32 frameKeep; /* unused; preserves the original stack frame */
 
     D_801CE62E = 0;
     D_801CE62A = 1;
@@ -573,9 +589,9 @@ Gfx* func_80092CF0(Gfx* dList) {
         case 0x0:
             D_801CE62A = 0;
 
-            dList = func_80093F78(dList);
+            dList = Gfx_ClearCurrentBuffer(dList);
 
-            if (func_80093104() != 0) {
+            if (MemPak_Probe() != 0) {
                 func_801ECAF4();
             } else {
                 func_801EB180();
@@ -756,13 +772,13 @@ Gfx* func_80092CF0(Gfx* dList) {
         case 1:
             D_800DAB74 = 0;
             D_800DAB78 = 1;
-            func_801E4C08();
+            PauseMenu_Open();
             break;
 
         case 2:
             D_800DAB74 = 0;
             D_800DAB78 = 0;
-            func_801E4C38();
+            PauseMenu_Close();
             break;
 
         default:
@@ -785,7 +801,9 @@ Gfx* func_80092CF0(Gfx* dList) {
     return dList;
 }
 
-s32 func_80093104(void) {
+/* Probes the Controller Pak in the first connected controller and reads
+ * its file table. Returns 1 when a usable pak is present, 0 otherwise. */
+s32 MemPak_Probe(void) {
     s32 i;
     s32 result;
 
@@ -829,60 +847,65 @@ s32 func_80093104(void) {
     return 1;
 }
 
-Gfx* func_8009328C(Gfx* arg0) {
+/* Builds the full race-scene display list: one viewport in 1P mode,
+ * two stacked viewports in 2P mode, then the splash overlay. */
+Gfx* Game_BuildRaceScene(Gfx* gdl) {
     if (gPlayers == ONE_PLAYER) {
         D_800DAB2C = 0;
-        arg0 = func_8008FB74(arg0);
-        func_8006E674(&arg0);
-        arg0 = func_800687A4(arg0);
-        arg0 = func_8007FFA8(arg0);
+        gdl = func_8008FB74(gdl);
+        func_8006E674(&gdl);
+        gdl = func_800687A4(gdl);
+        gdl = func_8007FFA8(gdl);
         if ((D_801CE638 != 4) && (D_801CE638 != 0xA)) {
-            arg0 = func_800ADF90(arg0);
+            gdl = func_800ADF90(gdl);
         }
-        arg0 = Draw_WaterEffects(arg0);
-        arg0 = func_80069594(arg0);
-        arg0 = func_80068538(arg0);
-        configSignalRectangle(&arg0);
-        func_800B305C(&arg0);
-        arg0 = func_8008BD2C(arg0);
+        gdl = Draw_WaterEffects(gdl);
+        gdl = func_80069594(gdl);
+        gdl = func_80068538(gdl);
+        configSignalRectangle(&gdl);
+        func_800B305C(&gdl);
+        gdl = func_8008BD2C(gdl);
     } else {
         D_800DAB2C = 0;
-        arg0 = func_800933C4(arg0);
+        gdl = Game_BuildRaceViewport(gdl);
         D_800DAB2C = 1;
-        arg0 = func_800933C4(arg0);
+        gdl = Game_BuildRaceViewport(gdl);
         D_800DAB2C = 0;
     }
-    arg0 = func_80051538(arg0);
+    gdl = Splash_Draw(gdl);
     if ((gGameState != 0x2D) || (D_80228AA4 != 2)) {
-        func_801FC4D4(&arg0);
+        func_801FC4D4(&gdl);
     }
-    return arg0;
+    return gdl;
 }
 
-Gfx* func_800933C4(Gfx* arg0) {
+/* Builds one split-screen viewport of the race scene (world, water, HUD). */
+Gfx* Game_BuildRaceViewport(Gfx* gdl) {
 
-    Gfx* temp_v0_3;
+    Gfx* frameKeep; /* unused; preserves the original stack frame */
 
-    arg0 = func_8008FB74(arg0);
-    func_8006E674(&arg0);
-    arg0 = func_800687A4(arg0);
+    gdl = func_8008FB74(gdl);
+    func_8006E674(&gdl);
+    gdl = func_800687A4(gdl);
     if ((D_801CE638 != 4) && (D_801CE638 != 10)) {
-        arg0 = func_800ADF90(arg0);
+        gdl = func_800ADF90(gdl);
     }
-    arg0 = Draw_WaterEffects(arg0);
-    arg0 = func_80069594(arg0);
-    arg0 = func_80068538(arg0);
-    configSignalRectangle(&arg0);
-    func_800B305C(&arg0);
-    return arg0;
+    gdl = Draw_WaterEffects(gdl);
+    gdl = func_80069594(gdl);
+    gdl = func_80068538(gdl);
+    configSignalRectangle(&gdl);
+    func_800B305C(&gdl);
+    return gdl;
 }
 
-void func_8009345C(void) {
-    UnkStruct_func_i8_802C6E00* var_v1;
-    s32 var_a1;
-    s32 var_a2;
-    s32 id;
-    s32 pad;
+/* Applies the selected game options and transitions into gameplay:
+ * difficulty, laps, riders, camera and fade state. */
+void Game_EnterGameplay(void) {
+    UnkStruct_func_i8_802C6E00* initials;
+    s32 riderSelA;
+    s32 riderSelB;
+    s32 courseId;
+    s32 frameKeep; /* unused; preserves the original stack frame */
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -896,12 +919,12 @@ void func_8009345C(void) {
     D_801CE600 = 0;
 
     if (gDifficulty == DIFFICULTY_NORMAL) {
-        D_801CE608.waveLevel = func_800948DC(0, gCourseID);
+        D_801CE608.waveLevel = Game_GetWaveLevel(0, gCourseID);
         D_801CE608.powerMisses = D_801CB308[0][1];
         D_801CE608.lapCount = D_801CB308[0][2];
         D_801CE72C = (s16) D_801CB308[0][0];
     } else if (gDifficulty == DIFFICULTY_HARD) {
-        D_801CE608.waveLevel = func_800948DC(1, gCourseID);
+        D_801CE608.waveLevel = Game_GetWaveLevel(1, gCourseID);
         D_801CE608.powerMisses = D_801CB308[1][1];
         D_801CE608.lapCount = D_801CB308[1][2];
         D_801CE72C = (s16) D_801CB308[1][0];
@@ -911,7 +934,7 @@ void func_8009345C(void) {
         D_801CE608.lapCount = 3;
         D_801CE72C = 0;
     } else {
-        D_801CE608.waveLevel = func_800948DC(2, gCourseID);
+        D_801CE608.waveLevel = Game_GetWaveLevel(2, gCourseID);
         D_801CE608.powerMisses = D_801CB308[2][1];
         D_801CE608.lapCount = D_801CB308[2][2];
         D_801CE72C = (s16) D_801CB308[2][0];
@@ -960,31 +983,31 @@ void func_8009345C(void) {
                 gDifficulty = DIFFICULTY_EXPERT;
             }
             D_800D8240 = 0;
-            for (var_a2 = 0; var_a2 < 4; var_a2++) {
-                D_801CB3F8[var_a2] = 0;
-                D_80192690[var_a2].unkB68 = D_800DA9B0[var_a2];
-                if (var_a2 == D_800D48DC) {
+            for (riderSelB = 0; riderSelB < 4; riderSelB++) {
+                D_801CB3F8[riderSelB] = 0;
+                D_80192690[riderSelB].unkB68 = D_800DA9B0[riderSelB];
+                if (riderSelB == D_800D48DC) {
                     if (D_801CB32C == 0) {
-                        var_v1 = &D_800DA950[D_80192690[var_a2].unkB68];
+                        initials = &D_800DA950[D_80192690[riderSelB].unkB68];
                     } else {
-                        var_v1 = &D_801CB298[D_80192690[var_a2].unkB68];
+                        initials = &D_801CB298[D_80192690[riderSelB].unkB68];
                     }
 
-                    D_80192690[var_a2].unkB6C = (s32) var_v1->unk_B[0];
-                    D_80192690[var_a2].unkB70 = (s32) var_v1->unk_B[1];
-                    D_80192690[var_a2].unkB74 = (s32) var_v1->unk_B[2];
+                    D_80192690[riderSelB].unkB6C = (s32) initials->unk_B[0];
+                    D_80192690[riderSelB].unkB70 = (s32) initials->unk_B[1];
+                    D_80192690[riderSelB].unkB74 = (s32) initials->unk_B[2];
                 } else {
-                    D_80192690[var_a2].unkB6C = D_800D96A4[gCourseID][D_80192690[var_a2].unkB68].unk0;
-                    D_80192690[var_a2].unkB70 = D_800D96A4[gCourseID][D_80192690[var_a2].unkB68].unk4;
-                    D_80192690[var_a2].unkB74 = D_800D96A4[gCourseID][D_80192690[var_a2].unkB68].unk8;
+                    D_80192690[riderSelB].unkB6C = D_800D96A4[gCourseID][D_80192690[riderSelB].unkB68].unk0;
+                    D_80192690[riderSelB].unkB70 = D_800D96A4[gCourseID][D_80192690[riderSelB].unkB68].unk4;
+                    D_80192690[riderSelB].unkB74 = D_800D96A4[gCourseID][D_80192690[riderSelB].unkB68].unk8;
                 }
             }
 
-            var_a1 = D_800DA9B0[D_800D48DC];
+            riderSelA = D_800DA9B0[D_800D48DC];
             if (D_801CE6F4[0] != 0) {
-                var_a1 += 4;
+                riderSelA += 4;
             }
-            func_80096960(0, var_a1, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
+            func_80096960(0, riderSelA, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
 
             break;
 
@@ -992,11 +1015,11 @@ void func_8009345C(void) {
             if (D_800DAB68 != 0) {
                 gDifficulty = DIFFICULTY_EXPERT;
             }
-            var_a1 = D_800DA9B0[D_800D48DC];
+            riderSelA = D_800DA9B0[D_800D48DC];
             if (D_801CE6F4[0] != 0) {
-                var_a1 += 4;
+                riderSelA += 4;
             }
-            func_80096960(0, var_a1, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
+            func_80096960(0, riderSelA, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
             break;
 
         case GMODE_STUNT:
@@ -1005,23 +1028,23 @@ void func_8009345C(void) {
             } else {
                 gDifficulty = DIFFICULTY_EXPERT;
             }
-            var_a1 = D_800DA9B0[D_800D48DC];
+            riderSelA = D_800DA9B0[D_800D48DC];
             if (D_801CE6F4[0] != 0) {
-                var_a1 += 4;
+                riderSelA += 4;
             }
-            func_80096960(0, var_a1, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
+            func_80096960(0, riderSelA, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
             break;
 
         case GMODE_2P_VS:
-            var_a1 = D_800DA9B0[D_800D48DC];
+            riderSelA = D_800DA9B0[D_800D48DC];
             if (D_801CE6F4[0] != 0) {
-                var_a1 += 4;
+                riderSelA += 4;
             }
-            var_a2 = D_800DA9B0[D_800D48E0];
+            riderSelB = D_800DA9B0[D_800D48E0];
             if (D_801CE6F4[1] != 0) {
-                var_a2 += 4;
+                riderSelB += 4;
             }
-            func_80096960(4, var_a1, var_a2, var_a1, var_a2);
+            func_80096960(4, riderSelA, riderSelB, riderSelA, riderSelB);
             break;
 
         default:
@@ -1029,15 +1052,15 @@ void func_8009345C(void) {
             break;
     }
 
-    id = gCourseID;
-    if (id < DOLPHIN_PARK) {
-        id = DOLPHIN_PARK;
+    courseId = gCourseID;
+    if (courseId < DOLPHIN_PARK) {
+        courseId = DOLPHIN_PARK;
     }
-    if (id >= RIDER_SELECTION) {
-        id = SOUTHERN_ISLAND;
+    if (courseId >= RIDER_SELECTION) {
+        courseId = SOUTHERN_ISLAND;
     }
 
-    func_8009684C(0x08060000, D_800DB568[id].unk0, D_800DB568[id].unk2);
+    func_8009684C(0x08060000, D_800DB568[courseId].unk0, D_800DB568[courseId].unk2);
     FadeTransition_SetProps(2, 4, 0);
     func_801E6A4C(0, 0);
 
@@ -1051,26 +1074,29 @@ void func_8009345C(void) {
     func_800C21F4(7, gCourseID);
 }
 
-Gfx* func_80093AFC(Gfx* GfxPtr) {
-    gSPClearGeometryMode(GfxPtr++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
+/* Clears the fixed work color/depth images at 0x802A0000 to near-white. */
+Gfx* Gfx_ClearWorkImages(Gfx* gdl) {
+    gSPClearGeometryMode(gdl++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
                                        G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | 0xFFE0CDF8);
 
-    gSPSetGeometryMode(GfxPtr++, G_ZBUFFER | G_SHADE);
-    gSPTexture(GfxPtr++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
-    gDPPipeSync(GfxPtr++);
-    gDPSetCycleType(GfxPtr++, G_CYC_FILL);
-    gDPSetCombineMode(GfxPtr++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    gDPSetRenderMode(GfxPtr++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-    gDPSetDepthImage(GfxPtr++, osVirtualToPhysical((void*) 0x802A0000));
-    gDPSetColorImage(GfxPtr++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, osVirtualToPhysical((void*) 0x802A0000));
-    gDPSetFillColor(GfxPtr++, 0xFFFCFFFC);
-    gDPSetScissor(GfxPtr++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
-    gDPFillRectangle(GfxPtr++, 0, 0, 319, 239);
+    gSPSetGeometryMode(gdl++, G_ZBUFFER | G_SHADE);
+    gSPTexture(gdl++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
+    gDPPipeSync(gdl++);
+    gDPSetCycleType(gdl++, G_CYC_FILL);
+    gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetRenderMode(gdl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
+    gDPSetDepthImage(gdl++, osVirtualToPhysical((void*) 0x802A0000));
+    gDPSetColorImage(gdl++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, osVirtualToPhysical((void*) 0x802A0000));
+    gDPSetFillColor(gdl++, 0xFFFCFFFC);
+    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+    gDPFillRectangle(gdl++, 0, 0, 319, 239);
 
-    return GfxPtr;
+    return gdl;
 }
 
-Gfx* func_80093C44(Gfx* gdl) {
+/* Clears all three framebuffers to near-black (NOOP render, keeps the
+ * current color/depth images). */
+Gfx* Gfx_ClearFrameBuffers(Gfx* gdl) {
     size_t i;
 
     gSPClearGeometryMode(gdl++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
@@ -1096,7 +1122,9 @@ Gfx* func_80093C44(Gfx* gdl) {
     return gdl;
 }
 
-Gfx* func_80093DBC(Gfx* gfxPtr, u16 red, u16 green, u16 blue) {
+/* Fills the viewport rectangle on all three framebuffers with the given
+ * RGB color. */
+Gfx* Gfx_FillViewport(Gfx* gfxPtr, u16 red, u16 green, u16 blue) {
     s32 i;
 
     gSPClearGeometryMode(gfxPtr++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
@@ -1119,7 +1147,8 @@ Gfx* func_80093DBC(Gfx* gfxPtr, u16 red, u16 green, u16 blue) {
     return gfxPtr;
 }
 
-Gfx* func_80093F78(Gfx* gfxPtr) {
+/* Clears the current framebuffer to near-black. */
+Gfx* Gfx_ClearCurrentBuffer(Gfx* gfxPtr) {
     gSPClearGeometryMode(gfxPtr++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
                                        G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | 0xFFE0CDF8);
     gSPTexture(gfxPtr++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
@@ -1150,40 +1179,43 @@ s32 SegmentedToVirtual(u32 addr) {
     return var;
 }
 
-void func_800940C4(s32 arg0, s32 arg1) {
-    s32 sp18;
-    DmaTransfer* var_v0;
-    s32 var_v1;
+/* Queues a DMA table entry for transfer. The entry comes from one of two
+ * tables selected by arg1; a second chained entry follows from the
+ * matching low table. (No callers in this revision; kept for byte-match.) */
+void Dma_QueueEntry(s32 arg0, s32 arg1) {
+    s32 frameKeep; /* unused; preserves the original stack frame */
+    DmaTransfer* req;
+    s32 idx;
 
-    var_v0 = D_800DAB38;
+    req = D_800DAB38;
 
-    for (var_v1 = 0; var_v1 < 5; var_v0++, var_v1++) {
-        if (var_v0->flag == 0) {
+    for (idx = 0; idx < 5; req++, idx++) {
+        if (req->flag == 0) {
             break;
         }
     }
 
-    if (var_v1 != 5) {
-        var_v0->flag = 1;
+    if (idx != 5) {
+        req->flag = 1;
         if (arg1 == 1) {
-            var_v0->entry = (DmaEntry*) D_800DC698[arg0];
+            req->entry = (DmaEntry*) D_800DC698[arg0];
         } else {
-            var_v0->entry = (DmaEntry*) D_800DC6BC[arg0];
+            req->entry = (DmaEntry*) D_800DC6BC[arg0];
         }
         func_80097E68();
 
-        for (var_v1 = 0; var_v1 < 5; var_v1++) {
-            if (D_800DAB38[var_v1].flag == 0) {
+        for (idx = 0; idx < 5; idx++) {
+            if (D_800DAB38[idx].flag == 0) {
                 break;
             }
         }
 
-        if (var_v1 != 5) {
-            D_800DAB38[var_v1].flag = 1;
+        if (idx != 5) {
+            D_800DAB38[idx].flag = 1;
             if (arg1 == 1) {
-                D_800DAB38[var_v1].entry = D_800DC4F0[arg0];
+                D_800DAB38[idx].entry = D_800DC4F0[arg0];
             } else {
-                D_800DAB38[var_v1].entry = D_800DC514[arg0];
+                D_800DAB38[idx].entry = D_800DC514[arg0];
             }
             func_80097E68();
         }
@@ -1204,77 +1236,79 @@ s32 Strlen2(s8* str) {
 
 Gfx* func_801E9858(Gfx*, s32, s8*, s32, s32);
 
-Gfx* func_80094200(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    s32 var_s0;
-    s32 var_s1;
-    s32 var_s2;
+/* Draws a 5-digit decimal value with the font glyphs, right-aligned at x. */
+Gfx* Font_DrawDecimal(Gfx* gdl, s32 font, s32 value, s32 x, s32 y) {
+    s32 digitVal;
+    s32 digitIdx;
+    s32 xPos;
     u8 buf[4];
-    s32 var_v0;
+    s32 glyphStep;
 
-    var_v0 = 0xC;
-    if (arg1 == 0) {
-        var_v0 = 0x12;
+    glyphStep = 0xC;
+    if (font == 0) {
+        glyphStep = 0x12;
     }
-    var_s0 = arg2;
+    digitVal = value;
 
-    for (var_s1 = 0, var_s2 = arg3 + var_v0 * 4; var_s1 < 5; var_s1++, var_s2 += -var_v0, var_s0 /= 10) {
-        sprintf(buf, "%d", var_s0 % 10);
-        arg0 = func_801E9858(arg0, arg1, buf, var_s2, arg4);
+    for (digitIdx = 0, xPos = x + glyphStep * 4; digitIdx < 5; digitIdx++, xPos += -glyphStep, digitVal /= 10) {
+        sprintf(buf, "%d", digitVal % 10);
+        gdl = func_801E9858(gdl, font, buf, xPos, y);
     }
 
-    return arg0;
+    return gdl;
 }
 
-// Seems to be drawing the green squared frames of the menu entries
-Gfx* func_80094338(Gfx* gdl, s32 arg1, s32 width, s32 height, s32 arg4, s32 arg5) {
+// Draws the textured menu-entry frames, sliced into strips and skipped
+// entirely when off-screen.
+Gfx* Menu_DrawFrame(Gfx* gdl, s32 style, s32 x, s32 y, s32 w, s32 h) {
     s32 i;
-    s32 spA0;
+    s32 slices;
     s32 drawTexRect;
     s32 texWidth;
-    s32 textHeight;
+    s32 texHeight;
     s32 dsdx;
     s32 dsdy;
     s32 uly;
     s32 lry;
     u16* timg;
 
-    switch (arg1) {
+    switch (style) {
         case 0:
-            spA0 = 4;
+            slices = 4;
             timg = D_10515A8;
             texWidth = 256;
-            textHeight = 8;
-            dsdx = 0x40000 / arg4;
-            dsdy = 0x8000 / arg5;
+            texHeight = 8;
+            dsdx = 0x40000 / w;
+            dsdy = 0x8000 / h;
             break;
 
         case 2:
-            spA0 = 4;
+            slices = 4;
             timg = D_10565B8;
             texWidth = 256;
-            textHeight = 8;
-            dsdx = 0x40000 / arg4;
-            dsdy = 0x8000 / arg5;
+            texHeight = 8;
+            dsdx = 0x40000 / w;
+            dsdy = 0x8000 / h;
             break;
 
         case 1:
-            spA0 = 1;
+            slices = 1;
             timg = D_10555B0;
             texWidth = 64;
-            textHeight = 32;
-            dsdx = 0x10000 / arg4;
-            dsdy = 0x8000 / arg5;
+            texHeight = 32;
+            dsdx = 0x10000 / w;
+            dsdy = 0x8000 / h;
             break;
     }
 
     drawTexRect = true;
-    if (width >= SCREEN_WIDTH) {
+    if (x >= SCREEN_WIDTH) {
         drawTexRect = false;
-    } else if ((width + arg4) < 0) {
+    } else if ((x + w) < 0) {
         drawTexRect = false;
-    } else if (height >= SCREEN_HEIGHT) {
+    } else if (y >= SCREEN_HEIGHT) {
         drawTexRect = false;
-    } else if ((height + arg5) < 0) {
+    } else if ((y + h) < 0) {
         drawTexRect = false;
     }
 
@@ -1282,54 +1316,57 @@ Gfx* func_80094338(Gfx* gdl, s32 arg1, s32 width, s32 height, s32 arg4, s32 arg5
         return gdl;
     }
 
-    for (i = 0; i < spA0; i++) {
-        uly = (height + (f32) arg5 / (f32) spA0 * i) * 4.0f;
-        lry = (height + (f32) arg5 / (f32) spA0 * i + (f32) arg5 / (f32) spA0) * 4.0f;
-        gDPLoadTextureBlock(gdl++, timg + texWidth * textHeight * i, G_IM_FMT_RGBA, G_IM_SIZ_16b, texWidth, textHeight,
+    for (i = 0; i < slices; i++) {
+        uly = (y + (f32) h / (f32) slices * i) * 4.0f;
+        lry = (y + (f32) h / (f32) slices * i + (f32) h / (f32) slices) * 4.0f;
+        gDPLoadTextureBlock(gdl++, timg + texWidth * texHeight * i, G_IM_FMT_RGBA, G_IM_SIZ_16b, texWidth, texHeight,
                             0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPScisTextureRectangle(gdl++, width << 2, uly, (width + arg4) << 2, lry, G_TX_RENDERTILE, 0, 0, dsdx, dsdy);
+        gSPScisTextureRectangle(gdl++, x << 2, uly, (x + w) << 2, lry, G_TX_RENDERTILE, 0, 0, dsdx, dsdy);
     }
 
     return gdl;
 }
 
-s32 func_800948DC(s32 arg0, s32 arg1) {
-    s32 ret;
+/* Looks up the wave level for a course from a settings-table row: fixed
+ * presets or a random value in the squall range. */
+s32 Game_GetWaveLevel(s32 row, s32 courseId) {
+    s32 level;
 
-    switch (D_801CB308[arg0][0]) {
+    switch (D_801CB308[row][0]) {
         case 0:
             D_801CE600 = 0;
             if (D_801CE608.player == 1) {
-                ret = D_800EABEC[arg1];
+                level = D_800EABEC[courseId];
             } else {
-                ret = D_800EAC00[arg1];
+                level = D_800EAC00[courseId];
             }
             break;
 
         case 1:
             D_801CE600 = 1;
-            ret = 10;
+            level = 10;
             break;
 
         case 2:
             D_801CE600 = 1;
-            ret = 40;
+            level = 40;
             break;
 
         case 3:
             D_801CE600 = 1;
-            ret = (SysUtils_Rand() % 31) + 10;
+            level = (SysUtils_Rand() % 31) + 10;
             break;
     }
 
-    return ret;
+    return level;
 }
 
-Gfx* func_800949B8(Gfx* gdl, s32 courseId) {
-    RGB* temp = &short_RGB[courseId];
+/* Fills the viewport rectangle with the course's menu color. */
+Gfx* Gfx_FillCourseColor(Gfx* gdl, s32 courseId) {
+    RGB* courseColor = &short_RGB[courseId];
 
     gSPDisplayList(gdl++, D_106F8A0);
-    gDPSetPrimColor(gdl++, 0, 0, temp->r, temp->g, temp->b, 255);
+    gDPSetPrimColor(gdl++, 0, 0, courseColor->r, courseColor->g, courseColor->b, 255);
     gDPFillRectangle(gdl++, 8, 20, 311, 219);
 
     return gdl;
@@ -1338,28 +1375,32 @@ Gfx* func_800949B8(Gfx* gdl, s32 courseId) {
 extern Gfx D_106F8E8[];
 extern Vtx* D_800DAA90[];
 
-Gfx* func_80094A44(Gfx* gDisplayList, s32 courseId) {
+/* Draws the course-select course panel quad from the course vertex table. */
+Gfx* Gfx_DrawCoursePanel(Gfx* gdl, s32 courseId) {
     if ((courseId < 0) || (courseId >= 9)) {
         courseId = 0;
     }
-    gSPDisplayList(gDisplayList++, D_106F8E8);
-    gSPVertex(gDisplayList++, D_800DAA90[courseId], 4, 0);
-    gSP1Triangle(gDisplayList++, 0, 3, 1, 0);
-    gSP1Triangle(gDisplayList++, 0, 2, 3, 0);
-    return gDisplayList;
+    gSPDisplayList(gdl++, D_106F8E8);
+    gSPVertex(gdl++, D_800DAA90[courseId], 4, 0);
+    gSP1Triangle(gdl++, 0, 3, 1, 0);
+    gSP1Triangle(gdl++, 0, 2, 3, 0);
+    return gdl;
 }
 
 void func_80094ABC(void) {
     D_800DAB0C = 1;
 }
 
-void func_80094ACC(void) {
+/* Accumulates championship points per rider, sorts the standings twice
+ * (by round points, then by total, breaking ties by race position), and
+ * writes each rider's championship rank. */
+void Race_UpdateStandings(void) {
     s32 i;
     s32 j;
-    s32 temp1;
-    s32 temp2;
-    s32 temp3;
-    s32 var_a0;
+    s32 idxA;
+    s32 idxB;
+    s32 swap;
+    s32 doSwap;
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < D_801CE60E; j++) {
@@ -1380,19 +1421,19 @@ void func_80094ACC(void) {
 
     for (i = 0; i < 3; i++) {
         for (j = i + 1; j < 4; j++) {
-            var_a0 = 0;
+            doSwap = 0;
 
-            temp1 = D_801CE718[i];
-            temp2 = D_801CE718[j];
+            idxA = D_801CE718[i];
+            idxB = D_801CE718[j];
 
-            if (D_801CB350[D_801CB334][temp1] < D_801CB350[D_801CB334][temp2]) {
-                var_a0 = 1;
+            if (D_801CB350[D_801CB334][idxA] < D_801CB350[D_801CB334][idxB]) {
+                doSwap = 1;
             }
 
-            if (var_a0 != 0) {
-                temp3 = D_801CE718[i];
+            if (doSwap != 0) {
+                swap = D_801CE718[i];
                 D_801CE718[i] = D_801CE718[j];
-                D_801CE718[j] = temp3;
+                D_801CE718[j] = swap;
             }
         }
     }
@@ -1403,23 +1444,23 @@ void func_80094ACC(void) {
 
     for (i = 0; i < 3; i++) {
         for (j = i + 1; j < 4; j++) {
-            var_a0 = 0;
+            doSwap = 0;
 
-            temp1 = D_800DA9DC[i];
-            temp2 = D_800DA9DC[j];
+            idxA = D_800DA9DC[i];
+            idxB = D_800DA9DC[j];
 
-            if (D_801CB340[temp1] == D_801CB340[temp2]) {
-                if (D_801C2938[temp1].racePosition > D_801C2938[temp2].racePosition) {
-                    var_a0 = 1;
+            if (D_801CB340[idxA] == D_801CB340[idxB]) {
+                if (D_801C2938[idxA].racePosition > D_801C2938[idxB].racePosition) {
+                    doSwap = 1;
                 }
-            } else if (D_801CB340[temp1] < D_801CB340[temp2]) {
-                var_a0 = 1;
+            } else if (D_801CB340[idxA] < D_801CB340[idxB]) {
+                doSwap = 1;
             }
 
-            if (var_a0 != 0) {
-                temp3 = D_800DA9DC[i];
+            if (doSwap != 0) {
+                swap = D_800DA9DC[i];
                 D_800DA9DC[i] = D_800DA9DC[j];
-                D_800DA9DC[j] = temp3;
+                D_800DA9DC[j] = swap;
             }
         }
     }
@@ -1434,7 +1475,8 @@ void func_80094ACC(void) {
     }
 }
 
-void func_80094FE8(void) {
+/* Enters the boot state: resets to game state 0 for the logo/init screens. */
+void Game_EnterBootState(void) {
     gPrevGameState = gGameState;
     D_801CE630 = 0;
     gGameState = 0;

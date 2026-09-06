@@ -2176,7 +2176,7 @@ glabel func_800A68A4
     /* 63114 800A8914 46003202 */  mul.s      $ft2, $ft1, $fv0
     /* 63118 800A8918 46024100 */  add.s      $ft0, $ft2, $fv1
     /* 6311C 800A891C E6240000 */  swc1       $ft0, 0x0($s1)
-    /* 63120 800A8920 0C01FEB9 */  jal        func_8007FAE4
+    /* 63120 800A8920 0C01FEB9 */  jal        Box_QueryPoint
     /* 63124 800A8924 8E260000 */   lw        $a2, 0x0($s1)
     /* 63128 800A8928 3C0E801D */  lui        $t6, %hi(D_801D0764)
     /* 6312C 800A892C 25CE0764 */  addiu      $t6, $t6, %lo(D_801D0764)
@@ -2192,7 +2192,7 @@ glabel func_800A68A4
     /* 63154 800A8954 C62E0000 */  lwc1       $fa1, 0x0($s1)
     /* 63158 800A8958 02C03025 */  or         $a2, $s6, $zero
     /* 6315C 800A895C 02A03825 */  or         $a3, $s5, $zero
-    /* 63160 800A8960 0C01472D */  jal        func_80051CB4
+    /* 63160 800A8960 0C01472D */  jal        Wall_QueryPoint
     /* 63164 800A8964 E7A0004C */   swc1      $fv0, 0x4C($sp)
     /* 63168 800A8968 C7B2004C */  lwc1       $ft5, 0x4C($sp)
     /* 6316C 800A896C C7A60048 */  lwc1       $ft1, 0x48($sp)
@@ -2648,7 +2648,7 @@ glabel func_800A68A4
     /* 63828 800A9028 46085102 */  mul.s      $ft0, $ft3, $ft2
     /* 6382C 800A902C 46022180 */  add.s      $ft1, $ft0, $fv1
     /* 63830 800A9030 E6660000 */  swc1       $ft1, 0x0($s3)
-    /* 63834 800A9034 0C01FEB9 */  jal        func_8007FAE4
+    /* 63834 800A9034 0C01FEB9 */  jal        Box_QueryPoint
     /* 63838 800A9038 C66C0000 */   lwc1      $fa0, 0x0($s3)
     /* 6383C 800A903C 3C0D801D */  lui        $t5, %hi(D_801D0764)
     /* 63840 800A9040 25AD0764 */  addiu      $t5, $t5, %lo(D_801D0764)
@@ -2664,7 +2664,7 @@ glabel func_800A68A4
     /* 63868 800A9068 C62E0000 */  lwc1       $fa1, 0x0($s1)
     /* 6386C 800A906C 02C03025 */  or         $a2, $s6, $zero
     /* 63870 800A9070 02A03825 */  or         $a3, $s5, $zero
-    /* 63874 800A9074 0C01472D */  jal        func_80051CB4
+    /* 63874 800A9074 0C01472D */  jal        Wall_QueryPoint
     /* 63878 800A9078 E7A0004C */   swc1      $fv0, 0x4C($sp)
     /* 6387C 800A907C C7B2004C */  lwc1       $ft5, 0x4C($sp)
     /* 63880 800A9080 C7A80048 */  lwc1       $ft2, 0x48($sp)

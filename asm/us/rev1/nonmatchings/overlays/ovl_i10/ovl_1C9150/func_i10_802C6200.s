@@ -88,7 +88,7 @@ glabel func_i10_802C6200
     /* 1C9C00 802C62B0 02402025 */  or         $a0, $s2, $zero
     /* 1C9C04 802C62B4 00002825 */  or         $a1, $zero, $zero
     /* 1C9C08 802C62B8 24070045 */  addiu      $a3, $zero, 0x45
-    /* 1C9C0C 802C62BC 0C0250CE */  jal        func_80094338
+    /* 1C9C0C 802C62BC 0C0250CE */  jal        Menu_DrawFrame
     /* 1C9C10 802C62C0 AFA60080 */   sw        $a2, 0x80($sp)
     /* 1C9C14 802C62C4 8FA60080 */  lw         $a2, 0x80($sp)
     /* 1C9C18 802C62C8 00409025 */  or         $s2, $v0, $zero
@@ -103,7 +103,7 @@ glabel func_i10_802C6200
     /* 1C9C3C 802C62EC 00402025 */  or         $a0, $v0, $zero
     /* 1C9C40 802C62F0 00002825 */  or         $a1, $zero, $zero
     /* 1C9C44 802C62F4 240600A4 */  addiu      $a2, $zero, 0xA4
-    /* 1C9C48 802C62F8 0C0250CE */  jal        func_80094338
+    /* 1C9C48 802C62F8 0C0250CE */  jal        Menu_DrawFrame
     /* 1C9C4C 802C62FC 2407005A */   addiu     $a3, $zero, 0x5A
     /* 1C9C50 802C6300 240F0056 */  addiu      $t7, $zero, 0x56
     /* 1C9C54 802C6304 24180010 */  addiu      $t8, $zero, 0x10
@@ -112,7 +112,7 @@ glabel func_i10_802C6200
     /* 1C9C60 802C6310 00402025 */  or         $a0, $v0, $zero
     /* 1C9C64 802C6314 00002825 */  or         $a1, $zero, $zero
     /* 1C9C68 802C6318 24060046 */  addiu      $a2, $zero, 0x46
-    /* 1C9C6C 802C631C 0C0250CE */  jal        func_80094338
+    /* 1C9C6C 802C631C 0C0250CE */  jal        Menu_DrawFrame
     /* 1C9C70 802C6320 2407005A */   addiu     $a3, $zero, 0x5A
     /* 1C9C74 802C6324 00409025 */  or         $s2, $v0, $zero
     /* 1C9C78 802C6328 2411007D */  addiu      $s1, $zero, 0x7D
@@ -125,7 +125,7 @@ glabel func_i10_802C6200
     /* 1C9C90 802C6340 02402025 */  or         $a0, $s2, $zero
     /* 1C9C94 802C6344 00002825 */  or         $a1, $zero, $zero
     /* 1C9C98 802C6348 2406001C */  addiu      $a2, $zero, 0x1C
-    /* 1C9C9C 802C634C 0C0250CE */  jal        func_80094338
+    /* 1C9C9C 802C634C 0C0250CE */  jal        Menu_DrawFrame
     /* 1C9CA0 802C6350 02203825 */   or        $a3, $s1, $zero
     /* 1C9CA4 802C6354 240A0069 */  addiu      $t2, $zero, 0x69
     /* 1C9CA8 802C6358 240B0010 */  addiu      $t3, $zero, 0x10
@@ -134,7 +134,7 @@ glabel func_i10_802C6200
     /* 1C9CB4 802C6364 00402025 */  or         $a0, $v0, $zero
     /* 1C9CB8 802C6368 00002825 */  or         $a1, $zero, $zero
     /* 1C9CBC 802C636C 240600BB */  addiu      $a2, $zero, 0xBB
-    /* 1C9CC0 802C6370 0C0250CE */  jal        func_80094338
+    /* 1C9CC0 802C6370 0C0250CE */  jal        Menu_DrawFrame
     /* 1C9CC4 802C6374 02003825 */   or        $a3, $s0, $zero
     /* 1C9CC8 802C6378 26100014 */  addiu      $s0, $s0, 0x14
     /* 1C9CCC 802C637C 2A0100B8 */  slti       $at, $s0, 0xB8

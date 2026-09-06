@@ -130,7 +130,7 @@ glabel func_i9_802C6750
     /* 1C7764 802C6894 AFB90010 */  sw         $t9, 0x10($sp)
     /* 1C7768 802C6898 00002825 */  or         $a1, $zero, $zero
     /* 1C776C 802C689C 2646001C */  addiu      $a2, $s2, 0x1C
-    /* 1C7770 802C68A0 0C0250CE */  jal        func_80094338
+    /* 1C7770 802C68A0 0C0250CE */  jal        Menu_DrawFrame
     /* 1C7774 802C68A4 2667001E */   addiu     $a3, $s3, 0x1E
     /* 1C7778 802C68A8 240C00FF */  addiu      $t4, $zero, 0xFF
     /* 1C777C 802C68AC 240D00FF */  addiu      $t5, $zero, 0xFF

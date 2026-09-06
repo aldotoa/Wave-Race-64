@@ -131,7 +131,7 @@ glabel func_i1_802C7608
   .Li1_802C7788:
     /* 1B7528 802C7788 0C01DFD7 */  jal        func_80077F5C
     /* 1B752C 802C778C 00000000 */   nop
-    /* 1B7530 802C7790 0C0252B3 */  jal        func_80094ACC
+    /* 1B7530 802C7790 0C0252B3 */  jal        Race_UpdateStandings
     /* 1B7534 802C7794 00000000 */   nop
     /* 1B7538 802C7798 3C02801D */  lui        $v0, %hi(gDifficulty)
     /* 1B753C 802C779C 8C42B338 */  lw         $v0, %lo(gDifficulty)($v0)

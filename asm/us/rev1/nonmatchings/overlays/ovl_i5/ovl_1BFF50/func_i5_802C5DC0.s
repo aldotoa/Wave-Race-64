@@ -144,7 +144,7 @@ glabel func_i5_802C5DC0
     /* 1C05D0 802C5E80 24C60008 */  addiu      $a2, $a2, 0x8
     /* 1C05D4 802C5E84 AFA80010 */  sw         $t0, 0x10($sp)
     /* 1C05D8 802C5E88 02202825 */  or         $a1, $s1, $zero
-    /* 1C05DC 802C5E8C 0C0250CE */  jal        func_80094338
+    /* 1C05DC 802C5E8C 0C0250CE */  jal        Menu_DrawFrame
     /* 1C05E0 802C5E90 24070019 */   addiu     $a3, $zero, 0x19
     /* 1C05E4 802C5E94 3C06802C */  lui        $a2, %hi(D_802C7B04)
     /* 1C05E8 802C5E98 84C67B04 */  lh         $a2, %lo(D_802C7B04)($a2)
@@ -155,7 +155,7 @@ glabel func_i5_802C5DC0
     /* 1C05FC 802C5EAC 00402025 */  or         $a0, $v0, $zero
     /* 1C0600 802C5EB0 02202825 */  or         $a1, $s1, $zero
     /* 1C0604 802C5EB4 24070034 */  addiu      $a3, $zero, 0x34
-    /* 1C0608 802C5EB8 0C0250CE */  jal        func_80094338
+    /* 1C0608 802C5EB8 0C0250CE */  jal        Menu_DrawFrame
     /* 1C060C 802C5EBC 24C60008 */   addiu     $a2, $a2, 0x8
     /* 1C0610 802C5EC0 3C06802C */  lui        $a2, %hi(D_i5_802C7A00)
     /* 1C0614 802C5EC4 84C67A00 */  lh         $a2, %lo(D_i5_802C7A00)($a2)
@@ -166,7 +166,7 @@ glabel func_i5_802C5DC0
     /* 1C0628 802C5ED8 00402025 */  or         $a0, $v0, $zero
     /* 1C062C 802C5EDC 02202825 */  or         $a1, $s1, $zero
     /* 1C0630 802C5EE0 240700C7 */  addiu      $a3, $zero, 0xC7
-    /* 1C0634 802C5EE4 0C0250CE */  jal        func_80094338
+    /* 1C0634 802C5EE4 0C0250CE */  jal        Menu_DrawFrame
     /* 1C0638 802C5EE8 24C60008 */   addiu     $a2, $a2, 0x8
     /* 1C063C 802C5EEC 0040B025 */  or         $s6, $v0, $zero
     /* 1C0640 802C5EF0 AFA0011C */  sw         $zero, 0x11C($sp)
@@ -189,7 +189,7 @@ glabel func_i5_802C5DC0
     /* 1C0678 802C5F28 240B001C */  addiu      $t3, $zero, 0x1C
     /* 1C067C 802C5F2C AFAB0014 */  sw         $t3, 0x14($sp)
     /* 1C0680 802C5F30 AFAA0010 */  sw         $t2, 0x10($sp)
-    /* 1C0684 802C5F34 0C0250CE */  jal        func_80094338
+    /* 1C0684 802C5F34 0C0250CE */  jal        Menu_DrawFrame
     /* 1C0688 802C5F38 26E60008 */   addiu     $a2, $s7, 0x8
     /* 1C068C 802C5F3C 8FA3011C */  lw         $v1, 0x11C($sp)
     /* 1C0690 802C5F40 26100020 */  addiu      $s0, $s0, 0x20

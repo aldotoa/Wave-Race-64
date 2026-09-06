@@ -10,11 +10,15 @@ s16 gColorBlue = 255;
 s16 gColorAlpha = 33;
 s16 D_800D47F8 = 255;
 
-void func_80051530(void) {
+/* Splash screen overlay: draws the scrolling title splash image on top of
+ * the frame (texture D_1005748 via display list D_1006748). D_800D47E0[0]
+ * selects the behavior: 0 skips drawing, 1 uses the translucent logo
+ * render mode, anything else uses the opaque cloudy-surface mode. */
+void Splash_Init(void) {
 }
 
-Gfx* func_80051538(Gfx* gdl) {
-    static u32 D_800D47FC = { 0 };
+Gfx* Splash_Draw(Gfx* gdl) {
+    static u32 sTexScroll = { 0 };
 
     if (D_800D47E0[0] == 0) {
         return gdl;
@@ -35,9 +39,10 @@ Gfx* func_80051538(Gfx* gdl) {
         gDPSetRenderMode(gdl++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
     }
 
-    D_800D47FC = (D_800D47FC - 1) % 0x80;
+    /* Scroll the splash texture upward one step per frame, wrapping every 128 frames. */
+    sTexScroll = (sTexScroll - 1) % 0x80;
 
-    gSPTextureRectangle(gdl++, 36, 84, 1240, 872, G_TX_RENDERTILE, D_800D47FC * 32, 0, 1024, 1024);
+    gSPTextureRectangle(gdl++, 36, 84, 1240, 872, G_TX_RENDERTILE, sTexScroll * 32, 0, 1024, 1024);
 
     return gdl;
 }

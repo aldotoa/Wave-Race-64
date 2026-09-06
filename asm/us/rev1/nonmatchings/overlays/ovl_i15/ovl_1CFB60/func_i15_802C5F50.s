@@ -14,7 +14,7 @@ glabel func_i15_802C5F50
     /* 1D02D8 802C5F78 240500FF */  addiu      $a1, $zero, 0xFF
     /* 1D02DC 802C5F7C 15E10005 */  bne        $t7, $at, .Li15_802C5F94
     /* 1D02E0 802C5F80 240600FF */   addiu     $a2, $zero, 0xFF
-    /* 1D02E4 802C5F84 0C024F6F */  jal        func_80093DBC
+    /* 1D02E4 802C5F84 0C024F6F */  jal        Gfx_FillViewport
     /* 1D02E8 802C5F88 240700FF */   addiu     $a3, $zero, 0xFF
     /* 1D02EC 802C5F8C 10000024 */  b          .Li15_802C6020
     /* 1D02F0 802C5F90 8FBF0014 */   lw        $ra, 0x14($sp)
@@ -22,7 +22,7 @@ glabel func_i15_802C5F50
     /* 1D02F4 802C5F94 3C01800E */  lui        $at, %hi(D_800DAB2C)
     /* 1D02F8 802C5F98 0C02476F */  jal        func_80091DBC
     /* 1D02FC 802C5F9C AC20AB2C */   sw        $zero, %lo(D_800DAB2C)($at)
-    /* 1D0300 802C5FA0 0C024CA3 */  jal        func_8009328C
+    /* 1D0300 802C5FA0 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1D0304 802C5FA4 00402025 */   or        $a0, $v0, $zero
     /* 1D0308 802C5FA8 0C0B180B */  jal        func_i15_802C602C
     /* 1D030C 802C5FAC 00402025 */   or        $a0, $v0, $zero

@@ -347,7 +347,7 @@ void func_80052BB8(UnkStruct_80052E90_arg1_s* arg0);
 void func_80057B24(s32 arg0, UnkStruct_80052E90_arg1_s* arg1);
 void func_8005A1B4(Vec3f* arg0, Vec3f* arg1, f32 arg2, Vec3f* arg3);
 void func_8005CEF8(UnkStruct_80052E90_arg1_s* arg0, UnkStruct_8005CEF8* arg1);
-f32 func_8007FAE4(f32, f32, f32, f32*, f32*, f32*);
+f32 Box_QueryPoint(f32, f32, f32, f32*, f32*, f32*);
 f32 func_8007F448(f32, f32, f32, f32*, f32*, f32*);
 void func_80061184(UnkStruct_80192690*);
 void func_80080400(void);
@@ -2113,7 +2113,7 @@ s32 func_8005DD04(f32 arg0, f32 arg1, f32 arg2) {
         if (func_8007F448(arg0, arg1, arg2, &sp68, &sp64, &sp60) != 0.0f) {
             return true;
         }
-        if (func_8007FAE4(arg0, arg1, arg2, &sp68, &sp64, &sp60) != 0.0f) {
+        if (Box_QueryPoint(arg0, arg1, arg2, &sp68, &sp64, &sp60) != 0.0f) {
             return true;
         }
     }

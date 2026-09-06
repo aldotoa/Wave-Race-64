@@ -57,7 +57,7 @@ extern s32 D_800DA9F8;
 
 void func_80086CE0(void);
 void func_80085964(void);
-f32 func_80088D94(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+f32 Math_PointLineDistance(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 
 void func_80080400(s32 arg0) {
     func_80085EEC(arg0);
@@ -70,12 +70,12 @@ void func_80080400(s32 arg0) {
 
 void func_8008044C(void) {
     func_80086DA8();
-    func_80087E70();
+    Guide_BuildSegments();
     func_800861AC();
-    func_80087E70();
+    Guide_BuildSegments();
     func_800861AC();
-    func_80087E70();
-    func_80088418();
+    Guide_BuildSegments();
+    Guide_Update();
     func_80085510();
     func_80080864();
     func_80080E34();
@@ -1910,7 +1910,7 @@ void func_80087304(void) {
 
     if (((D_801C3C58->unkC == 1) || (D_801C3C58->unkC == 0)) && (D_801C3C58->unk38 < 0x320)) {
 
-        func_80088D94(D_801C3C54[D_801C3C58->unk8].unk0, D_801C3C54[D_801C3C58->unk8].unk8, D_801C3C50->unk44,
+        Math_PointLineDistance(D_801C3C54[D_801C3C58->unk8].unk0, D_801C3C54[D_801C3C58->unk8].unk8, D_801C3C50->unk44,
                       D_801C3C50->unk4C, D_801C3C50->unk44 + (256.0f * D_801C3C50->unk5C),
                       D_801C3C50->unk4C + (256.0f * D_801C3C50->unk64));
 
@@ -1934,7 +1934,7 @@ s32 func_800873D4(s32 arg0, s32 arg1) {
     return sqrtf(SQ(temp_f0) + SQ(temp_f2));
 }
 
-void func_80088B00(struct UnkStruct_801C4000*);
+void Seg2D_Normalize(struct UnkStruct_801C4000*);
 extern s32 D_800D48DC;
 
 void func_80087444(void) {
@@ -1957,7 +1957,7 @@ void func_80087444(void) {
                 D_801C4000.unk8 = (temp_v1->unk44.x + (60.0f * D_801C3C50->unk84));
                 D_801C4000.unkC = (temp_v1->unk44.z + (60.0f * D_801C3C50->unk8C));
             }
-            func_80088B00(&D_801C4000);
+            Seg2D_Normalize(&D_801C4000);
         }
     }
 }

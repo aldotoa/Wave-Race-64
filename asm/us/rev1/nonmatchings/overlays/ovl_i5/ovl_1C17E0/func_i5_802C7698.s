@@ -17,7 +17,7 @@ glabel func_i5_802C7698
     /* 1C1E1C 802C76CC AFB80010 */  sw         $t8, 0x10($sp)
     /* 1C1E20 802C76D0 8CC67ACC */  lw         $a2, %lo(D_i5_802C7ACC)($a2)
     /* 1C1E24 802C76D4 00002825 */  or         $a1, $zero, $zero
-    /* 1C1E28 802C76D8 0C0250CE */  jal        func_80094338
+    /* 1C1E28 802C76D8 0C0250CE */  jal        Menu_DrawFrame
     /* 1C1E2C 802C76DC 24070091 */   addiu     $a3, $zero, 0x91
     /* 1C1E30 802C76E0 3C06802C */  lui        $a2, %hi(D_i5_802C7AD0)
     /* 1C1E34 802C76E4 240800D0 */  addiu      $t0, $zero, 0xD0
@@ -27,7 +27,7 @@ glabel func_i5_802C7698
     /* 1C1E44 802C76F4 8CC67AD0 */  lw         $a2, %lo(D_i5_802C7AD0)($a2)
     /* 1C1E48 802C76F8 00402025 */  or         $a0, $v0, $zero
     /* 1C1E4C 802C76FC 00002825 */  or         $a1, $zero, $zero
-    /* 1C1E50 802C7700 0C0250CE */  jal        func_80094338
+    /* 1C1E50 802C7700 0C0250CE */  jal        Menu_DrawFrame
     /* 1C1E54 802C7704 240700A6 */   addiu     $a3, $zero, 0xA6
     /* 1C1E58 802C7708 240A00FF */  addiu      $t2, $zero, 0xFF
     /* 1C1E5C 802C770C 240B00FF */  addiu      $t3, $zero, 0xFF

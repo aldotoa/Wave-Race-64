@@ -160,7 +160,7 @@ Gfx* func_i2_802C5B4C(Gfx* gdl) {
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == GAME_STATE_RIDER_SELECT) {
-            return func_80093C44(gdl);
+            return Gfx_ClearFrameBuffers(gdl);
         }
     }
 
@@ -176,15 +176,15 @@ Gfx* func_i2_802C5B4C(Gfx* gdl) {
     gSPDisplayList(gdl++, &D_106F808);
 
     if (D_801CE60C == 1) {
-        gdl = func_8009328C(gdl);
+        gdl = Game_BuildRaceScene(gdl);
     } else {
         if (D_802C8C58.player_1_ready == 0) {
             D_800DAB2C = 0;
-            gdl = func_800933C4(gdl);
+            gdl = Game_BuildRaceViewport(gdl);
         }
         if (D_802C8C5C == 0) {
             D_800DAB2C = 1;
-            gdl = func_800933C4(gdl);
+            gdl = Game_BuildRaceViewport(gdl);
         }
         D_800DAB2C = 0;
     }
@@ -671,10 +671,10 @@ Gfx* func_i2_802C6ADC(Gfx* gdl) {
 
     gSPDisplayList(gdl++, &D_80BE248);
     gSPDisplayList(gdl++, D_106F628);
-    gdl = func_80094338(gdl, 0, 0x1C, 0x16, 0x108, 0x1E);
-    gdl = func_80094338(gdl, 0, 0x1C, 0x60, 0x82, 0xD);
-    gdl = func_80094338(gdl, 0, 0x20, 0x6E, 0x3B, 0xD);
-    gdl = func_80094338(gdl, 0, 0x5F, 0x6E, 0x3B, 0xD);
+    gdl = Menu_DrawFrame(gdl, 0, 0x1C, 0x16, 0x108, 0x1E);
+    gdl = Menu_DrawFrame(gdl, 0, 0x1C, 0x60, 0x82, 0xD);
+    gdl = Menu_DrawFrame(gdl, 0, 0x20, 0x6E, 0x3B, 0xD);
+    gdl = Menu_DrawFrame(gdl, 0, 0x5F, 0x6E, 0x3B, 0xD);
     gdl = func_i2_802C86E4(gdl, 0x13, 0x68);
 
     if (D_802C8C58.player_1_ready != 5) {
@@ -886,18 +886,18 @@ Gfx* func_i2_802C7C50(Gfx* gdl) {
 
     gSPDisplayList(gdl++, &D_80BE358);
     gSPDisplayList(gdl++, D_106F628);
-    gdl = func_80094338(gdl, 0, 0x1C, 0x16, 0x108, 0x1E);
+    gdl = Menu_DrawFrame(gdl, 0, 0x1C, 0x16, 0x108, 0x1E);
 
     if (D_802C8C58.player_1_ready != 0) {
-        gdl = func_80094338(gdl, 0, 0x1C, 0x60, 0x82, 0xD);
-        gdl = func_80094338(gdl, 0, 0x20, 0x6E, 0x3B, 0xD);
-        gdl = func_80094338(gdl, 0, 0x5F, 0x6E, 0x3B, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0x1C, 0x60, 0x82, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0x20, 0x6E, 0x3B, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0x5F, 0x6E, 0x3B, 0xD);
     }
 
     if (D_802C8C58.player_2_ready != 0) {
-        gdl = func_80094338(gdl, 0, 0xA1, 0x60, 0x82, 0xD);
-        gdl = func_80094338(gdl, 0, 0xA5, 0x6E, 0x3B, 0xD);
-        gdl = func_80094338(gdl, 0, 0xE4, 0x6E, 0x3B, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0xA1, 0x60, 0x82, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0xA5, 0x6E, 0x3B, 0xD);
+        gdl = Menu_DrawFrame(gdl, 0, 0xE4, 0x6E, 0x3B, 0xD);
     }
 
     if (D_802C8C58.player_1_ready != 0) {

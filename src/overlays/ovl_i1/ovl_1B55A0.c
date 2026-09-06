@@ -382,7 +382,7 @@ Gfx* func_i1_802C913C(Gfx* dList) {
 
         if (gGameState == 7) {
             D_i1_802C9440 = 0;
-            return func_80093C44(gfxPtr);
+            return Gfx_ClearFrameBuffers(gfxPtr);
         }
     }
 
@@ -414,7 +414,7 @@ Gfx* func_i1_802C913C(Gfx* dList) {
 
     D_800DAB2C = 0;
 
-    dList = func_8009328C(dList);
+    dList = Game_BuildRaceScene(dList);
 
     gDPPipeSync(dList++);
 
