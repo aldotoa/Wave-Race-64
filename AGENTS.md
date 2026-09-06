@@ -11,6 +11,7 @@
 - **Prototyping Discipline:** 
   - Do NOT modernize prototypes. In IDO C89, `void func()` behaves differently from `void func(void)`.
   - Do NOT change types or parameter counts without checking all callers across overlays and source files.
+  - If a draft calls a same-file function defined later in the TU, add a forward declaration copied verbatim from the definition signature (an implicit declaration conflicts with the later definition).
 - **Float Handling:**
   - Wave Race 64 makes heavy use of single-precision floating point math. Always append `f` to float literals (e.g., `1.0f`, not `1.0`), otherwise IDO defaults to `double`, loading constants from `.rodata` and emitting `f64` instructions (`cvt.d.s`, `add.d`, etc.).
   - If register allocation is off on float calculations, refactor intermediate variables rather than complex chained expressions.
@@ -45,6 +46,7 @@ void func_800XXXXX(...) {
 
 ### Verifying Drafts
 `make NON_MATCHING=1 build/src/<path>/<file>.o` compiles every draft in the translation unit, so one stale prototype in an unrelated function breaks the whole build — do NOT touch unrelated scaffolding to fix it. Instead compile the draft as a standalone IDO probe (`scratch/probe_<func>.c` = needed includes + draft body) with the Makefile's exact flags, and diff with `tools/asm-differ/diff.py -o -s <func> -f <probe.o> --base-asm <sliced-objdump>`. Delete all `scratch/probe_*` files and any probe copies under `expected/` before committing.
+**Stale-object hygiene:** the `NON_MATCHING=1` flag is untracked (same `.o` path), so a draft object left in `build/` is silently reused by plain `make`/`make test` — always `rm -f build/src/<path>/<file>.o` before switching back, or a stale draft poisons the ROM hash and the suite.
 
 ### Control Flow Matching Rules
 - If diffs show instructions at the loop exit rather than the loop head, favor `do { ... } while (...)` over `for` or `while`.

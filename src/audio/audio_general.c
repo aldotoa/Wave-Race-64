@@ -405,8 +405,395 @@ void func_800C00B0(s8 vol, f32 freqMod) {
 }
 
 #ifdef NON_MATCHING
-void func_800C010C(s32 arg0, s32 arg1) {
-    /* Master music track transition and channel modulation coordinator */
+/* Master music track transition and channel modulation coordinator (m2c initial translation) */
+extern s32 D_800E7CA0;
+extern s32 D_800E7CA4;
+extern s32 D_800E7CB4;
+extern s32 D_800E7CD0;
+extern f32 D_800E7DC8[];
+extern s8 D_800E7F75[];
+extern f32 D_800E7F78[];
+extern s32 D_801D7DE0;
+extern s8 D_801D7DFC;
+extern s8 D_801D7E04;
+
+void func_800C010C(s8* arg0, s8 arg1) {
+    f32* sp24;
+    s32 sp28;
+    s32 sp30;
+    f32 sp3C;
+    u8 sp57;
+    s32 sp58;
+    s32 sp5C;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    f32 var_fv1;
+    f32 var_fv1_2;
+    f32 var_fv1_3;
+    s32 var_v0;
+    s8 temp_v0_9;
+    s8 var_v1;
+    u8 var_a3;
+
+    if (D_800E7C94 == 4) {
+        if ((arg0[0x18] != 0) && (arg1 < 2)) {
+            func_800BFFEC((u8) ((sp57 * arg1) + 2), 1U, 0x7FU);
+            arg0[0x18] = 0;
+        }
+    } else if (D_800E7C94 == 7) {
+        if (D_801D7DC0 == 0) {
+            if (arg1 == 0) {
+                if (D_800E7CE8 == 0) {
+                    if (arg0[0x19] < arg0[0x1A]) {
+                        func_800C1EB8(0xC);
+                        if ((gAudioRandom & 0x30) == 0x30) {
+                            func_800C33C8(0x49 - arg0[0x19], 0x14U, 0x46, 0x1EU);
+                        } else {
+                            func_800C33C8((gAudioRandom & 3) + 0x42, 0x14U, 0x46, 0x1EU);
+                        }
+                        D_800E7CE8 = 0x64;
+                    } else if (arg0[0x1A] < arg0[0x19]) {
+                        func_800C1EB8(0xD);
+                        if ((gAudioRandom & 0x30) == 0x30) {
+                            func_800C33C8(arg0[0x19] + 0x4C, 0x14U, 0x3C, 0x1EU);
+                        } else {
+                            func_800C33C8((gAudioRandom & 1) + 0x4B, 0x14U, 0x3C, 0x1EU);
+                        }
+                        D_800E7CE8 = 0x64;
+                    }
+                }
+                D_801D7DC8 = arg0[0x1A] = arg0[0x19];
+            }
+        } else if ((D_801D7DC0 == 1) && (arg1 == 0) && (arg0[0x19] != D_801D7DFA)) {
+            func_800C1EB8(0xC);
+        }
+        if ((D_801D7DC0 == 3) || ((D_801D7DC0 == 0) && (D_801D7DC4 == 0))) {
+            arg0[0xE] = 3;
+            arg0[0x9] = 3;
+        }
+        if (arg1 == 0) {
+            D_801D7DF8[2] = (s8) arg0[0x19];
+            var_a3 = 0;
+            if (D_801D7DF8[2] != D_801D7DF8[3]) {
+                D_801D7DF8[3] = -1;
+            }
+        } else {
+            var_a3 = 3;
+            if (arg1 == 1) {
+                D_801D7E00[2] = (s8) arg0[0x19];
+                if (D_801D7E00[2] != D_801D7E00[3]) {
+                    D_801D7E00[3] = -1;
+                }
+            }
+        }
+        if (arg0[0x15] != 0) {
+            arg0[0x4] = 0;
+        }
+        if (arg0[0x0] < 0x1E) {
+            arg0[0x8] = 0x46;
+        }
+        if (arg0[0x8] < arg0[0x1]) {
+            arg0[0x8] = (s8) (arg0[0x8] + 1);
+        } else if (arg0[0x1] < arg0[0x8]) {
+            arg0[0x8] = (s8) (arg0[0x8] - 1);
+        }
+        sp58 = (arg0[0x8] / 3) + 0x60;
+        sp5C = (s32) arg0[0x0];
+        if (arg0[0x7] != 0) {
+            *(s16*) &arg0[0xA] = 0;
+        } else if ((D_801D7DC0 != 2) && (arg1 < 2)) {
+            *(s16*) &arg0[0xA] = (s16) (*(s16*) &arg0[0xA] + 1);
+        }
+        if (arg0[0x7] != arg0[0x3]) {
+            var_v1 = 0;
+            if (arg0[0x3] != 0) {
+                if (arg0[0x3] >= 0x65) {
+                    sp57 = var_a3;
+                    func_800BFFEC((u8) (var_a3 + 2), 0xBU, (u8) ((arg0[0x3] / 2) + 0x3C));
+                    goto block_59;
+                }
+                if (arg0[0x3] >= 0x51) {
+                    sp57 = var_a3;
+                    func_800BFFEC((u8) (var_a3 + 2), 0xCU, (u8) ((arg0[0x3] / 2) + 0x4B));
+                    goto block_59;
+                }
+                if ((arg0[0x3] >= 0x29) || ((arg0[0x3] >= 0xB) && (arg0[0x1F] >= 0x1F))) {
+                    sp57 = var_a3;
+                    func_800BFFEC((u8) (var_a3 + 2), 0xDU, (u8) ((arg0[0x3] / 2) + 0x56));
+                    goto block_59;
+                }
+                if (arg0[0x3] >= 0xB) {
+                    sp57 = var_a3;
+                    func_800BFFEC((u8) (var_a3 + 2), 0xEU, (u8) (arg0[0x3] + 0x50));
+block_59:
+                    var_a3 = sp57;
+                }
+                arg0[0x3] = 1;
+                sp30 = (s32) var_a3;
+                var_v1 = 0xFF;
+            } else {
+                sp30 = (s32) var_a3;
+            }
+            arg0[0x7] = arg0[0x3];
+        } else {
+            sp30 = (s32) var_a3;
+            var_v1 = 0x7F - ((s8) arg0[0xF] / 4);
+        }
+        AudioThread_QueueCmdS8(((sp30 & 0xFF) << 8) | 0x06000000 | 6, var_v1);
+        if (arg0[0x7] == 0) {
+            sp58 += 0x10;
+            sp5C += 0x20;
+        }
+        if (arg0[0x4] != 0) {
+            if (arg0[0x6] == 0) {
+                arg0[0x5] = 4U;
+                if (arg1 < 2) {
+                    if ((arg0[0x0] == 0) && (D_800E7CA0 == 0) && (D_800E7CAC == 0)) {
+                        func_800BFFEC((u8) (sp30 + 2), 0xFU, 0x7FU);
+                        ((s32*) &D_801D7DD8)[arg1] = 1;
+                        arg0[0x1D] = 0x1D;
+                    } else if (arg0[0x0] < 0x1E) {
+                        arg0[0x1D] = 0x14;
+                    } else if (arg0[0x0] < 0x32) {
+                        arg0[0x1D] = 8;
+                    } else {
+                        arg0[0x1D] = 4;
+                    }
+                }
+            } else {
+                if ((u8) arg0[0x5] != 0) {
+                    arg0[0x5] = (u8) ((u8) arg0[0x5] - 1);
+                }
+            }
+            sp28 = arg1 * 4;
+        } else {
+            arg0[0x5] = 0xFF;
+            sp28 = arg1 * 4;
+        }
+        arg0[0x6] = arg0[0x4];
+        if (arg0[0x1C] != 0) {
+            if (D_800E7CAC == 0) {
+                func_800BFFEC((u8) (sp30 + 2), 0xFU, (u8) ((gAudioRandom & 0x1F) + 0x60));
+                arg0[0x1D] = 0x1D;
+            } else {
+                func_800BFFEC(5U, 0xAU, 0x7FU);
+            }
+            arg0[0x1C] = 0;
+        }
+        if (arg1 < 2) {
+            if ((arg0[0x9] == 0) || (arg0[0xE] != 0)) {
+                if (arg0[0xE] != arg0[0x9]) {
+                    func_800C36F8((s32) arg0[0xE]);
+                }
+            }
+            arg0[0x9] = arg0[0xE];
+        }
+        if (arg0[0x4] != 0) {
+            if (arg0[0xE] == 5) {
+                var_fv1 = 0.6f;
+            } else {
+                var_fv1 = (f32) arg0[0xE] * 0.1f;
+            }
+        } else {
+            var_fv1 = 0.0f;
+        }
+        if (arg1 == 0) {
+            D_801D7DFC = arg0[0xE];
+        }
+        if (arg1 == 1) {
+            D_801D7E04 = arg0[0xE];
+        }
+        if (sp5C < 0) {
+            sp5C = 0;
+        }
+        if (sp58 < 0) {
+            sp58 = 0;
+        }
+        if (sp5C >= 0x64) {
+            sp5C = 0x63;
+        }
+        if (sp58 >= 0x80) {
+            sp58 = 0x7F;
+        }
+        if (arg0[0x1D] != 0) {
+            sp58 = 0x7F;
+            var_fv1_2 = var_fv1 + D_800E7DC8[sp5C]
+                        + (D_800E7DC8[D_800E7F75[-arg0[0x1D]]] * D_800E7F78[arg0[0x1D]]);
+            arg0[0x1D] = (s8) (arg0[0x1D] - 1);
+        } else {
+            var_fv1_2 = var_fv1 + D_800E7DC8[sp5C];
+        }
+        sp24 = (f32*) ((u8*) D_800E7CC8 + sp28);
+        temp_fv0 = *sp24;
+        temp_fv1 = ((var_fv1_2 - temp_fv0) / 2.5f) + temp_fv0;
+        *sp24 = temp_fv1;
+        if (temp_fv1 < 0.8409f) {
+            sp3C = temp_fv1;
+            AudioThread_QueueCmdS8(0x06000005, -3);
+            var_fv1_3 = temp_fv1 * 1.18921f;
+        } else if (temp_fv1 > 1.1892f) {
+            sp3C = temp_fv1;
+            AudioThread_QueueCmdS8(0x06000005, 3);
+            var_fv1_3 = temp_fv1 / 1.18921f;
+        } else {
+            sp3C = temp_fv1;
+            AudioThread_QueueCmdS8(0x06000005, 0);
+            var_fv1_3 = temp_fv1;
+        }
+        switch (arg1) { /* switch 1; irregular */
+            case 0: /* switch 1 */
+                AudioThread_QueueCmdF32(0x04000000U,
+                                        var_fv1_3 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+                AudioThread_QueueCmdF32(0x01000000U, (f32) sp58 / 127.0f);
+                break;
+            case 1: /* switch 1 */
+                AudioThread_QueueCmdF32(0x04000300U,
+                                        var_fv1_3 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+                AudioThread_QueueCmdF32(0x01000300U, (f32) sp58 / 127.0f);
+                break;
+            case 2: /* switch 1 */
+                func_800C00B0((s8) sp58, var_fv1_3 * D_801D7E20);
+                AudioThread_QueueCmdF32(0x01000300U, D_801D7E24 * 0.8f);
+                AudioThread_QueueCmdF32(0x01000500U, D_801D7E24);
+                AudioThread_QueueCmdS8(0x03000300, D_801D7E28);
+                AudioThread_QueueCmdS8(0x03000500, D_801D7E28);
+                if (D_801D7DE8 == 0) {
+                    AudioThread_QueueCmdS8(0x05000300, D_801D7E29);
+                }
+                break;
+        }
+        if ((arg0[0x11] < 0x64) && (D_800E7CAC == 1) && (arg0[0x0] >= 0x15)) {
+            arg0[0x10] = 1;
+            arg0[0x11] = (s8) ((gAudioRandom & 0xF) + 0x64);
+        }
+        if (arg0[0x11] < 0x32) {
+            arg0[0x11] = 0;
+        }
+        if (arg0[0x7] == 0) {
+            arg0[0x11] = 0;
+        }
+        if (arg1 == 2) {
+            arg0[0x11] = 0;
+        }
+        if (arg0[0x11] != 0) {
+            arg0[0x11] = (s8) (arg0[0x11] - 0x32);
+            temp_v0_9 = arg0[0x11];
+            sp28 = (sp30 + 2) & 0xFF;
+            if (temp_v0_9 >= 0x29) {
+                arg0[0x11] = (s8) ((temp_v0_9 * 2) - 0x1E);
+            } else {
+                arg0[0x11] = (s8) ((temp_v0_9 / 2) + 0x14);
+            }
+            AudioThread_QueueCmdF32((((u32) sp28) << 8) | 0x04000000,
+                                    ((f32) arg0[0x0] / 100.0f) + 0.6f);
+            if ((D_801D7DC4 != 3) && (D_801D7DC4 != 6)) {
+                var_v0 = (gAudioRandom & 3) * 4;
+            } else {
+                var_v0 = ((u32) gAudioRandom % 5U) * 4;
+            }
+            func_800C0044(sp28 & 0xFF, (arg0[0x10] + var_v0) & 0xFF, (u8) arg0[0x11]);
+            arg0[0x11] = 0;
+        }
+        if ((*(s16*) &arg0[0xC] >= 5) && (arg0[0x16] == arg0[0x12])) {
+            arg0[0x13] = 0;
+        }
+        if (arg0[0x12] == 2) {
+            AudioThread_QueueCmdS8(0x06000700, 0x13);
+            arg0[0x13] = 0;
+            arg0[0x12] = 0;
+        }
+        if (arg0[0x13] != 0) {
+            if (*(s16*) &arg0[0xC] == 0) {
+                if (arg0[0x1F] >= 0x24) {
+                    arg0[0x13] = (s8) ((arg0[0x13] / 4) + 0x60);
+                } else if (arg0[0x1F] >= 0x10) {
+                    arg0[0x13] = (s8) ((arg0[0x13] / 4) + 0x40);
+                } else {
+                    arg0[0x13] = (s8) (arg0[0x13] / 2);
+                }
+            } else {
+                if (arg0[0x1F] >= 0x24) {
+                    arg0[0x13] = (s8) ((arg0[0x13] / 4) + 0x30);
+                } else if (arg0[0x1F] >= 0x10) {
+                    arg0[0x13] = (s8) ((arg0[0x13] / 4) + 0x20);
+                } else {
+                    arg0[0x13] = (s8) (arg0[0x13] / 4);
+                }
+            }
+            if (arg0[0x12] == 0x1C) {
+                func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E08), (u8) arg0[0x13]);
+                goto block_173;
+            }
+            if (arg0[0x12] == 0x40) {
+                if (arg0[0x7] != 0) {
+                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E0C),
+                                  (u8) arg0[0x13]);
+                }
+                goto block_174;
+            }
+            if (arg0[0x12] == 0x41) {
+                if (D_801D7E10 != 0) {
+                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E10),
+                                  (u8) arg0[0x13]);
+                    goto block_173;
+                }
+            } else {
+                func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x12] + arg0[0x14]),
+                              (u8) arg0[0x13]);
+block_173:
+block_174:
+                if (arg0[0x12] == 0x14) {
+                    if ((arg1 == 0) && (arg0[0x13] >= 0x65)) {
+                        D_800E7CB4 = 1;
+                        D_801D7DE0 = (s32) arg0[0x14];
+                    }
+                    if ((arg1 == 2) && (D_800E7CB4 != 0)) {
+                        switch (D_801D7DE0) { /* switch 2; irregular */
+                            case 0: /* switch 2 */
+                                func_800C3240((arg0[0x1B] * 4) + (gAudioRandom & 1));
+                                break;
+                            case 2: /* switch 2 */
+                                func_800C3270((arg0[0x1B] * 4) + (gAudioRandom & 1));
+                                break;
+                            default: /* switch 2 */
+                            case 1: /* switch 2 */
+                            case 3: /* switch 2 */
+                                func_800C317C(0, (arg0[0x1B] * 4) + (gAudioRandom & 1));
+                                break;
+                        }
+                        D_800E7CB4 = 0;
+                    }
+                } else {
+                    D_800E7CB4 = 0;
+                }
+                arg0[0x16] = (s8) arg0[0x12];
+                *(s16*) &arg0[0xC] = 8;
+            }
+            arg0[0x13] = 0;
+        }
+        if (*(s16*) &arg0[0xC] != 0) {
+            *(s16*) &arg0[0xC] = (s16) (*(s16*) &arg0[0xC] - 1);
+        }
+        if ((arg0[0x17] == 0) && (arg1 < 2)) {
+            if (arg0[0x15] != 0) {
+                if (arg0[0x15] == 1) {
+                    func_800C317C((s32) arg1, (arg0[0x1B] * 4) + (gAudioRandom & 1) + 2);
+                } else {
+                    func_800C317C((s32) arg1, (arg0[0x1B] * 4) + (gAudioRandom & 1));
+                }
+            }
+        }
+        arg0[0x17] = arg0[0x15];
+        if (arg0[0x15] == 2) {
+            D_800E7CA4 = 1;
+        }
+        if ((arg0[0x18] != 0) && ((u32) sp24 < (u32) &D_800E7CD0)) {
+            func_800BFFEC((u8) (sp30 + 2), 1U, 0x7FU);
+            func_800C33C8(((u32) gAudioRandom % 3U) + 0x50, 0xAU, 0x50, 0x28U);
+            arg0[0x18] = 0;
+        }
+        arg0[0x1F] = (s8) arg0[0x0];
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C010C.s")

@@ -72,6 +72,12 @@ Run automated m2c translation to produce starting C scaffolding:
 ```bash
 python3 tools/m2c/m2c.py -t mips-ido-c --context ctx.c asm/us/rev1/nonmatchings/<path>/<func_name>.s > scratch/<func_name>.c
 ```
+m2c integration fixes (mechanical — verify each against the stub):
+- Pointer scales: m2c emits `gptr + 8` (elements) where the stub does `addiu ..., 8` (bytes). On `Gfx*` (8 bytes) write `+ 1`; `+0x50` bytes is `+ 10` elements (or `+ 1` on a 0x50-sized struct). Audit every m2c `+ <bytes>` on typed pointers.
+- Void calls: m2c invents an argument from a stale arg register (`f(&x)`); if the callee takes no arguments, call it with `()`.
+- Unknown `extern ?` symbols: resolve via headers first; if a symbol is used address-only, `extern Gfx name[]` is codegen-safe (address materialization does not depend on the declared type).
+- Do not drop m2c lines while integrating (e.g. an opening display-list header store) — every omission returns as missing stores in the first diff.
+- Forward declarations: when the draft calls a same-file function defined later in the TU, add a prototype copied verbatim from the definition signature (an implicit declaration conflicts with the later definition). Never modernize `()` vs `(void)`.
 
 ### Step 3: Interactive Differ
 Always pass `-m` (recompile `.o`), `-o` (diff object file directly to prevent self-matching false positives), `-s` (stop at return), and `-U 2` (compress identical runs):
@@ -184,6 +190,7 @@ IDO emits switch-case bodies in source order. If `diff.py` shows a whole case bo
 - **Automated Regalloc & Stack Search (`tools/regalloc_search.py`)**:
   When tuning variable declarations to match target stack frame size (e.g., 0x58 vs 0x60) or register allocations ($s0-$s8), let `tools/regalloc_search.py` evaluate permutations locally against direct IDO 5.3 rather than manual multi-turn trial-and-error.
 - **No Multi-Line Inline Python via Shell**:
+- **Scope mechanical edits**: `str.replace` without a count rewrites every occurrence in the file — a short pattern like `c->` can corrupt unrelated drafts sharing the TU. Always anchor replacements with unique surrounding context (or `count=1`), then audit with `git diff --stat` plus a grep confirming the new text appears only in the target function.
   Never execute multiline scripts or complex regex via `python3 -c '...'` in `zsh` as shell expansions (`[]`, `\`, quotes) trigger syntax errors and waste conversational turns. Always save helper scripts to `.py` files in `tools/` or `scratch/`.
 
 ---
@@ -210,6 +217,7 @@ Registers (`$s0`, `$s1`, `$s2`, ...) are assigned in descending priority order a
   - *Syntactic Address-of Indexing (`&arr[idx]`) vs Pointer Arithmetic*: Accessing arrays via pointer arithmetic `*(arr + offset)` or `ARR_PTR` increments references to `offset`, causing `offset` to steal higher-priority callee-saved registers (`$s0`). Writing direct array indexing with address-of `&arr[index]` increments the reference count of `index`. This boosts `index`'s priority score in Chow-Hennessy coloring, ensuring it claims `$s0` over dependent pointers or offsets.
   - *Register Caching Across Branch Fan-out*: In complex branching logic (e.g. D-pad Left/Right), explicitly caching `state = *s2;` binds `state` to a temporary register (`$a2`), preventing `uopt` from placing global pointers into `$a2` and locking globals into target registers (`$t0`).
   - *Priority Equalization*: Reusing or extending the live range of a competing variable after a loop can artificially degrade its priority score and restore the desired register ordering.
+  - *Saved-source + cursor*: when the stub saves the argument (`move s0,a0`) and passes it to the first call via a delay-slot `move a0,s0`, declare `Type *s0 = arg0;` up front and call `f(s0)` — reusing the parameter collapses the redundant move the diff expects.
   - In leaf functions, the `register` keyword (e.g., `register s32 s0 = arg1->unk4;`) or declaration ordering can guide initial register selection.
 
 ### Loop Induction Variable Elimination (`blt` vs `li $reg, limit; bne`)
