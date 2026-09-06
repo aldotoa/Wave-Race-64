@@ -90,7 +90,7 @@ glabel func_i14_802C5924
     /* 1CF328 802C59A8 00000000 */   nop
     /* 1CF32C 802C59AC 0C031AB4 */  jal        osViBlack
     /* 1CF330 802C59B0 00002025 */   or        $a0, $zero, $zero
-    /* 1CF334 802C59B4 0C024F11 */  jal        func_80093C44
+    /* 1CF334 802C59B4 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1CF338 802C59B8 8FA40018 */   lw        $a0, 0x18($sp)
     /* 1CF33C 802C59BC 10000069 */  b          .Li14_802C5B64
     /* 1CF340 802C59C0 8FBF0014 */   lw        $ra, 0x14($sp)
@@ -101,7 +101,7 @@ glabel func_i14_802C5924
     /* 1CF350 802C59D0 8FA40018 */   lw        $a0, 0x18($sp)
     /* 1CF354 802C59D4 3C05800E */  lui        $a1, %hi(gCourseID)
     /* 1CF358 802C59D8 8CA58170 */  lw         $a1, %lo(gCourseID)($a1)
-    /* 1CF35C 802C59DC 0C02526E */  jal        func_800949B8
+    /* 1CF35C 802C59DC 0C02526E */  jal        Gfx_FillCourseColor
     /* 1CF360 802C59E0 00402025 */   or        $a0, $v0, $zero
     /* 1CF364 802C59E4 0C0243D6 */  jal        Draw_WaterEffects
     /* 1CF368 802C59E8 00402025 */   or        $a0, $v0, $zero
@@ -191,7 +191,7 @@ glabel func_i14_802C5924
     /* 1CF49C 802C5B1C 10000010 */  b          .Li14_802C5B60
     /* 1CF4A0 802C5B20 8FA20018 */   lw        $v0, 0x18($sp)
   .Li14_802C5B24:
-    /* 1CF4A4 802C5B24 0C024D17 */  jal        func_8009345C
+    /* 1CF4A4 802C5B24 0C024D17 */  jal        Game_EnterGameplay
     /* 1CF4A8 802C5B28 00000000 */   nop
     /* 1CF4AC 802C5B2C 1000000C */  b          .Li14_802C5B60
     /* 1CF4B0 802C5B30 8FA20018 */   lw        $v0, 0x18($sp)

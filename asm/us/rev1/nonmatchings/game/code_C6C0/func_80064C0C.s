@@ -1059,7 +1059,7 @@ glabel func_80064C0C
     /* 202D0 80065AD0 00E02825 */  or         $a1, $a3, $zero
     /* 202D4 80065AD4 11C00004 */  beqz       $t6, .L80065AE8
     /* 202D8 80065AD8 00000000 */   nop
-    /* 202DC 80065ADC 0C0145D0 */  jal        func_80051740
+    /* 202DC 80065ADC 0C0145D0 */  jal        Wall_CollideRider
     /* 202E0 80065AE0 AFA70028 */   sw        $a3, 0x28($sp)
     /* 202E4 80065AE4 8FA70028 */  lw         $a3, 0x28($sp)
   .L80065AE8:
@@ -1074,7 +1074,7 @@ glabel func_80064C0C
     /* 20308 80065B08 8FA70028 */  lw         $a3, 0x28($sp)
     /* 2030C 80065B0C 00E02025 */  or         $a0, $a3, $zero
   .L80065B10:
-    /* 20310 80065B10 0C01FDC0 */  jal        func_8007F700
+    /* 20310 80065B10 0C01FDC0 */  jal        Box_CollideRider
     /* 20314 80065B14 AFA70028 */   sw        $a3, 0x28($sp)
     /* 20318 80065B18 3C18800D */  lui        $t8, %hi(D_800D4978)
     /* 2031C 80065B1C 97184978 */  lhu        $t8, %lo(D_800D4978)($t8)

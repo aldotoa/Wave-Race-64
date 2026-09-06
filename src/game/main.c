@@ -49,32 +49,39 @@ extern s32 D_8038F800;
 extern s32 D_803B5000;
 extern s32 D_803DA800;
 
+// RSP task scheduler state: D_800D4600 is the active task
+// (0 = idle, 1 = gfx yielding, 2 = audio, 3 = gfx),
+// D_800D4604 flags a pending task switch.
+
 // Function declaration (main.c)
-void func_80047470(void);
-void func_800474A0(void);
-void func_800474E4(void);
+void Sched_YieldGfxTask(void);
+void Sched_StartAudioTask(void);
+void Sched_StartGfxTask(void);
 void Main_Thread(void* entry);
 void Main_IdleThread(void* entry);
 void main(void);
-void func_80047B00(void);
+void Main_UpdateAudio(void);
 void func_800980C8(void);
 void func_800980D0(void*);
 void SysAudio_AudioThreadEntry(void* entry);
 
-void func_80047470(void) {
+/* Preempts the running graphics task so the audio task can run. */
+void Sched_YieldGfxTask(void) {
     osSpTaskYield();
     D_800D4600 = 1;
     D_800D4604 = 1;
 }
 
-void func_800474A0(void) {
+/* Loads and starts the audio task and marks audio as active. */
+void Sched_StartAudioTask(void) {
     osSpTaskLoad(gCurrentAudioTask);
     osSpTaskStartGo(gCurrentAudioTask);
     D_800D4600 = 2;
     D_800D4604 = 1;
 }
 
-void func_800474E4(void) {
+/* Starts the graphics task and marks gfx as active. */
+void Sched_StartGfxTask(void) {
     osDpSetStatus(0x3C0);
     osSpTaskLoad(gCurrentGfxTask);
     osSpTaskStartGo(gCurrentGfxTask);
@@ -126,16 +133,16 @@ void Main_Thread(void* entry) {
                     if (osSpTaskYielded(gCurrentGfxTask) != 0) {
                         D_800D4608 = 1;
                     }
-                    func_800474A0();
+                    Sched_StartAudioTask();
                     break;
 
                 case 2:
                     if (D_800D4608 != 0) {
                         D_800D4608 = 0;
-                        func_800474E4();
+                        Sched_StartGfxTask();
                     } else if (D_800D460C != 0) {
                         D_800D460C = 0;
-                        func_800474E4();
+                        Sched_StartGfxTask();
                     } else {
                         D_800D4600 = 0;
                         D_800D4604 = 0;
@@ -153,10 +160,10 @@ void Main_Thread(void* entry) {
             osWritebackDCacheAll();
             if (D_800D4604 != 0) {
                 if (D_800D4600 != 1) {
-                    func_80047470();
+                    Sched_YieldGfxTask();
                 }
             } else {
-                func_800474A0();
+                Sched_StartAudioTask();
             }
             continue;
         }
@@ -165,7 +172,7 @@ void Main_Thread(void* entry) {
             if (D_800D4604 != 0) {
                 D_800D460C = 1;
             } else {
-                func_800474E4();
+                Sched_StartGfxTask();
             }
             continue;
         }
@@ -219,6 +226,6 @@ void bootproc(void) {
     osStartThread(&gIdleThread);
 }
 
-void func_80047B00(void) {
+void Main_UpdateAudio(void) {
     func_800BF370();
 }

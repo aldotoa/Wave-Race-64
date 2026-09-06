@@ -11,9 +11,9 @@ extern s32 D_801CE644;
 
 extern Gfx D_8011F820[];
 
-Gfx* func_80093F78(Gfx* glistp);
+Gfx* Gfx_ClearCurrentBuffer(Gfx* glistp);
 Gfx* func_8008FB74(Gfx* glistp);
-Gfx* func_80094A44(Gfx* glistp, s32 course);
+Gfx* Gfx_DrawCoursePanel(Gfx* glistp, s32 course);
 Gfx* Draw_WaterEffects(Gfx* glistp);
 void func_801E2530(void);
 
@@ -39,11 +39,11 @@ Gfx* func_801E1E8C(Gfx* glistp) {
         D_801CE63C = 0;
     }
     D_800DAB2C = 0;
-    glistp = func_80093F78(glistp);
+    glistp = Gfx_ClearCurrentBuffer(glistp);
     glistp = func_8008FB74(glistp);
     glistp = func_801E2058(glistp);
     gSPDisplayList(glistp++, D_8011F820);
-    glistp = func_80094A44(glistp, gCourseID);
+    glistp = Gfx_DrawCoursePanel(glistp, gCourseID);
     glistp = Draw_WaterEffects(glistp);
     glistp = func_801E229C(glistp);
     if (gGameState == 0x64) {

@@ -4,7 +4,7 @@
 Gfx* func_1C3D00_802C58DC(Gfx*);
 void func_1C3D00_802C5D44(void);
 void func_1C3D00_802C5E10(void);
-Gfx* func_80093C44(Gfx*);
+Gfx* Gfx_ClearFrameBuffers(Gfx*);
 
 extern s16 D_80228A16;
 extern s32 D_802C5EF0;
@@ -15,12 +15,12 @@ Gfx* func_1C3D00_802C5800(Gfx* gDisplayListHead) {
         if (gGameState == 0x36) {
             D_802C5EF0 = 0;
             osViBlack(false);
-            return func_80093C44(gDisplayListHead);
+            return Gfx_ClearFrameBuffers(gDisplayListHead);
         }
     }
     D_800DAB2C = 0;
     gDisplayListHead =
-        func_1C3D00_802C58DC(Draw_WaterEffects(func_800949B8(func_8008FB74(gDisplayListHead), gCourseID)));
+        func_1C3D00_802C58DC(Draw_WaterEffects(Gfx_FillCourseColor(func_8008FB74(gDisplayListHead), gCourseID)));
     if (gGameState == 0x36) {
         if (D_80228A16 == 1) {
             func_800C30F8();
@@ -50,12 +50,12 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
     char sp60[0x20];
 
     gSPDisplayList(gDisplayListHead++, D_106F628);
-    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x35, 0x26, 0xD6, 0x1A);
-    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, 0x49, 0xAE, 0x10);
-    gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, 0x5A, 0xAE, 0x19);
+    gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x35, 0x26, 0xD6, 0x1A);
+    gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, 0x49, 0xAE, 0x10);
+    gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, 0x5A, 0xAE, 0x19);
 
     for (i = 0x8C; i < 0xD4; i += 0x12) {
-        gDisplayListHead = func_80094338(gDisplayListHead, 0, 0x49, i, 0xAE, 0x10);
+        gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, i, 0xAE, 0x10);
     }
 
     gDisplayListHead =
@@ -148,7 +148,7 @@ void func_1C3D00_802C5E10(void) {
                 func_801EB180();
                 return;
             case 40:
-                func_8009345C();
+                Game_EnterGameplay();
                 return;
             case 10:
                 func_801EBD28();

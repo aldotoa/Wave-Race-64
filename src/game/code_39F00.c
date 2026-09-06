@@ -1,195 +1,210 @@
 #include "common.h"
 
-typedef struct UnkStruct_801BFD78_s {
-    /* 0x00 */ f32 unk0;  /* inferred */
-    /* 0x04 */ f32 unk4;  /* inferred */
-    /* 0x08 */ f32 unk8;  /* inferred */
-    /* 0x0C */ f32 unkC;  /* inferred */
-    /* 0x10 */ f32 unk10; /* inferred */
-    /* 0x14 */ f32 unk14; /* inferred */
-    /* 0x18 */ f32 unk18; /* inferred */
-    /* 0x1C */ f32 unk1C; /* inferred */
-    /* 0x20 */ f32 unk20; /* inferred */
-    /* 0x24 */ f32 unk24; /* inferred */
-    /* 0x28 */ f32 unk28; /* inferred */
-    /* 0x2C */ f32 unk2C; /* inferred */
-    /* 0x30 */ f32 unk30; /* inferred */
-    /* 0x34 */ f32 unk34; /* inferred */
-    /* 0x38 */ f32 unk38; /* inferred */
-    /* 0x3C */ s32 unk3C;
-} UnkStruct_801BFD78; /* size = 0x40 */
-extern UnkStruct_801BFD78 D_801BFD78[];
+/* Collision box: an oriented box volume. Points are transformed into the
+ * (axisU, axisV, axisW) frame and tested against the half extents.
+ * Layout roles inferred from use in Box_CollideRider/Box_QueryPoint. */
+typedef struct CollideBox {
+    /* 0x00 */ f32 centerX;
+    /* 0x04 */ f32 centerY;
+    /* 0x08 */ f32 centerZ;
+    /* 0x0C */ f32 axisUX;
+    /* 0x10 */ f32 axisUY;
+    /* 0x14 */ f32 axisUZ;
+    /* 0x18 */ f32 axisVX;
+    /* 0x1C */ f32 axisVY;
+    /* 0x20 */ f32 axisVZ;
+    /* 0x24 */ f32 axisWX;
+    /* 0x28 */ f32 axisWY;
+    /* 0x2C */ f32 axisWZ;
+    /* 0x30 */ f32 halfU;
+    /* 0x34 */ f32 halfV;
+    /* 0x38 */ f32 halfW;
+    /* 0x3C */ s32 soft; /* inferred: nonzero softens the impact (x0.4 pushout) */
+} CollideBox; /* size = 0x40 */
+extern CollideBox D_801BFD78[];
 extern s32 D_801C0578;
 
-void func_8007F700(UnkStruct_80192690* arg0);
+void Box_CollideRider(UnkStruct_80192690* rider);
 
-void func_8007F700(UnkStruct_80192690* arg0) {
-    UnkStruct_801BFD78* var_v0;
-    f32 temp_f12;
-    f32 temp_f14;
-    f32 temp_f18_3;
-    f32 var_f0;
-    f32 var_f16;
-    f32 var_f2;
-    UnkStruct_8004B0F8_1* var_a0;
-    s32 var_a3;
-    UnkStruct_8004B0F8_1* var_a2;
+void Box_CollideRider(UnkStruct_80192690* rider) {
+    CollideBox* box;
+    f32 dz;
+    f32 vCoord; /* reused as the far-face remainder in the W-axis test below */
+    f32 wCoord;
+    f32 dy;
+    f32 minPen;
+    f32 dx;
+    UnkStruct_8004B0F8_1* cursor;
+    s32 hullIdx;
+    UnkStruct_8004B0F8_1* hullPt;
 
-    for (var_v0 = &D_801BFD78[D_801C0578 - 1]; (u32) var_v0 >= (u32) D_801BFD78; var_v0--) {
-        var_a3 = arg0->unk28;
-        for (var_a2 = &arg0->unk90[var_a3]; (u32) var_a2 >= (u32) &arg0->unk90; var_a2--, var_a3--) {
-            var_f2 = var_v0->unk0 - var_a2->unk0;
-            var_f0 = var_v0->unk4 - var_a2->unk4;
-            temp_f12 = var_v0->unk8 - var_a2->unk8;
-            var_f16 = (var_v0->unkC * var_f2) + (var_f0 * var_v0->unk10) + (temp_f12 * var_v0->unk14);
-            if ((var_f16 < 0.0f) || (var_v0->unk30 <= var_f16)) {
+    /* Test every box from last to first, and every hull point in turn. */
+    for (box = &D_801BFD78[D_801C0578 - 1]; (u32) box >= (u32) D_801BFD78; box--) {
+        hullIdx = rider->unk28;
+        for (hullPt = &rider->unk90[hullIdx]; (u32) hullPt >= (u32) &rider->unk90; hullPt--, hullIdx--) {
+            /* Transform the hull point into the box frame. */
+            dx = box->centerX - hullPt->unk0;
+            dy = box->centerY - hullPt->unk4;
+            dz = box->centerZ - hullPt->unk8;
+            minPen = (box->axisUX * dx) + (dy * box->axisUY) + (dz * box->axisUZ);
+            if ((minPen < 0.0f) || (box->halfU <= minPen)) {
                 continue;
             }
-            temp_f14 = (var_v0->unk18 * var_f2) + (var_f0 * var_v0->unk1C) + (temp_f12 * var_v0->unk20);
-            if ((temp_f14 < 0.0f) || (var_v0->unk34 <= temp_f14)) {
+            vCoord = (box->axisVX * dx) + (dy * box->axisVY) + (dz * box->axisVZ);
+            if ((vCoord < 0.0f) || (box->halfV <= vCoord)) {
                 continue;
             }
-            temp_f18_3 = (var_v0->unk24 * var_f2) + (var_f0 * var_v0->unk28) + (temp_f12 * var_v0->unk2C);
-            if ((temp_f18_3 < 0.0f) || (var_v0->unk38 <= temp_f18_3)) {
+            wCoord = (box->axisWX * dx) + (dy * box->axisWY) + (dz * box->axisWZ);
+            if ((wCoord < 0.0f) || (box->halfW <= wCoord)) {
                 continue;
             }
 
-            if (var_f16 > var_v0->unk30 - var_f16) {
-                var_f16 = var_v0->unk30 - var_f16;
-                var_f2 = -var_v0->unkC;
-                var_f0 = -var_v0->unk10;
-                temp_f12 = -var_v0->unk14;
+            /* Snap the penetration to the nearest face, tracking its normal. */
+            if (minPen > box->halfU - minPen) {
+                minPen = box->halfU - minPen;
+                dx = -box->axisUX;
+                dy = -box->axisUY;
+                dz = -box->axisUZ;
             } else {
-                var_f2 = var_v0->unkC;
-                var_f0 = var_v0->unk10;
-                temp_f12 = var_v0->unk14;
+                dx = box->axisUX;
+                dy = box->axisUY;
+                dz = box->axisUZ;
             }
 
-            if (temp_f14 < var_f16) {
-                var_f16 = temp_f14;
-                var_f2 = var_v0->unk18;
-                var_f0 = var_v0->unk1C;
-                temp_f12 = var_v0->unk20;
+            if (vCoord < minPen) {
+                minPen = vCoord;
+                dx = box->axisVX;
+                dy = box->axisVY;
+                dz = box->axisVZ;
             }
-            if (var_f16 > var_v0->unk34 - temp_f14) {
-                var_f16 = var_v0->unk34 - temp_f14;
-                var_f2 = -var_v0->unk18;
-                var_f0 = -var_v0->unk1C;
-                temp_f12 = -var_v0->unk20;
+            if (minPen > box->halfV - vCoord) {
+                minPen = box->halfV - vCoord;
+                dx = -box->axisVX;
+                dy = -box->axisVY;
+                dz = -box->axisVZ;
             }
-            if (temp_f18_3 < var_f16) {
-                var_f16 = temp_f18_3;
-                var_f2 = var_v0->unk24;
-                var_f0 = var_v0->unk28;
-                temp_f12 = var_v0->unk2C;
+            if (wCoord < minPen) {
+                minPen = wCoord;
+                dx = box->axisWX;
+                dy = box->axisWY;
+                dz = box->axisWZ;
             }
-            temp_f14 = var_v0->unk38 - temp_f18_3;
-            if (temp_f14 < var_f16) {
-                var_f16 = temp_f14;
-                var_f2 = -var_v0->unk24;
-                var_f0 = -var_v0->unk28;
-                temp_f12 = -var_v0->unk2C;
+            vCoord = box->halfW - wCoord;
+            if (vCoord < minPen) {
+                minPen = vCoord;
+                dx = -box->axisWX;
+                dy = -box->axisWY;
+                dz = -box->axisWZ;
             }
-            if ((var_f0 <= 0.0f) && ((var_a3 == 1) || (var_a3 == 8) || (var_a3 == 11))) {
+            /* Downward faces never collide with hull points 1, 8 and 11. */
+            if ((dy <= 0.0f) && ((hullIdx == 1) || (hullIdx == 8) || (hullIdx == 11))) {
                 continue;
             }
 
-            temp_f14 = ((-var_f2 * var_a2->unkC) - (var_f0 * var_a2->unk10)) - (temp_f12 * var_a2->unk14);
-            if (var_v0->unk3C != 0) {
-                arg0->unk15DE = 1;
-                temp_f18_3 = 0.4f * temp_f14;
+            /* Push the hull point out along the face normal ... */
+            vCoord = ((-dx * hullPt->unkC) - (dy * hullPt->unk10)) - (dz * hullPt->unk14);
+            if (box->soft != 0) {
+                rider->unk15DE = 1;
+                wCoord = 0.4f * vCoord;
             } else {
-                temp_f18_3 = temp_f14;
+                wCoord = vCoord;
             }
-            if (arg0->unkC48 < temp_f18_3) {
-                arg0->unkC48 = temp_f18_3;
-                arg0->unk15B4 = var_f2;
-                arg0->unk15B8 = var_f0;
-                arg0->unk15BC = temp_f12;
+            /* ... and remember the strongest hit on the rider. */
+            if (rider->unkC48 < wCoord) {
+                rider->unkC48 = wCoord;
+                rider->unk15B4 = dx;
+                rider->unk15B8 = dy;
+                rider->unk15BC = dz;
             }
-            var_a2->unkC += (temp_f14 * var_f2);
-            var_a2->unk10 += (temp_f14 * var_f0);
-            var_a2->unk14 += (temp_f14 * temp_f12);
+            hullPt->unkC += (vCoord * dx);
+            hullPt->unk10 += (vCoord * dy);
+            hullPt->unk14 += (vCoord * dz);
 
-            var_f2 *= var_f16;
-            var_f0 *= var_f16;
-            temp_f12 *= var_f16;
-            for (var_a0 = &arg0->unk90[0]; (u32) var_a0 < (u32) &arg0->unk90[12]; var_a0++) {
-                var_a0->unk0 += var_f2;
-                var_a0->unk4 += var_f0;
-                var_a0->unk8 += temp_f12;
+            /* Shove the whole hull along the penetration normal. */
+            dx *= minPen;
+            dy *= minPen;
+            dz *= minPen;
+            for (cursor = &rider->unk90[0]; (u32) cursor < (u32) &rider->unk90[12]; cursor++) {
+                cursor->unk0 += dx;
+                cursor->unk4 += dy;
+                cursor->unk8 += dz;
             }
         }
     }
 }
 
-f32 func_8007FAE4(f32 arg0, f32 arg1, f32 arg2, f32* arg3, f32* arg4, f32* arg5) {
-    UnkStruct_801BFD78* var_v0;
-    f32 temp_fv0;
-    f32 temp_ft4;
-    f32 var_f12;
-    f32 var_f14;
-    f32 var_fs3;
-    f32 var_f2;
+/* Tests one (x, y, z) point against every collision box without moving
+ * it. On a hit, writes the nearest face normal to
+ * (normalX, normalY, normalZ) and returns the penetration depth;
+ * otherwise returns 0.0f. */
+f32 Box_QueryPoint(f32 x, f32 y, f32 z, f32* normalX, f32* normalY, f32* normalZ) {
+    CollideBox* box;
+    f32 vCoord;
+    f32 wCoord;
+    f32 dy;
+    f32 dz;
+    f32 minPen;
+    f32 dx;
 
-    for (var_v0 = &D_801BFD78[D_801C0578 - 1]; (uintptr_t) var_v0 >= (uintptr_t) D_801BFD78; var_v0--) {
-        var_f2 = var_v0->unk0 - arg0;
-        var_f12 = var_v0->unk4 - arg1;
-        var_f14 = var_v0->unk8 - arg2;
-        var_fs3 = (var_f2 * var_v0->unkC) + (var_f12 * var_v0->unk10) + (var_f14 * var_v0->unk14);
-        if (var_fs3 < 0 || var_v0->unk30 <= var_fs3) {
+    for (box = &D_801BFD78[D_801C0578 - 1]; (uintptr_t) box >= (uintptr_t) D_801BFD78; box--) {
+        dx = box->centerX - x;
+        dy = box->centerY - y;
+        dz = box->centerZ - z;
+        minPen = (dx * box->axisUX) + (dy * box->axisUY) + (dz * box->axisUZ);
+        if (minPen < 0 || box->halfU <= minPen) {
             continue;
         }
-        temp_fv0 = (var_f2 * var_v0->unk18) + (var_f12 * var_v0->unk1C) + (var_f14 * var_v0->unk20);
-        if (temp_fv0 < 0 || var_v0->unk34 <= temp_fv0) {
+        vCoord = (dx * box->axisVX) + (dy * box->axisVY) + (dz * box->axisVZ);
+        if (vCoord < 0 || box->halfV <= vCoord) {
             continue;
         }
-        temp_ft4 = (var_f2 * var_v0->unk24) + (var_f12 * var_v0->unk28) + (var_f14 * var_v0->unk2C);
-        if (temp_ft4 < 0 || var_v0->unk38 <= temp_ft4) {
+        wCoord = (dx * box->axisWX) + (dy * box->axisWY) + (dz * box->axisWZ);
+        if (wCoord < 0 || box->halfW <= wCoord) {
             continue;
         }
 
-        if (var_fs3 > var_v0->unk30 - var_fs3) {
-            var_fs3 = var_v0->unk30 - var_fs3;
-            var_f2 = -var_v0->unkC;
-            var_f12 = -var_v0->unk10;
-            var_f14 = -var_v0->unk14;
+        /* Snap the penetration to the nearest face, tracking its normal. */
+        if (minPen > box->halfU - minPen) {
+            minPen = box->halfU - minPen;
+            dx = -box->axisUX;
+            dy = -box->axisUY;
+            dz = -box->axisUZ;
         } else {
-            var_f2 = var_v0->unkC;
-            var_f12 = var_v0->unk10;
-            var_f14 = var_v0->unk14;
+            dx = box->axisUX;
+            dy = box->axisUY;
+            dz = box->axisUZ;
         }
-        if (var_fs3 > temp_fv0) {
-            var_fs3 = temp_fv0;
-            var_f2 = var_v0->unk18;
-            var_f12 = var_v0->unk1C;
-            var_f14 = var_v0->unk20;
-        }
-
-        if (var_fs3 > var_v0->unk34 - temp_fv0) {
-            var_fs3 = var_v0->unk34 - temp_fv0;
-            var_f2 = -var_v0->unk18;
-            var_f12 = -var_v0->unk1C;
-            var_f14 = -var_v0->unk20;
+        if (minPen > vCoord) {
+            minPen = vCoord;
+            dx = box->axisVX;
+            dy = box->axisVY;
+            dz = box->axisVZ;
         }
 
-        if (temp_ft4 < var_fs3) {
-            var_fs3 = temp_ft4;
-            var_f2 = var_v0->unk24;
-            var_f12 = var_v0->unk28;
-            var_f14 = var_v0->unk2C;
+        if (minPen > box->halfV - vCoord) {
+            minPen = box->halfV - vCoord;
+            dx = -box->axisVX;
+            dy = -box->axisVY;
+            dz = -box->axisVZ;
         }
 
-        if (var_fs3 > var_v0->unk38 - temp_ft4) {
-            var_fs3 = var_v0->unk38 - temp_ft4;
-            var_f2 = -var_v0->unk24;
-            var_f12 = -var_v0->unk28;
-            var_f14 = -var_v0->unk2C;
+        if (wCoord < minPen) {
+            minPen = wCoord;
+            dx = box->axisWX;
+            dy = box->axisWY;
+            dz = box->axisWZ;
         }
-        *arg3 = var_f2;
-        *arg4 = var_f12;
-        *arg5 = var_f14;
-        return var_fs3;
+
+        if (minPen > box->halfW - wCoord) {
+            minPen = box->halfW - wCoord;
+            dx = -box->axisWX;
+            dy = -box->axisWY;
+            dz = -box->axisWZ;
+        }
+        *normalX = dx;
+        *normalY = dy;
+        *normalZ = dz;
+        return minPen;
     }
     return 0.0f;
 }

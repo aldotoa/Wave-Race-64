@@ -2,7 +2,7 @@
 
 void func_i5_802C5800(void) {
     if ((D_801CE63C != 0) && (gGameState == 52)) {
-        func_80094ACC();
+        Race_UpdateStandings();
         func_i5_802C5A98();
     }
     func_i5_802C5850();

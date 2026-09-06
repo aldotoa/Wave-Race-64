@@ -62,11 +62,11 @@ extern s16 gCurrentPauseMenuOptionCount;
 Gfx* PauseMenu_Update(Gfx* gdl) {
     s32 i;
     s32 startBtnPressed;
-    s32 pad;
+    s32 frameKeep; /* unused; preserves the original stack frame */
     s32 retire;
     s32 pad2;
     PauseMenuState pauseMenuState;
-    s32 yOffset[1];
+    s32 yOffset[1]; /* single-element array addressing matches the original */
     PauseOption* option;
 
     retire = false;
@@ -271,14 +271,17 @@ Gfx* PauseMenu_Update(Gfx* gdl) {
     return gdl;
 }
 
-void func_801E4C08(void) {
+/* Opens the pause menu on external request: selects the first option and
+ * stashes the current game mode. */
+void PauseMenu_Open(void) {
     D_801CE62C = 1;
     gCurrentPauseMenuOption = 0;
     D_80228910 = gRiderGameModes;
     gRiderGameModes = 0;
 }
 
-void func_801E4C38(void) {
+/* Closes the pause menu remotely and restores the stashed game mode. */
+void PauseMenu_Close(void) {
     gCurrentPauseMenuOption = -1;
     gRiderGameModes = D_80228910;
     D_801CE628 = 0;

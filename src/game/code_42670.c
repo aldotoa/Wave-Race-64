@@ -17,33 +17,41 @@ extern f32 D_801C4058;
 
 f32 func_801ED090(f32);
 f32 func_800C7010(f32);
-f32 func_80088D94(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
-void func_80088B00(struct UnkStruct_80088B00* arg0);
+f32 Math_PointLineDistance(f32 pointX, f32 pointY, f32 lineX0, f32 lineY0, f32 lineX1, f32 lineY1);
+void Seg2D_Normalize(struct UnkStruct_80088B00* seg);
 
-void func_80087E70(void) {
-    f32 temp_f0;
-    f32 temp_f2;
-    f32 temp_fs1;
-    f32 temp_fs2;
+/* Course guide segments: builds the 2D guide-segment set (D_801C4020..E0)
+ * from the course markers and the rider position, then derives the
+ * rider/marker distances and the upcoming-turn intersection test in
+ * D_801C3C58. Segment endpoints use the marker positions extended along
+ * the marker headings; UnkStruct_80088B00 field names are shared with
+ * game/code_3AC00.c and stay as-is. */
+void Guide_BuildSegments(void) {
+    f32 markX;
+    f32 markZ;
+    f32 workX;
+    f32 workZ;
 
+    /* Lead-in segment between the two upcoming markers. */
     D_801C4020.unk0 = D_801C3C54[D_801C3C58->unk18].unk0;
     D_801C4020.unk4 = D_801C3C54[D_801C3C58->unk18].unk8;
     D_801C4020.unk8 = D_801C3C54[D_801C3C58->unk10].unk0;
     D_801C4020.unkC = D_801C3C54[D_801C3C58->unk10].unk8;
 
-    func_80088B00(&D_801C4020);
+    Seg2D_Normalize(&D_801C4020);
+    /* Rider-to-next-marker segment. */
     D_801C4040.unk0 = D_801C3C50->unk44;
     D_801C4040.unk4 = D_801C3C50->unk4C;
     D_801C4040.unk8 = D_801C3C54[D_801C3C58->unk10].unk0;
     D_801C4040.unkC = D_801C3C54[D_801C3C58->unk10].unk8;
 
-    func_80088B00(&D_801C4040);
+    Seg2D_Normalize(&D_801C4040);
     D_801C4060.unk0 = D_801C3C50->unk44;
     D_801C4060.unk4 = D_801C3C50->unk4C;
     D_801C4060.unk8 = D_801C3C54[D_801C3C58->unk14].unk0;
     D_801C4060.unkC = D_801C3C54[D_801C3C58->unk14].unk8;
 
-    func_80088B00(&D_801C4060);
+    Seg2D_Normalize(&D_801C4060);
     D_801C4080.unk0 = D_801C3C50->unk44;
     D_801C4080.unk4 = D_801C3C50->unk4C;
 
@@ -51,7 +59,7 @@ void func_80087E70(void) {
 
     D_801C4080.unkC = D_801C3C54[D_801C3C58->unk14].unk14 - (D_801C3C54[D_801C3C58->unk14].unk7C * 50.0f);
 
-    func_80088B00(&D_801C4080);
+    Seg2D_Normalize(&D_801C4080);
     D_801C40A0.unk0 = D_801C3C50->unk44;
     D_801C40A0.unk4 = D_801C3C50->unk4C;
 
@@ -59,7 +67,7 @@ void func_80087E70(void) {
 
     D_801C40A0.unkC = D_801C3C54[D_801C3C58->unk14].unk20 + (D_801C3C54[D_801C3C58->unk14].unk7C * 50.f);
 
-    func_80088B00(&D_801C40A0);
+    Seg2D_Normalize(&D_801C40A0);
 
     D_801C40C0.unk0 = D_801C3C54[D_801C3C58->unk10].unk0 + (D_801C3C54[D_801C3C58->unk10].unk80 * 50);
 
@@ -69,60 +77,66 @@ void func_80087E70(void) {
 
     D_801C40C0.unkC = D_801C3C54[D_801C3C58->unk14].unk8 + (D_801C3C54[D_801C3C58->unk14].unk84 * 50);
 
-    func_80088B00(&D_801C40C0);
+    Seg2D_Normalize(&D_801C40C0);
     D_801C40E0.unk0 = D_801C3C50->unk44;
     D_801C40E0.unk4 = D_801C3C50->unk4C;
     D_801C40E0.unk8 = D_801C3C54[D_801C3C58->unk8].unk0;
     D_801C40E0.unkC = D_801C3C54[D_801C3C58->unk8].unk8;
-    func_80088B00(&D_801C40E0);
+    Seg2D_Normalize(&D_801C40E0);
 
-    temp_f0 = D_801C3C54[D_801C3C58->unk8].unk0;
-    temp_f2 = D_801C3C54[D_801C3C58->unk8].unk8;
+    /* Lateral distance from the rider to the previous marker's heading ray. */
+    markX = D_801C3C54[D_801C3C58->unk8].unk0;
+    markZ = D_801C3C54[D_801C3C58->unk8].unk8;
 
-    D_801C3C58->unk2C = (s32) func_80088D94(D_801C3C50->unk44, D_801C3C50->unk4C, temp_f0, temp_f2,
-                                            (D_801C3C54[D_801C3C58->unk8].unk78 * 256.0f) + temp_f0,
-                                            (D_801C3C54[D_801C3C58->unk8].unk7C * 256.0f) + temp_f2);
+    D_801C3C58->unk2C = (s32) Math_PointLineDistance(D_801C3C50->unk44, D_801C3C50->unk4C, markX, markZ,
+                                            (D_801C3C54[D_801C3C58->unk8].unk78 * 256.0f) + markX,
+                                            (D_801C3C54[D_801C3C58->unk8].unk7C * 256.0f) + markZ);
 
-    temp_fs1 = D_801C3C54[D_801C3C58->unk10].unk0;
-    temp_fs2 = D_801C3C54[D_801C3C58->unk10].unk8;
+    workX = D_801C3C54[D_801C3C58->unk10].unk0;
+    workZ = D_801C3C54[D_801C3C58->unk10].unk8;
 
-    D_801C3C58->unk30 = (s32) func_80088D94(D_801C3C50->unk44, D_801C3C50->unk4C, temp_fs1, temp_fs2,
-                                            (D_801C3C54[D_801C3C58->unk10].unk78 * 256.0f) + temp_fs1,
-                                            (D_801C3C54[D_801C3C58->unk10].unk7C * 256.0f) + temp_fs2);
+    D_801C3C58->unk30 = (s32) Math_PointLineDistance(D_801C3C50->unk44, D_801C3C50->unk4C, workX, workZ,
+                                            (D_801C3C54[D_801C3C58->unk10].unk78 * 256.0f) + workX,
+                                            (D_801C3C54[D_801C3C58->unk10].unk7C * 256.0f) + workZ);
 
-    temp_fs1 = D_801C3C54[D_801C3C58->unk10].unk0 - D_801C3C54[D_801C3C58->unk18].unk0;
-    temp_fs2 = D_801C3C54[D_801C3C58->unk10].unk8 - D_801C3C54[D_801C3C58->unk18].unk8;
-    D_801C3C58->unk34 = (s32) sqrtf(SQ(temp_fs1) + SQ(temp_fs2));
+    /* Straight-line distances between the upcoming markers ... */
+    workX = D_801C3C54[D_801C3C58->unk10].unk0 - D_801C3C54[D_801C3C58->unk18].unk0;
+    workZ = D_801C3C54[D_801C3C58->unk10].unk8 - D_801C3C54[D_801C3C58->unk18].unk8;
+    D_801C3C58->unk34 = (s32) sqrtf(SQ(workX) + SQ(workZ));
 
-    temp_fs1 = D_801C3C54[D_801C3C58->unk8].unk0 - D_801C3C50->unk44;
-    temp_fs2 = D_801C3C54[D_801C3C58->unk8].unk8 - D_801C3C50->unk4C;
-    D_801C3C58->unk38 = (s32) sqrtf(SQ(temp_fs1) + SQ(temp_fs2));
+    /* ... and from the rider to the previous marker. */
+    workX = D_801C3C54[D_801C3C58->unk8].unk0 - D_801C3C50->unk44;
+    workZ = D_801C3C54[D_801C3C58->unk8].unk8 - D_801C3C50->unk4C;
+    D_801C3C58->unk38 = (s32) sqrtf(SQ(workX) + SQ(workZ));
 
+    /* Upcoming-turn intersection test. */
     D_801C3C58->unk3C = Math_TwoLineSegmentsIntersect(
-        temp_fs1 = D_801C3C54[D_801C3C58->unk10].unk0, temp_fs2 = D_801C3C54[D_801C3C58->unk10].unk8,
-        (D_801C3C54[D_801C3C58->unk10].unk70 * 256.0f) + temp_fs1,
-        (D_801C3C54[D_801C3C58->unk10].unk74 * 256.0f) + temp_fs2, D_801C3C50->unk44, D_801C3C50->unk4C);
+        workX = D_801C3C54[D_801C3C58->unk10].unk0, workZ = D_801C3C54[D_801C3C58->unk10].unk8,
+        (D_801C3C54[D_801C3C58->unk10].unk70 * 256.0f) + workX,
+        (D_801C3C54[D_801C3C58->unk10].unk74 * 256.0f) + workZ, D_801C3C50->unk44, D_801C3C50->unk4C);
 }
 
-void func_80088418(void) {
+/* Refreshes the off-course flag from the lateral distance, then rebuilds
+ * the primary guide segment. */
+void Guide_Update(void) {
     if ((D_801C3C58->unk30 < 0x258) || (D_801C4058 < 600.0f)) {
         D_801C3C58->unk6C = 1;
     } else {
         D_801C3C58->unk6C = 0;
     }
-    func_80088488(D_801C3C58->unk6C);
+    Guide_BuildPrimarySegment(D_801C3C58->unk6C);
 }
 
-void func_80088488(s32 arg0) {
-    f32 var_f12;
-    f32 var_f14;
-    f32 temp;
+void Guide_BuildPrimarySegment(s32 arg0) {
+    f32 sideOff;
+    f32 fwdOff;
+    f32 frameKeep; /* unused; preserves the original stack frame */
     if (arg0 != 0) {
-        var_f12 = 120.0f;
-        var_f14 = 120.0f;
+        sideOff = 120.0f;
+        fwdOff = 120.0f;
     } else {
-        var_f12 = -50.0f;
-        var_f14 = 250.0f;
+        sideOff = -50.0f;
+        fwdOff = 250.0f;
     }
     D_801C4000.unk0 = D_801C3C50->unk44;
     D_801C4000.unk4 = D_801C3C50->unk4C;
@@ -138,9 +152,9 @@ void func_80088488(s32 arg0) {
                 D_801C4000.unkC += (120.0f * D_801C4040.unk14) + (200.0f * D_801C4040.unk10);
             } else {
                 D_801C4000.unk8 +=
-                    ((var_f12 * D_801C4040.unk10) - (var_f14 * D_801C4040.unk14)) - (0 * D_801C40C0.unk10);
+                    ((sideOff * D_801C4040.unk10) - (fwdOff * D_801C4040.unk14)) - (0 * D_801C40C0.unk10);
                 D_801C4000.unkC +=
-                    ((var_f12 * D_801C4040.unk14) + (var_f14 * D_801C4040.unk10)) - (0 * D_801C40C0.unk14);
+                    ((sideOff * D_801C4040.unk14) + (fwdOff * D_801C4040.unk10)) - (0 * D_801C40C0.unk14);
             }
             break;
         case 1:
@@ -149,15 +163,15 @@ void func_80088488(s32 arg0) {
                 D_801C4000.unkC += (120.0f * D_801C4040.unk14) - (200.0f * D_801C4040.unk10);
             } else {
                 D_801C4000.unk8 +=
-                    ((var_f12 * D_801C4040.unk10) + (var_f14 * D_801C4040.unk14)) - (0 * D_801C40C0.unk10);
+                    ((sideOff * D_801C4040.unk10) + (fwdOff * D_801C4040.unk14)) - (0 * D_801C40C0.unk10);
 
                 D_801C4000.unkC +=
-                    (((var_f12 * D_801C4040.unk14) - (var_f14 * D_801C4040.unk10)) - (0 * D_801C40C0.unk14));
+                    (((sideOff * D_801C4040.unk14) - (fwdOff * D_801C4040.unk10)) - (0 * D_801C40C0.unk14));
             }
             break;
         case 2:
         case 3:
-            temp = 120.0f;
+            frameKeep = 120.0f;
             if (Math_TwoLineSegmentsIntersect(
                     D_801C3C50->unk44, D_801C3C50->unk4C,
                     D_801C3C54[D_801C3C58->unk10].unk18 + (D_801C3C54[D_801C3C58->unk10].unk78 * 120.0f),
@@ -215,21 +229,23 @@ void func_80088488(s32 arg0) {
             }
             break;
     }
-    func_80088B00(&D_801C4000);
+    Seg2D_Normalize(&D_801C4000);
 }
 
-void func_80088B00(struct UnkStruct_80088B00* arg0) {
-    f32 temp_f12;
+/* Normalizes a 2D segment in place: sets the unit direction (unk10/unk14)
+ * and length (unk18) from the endpoints (unk0/unk4 -> unk8/unkC). */
+void Seg2D_Normalize(struct UnkStruct_80088B00* seg) {
+    f32 segLenSq;
 
-    arg0->unk10 = arg0->unk8 - arg0->unk0;
-    arg0->unk14 = arg0->unkC - arg0->unk4;
+    seg->unk10 = seg->unk8 - seg->unk0;
+    seg->unk14 = seg->unkC - seg->unk4;
 
-    temp_f12 = SQ(arg0->unk10) + SQ(arg0->unk14);
-    arg0->unk18 = temp_f12;
-    if (temp_f12 != 0.0f) {
-        arg0->unk18 = sqrtf(arg0->unk18);
-        arg0->unk10 = (f32) (arg0->unk10 / arg0->unk18);
-        arg0->unk14 = (f32) (arg0->unk14 / arg0->unk18);
+    segLenSq = SQ(seg->unk10) + SQ(seg->unk14);
+    seg->unk18 = segLenSq;
+    if (segLenSq != 0.0f) {
+        seg->unk18 = sqrtf(seg->unk18);
+        seg->unk10 = (f32) (seg->unk10 / seg->unk18);
+        seg->unk14 = (f32) (seg->unk14 / seg->unk18);
     }
 }
 
@@ -245,51 +261,54 @@ void Math_Normalize_VectorComponents(f32* componentX, f32* componentY) {
     }
 }
 
-void func_80088C00(void) {
-    f32 sp3C;
-    f32 sp38;
-    f32 sp34;
-    f32 sp30;
-    f32 var_f0;
-    f32 var_f12;
+/* Computes the upcoming-turn angle (unk28) from the sine between the
+ * rider-to-marker direction and the marker-to-marker direction. */
+void Guide_ComputeTurnAngle(void) {
+    f32 toMarkX;
+    f32 toMarkZ;
+    f32 markDirX;
+    f32 markDirZ;
+    f32 turnSin;
+    f32 align;
 
-    sp3C = D_801C3C54[D_801C3C58->unk10].unk0 - D_801C3C50->unk44;
-    sp38 = D_801C3C54[D_801C3C58->unk10].unk8 - D_801C3C50->unk4C;
-    sp34 = D_801C3C54[D_801C3C58->unk14].unk0 - D_801C3C54[D_801C3C58->unk10].unk0;
-    sp30 = D_801C3C54[D_801C3C58->unk14].unk8 - D_801C3C54[D_801C3C58->unk10].unk8;
-    Math_Normalize_VectorComponents(&sp3C, &sp38);
-    Math_Normalize_VectorComponents(&sp34, &sp30);
+    toMarkX = D_801C3C54[D_801C3C58->unk10].unk0 - D_801C3C50->unk44;
+    toMarkZ = D_801C3C54[D_801C3C58->unk10].unk8 - D_801C3C50->unk4C;
+    markDirX = D_801C3C54[D_801C3C58->unk14].unk0 - D_801C3C54[D_801C3C58->unk10].unk0;
+    markDirZ = D_801C3C54[D_801C3C58->unk14].unk8 - D_801C3C54[D_801C3C58->unk10].unk8;
+    Math_Normalize_VectorComponents(&toMarkX, &toMarkZ);
+    Math_Normalize_VectorComponents(&markDirX, &markDirZ);
 
-    var_f0 = (sp3C * sp30) - (sp34 * sp38);
+    turnSin = (toMarkX * markDirZ) - (markDirX * toMarkZ);
     if (D_801C3C58->unk1C == 0) {
-        var_f0 = var_f0 * -1.0f;
+        turnSin = turnSin * -1.0f;
     }
-    if (var_f0 < 0.0f) {
-        var_f0 = 0.0f;
+    if (turnSin < 0.0f) {
+        turnSin = 0.0f;
     }
 
-    var_f12 = 1.0f - SQ(var_f0);
-    if (SQ(var_f0) > 1.0f) {
-        var_f12 = 0.0f;
+    align = 1.0f - SQ(turnSin);
+    if (SQ(turnSin) > 1.0f) {
+        align = 0.0f;
     }
-    D_801C3C58->unk28 = (s32) func_801ED090(sqrtf(var_f12));
+    D_801C3C58->unk28 = (s32) func_801ED090(sqrtf(align));
 }
 
-f32 func_80088D94(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    f32 sp24;
-    f32 temp_f12;
-    f32 temp_f14;
-    f32 temp_sq;
-    f32 var_f2;
+/* Absolute distance from a point to the infinite line through two points. */
+f32 Math_PointLineDistance(f32 pointX, f32 pointY, f32 lineX0, f32 lineY0, f32 lineX1, f32 lineY1) {
+    f32 slope;
+    f32 numer;
+    f32 lineLen;
+    f32 negOne;
+    f32 frameKeep; /* unused; preserves the original stack frame */
 
-    if (arg2 == arg4) {
-        return (arg2 <= arg0) ? arg0 - arg2 : -(arg0 - arg2);
+    if (lineX0 == lineX1) {
+        return (lineX0 <= pointX) ? pointX - lineX0 : -(pointX - lineX0);
     }
 
-    sp24 = (arg5 - arg3) / (arg4 - arg2);
-    temp_sq = -SQ(1);
-    temp_f14 = sqrtf(SQ(sp24) + SQ(temp_sq));
-    temp_f12 = (sp24 * arg0) + (-1 * arg1) + (arg3 - (sp24 * arg2));
+    slope = (lineY1 - lineY0) / (lineX1 - lineX0);
+    negOne = -SQ(1);
+    lineLen = sqrtf(SQ(slope) + SQ(negOne));
+    numer = (slope * pointX) + (-1 * pointY) + (lineY0 - (slope * lineX0));
 
-    return FABS(temp_f12) / temp_f14;
+    return FABS(numer) / lineLen;
 }

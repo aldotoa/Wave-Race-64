@@ -99,7 +99,7 @@ glabel func_i15_802C602C
     /* 1D0420 802C60C0 26840008 */  addiu      $a0, $s4, 0x8
     /* 1D0424 802C60C4 AFA90014 */  sw         $t1, 0x14($sp)
     /* 1D0428 802C60C8 AFA80010 */  sw         $t0, 0x10($sp)
-    /* 1D042C 802C60CC 0C0250CE */  jal        func_80094338
+    /* 1D042C 802C60CC 0C0250CE */  jal        Menu_DrawFrame
     /* 1D0430 802C60D0 00002825 */   or        $a1, $zero, $zero
     /* 1D0434 802C60D4 240A00FF */  addiu      $t2, $zero, 0xFF
     /* 1D0438 802C60D8 240B00FF */  addiu      $t3, $zero, 0xFF
@@ -300,7 +300,7 @@ glabel func_i15_802C602C
     /* 1D0730 802C63D0 AFA90080 */  sw         $t1, 0x80($sp)
     /* 1D0734 802C63D4 00002825 */  or         $a1, $zero, $zero
     /* 1D0738 802C63D8 0000A825 */  or         $s5, $zero, $zero
-    /* 1D073C 802C63DC 0C0250CE */  jal        func_80094338
+    /* 1D073C 802C63DC 0C0250CE */  jal        Menu_DrawFrame
     /* 1D0740 802C63E0 241E0001 */   addiu     $fp, $zero, 0x1
     /* 1D0744 802C63E4 8EC7000C */  lw         $a3, 0xC($s6)
     /* 1D0748 802C63E8 8EC60008 */  lw         $a2, 0x8($s6)
@@ -310,7 +310,7 @@ glabel func_i15_802C602C
     /* 1D0758 802C63F8 AFAB0010 */  sw         $t3, 0x10($sp)
     /* 1D075C 802C63FC 00402025 */  or         $a0, $v0, $zero
     /* 1D0760 802C6400 00002825 */  or         $a1, $zero, $zero
-    /* 1D0764 802C6404 0C0250CE */  jal        func_80094338
+    /* 1D0764 802C6404 0C0250CE */  jal        Menu_DrawFrame
     /* 1D0768 802C6408 24E7001B */   addiu     $a3, $a3, 0x1B
     /* 1D076C 802C640C 0040A025 */  or         $s4, $v0, $zero
     /* 1D0770 802C6410 00008025 */  or         $s0, $zero, $zero
@@ -324,7 +324,7 @@ glabel func_i15_802C602C
     /* 1D078C 802C642C AFAE0014 */  sw         $t6, 0x14($sp)
     /* 1D0790 802C6430 AFAD0010 */  sw         $t5, 0x10($sp)
     /* 1D0794 802C6434 02802025 */  or         $a0, $s4, $zero
-    /* 1D0798 802C6438 0C0250CE */  jal        func_80094338
+    /* 1D0798 802C6438 0C0250CE */  jal        Menu_DrawFrame
     /* 1D079C 802C643C 00002825 */   or        $a1, $zero, $zero
     /* 1D07A0 802C6440 26100020 */  addiu      $s0, $s0, 0x20
     /* 1D07A4 802C6444 2A010080 */  slti       $at, $s0, 0x80
@@ -376,7 +376,7 @@ glabel func_i15_802C602C
     /* 1D0854 802C64F4 AFAE0010 */  sw         $t6, 0x10($sp)
     /* 1D0858 802C64F8 00002825 */  or         $a1, $zero, $zero
     /* 1D085C 802C64FC 24E700AE */  addiu      $a3, $a3, 0xAE
-    /* 1D0860 802C6500 0C0250CE */  jal        func_80094338
+    /* 1D0860 802C6500 0C0250CE */  jal        Menu_DrawFrame
     /* 1D0864 802C6504 24C6001E */   addiu     $a2, $a2, 0x1E
     /* 1D0868 802C6508 0040A025 */  or         $s4, $v0, $zero
   .Li15_802C650C:
@@ -757,7 +757,7 @@ glabel func_i15_802C602C
     /* 1D0DFC 802C6A9C 26100020 */  addiu      $s0, $s0, 0x20
     /* 1D0E00 802C6AA0 1420FF41 */  bnez       $at, .Li15_802C67A8
     /* 1D0E04 802C6AA4 0040A025 */   or        $s4, $v0, $zero
-    /* 1D0E08 802C6AA8 0C024EBF */  jal        func_80093AFC
+    /* 1D0E08 802C6AA8 0C024EBF */  jal        Gfx_ClearWorkImages
     /* 1D0E0C 802C6AAC 00402025 */   or        $a0, $v0, $zero
     /* 1D0E10 802C6AB0 3C0BFF10 */  lui        $t3, (0xFF10013F >> 16)
     /* 1D0E14 802C6AB4 3C03E700 */  lui        $v1, (0xE7000000 >> 16)

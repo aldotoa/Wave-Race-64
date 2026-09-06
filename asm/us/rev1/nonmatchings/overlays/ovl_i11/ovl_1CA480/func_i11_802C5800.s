@@ -56,7 +56,7 @@ glabel func_i11_802C5800
     /* 1CA4CC 802C584C 24010048 */  addiu      $at, $zero, 0x48
     /* 1CA4D0 802C5850 15E10005 */  bne        $t7, $at, .Li11_802C5868
     /* 1CA4D4 802C5854 00000000 */   nop
-    /* 1CA4D8 802C5858 0C024F11 */  jal        func_80093C44
+    /* 1CA4D8 802C5858 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1CA4DC 802C585C 00000000 */   nop
     /* 1CA4E0 802C5860 1000012E */  b          .Li11_802C5D1C
     /* 1CA4E4 802C5864 8FBF0064 */   lw        $ra, 0x64($sp)
@@ -101,7 +101,7 @@ glabel func_i11_802C5800
     /* 1CA578 802C58F8 02402025 */  or         $a0, $s2, $zero
     /* 1CA57C 802C58FC 00002825 */  or         $a1, $zero, $zero
     /* 1CA580 802C5900 2406001C */  addiu      $a2, $zero, 0x1C
-    /* 1CA584 802C5904 0C0250CE */  jal        func_80094338
+    /* 1CA584 802C5904 0C0250CE */  jal        Menu_DrawFrame
     /* 1CA588 802C5908 02003825 */   or        $a3, $s0, $zero
     /* 1CA58C 802C590C 240E0069 */  addiu      $t6, $zero, 0x69
     /* 1CA590 802C5910 240F0010 */  addiu      $t7, $zero, 0x10
@@ -110,7 +110,7 @@ glabel func_i11_802C5800
     /* 1CA59C 802C591C 00402025 */  or         $a0, $v0, $zero
     /* 1CA5A0 802C5920 00002825 */  or         $a1, $zero, $zero
     /* 1CA5A4 802C5924 240600B2 */  addiu      $a2, $zero, 0xB2
-    /* 1CA5A8 802C5928 0C0250CE */  jal        func_80094338
+    /* 1CA5A8 802C5928 0C0250CE */  jal        Menu_DrawFrame
     /* 1CA5AC 802C592C 02003825 */   or        $a3, $s0, $zero
     /* 1CA5B0 802C5930 26100015 */  addiu      $s0, $s0, 0x15
     /* 1CA5B4 802C5934 2A0100A3 */  slti       $at, $s0, 0xA3
@@ -123,7 +123,7 @@ glabel func_i11_802C5800
     /* 1CA5D0 802C5950 00402025 */  or         $a0, $v0, $zero
     /* 1CA5D4 802C5954 00002825 */  or         $a1, $zero, $zero
     /* 1CA5D8 802C5958 2406006A */  addiu      $a2, $zero, 0x6A
-    /* 1CA5DC 802C595C 0C0250CE */  jal        func_80094338
+    /* 1CA5DC 802C595C 0C0250CE */  jal        Menu_DrawFrame
     /* 1CA5E0 802C5960 240700A3 */   addiu     $a3, $zero, 0xA3
     /* 1CA5E4 802C5964 240800FF */  addiu      $t0, $zero, 0xFF
     /* 1CA5E8 802C5968 240900FF */  addiu      $t1, $zero, 0xFF

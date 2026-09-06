@@ -4,7 +4,7 @@ Gfx* func_i12_802C5800(Gfx* dList) {
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == 0x46) {
-            return func_80093C44(dList);
+            return Gfx_ClearFrameBuffers(dList);
         }
     }
 

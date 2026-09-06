@@ -1,23 +1,40 @@
 #include "common.h"
 
-typedef struct UnkStruct_80069E44 {
-    s32 unk0;
-    s32 unk4;
+/* Per-frame menu/stick input consumed by MenuInput_UpdateRepeatState.
+ * Field roles inferred from use: heldButton/pressedButton select the
+ * effective button output, stickX/stickY hold the normalized
+ * -1.0f..1.0f stick axes. */
+typedef struct MenuRepeatInput {
+    s32 heldButton;
+    s32 pressedButton;
     s32 unk8;
     s32 unkC;
     s32 unk10;
-    f32 unk14;
-    f32 unk18;
+    f32 stickX;
+    f32 stickY;
     s32 unk1C;
-} UnkStruct_80069E44;
+} MenuRepeatInput;
 
-typedef struct UnkStruct_801AE958 {
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    s32 unkC;
-    s32 unk10;
-} UnkStruct_801AE958;
+/* Snapshot of a player's controller state (buttons + raw stick),
+ * filled by Controller_SnapshotPlayerInput. Field roles follow
+ * SysUtils_UpdateControllers in sys_utils.c. */
+typedef struct ControllerSnapshot {
+    s32 buttons;        /* current buttons (ControllerBase unk_0) */
+    s32 pressedButtons; /* buttons pressed this frame (unk_2) */
+    s32 prevButtons;    /* previous frame buttons (unk_6) */
+    s32 rawStickX;      /* raw stick X (unk_8) */
+    s32 rawStickY;      /* raw stick Y (unk_9) */
+} ControllerSnapshot;
+
+/* Stick processing limits (same values as the original literals). */
+#define STICK_DEADZONE 12
+#define STICK_MAX_DEFLECTION 49
+#define STICK_FULL_SCALE 49.0f
+/* Button auto-repeat tuning in MenuInput_UpdateRepeatState. */
+#define REPEAT_START_DELAY 0x18
+#define REPEAT_INTERVAL 8
+#define REPEAT_HOLD_CLAMP 0x258
+#define STICK_DIR_THRESHOLD 0.5f
 
 extern s32 D_800D4B00;
 extern s32 D_800D4B04;
@@ -41,127 +58,156 @@ extern s32 D_801AEA0C;
 extern s32 D_801AEA10;
 extern s32 D_801AEA00;
 extern s32 D_801AE9FC;
-extern UnkStruct_801AE958 D_801AE958;
+extern ControllerSnapshot D_801AE958;
 extern f32 D_801AE96C;
 extern f32 D_801AE970;
 extern f32 D_801AE974;
 extern ControllerBase gControllerOne[];
 
-void func_80069A70(s32 arg0, s32 arg1, f32* stickX, f32* stickY) {
-    s32 var_t0;
-    s32 var_t1;
+/* Stick deadzone + range normalization.
+ * Raw deflection spans +/-STICK_MAX_DEFLECTION. Each stage clamps to a
+ * square: when one axis exceeds the bound, the other axis is scaled down
+ * proportionally so direction is preserved. Deflections inside the
+ * deadzone on both axes snap to center. Output is normalized to
+ * -1.0f..1.0f. Statement order and duplicate structure match the
+ * original for byte-exact codegen. */
+void Controller_NormalizeStick(s32 rawX, s32 rawY, f32* outX, f32* outY) {
+    s32 clampedX;
+    s32 clampedY;
     s32 x;
     s32 y;
 
-    x = *stickX;
-    y = *stickY;
+    x = *outX;
+    y = *outY;
 
-    var_t0 = arg0;
-    var_t1 = arg1;
+    clampedX = rawX;
+    clampedY = rawY;
 
-    if (var_t0 > 12) {
-        var_t1 = (var_t1 * 12) / var_t0;
-        var_t0 = 12;
+    if (clampedX > STICK_DEADZONE) {
+        clampedY = (clampedY * STICK_DEADZONE) / clampedX;
+        clampedX = STICK_DEADZONE;
     }
-    if (var_t0 < -12) {
-        var_t1 = (var_t1 * 12) / (-var_t0);
-        var_t0 = -12;
+    if (clampedX < -STICK_DEADZONE) {
+        clampedY = (clampedY * STICK_DEADZONE) / (-clampedX);
+        clampedX = -STICK_DEADZONE;
     }
-    if (var_t1 > 12) {
-        var_t0 = (var_t0 * 12) / var_t1;
-        var_t1 = 12;
+    if (clampedY > STICK_DEADZONE) {
+        clampedX = (clampedX * STICK_DEADZONE) / clampedY;
+        clampedY = STICK_DEADZONE;
     }
-    if (var_t1 < -12) {
-        var_t0 = (var_t0 * 12) / (-var_t1);
-        var_t1 = -12;
+    if (clampedY < -STICK_DEADZONE) {
+        clampedX = (clampedX * STICK_DEADZONE) / (-clampedY);
+        clampedY = -STICK_DEADZONE;
     }
 
-    if ((((arg0 >= -12) && (arg0 <= 12)) && (arg1 >= -12)) && (arg1 <= 12)) {
+    if ((((rawX >= -STICK_DEADZONE) && (rawX <= STICK_DEADZONE)) && (rawY >= -STICK_DEADZONE)) &&
+        (rawY <= STICK_DEADZONE)) {
         x = 0;
         y = 0;
     } else {
-        x = arg0 - var_t0;
-        y = arg1 - var_t1;
+        x = rawX - clampedX;
+        y = rawY - clampedY;
     }
 
-    if (x > 49) {
-        y = (y * 49) / x;
-        x = 49;
+    if (x > STICK_MAX_DEFLECTION) {
+        y = (y * STICK_MAX_DEFLECTION) / x;
+        x = STICK_MAX_DEFLECTION;
     }
-    if (x < -49) {
-        y = (y * 49) / (-x);
-        x = -49;
+    if (x < -STICK_MAX_DEFLECTION) {
+        y = (y * STICK_MAX_DEFLECTION) / (-x);
+        x = -STICK_MAX_DEFLECTION;
     }
-    if (y > 49) {
-        x = (x * 49) / y;
-        y = 49;
+    if (y > STICK_MAX_DEFLECTION) {
+        x = (x * STICK_MAX_DEFLECTION) / y;
+        y = STICK_MAX_DEFLECTION;
     }
-    if (y < -0x31) {
-        x = (x * 49) / (-y);
-        y = -49;
+    if (y < -STICK_MAX_DEFLECTION) {
+        x = (x * STICK_MAX_DEFLECTION) / (-y);
+        y = -STICK_MAX_DEFLECTION;
     }
-    *stickX = x / 49.0f;
-    *stickY = y / 49.0f;
+    *outX = x / STICK_FULL_SCALE;
+    *outY = y / STICK_FULL_SCALE;
 }
 
-UNUSED void func_80069D48(s32 arg0) {
-    struct ControllerBase* temp_v0;
+/* Snapshots one player's controller into the shared menu-input state:
+ * buttons go to D_801AE958, the normalized stick (via
+ * Controller_NormalizeStick) to D_801AE96C/D_801AE970, and the stick
+ * magnitude to D_801AE974. */
+UNUSED void Controller_SnapshotPlayerInput(s32 playerIndex) {
+    struct ControllerBase* ctrl;
 
-    temp_v0 = &gControllerOne[arg0];
+    ctrl = &gControllerOne[playerIndex];
 
-    D_801AE958.unk0 = temp_v0->unk_0;
-    D_801AE958.unk4 = temp_v0->unk_2;
-    D_801AE958.unk8 = temp_v0->unk_6;
-    D_801AE958.unkC = temp_v0->unk_8;
-    D_801AE958.unk10 = temp_v0->unk_9;
+    D_801AE958.buttons = ctrl->unk_0;
+    D_801AE958.pressedButtons = ctrl->unk_2;
+    D_801AE958.prevButtons = ctrl->unk_6;
+    D_801AE958.rawStickX = ctrl->unk_8;
+    D_801AE958.rawStickY = ctrl->unk_9;
 
-    func_80069A70(temp_v0->unk_8, temp_v0->unk_9, &D_801AE96C, &D_801AE970);
+    Controller_NormalizeStick(ctrl->unk_8, ctrl->unk_9, &D_801AE96C, &D_801AE970);
     D_801AE974 = sqrtf(SQ(D_801AE96C) + SQ(D_801AE970));
 }
 
-UNUSED void func_80069DE8(void) {
+UNUSED void MenuInput_ResetRepeatState(void) {
+    /* Re-arm the repeat state machine (see MenuInput_UpdateRepeatState):
+     * enable flags on, all hold/repeat counters and edges cleared. */
     D_801AE9FC = D_801AEA00 = 1;
     D_801AE9E0 = D_801AE9DC = 0;
     D_801AEA04 = D_801AEA08 = D_801AEA0C = D_801AEA10 = 0;
 }
 
-UNUSED void func_80069E44(struct UnkStruct_80069E44* arg0) {
-    s32 temp_v0;
-    s32 var_v0;
-    s32 var_v0_2;
-    s32 var_v0_3;
+/* Menu/stick input repeat state machine (runs once per frame).
+ * Tracks the held button (D_801AE9E0/D_801AE9DC) and the X/Y stick
+ * directions (D_801AE9E4/D_801AE9E8) derived from the normalized stick
+ * axes, and produces edge outputs (D_801AE9EC/D_801AE9F0) plus
+ * auto-repeat outputs (D_801AE9F4/D_801AE9F8/D_801AE9D8) that start after
+ * REPEAT_START_DELAY frames and re-fire every REPEAT_INTERVAL frames.
+ * The four named locals below are unused; they only preserve the
+ * original function's stack frame, so they must stay declared. */
+UNUSED void MenuInput_UpdateRepeatState(struct MenuRepeatInput* input) {
+    s32 frameKeep0;
+    s32 frameKeep1;
+    s32 frameKeep2;
+    s32 frameKeep3;
 
-    if ((arg0->unk0 != 0) && (D_801AE9E0 == arg0->unk0)) {
+    /* Held-button tracking: count how long the same button stays held. */
+    if ((input->heldButton != 0) && (D_801AE9E0 == input->heldButton)) {
         D_801AE9DC = D_801AE9DC + 1;
         if (D_801AE9DC >= 0x259) {
-            D_801AE9DC = 0x258;
-            D_801AE9DC = 0x258;
+            /* Duplicate store matches the original binary. */
+            D_801AE9DC = REPEAT_HOLD_CLAMP;
+            D_801AE9DC = REPEAT_HOLD_CLAMP;
         }
     } else {
+        /* Duplicate store matches the original binary. */
         D_801AE9DC = 0;
         D_801AE9DC = 0;
     }
-    if ((D_801AE9DC >= 0x18) && (!(D_801AE9DC % 8))) {
-        D_801AE9D8 = arg0->unk0;
+    /* Effective button: held button once auto-repeat kicks in, else the fresh press. */
+    if ((D_801AE9DC >= REPEAT_START_DELAY) && (!(D_801AE9DC % REPEAT_INTERVAL))) {
+        D_801AE9D8 = input->heldButton;
     } else {
-        D_801AE9D8 = arg0->unk4;
+        D_801AE9D8 = input->pressedButton;
     }
-    D_801AE9E0 = arg0->unk0;
-    if (arg0->unk14 <= -0.5f) {
+    D_801AE9E0 = input->heldButton;
+    /* Stick X direction with a small centered deadzone. */
+    if (input->stickX <= -STICK_DIR_THRESHOLD) {
         D_801AE9E4 = -1;
-    } else if (arg0->unk14 >= 0.5f) {
+    } else if (input->stickX >= STICK_DIR_THRESHOLD) {
         D_801AE9E4 = 1;
     } else {
         D_801AE9E4 = 0;
     }
-    if (arg0->unk18 <= -0.5f) {
+    /* Stick Y direction with a small centered deadzone. */
+    if (input->stickY <= -STICK_DIR_THRESHOLD) {
         D_801AE9E8 = -1;
-    } else if (arg0->unk18 >= 0.5f) {
+    } else if (input->stickY >= STICK_DIR_THRESHOLD) {
         D_801AE9E8 = 1;
     } else {
         D_801AE9E8 = 0;
     }
 
+    /* Direction edges: report the direction only on the frame it changes. */
     if (D_801AE9E4 != D_801AEA04) {
         D_801AE9EC = D_801AE9E4;
     } else {
@@ -172,28 +218,32 @@ UNUSED void func_80069E44(struct UnkStruct_80069E44* arg0) {
     } else {
         D_801AE9F0 = 0;
     }
+    /* X auto-repeat while the stick is held in the same direction. */
     if ((D_801AE9E4 != 0) && (D_801AE9E4 == D_801AEA04)) {
         if ((++D_801AEA0C) >= 0x258) {
-            D_801AEA0C = 0x258;
-            D_801AEA0C = 0x258;
+            /* Duplicate store matches the original binary. */
+            D_801AEA0C = REPEAT_HOLD_CLAMP;
+            D_801AEA0C = REPEAT_HOLD_CLAMP;
         }
     } else {
         D_801AEA0C = 0;
     }
-    if ((D_801AEA0C >= 0x18) && (!(D_801AEA0C % 8))) {
+    if ((D_801AEA0C >= REPEAT_START_DELAY) && (!(D_801AEA0C % REPEAT_INTERVAL))) {
         D_801AE9F4 = D_801AE9E4;
     } else {
         D_801AE9F4 = D_801AE9EC;
     }
+    /* Y auto-repeat while the stick is held in the same direction. */
     if ((D_801AE9E8 != 0) && (D_801AE9E8 == D_801AEA08)) {
         if ((++D_801AEA10) >= 0x258) {
-            D_801AEA10 = 0x258;
+            D_801AEA10 = REPEAT_HOLD_CLAMP;
         }
     } else {
+        /* Duplicate store matches the original binary. */
         D_801AEA10 = 0;
         D_801AEA10 = 0;
     }
-    if ((D_801AEA10 >= 0x18) && (!(D_801AEA10 % 8))) {
+    if ((D_801AEA10 >= REPEAT_START_DELAY) && (!(D_801AEA10 % REPEAT_INTERVAL))) {
         D_801AE9F8 = D_801AE9E8;
     } else {
         D_801AE9F8 = D_801AE9F0;
@@ -251,7 +301,10 @@ s32 Libc_strncmp(s8* str1, s8* str2, s32 n) {
     return 0;
 }
 
-void func_8006A264(void) {
+/* Per-frame housekeeping, called after SysUtils_UpdateControllers.
+ * Clears the pending flag, advances the frame counters, and swaps the
+ * ping-pong work buffer (D_801AE948 / D_801AE94C) each frame. */
+void Game_AdvanceFrameState(void) {
     if (D_800D4B08 != 0) {
         D_800D4B08 = 0;
     }

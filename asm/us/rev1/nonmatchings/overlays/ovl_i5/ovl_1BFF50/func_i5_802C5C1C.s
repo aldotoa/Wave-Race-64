@@ -16,18 +16,18 @@ glabel func_i5_802C5C1C
     /* 1C039C 802C5C4C 00000000 */   nop
     /* 1C03A0 802C5C50 0C031AB4 */  jal        osViBlack
     /* 1C03A4 802C5C54 00002025 */   or        $a0, $zero, $zero
-    /* 1C03A8 802C5C58 0C024F11 */  jal        func_80093C44
+    /* 1C03A8 802C5C58 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1C03AC 802C5C5C 8FA40018 */   lw        $a0, 0x18($sp)
     /* 1C03B0 802C5C60 10000054 */  b          .Li5_802C5DB4
     /* 1C03B4 802C5C64 8FBF0014 */   lw        $ra, 0x14($sp)
   .Li5_802C5C68:
-    /* 1C03B8 802C5C68 0C024FDE */  jal        func_80093F78
+    /* 1C03B8 802C5C68 0C024FDE */  jal        Gfx_ClearCurrentBuffer
     /* 1C03BC 802C5C6C 8FA40018 */   lw        $a0, 0x18($sp)
     /* 1C03C0 802C5C70 3C01800E */  lui        $at, %hi(D_800DAB2C)
     /* 1C03C4 802C5C74 3C05800E */  lui        $a1, %hi(gCourseID)
     /* 1C03C8 802C5C78 AC20AB2C */  sw         $zero, %lo(D_800DAB2C)($at)
     /* 1C03CC 802C5C7C 8CA58170 */  lw         $a1, %lo(gCourseID)($a1)
-    /* 1C03D0 802C5C80 0C02526E */  jal        func_800949B8
+    /* 1C03D0 802C5C80 0C02526E */  jal        Gfx_FillCourseColor
     /* 1C03D4 802C5C84 00402025 */   or        $a0, $v0, $zero
     /* 1C03D8 802C5C88 0C023EDD */  jal        func_8008FB74
     /* 1C03DC 802C5C8C 00402025 */   or        $a0, $v0, $zero

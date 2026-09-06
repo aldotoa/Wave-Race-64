@@ -3712,7 +3712,7 @@ glabel func_8006E674
   .L80071DD4:
     /* 2C5D4 80071DD4 0C01B40D */  jal        func_8006D034
     /* 2C5D8 80071DD8 02002025 */   or        $a0, $s0, $zero
-    /* 2C5DC 80071DDC 0C02D2AF */  jal        func_800B4ABC
+    /* 2C5DC 80071DDC 0C02D2AF */  jal        Spray_Draw
     /* 2C5E0 80071DE0 02002025 */   or        $a0, $s0, $zero
     /* 2C5E4 80071DE4 3C0E801D */  lui        $t6, %hi(gGameModes)
     /* 2C5E8 80071DE8 8DCEE620 */  lw         $t6, %lo(gGameModes)($t6)

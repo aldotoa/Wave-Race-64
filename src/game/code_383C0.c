@@ -63,7 +63,7 @@ f32 func_8004D30C(f32, f32);
 extern s32 D_801BB120;
 extern s32 D_801BFA40;
 void func_8006243C(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_800B490C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+void Spray_SpawnBurst(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 void func_8007E938(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3, UnkStruct_8007E938* arg4,
                    UnkStruct_8007E938* arg5, UnkStruct_8007E938* arg6);
 void func_8007EF80(UnkStruct_80192690* arg0);
@@ -217,7 +217,7 @@ void func_8007E938(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3, UnkSt
                     arg0->unk16D8 = 2;
                     if (var_v0->unkBC == 0) {
                         var_v0->unkBC = 1;
-                        func_800B490C(var_v0->unk0, var_v0->unk4, var_v0->unk8, arg4->unkC, arg4->unk10, arg4->unk14);
+                        Spray_SpawnBurst(var_v0->unk0, var_v0->unk4, var_v0->unk8, arg4->unkC, arg4->unk10, arg4->unk14);
                     }
                 }
                 arg0->unkC50 = temp_fs0;

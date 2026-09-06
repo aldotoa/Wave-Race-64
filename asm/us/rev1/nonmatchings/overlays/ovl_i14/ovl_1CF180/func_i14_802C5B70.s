@@ -40,7 +40,7 @@ glabel func_i14_802C5B70
     /* 1CF574 802C5BF4 AFA80010 */  sw         $t0, 0x10($sp)
     /* 1CF578 802C5BF8 00002825 */  or         $a1, $zero, $zero
     /* 1CF57C 802C5BFC 24660008 */  addiu      $a2, $v1, 0x8
-    /* 1CF580 802C5C00 0C0250CE */  jal        func_80094338
+    /* 1CF580 802C5C00 0C0250CE */  jal        Menu_DrawFrame
     /* 1CF584 802C5C04 02203825 */   or        $a3, $s1, $zero
     /* 1CF588 802C5C08 8EAA0000 */  lw         $t2, 0x0($s5)
     /* 1CF58C 802C5C0C 26100001 */  addiu      $s0, $s0, 0x1

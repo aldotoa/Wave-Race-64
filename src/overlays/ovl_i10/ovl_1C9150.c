@@ -12,7 +12,7 @@ Gfx* func_i10_802C5968(Gfx* gfxP) {
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == 68) {
-            return func_80093C44(gfxP);
+            return Gfx_ClearFrameBuffers(gfxP);
         }
     }
 

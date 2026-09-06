@@ -15,12 +15,12 @@ Gfx* func_1C3780_802C583C(Gfx* gDisplayListHead) {
         D_801CE63C = 0;
         if (gGameState == 0x38) {
             osViBlack(false);
-            return func_80093C44(gDisplayListHead);
+            return Gfx_ClearFrameBuffers(gDisplayListHead);
         }
     }
     D_800DAB2C = 0;
     gDisplayListHead =
-        func_1C3780_802C58F4(Draw_WaterEffects(func_800949B8(func_8008FB74(gDisplayListHead), gCourseID)));
+        func_1C3780_802C58F4(Draw_WaterEffects(Gfx_FillCourseColor(func_8008FB74(gDisplayListHead), gCourseID)));
     if (gGameState == 0x38) {
         func_1C3780_802C5BD8();
     }
@@ -33,20 +33,20 @@ Gfx* func_1C3780_802C58F4(Gfx* gDisplayListHead) {
     gSPDisplayList(gDisplayListHead++, D_106F628);
 
     // Wtf
-    return func_80094200(
-        func_80094200(
-            func_80094200(
-                func_80094200(
+    return Font_DrawDecimal(
+        Font_DrawDecimal(
+            Font_DrawDecimal(
+                Font_DrawDecimal(
                     func_801E3EE0(
                         func_801E3EE0(
                             func_801E3EE0(
                                 func_801E3EE0(
                                     func_801E3EE0(
                                         func_801E946C(
-                                            func_80094338(
-                                                func_80094338(
-                                                    func_80094338(
-                                                        func_80094338(func_80094338(gDisplayListHead, 0, D_802C5D88 + 8,
+                                            Menu_DrawFrame(
+                                                Menu_DrawFrame(
+                                                    Menu_DrawFrame(
+                                                        Menu_DrawFrame(Menu_DrawFrame(gDisplayListHead, 0, D_802C5D88 + 8,
                                                                                     0x1E, 0x108, 0x18),
                                                                       0, D_802C5D8C + 8, 0x50, 0x108, 0x10),
                                                         0, D_802C5D8C + 8, 0x62, 0x108, 0x18),

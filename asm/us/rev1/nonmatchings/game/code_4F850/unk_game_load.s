@@ -746,7 +746,7 @@ glabel unk_game_load
     /* 501A4 800959A4 25081944 */  addiu      $t0, $t0, %lo(gDisplayListHead)
     /* 501A8 800959A8 17200007 */  bnez       $t9, .L800959C8
     /* 501AC 800959AC AD180000 */   sw        $t8, 0x0($t0)
-    /* 501B0 800959B0 0C024FDE */  jal        func_80093F78
+    /* 501B0 800959B0 0C024FDE */  jal        Gfx_ClearCurrentBuffer
     /* 501B4 800959B4 03002025 */   or        $a0, $t8, $zero
     /* 501B8 800959B8 3C088015 */  lui        $t0, %hi(gDisplayListHead)
     /* 501BC 800959BC 25081944 */  addiu      $t0, $t0, %lo(gDisplayListHead)
@@ -756,7 +756,7 @@ glabel unk_game_load
     /* 501C8 800959C8 8D040000 */  lw         $a0, 0x0($t0)
     /* 501CC 800959CC 240500FF */  addiu      $a1, $zero, 0xFF
     /* 501D0 800959D0 240600FF */  addiu      $a2, $zero, 0xFF
-    /* 501D4 800959D4 0C024F6F */  jal        func_80093DBC
+    /* 501D4 800959D4 0C024F6F */  jal        Gfx_FillViewport
     /* 501D8 800959D8 240700FF */   addiu     $a3, $zero, 0xFF
     /* 501DC 800959DC 3C088015 */  lui        $t0, %hi(gDisplayListHead)
     /* 501E0 800959E0 25081944 */  addiu      $t0, $t0, %lo(gDisplayListHead)

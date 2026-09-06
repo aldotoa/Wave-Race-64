@@ -6,7 +6,7 @@ glabel func_801E2058
     /* B0690 801E2060 3C05800E */  lui        $a1, %hi(gCourseID)
     /* B0694 801E2064 AFB00018 */  sw         $s0, 0x18($sp)
     /* B0698 801E2068 AFA40020 */  sw         $a0, 0x20($sp)
-    /* B069C 801E206C 0C02526E */  jal        func_800949B8
+    /* B069C 801E206C 0C02526E */  jal        Gfx_FillCourseColor
     /* B06A0 801E2070 8CA58170 */   lw        $a1, %lo(gCourseID)($a1)
     /* B06A4 801E2074 244E0008 */  addiu      $t6, $v0, 0x8
     /* B06A8 801E2078 AFAE0020 */  sw         $t6, 0x20($sp)

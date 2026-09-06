@@ -10,13 +10,13 @@ glabel func_i5_802C7484
     /* 1C1BEC 802C749C 00000000 */   nop
     /* 1C1BF0 802C74A0 AC400000 */  sw         $zero, 0x0($v0)
   .Li5_802C74A4:
-    /* 1C1BF4 802C74A4 0C024FDE */  jal        func_80093F78
+    /* 1C1BF4 802C74A4 0C024FDE */  jal        Gfx_ClearCurrentBuffer
     /* 1C1BF8 802C74A8 00000000 */   nop
     /* 1C1BFC 802C74AC 3C01800E */  lui        $at, %hi(D_800DAB2C)
     /* 1C1C00 802C74B0 3C05800E */  lui        $a1, %hi(gCourseID)
     /* 1C1C04 802C74B4 AC20AB2C */  sw         $zero, %lo(D_800DAB2C)($at)
     /* 1C1C08 802C74B8 8CA58170 */  lw         $a1, %lo(gCourseID)($a1)
-    /* 1C1C0C 802C74BC 0C02526E */  jal        func_800949B8
+    /* 1C1C0C 802C74BC 0C02526E */  jal        Gfx_FillCourseColor
     /* 1C1C10 802C74C0 00402025 */   or        $a0, $v0, $zero
     /* 1C1C14 802C74C4 0C023EDD */  jal        func_8008FB74
     /* 1C1C18 802C74C8 00402025 */   or        $a0, $v0, $zero
@@ -44,7 +44,7 @@ glabel func_i5_802C7484
     /* 1C1C68 802C7518 AC580004 */  sw         $t8, 0x4($v0)
     /* 1C1C6C 802C751C 3C05800E */  lui        $a1, %hi(gCourseID)
     /* 1C1C70 802C7520 24840008 */  addiu      $a0, $a0, 0x8
-    /* 1C1C74 802C7524 0C025291 */  jal        func_80094A44
+    /* 1C1C74 802C7524 0C025291 */  jal        Gfx_DrawCoursePanel
     /* 1C1C78 802C7528 8CA58170 */   lw        $a1, %lo(gCourseID)($a1)
     /* 1C1C7C 802C752C 0C0243D6 */  jal        Draw_WaterEffects
     /* 1C1C80 802C7530 00402025 */   or        $a0, $v0, $zero

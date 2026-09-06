@@ -13,13 +13,13 @@ glabel func_i3_802C5B40
     /* 1BCBF4 802C5B64 2401001E */  addiu      $at, $zero, 0x1E
     /* 1BCBF8 802C5B68 15E10005 */  bne        $t7, $at, .Li3_802C5B80
     /* 1BCBFC 802C5B6C 00000000 */   nop
-    /* 1BCC00 802C5B70 0C024F11 */  jal        func_80093C44
+    /* 1BCC00 802C5B70 0C024F11 */  jal        Gfx_ClearFrameBuffers
     /* 1BCC04 802C5B74 00000000 */   nop
     /* 1BCC08 802C5B78 10000073 */  b          .Li3_802C5D48
     /* 1BCC0C 802C5B7C 8FBF0014 */   lw        $ra, 0x14($sp)
   .Li3_802C5B80:
     /* 1BCC10 802C5B80 3C01800E */  lui        $at, %hi(D_800DAB2C)
-    /* 1BCC14 802C5B84 0C024CA3 */  jal        func_8009328C
+    /* 1BCC14 802C5B84 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1BCC18 802C5B88 AC20AB2C */   sw        $zero, %lo(D_800DAB2C)($at)
     /* 1BCC1C 802C5B8C 3C188022 */  lui        $t8, %hi(D_80223938)
     /* 1BCC20 802C5B90 8F183938 */  lw         $t8, %lo(D_80223938)($t8)
@@ -121,7 +121,7 @@ glabel func_i3_802C5B40
     /* 1BCD7C 802C5CEC 00000000 */   nop
     /* 1BCD80 802C5CF0 8D4AB330 */  lw         $t2, %lo(D_801CB330)($t2)
     /* 1BCD84 802C5CF4 3C01800E */  lui        $at, %hi(gCourseID)
-    /* 1BCD88 802C5CF8 0C024D17 */  jal        func_8009345C
+    /* 1BCD88 802C5CF8 0C024D17 */  jal        Game_EnterGameplay
     /* 1BCD8C 802C5CFC AC2A8170 */   sw        $t2, %lo(gCourseID)($at)
   .Li3_802C5D00:
     /* 1BCD90 802C5D00 3C0B801D */  lui        $t3, %hi(D_801CE638)

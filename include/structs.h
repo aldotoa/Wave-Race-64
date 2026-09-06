@@ -98,17 +98,20 @@ struct unk_80097E68 {
     struct unk_80097E68* unk4;
 };
 
-typedef struct UnkStruct_801D7B70 {
-    s32 unk0;
-    s32 unk4;
-    f32 unk8;
-    f32 unkC;
-    f32 unk10;
-    f32 unk14;
-    f32 unk18;
-    f32 unk1C;
-    s32 unk20;
-} UnkStruct_801D7B70;
+/* Water spray particle: one slot of the pool managed by the Spray_*
+ * functions in game/code_6EF50.c. unk20-style display value is kept s32,
+ * exactly as the original (it feeds gSPDisplayList). */
+typedef struct SprayParticle {
+    s32 active; /* 0 = free slot */
+    s32 age;    /* frames since spawn */
+    f32 posX;
+    f32 posY;
+    f32 posZ;
+    f32 velX;
+    f32 velY;
+    f32 velZ;
+    s32 dlist; /* display list drawn for this particle */
+} SprayParticle;
 
 typedef struct Vec3f {
     /* 0x0 */ f32 x;

@@ -45,7 +45,7 @@ glabel func_i7_802C5A18
     /* 1C46A8 802C5AB8 02402025 */  or         $a0, $s2, $zero
     /* 1C46AC 802C5ABC 00002825 */  or         $a1, $zero, $zero
     /* 1C46B0 802C5AC0 2406003A */  addiu      $a2, $zero, 0x3A
-    /* 1C46B4 802C5AC4 0C0250CE */  jal        func_80094338
+    /* 1C46B4 802C5AC4 0C0250CE */  jal        Menu_DrawFrame
     /* 1C46B8 802C5AC8 02003825 */   or        $a3, $s0, $zero
     /* 1C46BC 802C5ACC 26100013 */  addiu      $s0, $s0, 0x13
     /* 1C46C0 802C5AD0 2A0100CE */  slti       $at, $s0, 0xCE

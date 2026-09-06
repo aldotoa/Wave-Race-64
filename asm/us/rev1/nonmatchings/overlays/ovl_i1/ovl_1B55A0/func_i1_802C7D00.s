@@ -10,9 +10,9 @@ glabel func_i1_802C7D00
     /* 1B7AB8 802C7D18 00000000 */   nop
     /* 1B7ABC 802C7D1C AC400000 */  sw         $zero, 0x0($v0)
   .Li1_802C7D20:
-    /* 1B7AC0 802C7D20 0C024CA3 */  jal        func_8009328C
+    /* 1B7AC0 802C7D20 0C024CA3 */  jal        Game_BuildRaceScene
     /* 1B7AC4 802C7D24 00000000 */   nop
-    /* 1B7AC8 802C7D28 0C024EBF */  jal        func_80093AFC
+    /* 1B7AC8 802C7D28 0C024EBF */  jal        Gfx_ClearWorkImages
     /* 1B7ACC 802C7D2C 00402025 */   or        $a0, $v0, $zero
     /* 1B7AD0 802C7D30 3C18FF10 */  lui        $t8, (0xFF10013F >> 16)
     /* 1B7AD4 802C7D34 3C0FE700 */  lui        $t7, (0xE7000000 >> 16)

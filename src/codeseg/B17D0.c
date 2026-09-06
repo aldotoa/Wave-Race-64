@@ -84,7 +84,7 @@ Gfx* func_801E34F8(Gfx* gdl) {
         D_801CE63C = 0;
     }
     D_800DAB2C = 0;
-    gdl = func_801E3698(Draw_WaterEffects(func_800949B8(func_8008FB74(gdl), gCourseID)));
+    gdl = func_801E3698(Draw_WaterEffects(Gfx_FillCourseColor(func_8008FB74(gdl), gCourseID)));
     func_801E355C();
     return gdl;
 }
@@ -137,7 +137,7 @@ extern s32 D_801C2928;
 extern Gfx D_7000A40[];
 extern Gfx D_7000A80[];
 
-Gfx* func_80094338(Gfx* glistp, s32 arg1, s32 x, s32 y, s32 w, s32 h);
+Gfx* Menu_DrawFrame(Gfx* glistp, s32 arg1, s32 x, s32 y, s32 w, s32 h);
 Gfx* func_801E7E74(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
 Gfx* func_801E7FD8(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
 
@@ -149,8 +149,8 @@ Gfx* func_801E3698(Gfx* glistp) {
 
     gSPDisplayList(glistp++, D_106F628);
 
-    glistp = func_80094338(glistp, 0, D_802288F8 + 8, 30, 264, 24);
-    glistp = func_80094338(glistp, 0, D_802288FC + 8, 88, 264, 16);
+    glistp = Menu_DrawFrame(glistp, 0, D_802288F8 + 8, 30, 264, 24);
+    glistp = Menu_DrawFrame(glistp, 0, D_802288FC + 8, 88, 264, 16);
 
     y = 0x6E;
     for (i = 0; i < 3; i++, y += 0x12) {
@@ -159,12 +159,12 @@ Gfx* func_801E3698(Gfx* glistp) {
         } else {
             s0 = D_802288F8;
         }
-        glistp = func_80094338(glistp, 0, s0 + 8, y, 264, 16);
+        glistp = Menu_DrawFrame(glistp, 0, s0 + 8, y, 264, 16);
     }
 
     if (D_801C2928 == 0) {
-        glistp = func_80094338(glistp, 0, D_802288FC + 8, 0xB7, 264, 10);
-        glistp = func_80094338(glistp, 0, D_802288FC + 8, 0xC2, 264, 16);
+        glistp = Menu_DrawFrame(glistp, 0, D_802288FC + 8, 0xB7, 264, 10);
+        glistp = Menu_DrawFrame(glistp, 0, D_802288FC + 8, 0xC2, 264, 16);
     }
 
     glistp = func_801E7E74(glistp, 0, 0, 0, 255);
