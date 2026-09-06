@@ -26,8 +26,9 @@ tools/m2ctx src/<path>/<file>.c
 ### Initial Translation
 To produce starting C scaffolding from assembly:
 ```bash
-python3 tools/m2c/m2c.py --target mips-ido-c89 asm/us/rev1/nonmatchings/<path>/<func>.s
+python3 tools/m2c/m2c.py -t mips-ido-c --context ctx.c asm/us/rev1/nonmatchings/<path>/<func>.s
 ```
+`tools/m2ctx` writes `ctx.c` (+ cache) to the repo root; `-t` accepts `mips-ido-c` — check `--help` before trusting documented values.
 
 ### In-Progress Scaffolding
 All functions in progress must remain wrapped inside `#ifdef NON_MATCHING` with `#pragma GLOBAL_ASM` intact under `#else`:
@@ -41,6 +42,9 @@ void func_800XXXXX(...) {
 #endif
 ```
 **NEVER** remove `#pragma GLOBAL_ASM` or leave unverified/syntax-broken C code outside `#ifdef NON_MATCHING`.
+
+### Verifying Drafts
+`make NON_MATCHING=1 build/src/<path>/<file>.o` compiles every draft in the translation unit, so one stale prototype in an unrelated function breaks the whole build — do NOT touch unrelated scaffolding to fix it. Instead compile the draft as a standalone IDO probe (`scratch/probe_<func>.c` = needed includes + draft body) with the Makefile's exact flags, and diff with `tools/asm-differ/diff.py -o -s <func> -f <probe.o> --base-asm <sliced-objdump>`. Delete all `scratch/probe_*` files and any probe copies under `expected/` before committing.
 
 ### Control Flow Matching Rules
 - If diffs show instructions at the loop exit rather than the loop head, favor `do { ... } while (...)` over `for` or `while`.

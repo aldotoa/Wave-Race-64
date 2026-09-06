@@ -25,8 +25,8 @@ description: >-
 | `make clean` | Cleans all build artifacts in `build/` |
 | `make progress` | Displays current function count, byte count, and percentage progress |
 | `./diff <func_name>` | Interactive assembly differ comparing compiled C against retail ROM |
-| `python3 tools/m2ctx.py <file.c>` | Generates preprocessed C context (`ctx.c`) for decomp.me and m2c |
-| `python3 tools/m2c/m2c.py --target mips-ido-c89 --context ctx.c <func.s>` | Converts raw assembly to an initial IDO C89 candidate function |
+| `tools/m2ctx src/<path>/<file>.c` | Generates preprocessed C context (`ctx.c` in repo root) for decomp.me and m2c |
+| `python3 tools/m2c/m2c.py -t mips-ido-c --context ctx.c <func.s>` | Converts raw assembly to an initial IDO C89 candidate function (`-t` accepts `mips-ido-c`; check `--help`) |
 | `python3 tools/stack_diff.py <func> <target.s> [current.o]` | Side-by-side stack layout and frame size differ (<50ms feedback) |
 
 ---
@@ -66,11 +66,11 @@ find asm/us/rev1/nonmatchings -name "*.s" -exec wc -l {} + | awk '$1 <= 60 {prin
 ### Step 2: Context Generation & Initial Translation
 Generate preprocessed context for the file:
 ```bash
-python3 tools/m2ctx.py src/<path>/<file>.c
+tools/m2ctx src/<path>/<file>.c
 ```
 Run automated m2c translation to produce starting C scaffolding:
 ```bash
-python3 tools/m2c/m2c.py --target mips-ido-c89 --context ctx.c asm/us/rev1/nonmatchings/<path>/<func_name>.s > scratch/<func_name>.c
+python3 tools/m2c/m2c.py -t mips-ido-c --context ctx.c asm/us/rev1/nonmatchings/<path>/<func_name>.s > scratch/<func_name>.c
 ```
 
 ### Step 3: Interactive Differ
@@ -91,6 +91,16 @@ Always pass `-m` (recompile `.o`), `-o` (diff object file directly to prevent se
 >   ```bash
 >   python3 tools/promote.py --dry-run <func_name> <path/to/file.c>
 >   ```
+> - Or, when `make NON_MATCHING=1` fails on an unrelated draft's stale prototype (do NOT touch unrelated scaffolding to fix it), compile the draft as a standalone probe with the Makefile's exact flags (see Step 4) and diff without `-m`:
+>   ```bash
+>   # scratch/probe_<func>.c = needed includes + draft body only
+>   mips-linux-gnu-objdump -dr build/src/<path>/<file>.o \
+>     | awk '/^0.*<func_name>:/{f=1} f{print} f&&/^$/{c++; if(c==1) exit}' > scratch/base_<func>.s
+>   cp scratch/probe_<func>.o expected/scratch/probe_<func>.o   # -f resolves under expected/
+>   .venv/bin/python3 tools/asm-differ/diff.py -o -s <func_name> -f scratch/probe_<func>.o \
+>     --base-asm scratch/base_<func>.s --format plain --no-pager
+>   ```
+>   `--base-asm` must be sliced to the single function (a whole-object dump anchors TARGET on the wrong function). Rebuild the base from a matching tree — never trust `build/` objects when src holds in-progress drafts. Delete `scratch/probe_*`, `scratch/base_*`, and any probe copies under `expected/` before committing.
 
 ### Step 4: Scratchpad Fast Prototyping (Direct IDO Invocation)
 When iterating on fine register allocation or compiler quirks, do not run a full project build. Determine the exact compiler flags used by the Makefile:
@@ -266,6 +276,8 @@ Storing the induction variable last (e.g., `arr1[i] = 0; arr2[i] = 0; arr3[i] = 
 - **Early Return vs Single Epilogue**:
   - If the assembly ends with multiple `jr $ra` statements, use early returns (`return;` or `return val;`) within conditional branches.
   - If the assembly routes all paths through a single shared epilogue label (one `jr $ra` preceded by callee-saved register restores), structure the C code as a single-exit function (avoid early returns; use unified control flow or `goto end;`).
+- **Dense 0..N Switch Dispatch**: keep an explicit `case 0: break;` first — without it the leading `beqz` check vanishes and the dispatch reshapes around a trailing branch with different delay fills. Addend order in the switch-value computation feeds temp-register coloring (`D[0] + (D[1] * 2)` vs `(D[1] * 2) + D[0]` rotate the same `lhu`/`sll`/`addu` tail across different temps) — try both orders before touching declarations.
+- **Micro-Bisect Scheduler Quirks**: identical dispatch C can emit `beqz`+delay-fill when flat but `beqzl`+target-hoist when nested in `if/else`. Compile tiny shape variants (switch vs if-chain vs goto, nested vs flat) with direct IDO (Step 4) and compare — find the matching shape in micro before editing the full draft.
 
 ### Unmigrated Rodata & Jump Tables
 Functions containing jump tables (`switch`) whose tables reside in unmigrated `.rodata.s` files (e.g. `A5CC0.rodata.s`) must be kept under:
