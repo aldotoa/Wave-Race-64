@@ -82,6 +82,22 @@ typedef struct UnkStruct_80099D94 {
     f32 unk84;
 } UnkStruct_80099D94;
 
+typedef struct UnkStruct_800AC098_src {
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ f32 unkC;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ f32 unk18;
+    /* 0x1C */ f32 unk1C;
+    /* 0x20 */ f32 unk20;
+    /* 0x24 */ f32 unk24;
+    /* 0x28 */ f32 unk28;
+    /* 0x2C */ f32 unk2C;
+    /* 0x30 */ f32 unk30;
+} UnkStruct_800AC098_src; /* size = 0x34 */
+
 typedef struct UnkStruct_801CE780_unk4_unk4_s {
     /* 0x0 */ s16 unk0;         /* inferred */
     /* 0x2 */ s16 unk2;         /* inferred */
@@ -113,7 +129,11 @@ typedef struct UnkStruct_801CE780_s {
     /* 0x0C */ u32 unkC;                       /* inferred */
     /* 0x10 */ u32 unk10;                      /* inferred */
     /* 0x14 */ u32 unk14;                      /* inferred */
-    /* 0x18 */ char pad18[0x14];               /* maybe part of unk14[6]? */
+    /* 0x18 */ u32 unk18;                      /* inferred */
+    /* 0x1C */ u32 unk1C;                      /* inferred */
+    /* 0x20 */ u32 unk20;                      /* inferred */
+    /* 0x24 */ u32 unk24;                      /* inferred */
+    /* 0x28 */ u32 unk28;                      /* inferred */
 } UnkStruct_801CE780;                          /* size = 0x2C */
 
 typedef struct UnkStruct_801CF0D8_s {
@@ -166,9 +186,12 @@ extern UnkStruct_801CEFF8 D_801CEC7C[10];
 extern RiderStruct D_801C2C70[];
 extern UnkStruct_8009A04C D_801CEB48;
 extern s16 D_801CE776;
+extern s16 D_801CE770;
+extern s16 D_801CE76C;
 extern UnkStruct_801CE780 D_801CE780[];
 extern UnkStruct_801CF0D8 D_801CF0D8[];
 extern Gfx D_800E6CA0[];
+extern Gfx D_800E6CF8[];
 extern s16 D_801CE774;
 extern s16 D_801CE76E;
 extern s32 D_801D0738;
@@ -212,7 +235,7 @@ void func_8009A9FC(UnkStruct_801CF060* arg0);
 void func_8009B130(UnkStruct_801CF060* arg0);
 void func_80099B20(f32*, f32);
 s32 func_80099514(s32 arg0, s32 arg1, UnkStruct_801CED60* arg2, s16* arg3, f32* arg4);
-void func_800998B0(s32 arg0, void* arg1, void* arg2);
+void func_800998B0(UnkStruct_801CED60* dst, UnkStruct_801CED60* src, s32 flag);
 void func_8009B650(UnkStruct_801CF060* arg0, f32 arg1, f32 arg2);
 void func_8009AD74(UnkStruct_801CF060*);
 void func_8009C814(UnkStruct_8009A04C*, s32);
@@ -610,7 +633,7 @@ s32 func_80099514(s32 arg0, s32 arg1, UnkStruct_801CED60* arg2, s16* arg3, f32* 
     return sp9C;
 }
 
-void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, s8 arg2, u16 arg3, s16* arg4, s32 arg5) {
+void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, u8 arg2, s16 arg3, s16* arg4, s32 arg5) {
     arg0->unk0 = arg1;
     arg0->unk1 = arg2;
     arg0->unk2 = arg3;
@@ -624,8 +647,35 @@ void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, s8 arg2, u16 arg3, 
 }
 
 #ifdef NON_MATCHING
-void func_800998B0(s32 arg0, void* arg1, void* arg2) {
-    /* HUD coordinate screen projection */
+void func_800998B0(UnkStruct_801CED60* dst, UnkStruct_801CED60* src, s32 flag) {
+    s8* s7;
+    s8* s0;
+    s16* s4;
+    s32 s1;
+    s32 s2;
+    UnkStruct_801CED60* s3;
+
+    s7 = (s8*) src;
+    s3 = &dst[1];
+    s4 = (s16*) &s7[4];
+    func_80099858((struct UnkStruct_80099858*) &dst[0], s7[0], ((u8*) s7)[1], s7[2], s4, flag);
+    s3 = &dst[1];
+    s1 = 1;
+    s0 = s7;
+    s2 = s0[0];
+    do {
+        func_80099858((struct UnkStruct_80099858*) s3, (s2 << 24) >> 24, ((u8*) s0)[1], s0[2], s4,
+                      flag);
+        s2 = s0[10];
+        s1++;
+        s3++;
+        s0 += 10;
+        s4 += 5;
+    } while ((-1 != s2) || (s1 + 3 >= 31));
+    func_80099858((struct UnkStruct_80099858*) s3, s7[0], ((u8*) s0)[1], s0[2], s4, flag);
+    func_80099858((struct UnkStruct_80099858*) &s3[1], s7[0], 0, s0[2], s4, flag);
+    func_80099858((struct UnkStruct_80099858*) &s3[2], s7[0], 0, s0[2], s4, flag);
+    func_80099858((struct UnkStruct_80099858*) &s3[3], -1, 0, s0[2], s4, flag);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800998B0.s")
@@ -967,7 +1017,7 @@ void func_8009AB20(UnkStruct_801CF060* arg0, f32 arg1, f32 arg2, f32 arg3) {
 void func_8009AC50(UnkStruct_801CF060* arg0, f32* arg1, f32 arg2, f32 arg3, f32 arg4) {
     Math_Vec3f_Set(&D_801CECA0.vec1, arg2, arg3, arg4);
     Math_Vec3f_Set(&D_801CEC7C->vec1, 0.0f, func_8009898C(D_800D48DC), 0.0f);
-    func_800998B0((s32) D_801CED60, arg1, NULL);
+    func_800998B0(D_801CED60, (UnkStruct_801CED60*) arg1, 0);
     func_80099514((s32) D_801CEC70, (s32) &arg0->unk18, D_801CED60, &D_801CEFE8[D_800E5138], &D_801CEFE0[D_800E5138]);
 }
 
@@ -1941,36 +1991,203 @@ Gfx* func_800A063C(Gfx* arg0, s32 arg1) {
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800A10E4(Gfx* arg0, s32 arg1) {
-    /* Position badge rank indicator renderer */
-    return arg0;
+Gfx* func_800A10E4(Gfx* gdl, s32 arg1) {
+    s32 sp68;
+    UnkStruct_801CE780_unk4* temp_s4;
+    UnkStruct_801CE780_unk4** v1;
+    s32 var_s3;
+    s32 index;
+
+    index = D_801CE76C;
+    v1 = D_801CE780[index].unk4;
+    temp_s4 = *v1;
+    if (gCurrentPauseMenuOption == -1) {
+        D_801CF060[arg1].unk78 = (D_801CF060[arg1].unk78 + 1) % temp_s4->unk0;
+    }
+    sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
+    gSPDisplayList(gdl++, D_800E6CF8);
+    gdl++;
+    if (arg1 < 12) {
+        gdl = func_8009D96C(gdl, arg1, 0.3f);
+    } else {
+        gdl = func_8009D96C(gdl, arg1, 0.2f);
+    }
+    var_s3 = temp_s4->unkC[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk8);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk8[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk10);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk10[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unkC);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A10E4.s")
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800A16F0(Gfx* arg0, s32 arg1) {
-    /* Checkpoint flyby time split banner */
-    return arg0;
+Gfx* func_800A16F0(Gfx* gdl, s32 arg1) {
+    UnkStruct_801CE780_unk4* temp_s4;
+    UnkStruct_801CE780_unk4** v1;
+    s32 index;
+    s32 sp68;
+    s32 var_s3;
+
+    index = D_801CE76C;
+    v1 = D_801CE780[index].unk4;
+    temp_s4 = v1[1];
+    if (gCurrentPauseMenuOption == -1) {
+        D_801CF060[arg1].unk78 = (D_801CF060[arg1].unk78 + 1) % temp_s4->unk0;
+    }
+    sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
+    gSPDisplayList(gdl++, D_800E6CF8);
+    gdl++;
+    if (arg1 < 12) {
+        gdl = func_8009D96C(gdl, arg1, 0.3f);
+    } else {
+        gdl = func_8009D96C(gdl, arg1, 0.2f);
+    }
+    var_s3 = temp_s4->unkC[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk14);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk8[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk1C);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk10[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk18);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A16F0.s")
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800A1CFC(Gfx* arg0, s32 arg1) {
-    /* Maximum power boost indicator flame overlay */
-    return arg0;
+Gfx* func_800A1CFC(Gfx* gdl, s32 arg1) {
+    s32 sp68;
+    UnkStruct_801CE780_unk4* temp_s4;
+    UnkStruct_801CE780_unk4** v1;
+    s32 var_s3;
+    s32 index;
+
+    index = D_801CE76C;
+    v1 = D_801CE780[index].unk4;
+    temp_s4 = *v1;
+    if (gCurrentPauseMenuOption == -1) {
+        D_801CF060[arg1].unk78 = (D_801CF060[arg1].unk78 + 1) % temp_s4->unk0;
+    }
+    sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
+    gSPDisplayList(gdl++, D_800E6CF8);
+    gdl++;
+    if (arg1 < 12) {
+        gdl = func_8009D96C(gdl, arg1, 0.3f);
+    } else {
+        gdl = func_8009D96C(gdl, arg1, 0.2f);
+    }
+    var_s3 = temp_s4->unkC[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk20);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk8[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk28);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk10[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk24);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A1CFC.s")
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800A2308(Gfx* arg0, s32 arg1) {
-    /* Course mini-map rider blip positioner */
-    return arg0;
+Gfx* func_800A2308(Gfx* gdl, s32 arg1) {
+    s32 sp68;
+    UnkStruct_801CE780_unk4* temp_s4;
+    UnkStruct_801CE780_unk4** v1;
+    s32 var_s3;
+    s32 index;
+
+    index = D_801CE770;
+    v1 = D_801CE780[index].unk4;
+    temp_s4 = *v1;
+    if (gCurrentPauseMenuOption == -1) {
+        D_801CF060[arg1].unk78 = (D_801CF060[arg1].unk78 + 1) % temp_s4->unk0;
+    }
+    sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
+    gSPDisplayList(gdl++, D_800E6CF8);
+    gdl = func_8009D96C(gdl, arg1, 0.1f);
+    var_s3 = temp_s4->unkC[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk8);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk8[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unk10);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    var_s3 = temp_s4->unk10[sp68];
+    func_801E4C60(&D_801C43F8[D_8011F8E0].unk5D0[D_801D06B8], temp_s4->unk4[var_s3].unk6, temp_s4->unk4[var_s3].unk7,
+                  temp_s4->unk4[var_s3].unk8, temp_s4->unk4[var_s3].unk9, temp_s4->unk4[var_s3].unkA,
+                  temp_s4->unk4[var_s3].unkB, temp_s4->unk4[var_s3].unk0, temp_s4->unk4[var_s3].unk2,
+                  temp_s4->unk4[var_s3].unk4, 1.0f);
+    gSPMatrix(gdl++, &D_6000000->unk5D0[D_801D06B8++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPDisplayList(gdl++, D_801CE780[index].unkC);
+    gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A2308.s")
@@ -2013,18 +2230,19 @@ Gfx* func_800A28F4(Gfx* gdl, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
-Gfx* func_800A2B24(Gfx* arg0, s32 arg1) {
+void func_800A2B24(s32 arg0) {
     /* Course mini-map track contour display list builder */
-    return arg0;
+    (void) arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A2B24.s")
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800A52D8(Gfx* arg0, s32 arg1) {
+void func_800A52D8(s32 arg0, f32 arg1) {
     /* Stunt score numerical counter display list builder */
-    return arg0;
+    (void) arg0;
+    (void) arg1;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A52D8.s")
@@ -2522,9 +2740,44 @@ Gfx* func_800AB95C(Gfx* arg0, s32 arg1) {
 #endif
 
 #ifdef NON_MATCHING
-Gfx* func_800AC098(Gfx* arg0, s32 arg1) {
-    /* Record lap flash alert display list generator */
-    return arg0;
+void func_800AC098(UnkStruct_800AC098_src* src, s32 n) {
+    s32 i = D_800E62CC;
+    s32 end;
+
+    if (i < 30) {
+        end = i + n;
+
+        if (i < end) {
+            s32 j = i;
+            StructVarS0* dst = &D_801CF060[i];
+            UnkStruct_800AC098_src* s = src;
+            do {
+                dst->unk0 = s->unk0;
+                dst->unkB8 = 1;
+                j++;
+                dst->unk74 = s->unk4;
+                i++;
+                dst->unk78 = s->unk8;
+                dst->unkC = s->unkC;
+                dst->unk10 = s->unk10;
+                dst->unk14 = s->unk14;
+                dst->unk30 = s->unk18;
+                dst->unk34 = s->unk1C;
+                dst->unk38 = s->unk20;
+                dst->unk3C = s->unk24;
+                dst->unk40 = s->unk28;
+                dst->unk44 = s->unk2C;
+                *(f32*) &dst->unk48 = s->unk30;
+                s++;
+                if (j >= 30) {
+                    goto end;
+                }
+                dst++;
+            } while (i < end);
+        }
+        D_800E62CC = end;
+    }
+end:;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AC098.s")

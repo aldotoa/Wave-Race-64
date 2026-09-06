@@ -109,6 +109,7 @@ mips-linux-gnu-objdump -dr scratch/test.o
 ```
 
 ### Step 5: Promotion on 100% Match (`CURRENT (0)`)
+> **Commit or stash first — even for `--dry-run`.** `tools/promote.py` reverts the source file to HEAD whenever the post-promotion matching build fails, wiping ALL uncommitted drafts in that file (not just the promoted function). The `--dry-run` path prints `Reverting...` and does the same. Proven 2026-09-06: a `--dry-run` on `func_8009934C` reverted `src/game/code_52CD0.c` to HEAD, deleting the in-progress `func_800998B0`/`func_800AC098` bodies (only `include/structs.h` survived, different file). Never run any `promote.py` invocation with uncommitted work in the target file.
 Once 0 diffs are verified, promote the function:
 ```bash
 # Automated promotion (recommended)
@@ -274,6 +275,7 @@ Functions containing jump tables (`switch`) whose tables reside in unmigrated `.
 Do not migrate individual jump tables to C until all functions referencing that specific `.rodata` block are ready to be matched, preventing linker collisions and section misalignments.
 - **Diagnostic fingerprint**: a text-identical switch body still scores ~100 (`105`) from a single phantom row `> .rodata+0x0` (compiler's private table vs the blob's named `jtbl_`). Re-run with `-R` (`--no-show-rodata-refs`) to see through it; near-0 with `-R` means the C is correct.
 - **Do not `--force` promote blob-table switches**: even after repointing blob entries to `func+offset` (links fine), the ROM mismatches because compiled code references the private table copy (`lui`/`lw` point at the `.o`'s own address, e.g. `0x800EB4C0` instead of the blob's `0x800EBAE4`). Proven 2026-09: `func_800ADC8C` text-identical yet unpromotable; parked under `NEEDS_RODATA || NON_MATCHING`.
+- **Blob carve does not work either** (measured 2026-09-05): splitting `A5CC0.rodata.s` around the table and sandwiching `code_52CD0.o(.rodata)` between the halves in the link order still shifts everything after by **+12 bytes** (`jtbl_800EBB14` landed at `0x800EBB20`): 4 B gas tail-padding (split halves inherit section align-8 from the blob's `.double`s) + 8 B start-alignment padding (IDO emits `.rodata` with align-16, but the vacated slot at `0xA62E4` is only 4-aligned). There is no placement that puts 48 align-16 bytes at a 4-aligned address with zero padding — promotion needs whole-file rodata reconstruction, not a per-function carve. (Note: `linker_scripts/us/rev1/waverace64.ld` is git-ignored/generated; the yaml is the durable config.)
 
 ---
 
