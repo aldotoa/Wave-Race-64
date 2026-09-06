@@ -8,14 +8,16 @@ typedef struct RgbaColors_s {
     s32 alpha;
 } RgbaColors;
 
-typedef struct UnkStruct_8008962C_s {
-    f32 unk0;
-    f32 unk4;
-    f32 unk8;
-    f32 unkC;
-    f32 unk10;
-    f32 unk14;
-} UnkStruct_8008962C; // Might be the same as UnkStruct_801CEFF8
+typedef struct ProjectedFlake_s {
+    /* 0x00 */ f32 screenX; /* projected screen x */
+    /* 0x04 */ f32 screenY; /* projected screen y */
+    /* 0x08 */ f32 screenZ; /* projected depth */
+    /* 0x0C */ f32 extentX; /* scaled size x (view-matrix row scaled by size) */
+    /* 0x10 */ f32 extentY; /* scaled size y */
+    /* 0x14 */ f32 facing;  /* camera facing dot; < 0.5f hidden, -1.0f culled */
+} ProjectedFlake;           // Might be the same as UnkStruct_801CEFF8
+
+#define SPRAY_FLAKE_COUNT 16
 
 typedef struct UnkStruct_801CB058_s {
     /* 0x000 */ char pad0[0x88];
@@ -32,22 +34,22 @@ typedef struct UnkStruct_801C41A0_s {
     f32 fwork[0xD0];
 } UnkStruct_801C41A0;
 
-extern UnkStruct_8008962C D_801C4278[];
-extern UnkStruct_8008962C D_801C4290;
-extern UnkStruct_8008962C D_801C42A8;
-extern UnkStruct_8008962C D_801C42C0;
-extern UnkStruct_8008962C D_801C42D8;
-extern UnkStruct_8008962C D_801C42F0;
-extern UnkStruct_8008962C D_801C4308;
-extern UnkStruct_8008962C D_801C4320;
-extern UnkStruct_8008962C D_801C4338;
-extern UnkStruct_8008962C D_801C4350;
-extern UnkStruct_8008962C D_801C4368;
-extern UnkStruct_8008962C D_801C4380;
-extern UnkStruct_8008962C D_801C4398;
-extern UnkStruct_8008962C D_801C43B0;
-extern UnkStruct_8008962C D_801C43C8;
-extern UnkStruct_8008962C D_801C43E0;
+extern ProjectedFlake D_801C4278[];
+extern ProjectedFlake D_801C4290;
+extern ProjectedFlake D_801C42A8;
+extern ProjectedFlake D_801C42C0;
+extern ProjectedFlake D_801C42D8;
+extern ProjectedFlake D_801C42F0;
+extern ProjectedFlake D_801C4308;
+extern ProjectedFlake D_801C4320;
+extern ProjectedFlake D_801C4338;
+extern ProjectedFlake D_801C4350;
+extern ProjectedFlake D_801C4368;
+extern ProjectedFlake D_801C4380;
+extern ProjectedFlake D_801C4398;
+extern ProjectedFlake D_801C43B0;
+extern ProjectedFlake D_801C43C8;
+extern ProjectedFlake D_801C43E0;
 
 extern UnkStruct_801CB058 D_801CB058[];
 extern s32 D_800DA914;
@@ -69,12 +71,12 @@ extern s16 D_800D9890;
 extern s32 D_800D9894;
 extern f32 D_801CB160;
 extern s32 D_800D9924[];
-extern UnkStruct_8008962C D_801C4170;
-extern UnkStruct_8008962C D_801C4188;
+extern ProjectedFlake D_801C4170;
+extern ProjectedFlake D_801C4188;
 extern u16 D_10102B0[];
 extern s32 D_800DA628[];
 extern RgbaColors D_800DA6A8[];
-extern UnkStruct_8008962C D_801C4278[];
+extern ProjectedFlake D_801C4278[];
 
 extern UnkStruct_801C41A0 D_801C41A0;
 
@@ -97,7 +99,7 @@ void func_800895A0(f64* arg0, f64* arg1, f32 arg2, f32 arg3) {
     }
 }
 
-f32 func_8008962C(f32 arg0, f32 arg1, f32 arg2, UnkStruct_8008962C* arg3) {
+f32 func_8008962C(f32 dist, f32 angleDeg, f32 size, ProjectedFlake* out) {
     MtxF spD0;
     MtxF sp90;
     camera_unk_1* cam;
@@ -115,20 +117,21 @@ f32 func_8008962C(f32 arg0, f32 arg1, f32 arg2, UnkStruct_8008962C* arg3) {
     cam = &gCameraPerspective[D_80223930];
     temp_fv1_1 = cam->unkF0;
     temp_ft4 = cam->unkF4;
-    arg3->unk14 = (temp_fv1_1 * COS(ANGLE_TO_CUSTOM_UNITS(arg1))) + (SIN(ANGLE_TO_CUSTOM_UNITS(arg1)) * temp_ft4);
-    if (arg3->unk14 < 0.5f) {
-        arg3->unk0 = 0.0f;
-        arg3->unk4 = 0.0f;
-        arg3->unk8 = 0.0f;
-        arg3->unkC = 0.0f;
-        arg3->unk10 = 0.0f;
-        arg3->unk14 = -1.0f;
+    out->facing =
+        (temp_fv1_1 * COS(ANGLE_TO_CUSTOM_UNITS(angleDeg))) + (SIN(ANGLE_TO_CUSTOM_UNITS(angleDeg)) * temp_ft4);
+    if (out->facing < 0.5f) {
+        out->screenX = 0.0f;
+        out->screenY = 0.0f;
+        out->screenZ = 0.0f;
+        out->extentX = 0.0f;
+        out->extentY = 0.0f;
+        out->facing = -1.0f;
     } else {
         SysUtils_MtxToMtxF(&gGfxPool->unkE008[D_80223930], &spD0);
         SysUtils_MtxToMtxF(&gGfxPool->unkE088[D_80223930], &sp90);
-        temp_fv0 = arg0;
-        sp80 = COS(ANGLE_TO_CUSTOM_UNITS(arg1)) * temp_fv0;
-        sp70 = SIN(ANGLE_TO_CUSTOM_UNITS(arg1)) * temp_fv0;
+        temp_fv0 = dist;
+        sp80 = COS(ANGLE_TO_CUSTOM_UNITS(angleDeg)) * temp_fv0;
+        sp70 = SIN(ANGLE_TO_CUSTOM_UNITS(angleDeg)) * temp_fv0;
 
         if (gCourseID != DOLPHIN_PARK) {
             func_800895A0(&sp80, &sp70, temp_fv1_1, temp_ft4);
@@ -161,24 +164,24 @@ f32 func_8008962C(f32 arg0, f32 arg1, f32 arg2, UnkStruct_8008962C* arg3) {
         if ((sp70 > 1000000000.0) || (sp70 < -1000000000.0)) {
             sp70 = 511.0;
         }
-        arg3->unkC = sp90.mf[1][0] * arg2;
-        arg3->unk10 = sp90.mf[1][1] * arg2;
-        arg3->unk0 = ((sp80 * 320.0 * 0.5) / var_ft4) + 160.0;
-        arg3->unk4 = 239.0 - (((sp78 * 240.0 * 0.5) / var_ft4) + 120.0);
-        arg3->unk8 = sp70 / var_ft4;
+        out->extentX = sp90.mf[1][0] * size;
+        out->extentY = sp90.mf[1][1] * size;
+        out->screenX = ((sp80 * 320.0 * 0.5) / var_ft4) + 160.0;
+        out->screenY = 239.0 - (((sp78 * 240.0 * 0.5) / var_ft4) + 120.0);
+        out->screenZ = sp70 / var_ft4;
         if ((var_ft4 < 1e-08) && (var_ft4 > -1e-08)) {
-            arg3->unk0 = 1e8f;
-            arg3->unk4 = 1e8f;
-            arg3->unk8 = 1e8f;
+            out->screenX = 1e8f;
+            out->screenY = 1e8f;
+            out->screenZ = 1e8f;
         }
 
-        if (((arg3->unkC + arg3->unk0) < -511.0f) || ((arg3->unkC + arg3->unk0) > 511.0f) ||
-            (((arg3->unk10 + arg3->unk4) < -511.0f)) || ((arg3->unk10 + arg3->unk4) > 511.0f)) {
-            arg3->unk0 = -64.0f;
-            arg3->unk4 = -64.0f;
-            arg3->unkC = 0.0f;
-            arg3->unk10 = 0.0f;
-            arg3->unk14 = -1.0f;
+        if (((out->extentX + out->screenX) < -511.0f) || ((out->extentX + out->screenX) > 511.0f) ||
+            (((out->extentY + out->screenY) < -511.0f)) || ((out->extentY + out->screenY) > 511.0f)) {
+            out->screenX = -64.0f;
+            out->screenY = -64.0f;
+            out->extentX = 0.0f;
+            out->extentY = 0.0f;
+            out->facing = -1.0f;
         }
     }
 }
@@ -266,12 +269,15 @@ Gfx* func_8008BD2C(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_8008BD2C.s")
 #endif
 
+/* Draws the SPRAY_FLAKE_COUNT projected spray flakes as 4x4 IA sprites.
+ * Skips back-facing flakes (facing < 0) and flakes outside the 320x240 screen.
+ * D_800DA628[i] selects the sprite size: nonzero draws a 4px flake, zero a 2px flake. */
 Gfx* func_8008CFEC(Gfx* gdl) {
-    UnkStruct_8008962C* var_t1;
-    s32 var_t2;
-    s32 temp_a2;
-    s32 temp_a1;
-    s32 temp;
+    ProjectedFlake* flake;
+    s32 i;
+    s32 pixY;
+    s32 pixX;
+    s32 unused; /* no live use; keeps the original stack frame IDO emitted */
 
     gDPPipeSync(gdl++);
     gDPSetRenderMode(gdl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -282,27 +288,25 @@ Gfx* func_8008CFEC(Gfx* gdl) {
     gDPLoadTextureBlock(gdl++, &D_10102B0, G_IM_FMT_IA, G_IM_SIZ_16b, 4, 4, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, 2, 2, G_TX_NOLOD, G_TX_NOLOD);
 
-    // var_t1 = &D_801C4278;
-    // var_t2 = 0;
-    var_t1 = D_801C4278;
-    var_t2 = 0;
-    for (; var_t2 < 0x10; var_t2++, var_t1++) {
-        if (var_t1->unk14 >= 0.0f) {
-            temp_a1 = var_t1->unkC + var_t1->unk0;
-            temp_a2 = var_t1->unk4 - var_t1->unk10;
-            if ((temp_a1 >= -2) && (temp_a1 < SCREEN_WIDTH) && (temp_a2 >= 0) && (temp_a2 < SCREEN_HEIGHT)) {
-                gDPSetPrimColor(gdl++, 0, 0, D_800DA6A8[var_t2].red, D_800DA6A8[var_t2].green, D_800DA6A8[var_t2].blue,
-                                D_800DA6A8[var_t2].alpha);
-                if (D_800DA628[var_t2] != 0) {
-                    gSPTextureRectangle(gdl++, MAX((temp_a1 - 2) << 2, 0), MAX((temp_a2 - 2) << 2, 0),
-                                        MAX((temp_a1 + 2) << 2, 0), MAX((temp_a2 + 2) << 2, 0), 0,
-                                        0 - MIN(((((temp_a1 - 2) << 2) * (1 << 10)) >> 7), 0),
-                                        0 - MIN(((((temp_a2 - 2) << 2) * (1 << 10)) >> 7), 0), 1 << 10, 1 << 10);
+    flake = D_801C4278;
+    i = 0;
+    for (; i < SPRAY_FLAKE_COUNT; i++, flake++) {
+        if (flake->facing >= 0.0f) {
+            pixX = flake->extentX + flake->screenX;
+            pixY = flake->screenY - flake->extentY;
+            if ((pixX >= -2) && (pixX < SCREEN_WIDTH) && (pixY >= 0) && (pixY < SCREEN_HEIGHT)) {
+                gDPSetPrimColor(gdl++, 0, 0, D_800DA6A8[i].red, D_800DA6A8[i].green, D_800DA6A8[i].blue,
+                                D_800DA6A8[i].alpha);
+                if (D_800DA628[i] != 0) {
+                    gSPTextureRectangle(gdl++, MAX((pixX - 2) << 2, 0), MAX((pixY - 2) << 2, 0),
+                                        MAX((pixX + 2) << 2, 0), MAX((pixY + 2) << 2, 0), 0,
+                                        0 - MIN(((((pixX - 2) << 2) * (1 << 10)) >> 7), 0),
+                                        0 - MIN(((((pixY - 2) << 2) * (1 << 10)) >> 7), 0), 1 << 10, 1 << 10);
                 } else {
-                    gSPTextureRectangle(gdl++, MAX((temp_a1 - 1) << 2, 0), MAX((temp_a2 - 1) << 2, 0),
-                                        MAX((temp_a1 + 1) << 2, 0), MAX((temp_a2 + 1) << 2, 0), 0,
-                                        0 - MIN(((((temp_a1 - 1) << 3) * (0x800)) >> 7), 0),
-                                        0 - MIN(((((temp_a2 - 1) << 3) * (0x800)) >> 7), 0), 0x800, 0x800);
+                    gSPTextureRectangle(gdl++, MAX((pixX - 1) << 2, 0), MAX((pixY - 1) << 2, 0),
+                                        MAX((pixX + 1) << 2, 0), MAX((pixY + 1) << 2, 0), 0,
+                                        0 - MIN(((((pixX - 1) << 3) * (0x800)) >> 7), 0),
+                                        0 - MIN(((((pixY - 1) << 3) * (0x800)) >> 7), 0), 0x800, 0x800);
                 }
             }
         }

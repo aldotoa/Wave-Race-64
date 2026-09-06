@@ -520,8 +520,8 @@ typedef struct UnkStruct_801CF060 {
     /* 0x068 */ f32 unk68; /* inferred */
     /* 0x06C */ f32 unk6C; /* inferred */
     /* 0x070 */ f32 unk70;
-    f32 unk74;
-    f32 unk78;
+    s32 unk74;
+    s32 unk78;
     f32 unk7C;
     f32 unk80;
     f32 unk84;
@@ -533,6 +533,7 @@ typedef struct UnkStruct_801CF060 {
     /* 0x09C */ f32 unk9C;
     /* 0x0A0 */ f32 unkA0;
     char padding1[0x18];
+    /* 0x0B8 */ s32 unkB8;
 
 } UnkStruct_801CF060;
 
