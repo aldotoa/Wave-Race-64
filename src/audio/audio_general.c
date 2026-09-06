@@ -1486,13 +1486,56 @@ void func_800C3E6C(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_800C3EF4(s32 arg0) {
-    /* Announcer voice clip and course fanfare selector */
+    s32 v1;
+    s32 sp18;
+
+    if ((arg0 < 2) && (arg0 >= -1)) {
+        v1 = 0;
+    } else {
+        v1 = 1;
+        if (arg0 >= 2) {
+            v1 = 2;
+        } else {
+            arg0 = -arg0;
+        }
+    }
+    if (D_800E7C94 != 7) {
+        return;
+    }
+    switch (v1) {
+        case 0:
+            if (D_801D7DC0 != 1) {
+                return;
+            }
+            sp18 = (gAudioRandom % 3) + 0x16;
+            break;
+        case 1:
+            if (arg0 >= 0x14) {
+                sp18 = 0x15;
+                v1 = 0;
+            } else {
+                sp18 = arg0;
+            }
+            break;
+        case 2:
+            if (arg0 >= 0x14) {
+                sp18 = 0x19;
+                v1 = 0;
+            } else {
+                sp18 = arg0;
+            }
+            break;
+    }
+    if (((D_801D7DC0 == 1) || (sp18 != 0x15)) && ((D_801D7DF0[2] == 0) || (D_801D7DF0[1] < 0x51))) {
+        AudioThread_QueueCmdS8(0x06000C02U, v1);
+        AudioThread_QueueCmdS8(0x06000C01U, sp18);
+        AudioThread_QueueCmdS8(0x06000C00U, 0x7E);
+        D_801D7DF0[0] = sp18;
+        D_801D7DF0[1] = 0x55;
+        D_801D7DF0[2] = 0x32;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C3EF4.s")
-#endif
 
 void func_800C4078(void) {
     AudioThread_QueueCmdS8(0x06000B00U, 0);
