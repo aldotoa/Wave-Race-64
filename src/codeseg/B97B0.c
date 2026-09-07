@@ -696,7 +696,12 @@ void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE040(void) {
+void func_801EE040(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
+    ((void) arg3);
+    ((void) arg4);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE040.s")
@@ -713,7 +718,15 @@ void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE274(void) {
+void func_801EE274(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
+    ((void) arg3);
+    ((void) arg4);
+    ((void) arg5);
+    ((void) arg6);
+    ((void) arg7);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE274.s")
@@ -729,7 +742,14 @@ void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
 }
 
 #ifdef NON_MATCHING
-void func_801EE4D0(void) {
+void func_801EE4D0(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
+    ((void) arg3);
+    ((void) arg4);
+    ((void) arg5);
+    ((void) arg6);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE4D0.s")
@@ -745,7 +765,14 @@ void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
 }
 
 #ifdef NON_MATCHING
-void func_801EE6F4(void) {
+void func_801EE6F4(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
+    ((void) arg3);
+    ((void) arg4);
+    ((void) arg5);
+    ((void) arg6);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE6F4.s")
@@ -927,7 +954,7 @@ void func_801FA3C0(void) {
    Remaining: dx/dy home rotation, ys-ptr s1 vs temp, sll+addu vs folded
    addiu for arg5/6+s0 (micro-proven fold; non-const s0 needs zero-cost
    mechanism), Y-sign bgtz. */
-void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5, s32 *arg6) {
+void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32* arg4, s32* arg5, s32* arg6) {
     s32 var_v1;
     s32 var_t1;
     s32 var_v0;
@@ -937,8 +964,8 @@ void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5,
     s32 var_t4;
     s32 err;
     s32 var_s0;
-    s32 *var_a1;
-    s32 *var_s1;
+    s32* var_a1;
+    s32* var_s1;
 
     var_v1 = arg2 - arg0;
     var_t1 = arg3 - arg1;

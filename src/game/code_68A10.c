@@ -226,6 +226,9 @@ s64 D_801D7B48;
 s64 D_801D7B50;
 s64 D_801D7B58;
 
+/* BSS-migrated (bss1 size 0x20 = 2 entries); tentative def merges with bss.o */
+UnkStruct_801D7AF0 D_801D7AF0[2];
+
 void func_800AE7C4(void) {
     s32 var_a1;
     s32 temp_hi;

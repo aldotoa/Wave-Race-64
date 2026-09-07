@@ -16,6 +16,8 @@ Gfx* func_8008FB74(Gfx* glistp);
 Gfx* Gfx_DrawCoursePanel(Gfx* glistp, s32 course);
 Gfx* Draw_WaterEffects(Gfx* glistp);
 void func_801E2530(void);
+Gfx* func_801E2058(Gfx* glistp);
+Gfx* func_801E229C(Gfx* glistp);
 
 #ifdef NON_MATCHING
 void func_801E1290(void) {

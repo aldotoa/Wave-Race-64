@@ -13,6 +13,31 @@ extern UnkStruct_80162420 D_80162420[];
 extern f32 D_800D4740;
 extern f32 D_800D4744;
 
+extern s32 D_80223934;
+extern s32 D_80223930;
+extern s32 D_800D476C;
+extern f32 D_801924B4;
+extern f32 D_801924CC;
+extern s32 D_800D4770;
+extern f32 D_801924C0;
+extern f32 D_801924D0;
+extern f32 D_800D4768;
+extern s32 D_80192478[];
+extern f32 D_800D477C;
+extern s32 D_800D4774;
+extern s32 D_800D4778;
+extern s32 D_80192498;
+
+typedef struct UnkStruct_80192420 {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+    f32 unk14;
+    f32 unk18;
+} UnkStruct_80192420;
+
 #ifdef NON_MATCHING
 Gfx* func_8004C1D0(s32 arg0, Gfx* glistp) {
     struct camera_unk_1* cam;
@@ -45,20 +70,6 @@ Gfx* func_8004C1D0(s32 arg0, Gfx* glistp) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004C1D0.s")
 #endif
 
-extern s32 D_80223934;
-extern s32 D_80223930;
-extern s32 D_800D476C;
-extern f32 D_801924B4;
-extern f32 D_801924CC;
-extern s32 D_800D4770;
-extern f32 D_801924C0;
-extern f32 D_801924D0;
-extern f32 D_800D4768;
-extern s32 D_80192478[];
-extern f32 D_800D477C;
-extern s32 D_800D4774;
-extern s32 D_800D4778;
-
 #ifdef NON_MATCHING
 void func_8004C998(s32 arg0, Vtx* arg1) {
     struct camera_unk_1* cam;
@@ -90,25 +101,25 @@ void func_8004C998(s32 arg0, Vtx* arg1) {
     dst_vtx = arg1;
     for (s1 = 6; s1 >= 0; s1--) {
         s32 idx = D_80192478[s1];
-        dst_vtx[s1].ob[0] = src_vtx[idx].ob[0];
-        dst_vtx[s1].ob[1] = (s16) gWaterLevel;
+        dst_vtx[s1].v.ob[0] = src_vtx[idx].v.ob[0];
+        dst_vtx[s1].v.ob[1] = (s16) gWaterLevel;
 
         if (s1 != 0) {
-            dst_vtx[s1].ob[2] = src_vtx[idx].ob[2];
+            dst_vtx[s1].v.ob[2] = src_vtx[idx].v.ob[2];
         } else {
             f_scale = (f32) D_80192498 * D_800D477C;
-            dst_vtx[s1].ob[0] -= (s16) (f_scale * *(f32*) ((u8*) cam + 0xF0));
-            dst_vtx[s1].ob[2] = src_vtx[idx].ob[2] - (s16) (f_scale * *(f32*) ((u8*) cam + 0xF4));
+            dst_vtx[s1].v.ob[0] -= (s16) (f_scale * *(f32*) ((u8*) cam + 0xF0));
+            dst_vtx[s1].v.ob[2] = src_vtx[idx].v.ob[2] - (s16) (f_scale * *(f32*) ((u8*) cam + 0xF4));
         }
 
-        dst_vtx[s1].tc[0] =
-            SysUtils_Round((((f32) dst_vtx[s1].ob[0] - *(f32*) ((u8*) cam + 0x4C)) * fs0 + *(f32*) ((u8*) cam + 0x4C)) /
-                           D_801924CC) +
-            D_800D4778;
-        dst_vtx[s1].tc[1] =
-            SysUtils_Round((((f32) dst_vtx[s1].ob[2] - *(f32*) ((u8*) cam + 0x54)) * fs0 + *(f32*) ((u8*) cam + 0x54)) /
-                           D_801924D0) +
-            D_800D4774;
+        dst_vtx[s1].v.tc[0] = SysUtils_Round((((f32) dst_vtx[s1].v.ob[0] - *(f32*) ((u8*) cam + 0x4C)) * fs0 +
+                                              *(f32*) ((u8*) cam + 0x4C)) /
+                                             D_801924CC) +
+                              D_800D4778;
+        dst_vtx[s1].v.tc[1] = SysUtils_Round((((f32) dst_vtx[s1].v.ob[2] - *(f32*) ((u8*) cam + 0x54)) * fs0 +
+                                              *(f32*) ((u8*) cam + 0x54)) /
+                                             D_801924D0) +
+                              D_800D4774;
     }
 }
 #else
@@ -407,7 +418,8 @@ void func_8004D628(struct UnkStruct_8004B0F8* arg0) {
     }
 
 #ifdef NON_MATCHING
-void func_8004DAF0(struct UnkStruct_8004B0F8* arg0) {
+void func_8004DAF0(void* arg0_in) {
+    struct UnkStruct_8004B0F8* arg0 = (struct UnkStruct_8004B0F8*) arg0_in;
     f32 dir_x, dir_z;
     f32 speed_sq;
     f32 inv_speed;
@@ -1014,7 +1026,7 @@ void func_8004F9E0(f32 arg0, f32 arg1) {
         if (s7 == D_801CE64C) {
             D_80192494 = 10;
             s0 = 26;
-        } else if (s7 == gPlayers[0]) {
+        } else if (s7 == gPlayers) {
             D_80192494 = 10;
             s0 = 26;
         } else {
@@ -1070,9 +1082,9 @@ void func_80050204(s32 arg0, Vtx* vtx) {
     f32 fv0, fv1;
 
     for (i = 0; i < v0; i++) {
-        s3->ob[0] = fp->unk0 + D_80160A98[i][2];
-        s3->ob[1] = (s32) gWaterLevel;
-        s3->ob[2] = fp->unk4 + D_80160A98[i][3];
+        s3->v.ob[0] = fp->unk0 + D_80160A98[i][2];
+        s3->v.ob[1] = (s32) gWaterLevel;
+        s3->v.ob[2] = fp->unk4 + D_80160A98[i][3];
         s3++;
     }
 
@@ -1117,7 +1129,8 @@ extern s32 D_800D49B0;
 s32 SysUtils_Round(f32);
 
 #ifdef NON_MATCHING
-void func_80050B78(UnkCameraStruct* cam, f32* out_x, f32* out_y) {
+void func_80050B78(void* cam_in, f32* out_x, f32* out_y) {
+    UnkCameraStruct* cam = (UnkCameraStruct*) cam_in;
     s32 angle_idx;
     f32 sin_val, cos_val;
     f32 f_tan;
@@ -1166,16 +1179,6 @@ void func_80050B78(UnkCameraStruct* cam, f32* out_x, f32* out_y) {
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_80050B78.s")
 #endif
-
-typedef struct UnkStruct_80192420 {
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    s32 unkC;
-    s32 unk10;
-    f32 unk14;
-    f32 unk18;
-} UnkStruct_80192420;
 
 #ifdef NON_MATCHING
 void func_80050F8C(s32 arg0, f32 arg1, f32 arg2) {

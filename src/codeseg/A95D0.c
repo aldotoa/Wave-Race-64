@@ -356,7 +356,11 @@ void func_801DDA24(void) {
 }
 
 #ifdef NON_MATCHING
-void func_801DDAB8(void) {
+void func_801DDAB8(void* arg0, void* arg1, void* arg2) {
+    /* Camera perspective_RGB/scale initializer (3-arg form) */
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DDAB8.s")
@@ -408,14 +412,20 @@ void func_801DEA94(UnkStruct_801DEA94* arg0, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
-void func_801DEB08(void) {
+void func_801DEB08(void* arg0, void* arg1, void* arg2) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DEB08.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801DEC00(void) {
+void func_801DEC00(void* arg0, void* arg1, void* arg2) {
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DEC00.s")
@@ -637,7 +647,8 @@ void func_801DF2F8(u8* dst, f32* src1, f32* src2, f32* src3, f32* src4) {
 }
 
 #ifdef NON_MATCHING
-void func_801DF38C(void) {
+void func_801DF38C(void* arg0) {
+    ((void) arg0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF38C.s")
@@ -681,7 +692,8 @@ void func_801DF668(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801DF744(void) {
+void func_801DF744(void* arg0) {
+    ((void) arg0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF744.s")

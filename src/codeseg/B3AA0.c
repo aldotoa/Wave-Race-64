@@ -59,7 +59,8 @@ Gfx* func_801E5554(Gfx* glistp) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801E6074(UnkStruct_menu_buffer_1* arg0) {
+void func_801E6074(void* arg0_in) {
+    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
     switch (arg0->unk2) {
         case 0:
             arg0->unk8 = 40;
@@ -74,7 +75,8 @@ void func_801E6074(UnkStruct_menu_buffer_1* arg0) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801E62A8(UnkStruct_menu_buffer_1* arg0) {
+void func_801E62A8(void* arg0_in) {
+    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
     switch (arg0->unk2) {
         case 0:
             arg0->unk8 = 60;
@@ -89,7 +91,8 @@ void func_801E62A8(UnkStruct_menu_buffer_1* arg0) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801E66F4(UnkStruct_menu_buffer_1* arg0) {
+void func_801E66F4(void* arg0_in) {
+    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
     switch (arg0->unk2) {
         case 0:
             arg0->unk8 = 80;

@@ -12,7 +12,7 @@ extern MenuBannerEntry D_80226890[];
 extern MenuBannerEntry D_80226A48[];
 
 #ifdef NON_MATCHING
-Gfx* func_801E3EE0(Gfx* glistp, s32 type, s32 idx, s32 x, s32 y) {
+Gfx* func_801E3EE0(Gfx* glistp, s32 type, s32 idx, s32 x, s32 y, s32 arg5) {
     MenuBannerEntry* entry;
     s32 num_tiles = 1;
     s32 width_param;
