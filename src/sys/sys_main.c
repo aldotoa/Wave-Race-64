@@ -106,12 +106,7 @@ void SysMain_GfxInitBuffers(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_main/SysMain_Thread.s")
 #else
 /* Linker-script absolute symbols (undefined_syms_auto.ld); externs only. */
-typedef struct {
-    char pad[0xA40];
-    Mtx unk_A40;
-} SysMain_F820;
-
-extern SysMain_F820 D_8011F820;
+extern Mtx D_8011F820;
 extern u8 D_80228E10[];
 extern u8 D_802A0000[];
 extern u8 D_8038F800[];
@@ -224,7 +219,7 @@ void SysMain_Thread(void* entry) {
 
     SysUtils_TaylorSeries();
 
-    SysUtils_MatrixLookAt(&D_8011F820.unk_A40, &mtx, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    SysUtils_MatrixLookAt(&D_8011F820, &mtx, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
     SysUtils_Srand(osGetTime());
     osSetTime(0);
