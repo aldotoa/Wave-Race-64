@@ -107,6 +107,7 @@ Always pass `-m` (recompile `.o`), `-o` (diff object file directly to prevent se
 >     --base-asm scratch/base_<func>.s --format plain --no-pager
 >   ```
 >   `--base-asm` must be sliced to the single function (a whole-object dump anchors TARGET on the wrong function). Rebuild the base from a matching tree — never trust `build/` objects when src holds in-progress drafts. Delete `scratch/probe_*`, `scratch/base_*`, and any probe copies under `expected/` before committing.
+- Drop `-s` for functions with multiple `jr $ra`: stop-at-ret truncates the diff at the first return and reports vacuous scores. Always confirm full-function output reaches the final `jr` before trusting a score.
 
 ### Step 4: Scratchpad Fast Prototyping (Direct IDO Invocation)
 When iterating on fine register allocation or compiler quirks, do not run a full project build. Determine the exact compiler flags used by the Makefile:
@@ -286,6 +287,18 @@ Storing the induction variable last (e.g., `arr1[i] = 0; arr2[i] = 0; arr3[i] = 
   - If the assembly routes all paths through a single shared epilogue label (one `jr $ra` preceded by callee-saved register restores), structure the C code as a single-exit function (avoid early returns; use unified control flow or `goto end;`).
 - **Dense 0..N Switch Dispatch**: keep an explicit `case 0: break;` first — without it the leading `beqz` check vanishes and the dispatch reshapes around a trailing branch with different delay fills. Addend order in the switch-value computation feeds temp-register coloring (`D[0] + (D[1] * 2)` vs `(D[1] * 2) + D[0]` rotate the same `lhu`/`sll`/`addu` tail across different temps) — try both orders before touching declarations.
 - **Micro-Bisect Scheduler Quirks**: identical dispatch C can emit `beqz`+delay-fill when flat but `beqzl`+target-hoist when nested in `if/else`. Compile tiny shape variants (switch vs if-chain vs goto, nested vs flat) with direct IDO (Step 4) and compare — find the matching shape in micro before editing the full draft.
+- **Batched Variant Sweeps**: when 3+ structural variants are queued, sweep them with `.agents/skills/wr64-decomp/scripts/probe_sweep.sh` instead of hand-rolled build+diff loops. It captures the exact IDO command via `make -n -B <obj> NON_MATCHING=1` (refuses to run without `-DNON_MATCHING`), `touch`es and mtime-checks every variant, mirrors objects under `expected/`, and prints one `CURRENT (n)` line each:
+  ```bash
+  .agents/skills/wr64-decomp/scripts/probe_sweep.sh --obj build/src/<tu>.o --func <name> --base scratch/base_<name>.slice scratch/probe_A.c scratch/probe_B.c
+  ```
+
+### Delay-Slot Store Merging & Fill Selection (`bne` vs `bnel`)
+- A store in a non-likely branch delay slot (`bne`/`beqz` + `sw`) executes on BOTH paths: model it as straight-line code before the `if`, not inside either branch.
+- A redundant doubled store (`D = 1; if (f == 1) { D = 1; }`) merges to a single store in a normal (`bne`) branch delay slot, while the single-store form emits a likely (`bnel`) branch. Try the doubled store when the stub shows a normal branch with the store in its delay slot.
+- Empty `else {}` arms can be load-bearing for the branch skeleton — never delete one without re-diffing.
+- Anonymous `D++` keeps the incremented value in a t-reg (`t8`); a named `s32 temp = D + 1` local parks it in a v-reg instead. Drop the named local when the stub holds the temp in `t8`/`t9`.
+- Equivalent tail spellings can emit identical bytes when the join coincides with function end (`if (t < K) goto end; ...` vs nested `if (t >= K) { ... }`); if the tail already matches, try the other spelling to shift upstream scheduling.
+- Park at the floor when only scheduler-opaque rows remain (e.g. one adjacent fill-order swap after dozens of structural variants): keep the draft behind `#ifdef NON_MATCHING` with the floor score and load-bearing constructs noted in a comment.
 
 ### Unmigrated Rodata & Jump Tables
 Functions containing jump tables (`switch`) whose tables reside in unmigrated `.rodata.s` files (e.g. `A5CC0.rodata.s`) must be kept under:

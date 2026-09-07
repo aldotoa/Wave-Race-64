@@ -48,14 +48,34 @@ void func_800XXXXX(...) {
 `make NON_MATCHING=1 build/src/<path>/<file>.o` compiles every draft in the translation unit, so one stale prototype in an unrelated function breaks the whole build — do NOT touch unrelated scaffolding to fix it. Instead compile the draft as a standalone IDO probe (`scratch/probe_<func>.c` = needed includes + draft body) with the Makefile's exact flags, and diff with `tools/asm-differ/diff.py -o -s <func> -f <probe.o> --base-asm <sliced-objdump>`. Delete all `scratch/probe_*` files and any probe copies under `expected/` before committing.
 **Stale-object hygiene:** the `NON_MATCHING=1` flag is untracked (same `.o` path), so a draft object left in `build/` is silently reused by plain `make`/`make test` — always `rm -f build/src/<path>/<file>.o` before switching back, or a stale draft poisons the ROM hash and the suite.
 
+Probe-loop mechanics that must all hold at once:
+- Assemble the ground-truth stub directly: strip the `nonmatching` first line, prepend `.include "macro.inc"` + `.set noreorder` (gas reorder inserts phantom delay-slot nops), assemble with `-I include`, and verify the instruction count equals the stub's opcode-comment count.
+- `--base-asm` must be sliced to the single function (`awk '/<func>:/{f=1} ...'` — the `>` matters; a bare `/func:/` pattern silently yields an empty base and a vacuous all-CURRENT diff).
+- `-f` resolves under `expected/`: keep the probe object at the CWD-relative path AND `cp` a copy to `expected/<same-path>`.
+- Stale objects lie: `sleep 1` + `touch` the probe before every build and check the `.o` is newer than the `.c` afterwards; diff WITHOUT `-m` so the score reflects your C. Identical scores across different sources always mean a stale object, never a real result.
+- `-s` (stop-at-ret) truncates multi-return functions at the first `jr` — drop it for truthful full-function scores.
+- A `NON_MATCHING=1` object left in `build/` poisons later matching builds (same `.o` path): always `rm -f <obj>` before switching back, or the ROM checksum plus ROM-dependent tests fail bogusly.
+- Verify probe flags EXACTLY match the matching build (`make -n` vs probe flags, one per line, `diff`) — a single stray define or include dir invalidates every conclusion.
+
 ### Control Flow Matching Rules
 - If diffs show instructions at the loop exit rather than the loop head, favor `do { ... } while (...)` over `for` or `while`.
 - Avoid early returns (`return;`) if the original assembly uses branch-likely jumps to a unified epilogue block.
 - Match register allocations by ordering local variable declarations from highest to lowest usage, or introducing explicit scope blocks `{ ... }`.
+- Use a single `return` with `goto end;` for early exits: two C `return`s flip the final epilogue to `move;jr;nop` plus likely-fills (`bnezl`) on late branches.
+- A store in a non-likely branch delay slot (`bne`/`beqz` + `sw`) executes on BOTH paths: model it as straight-line code before the `if`, not inside either branch.
+- A redundant doubled store (`D = 1; if (f == 1) { D = 1; }`) merges to a single store in a normal (`bne`) branch delay slot, while the single-store form emits a likely (`bnel`) branch.
+- Empty `else {}` arms can be load-bearing for the branch skeleton — never delete one without re-diffing.
+- Equivalent tail spellings can emit identical bytes when the join coincides with function end (`if (t < K) goto end; ...` vs nested `if (t >= K) { ... }`); if the tail already matches, try the other spelling to shift upstream scheduling.
+- Anonymous `D++` keeps the incremented value in a t-reg; a named `s32 temp = D + 1` local parks it in a v-reg. Drop the named local when the stub holds the temp in `t8`/`t9`.
 
 ### Handling .rodata, .data, and .bss
 - Do not migrate global or static variables unless all functions accessing that symbol's offsets are matching.
 - If a function requires matched `.rodata` (e.g., switch jump tables or float pools), preserve the `#if defined(NEEDS_RODATA) || defined(NON_MATCHING)` wrapper until the whole translation unit matches.
+
+### Sweep Discipline & Park Rules
+- Batch structural variants (3+): build each probe with identical flags, record one score line per variant, and read order/shape in the objdump window — not just the score — before designing the next batch.
+- Bisect scheduler quirks in minimal `scratch/micro_*.c` first: shrink to the smallest reproducer, then add one context element at a time until the output flips; that element is the lever the full-probe sweep exploits.
+- Park at the floor when only scheduler-opaque rows remain (e.g. one adjacent fill-order swap after dozens of structural variants): keep the draft behind `#ifdef NON_MATCHING`, document the floor score and which constructs are load-bearing in a comment, and move on.
 
 ## 4. Promotion Checklist
 

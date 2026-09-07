@@ -101,23 +101,29 @@ extern s32 D_802C96A0;
 extern s32 D_802C96A4;
 
 #ifdef NON_MATCHING
+/* Race-timer tick for game states 0x29/0x2A: passes arg0 through while
+ * advancing the D_802C96A4 frame counter (0..61) and latching D_802C96A0.
+ * D_800D817C is flagged while the counter is below 30 frames. The
+ * duplicated store below is load-bearing: it keeps the compiler's
+ * branch skeleton (bne + delay-slot store) intact. Both empty elses are
+ * likewise required for byte-match. Diff: 60 (single li/lui fill-order
+ * row remains vs. the retail stub). */
 s32 func_i1_802C6B38(s32 arg0) {
-    if (gGameState == 0x2A) {
-        if (D_801CE6F0 != 1) {
+    if (gGameState == GAME_STATE_2A) {
+        if (D_801CE6F0 == 1) {
+        } else {
             goto end;
         }
-        return arg0;
-    }
-    if (gGameState == 0x29) {
-        if (D_802C96A4 < 30) {
+    } else if (gGameState == GAME_STATE_29) {
+        if (D_802C96A4 < 0x1E) {
+            D_800D817C = 1;
             if (D_801CE6F0 == 1) {
                 D_800D817C = 1;
-                goto join;
             }
+        } else {
         }
-    join:
-        D_802C96A4 = D_802C96A4 + 1;
-        if (D_802C96A4 < 61) {
+        D_802C96A4++;
+        if (D_802C96A4 < 0x3D) {
             goto end;
         }
         if (D_802C96A0 != 0) {
