@@ -226,7 +226,11 @@ Gfx* func_i2_802C5B4C(Gfx* gdl) {
     return gdl;
 }
 
-#ifdef NON_MATCHING
+#if 0 /* TEMP PARK for playable layout (was: #ifdef NON_MATCHING): this WIP
+   emits a private jump table + rodata that overflow ovl_i2's retail ROM
+   slot by 0x20 (see waverace64.ld sanctions), breaking every later
+   overlay's file position. WIP preserved verbatim below; see 9aef6b6.
+   Resume with shared jtbl refs (no private tables/floats) so it fits. */
 #define ARR_VAL(arr) (*(s32*)((u8*)(arr) + offset))
 #define ARR_PTR(arr) ((s32*)((u8*)(arr) + offset))
 

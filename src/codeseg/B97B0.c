@@ -4,9 +4,111 @@
 #include "camera.h"
 #include "libc/math.h"
 
+extern s16 D_800DAB60;
+extern s32 D_800DA9F8;
+extern s32 D_800DA9FC;
+extern s32 D_800DAA08;
+extern s32 D_801CB334;
+extern s16 D_800EAC44[];
+s32 func_8009684C(s32, s16, s16);
+void func_8004A208(void);
+
 #ifdef NON_MATCHING
 void func_801EB180(void) {
-    /* Championship mode state initialization */
+    /* No-Controller-Pak boot transition to TITLE_SCREEN. Retail stub is
+       0x374 bytes; the previous empty draft left pak-less boots stuck in
+       state 0 (black screen) forever. The D_800DAB60 store sits in a
+       non-likely branch delay slot in the stub (executes on both paths);
+       spelled here as straight-line code before the if. */
+    s32 i;
+    s32 sp24;
+    s16 temp_a2;
+    s32 var_v1;
+    s32 temp_v0;
+    s32 courseId;
+    UnkStruct_800D96A4* tableRow;
+    UnkStruct_800DB568* courseTable;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_TITLE_SCREEN;
+    D_801CE638 = 0;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    gGameModes = GMODE_TIME_TRIALS;
+    gPlayers = ONE_PLAYER;
+    gRiders = 2;
+    D_800D49B0 = 0x14;
+    gBuoyMisses = 5;
+    D_801CE728[0] = 3;
+    D_800D8178 = 1;
+    D_801CE600 = 0;
+    D_801CE6F8 = 0;
+    D_801CB334 = 0;
+    if (D_800D8240 == 0) {
+        gCourseID = DOLPHIN_PARK;
+    }
+    D_801CE6F0 = 0;
+    D_800DAB68 = 0;
+    D_800DAB0C = 0;
+    if (D_801CB280 & 0x10) {
+        D_800DAB60 = 1;
+    } else {
+        D_800DAB60 = 0;
+    }
+    D_800DAB64 = 0;
+    D_800DAA08 = 0;
+    temp_v0 = D_800DA9F8 + 1;
+    D_800DA9F8 = temp_v0;
+    if (temp_v0 >= 3) {
+        D_800DA9F8 = 0;
+    }
+    var_v1 = D_800DA9FC + 1;
+    D_800DA9FC = var_v1;
+    if (var_v1 >= 4) {
+        D_800DA9FC = 0;
+        var_v1 = 0;
+    }
+    sp24 = D_800EAC44[var_v1 * 4];
+    temp_a2 = D_800EAC44[var_v1 * 4 + 1];
+    if (gRiders > 0) {
+        tableRow = &D_800D96A4[gCourseID][temp_a2];
+        for (i = 0; i < gRiders; i++) {
+            D_80192690[i].unkB68 = temp_a2;
+            D_80192690[i].unkB6C = tableRow->unk0;
+            D_80192690[i].unkB70 = tableRow->unk4;
+            D_80192690[i].unkB74 = tableRow->unk8;
+        }
+    }
+    D_80192690[D_800D48DC].unkB68 = sp24;
+    tableRow = &D_800D96A4[gCourseID][sp24];
+    D_801CE6F4[1] = 0;
+    D_80192690[D_800D48DC].unkB6C = tableRow->unk0;
+    D_80192690[D_800D48DC].unkB70 = tableRow->unk4;
+    D_80192690[D_800D48DC].unkB74 = tableRow->unk8;
+    D_801CE6F4[0] = D_801CE6F4[1];
+    gRiderGameModes = UNACTIVE_MODE;
+    D_801CE64C = 0;
+    gGameModeState = GMODE_STATE_STARTED;
+    func_80096960(1, sp24, temp_a2, 0, 0);
+    courseId = gCourseID;
+    if (courseId < DOLPHIN_PARK) {
+        courseId = DOLPHIN_PARK;
+    }
+    if (courseId >= RIDER_SELECTION) {
+        courseId = SOUTHERN_ISLAND;
+    }
+    courseTable = &D_800DB568[courseId];
+    func_8009684C(0x08060000, courseTable->unk0, courseTable->unk2);
+    func_8004A208();
+    FadeTransition_SetProps(0, 0, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective->viewMode = 5;
+    D_800DA9AC = 1;
+    func_800C21F4(0, 0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB180.s")
