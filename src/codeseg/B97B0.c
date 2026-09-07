@@ -117,6 +117,136 @@ void func_801EB180(void) {
 #ifdef NON_MATCHING
 void func_801EB4F4(void) {
     /* Time Attack mode state initialization */
+    extern s32 D_801CE64C;
+
+    void func_801EB4F4(void) {
+        s32 sp40[4];
+        s16* courseData;
+        s32 course;
+
+        gPrevGameState = gGameState;
+        D_801CE630 = 0;
+        gGameState = 7;
+        D_801CE638 = 1;
+        D_801CE63C = 1;
+        D_801CE640 = 0;
+        D_801CE644 = 0;
+        D_800DAB1C = 0;
+        D_800D461C = 3;
+        gDifficulty = 2;
+
+        switch (D_800DA9F8) {
+            case 0:
+                gGameModes = 4;
+                gPlayers = 1;
+                gRiders = 4;
+                D_801CB330 = 2;
+                gCourseID = 2;
+                courseData = (s16*) ((u8*) D_800EAC44 + (D_800DA9FC * 8));
+                sp40[0] = courseData[0];
+                sp40[1] = courseData[1];
+                sp40[2] = courseData[2];
+                sp40[3] = courseData[3];
+                func_80096960(0, sp40[0], sp40[1], sp40[2], sp40[3]);
+                D_801CE728 = 3;
+                D_801CE6F8 = 1;
+                *(s32*) ((u8*) &D_801CE6FC + 8) = 4;
+                func_800C4998(0, gCourseID);
+                break;
+
+            case 1:
+                gGameModes = 11;
+                gPlayers = 1;
+                gRiders = 1;
+                D_801CB330 = 1;
+                courseData = (s16*) ((u8*) D_800EAC44 + (D_800DA9FC * 8));
+                gCourseID = 1;
+                sp40[1] = 0;
+                sp40[2] = 0;
+                sp40[3] = 0;
+                sp40[0] = courseData[0];
+                func_80096960(0, sp40[0], 0, 0, 0);
+                D_801CE728 = 1;
+                D_801CE6F8 = 0;
+                func_800C4998(3, gCourseID);
+                break;
+
+            default:
+                gGameModes = 1;
+                gPlayers = 2;
+                gRiders = 2;
+                D_801CB330 = 1;
+                courseData = (s16*) ((u8*) D_800EAC44 + (D_800DA9FC * 8));
+                gCourseID = 1;
+                sp40[2] = 0;
+                sp40[3] = 0;
+                sp40[0] = courseData[0];
+                sp40[1] = courseData[1];
+                func_80096960(4, sp40[0], sp40[1], sp40[0], sp40[1]);
+                D_801CE728 = 3;
+                D_800D4970 = 0;
+                D_801CE6F8 = 0;
+                func_800C4998(1, gCourseID);
+                break;
+        }
+
+        D_800D49B0 = 0x14;
+        gBuoyMisses = 5;
+        D_801CE608[0] = gGameModes;
+        *(s16*) ((u8*) D_801CE608 + 0x4) = gPlayers;
+        D_801CE608[2] = 0x14;
+        D_801CE608[3] = 5;
+        *(s16*) ((u8*) D_801CE608 + 0x6) = gRiders;
+        D_801CE608[5] = 0;
+        D_801CE608[4] = D_801CE728;
+        D_800D8178 = 0;
+        D_801CE600 = 1;
+        D_801CB334 = 0;
+        D_801CE6F0 = 0;
+        D_800DAB68 = 0;
+
+        if (gRiders > 0) {
+            s32* var_a1 = sp40;
+            s32* end = var_a1 + gRiders;
+            u8* var_v1 = (u8*) D_80192690;
+            u8* courseParams = (u8*) D_800D96A4 + (gCourseID * 0x30);
+
+            do {
+                s32 val = *var_a1++;
+                s32* entry = (s32*) (courseParams + (val * 12));
+
+                var_v1 += 0x1718;
+                *(s32*) (var_v1 - 0xBB0) = val;
+                *(s32*) (var_v1 - 0xBAC) = entry[0];
+                *(s32*) (var_v1 - 0xBA8) = entry[1];
+                *(s32*) (var_v1 - 0xBA4) = entry[2];
+            } while (var_a1 < end);
+        }
+
+        D_801CE6F4[1] = 0;
+        D_801CE6F4[0] = D_801CE6F4[1];
+        gRiderGameModes = 2;
+        course = gCourseID;
+        D_801CE64C = 0;
+        gGameModeState = 0;
+
+        if (course < 0) {
+            course = 0;
+        }
+        if (course >= 9) {
+            course = 8;
+        }
+
+        func_8009684C(0x08060000, *(s16*) ((u8*) D_800DB568 + (course * 4) + 0),
+                      *(s16*) ((u8*) D_800DB568 + (course * 4) + 2));
+        FadeTransition_SetProps(2, 4, 0);
+        func_801E6A4C(0, 0);
+
+        gCameraPerspective[0] = 3;
+        if (gPlayers == 2) {
+            gCameraPerspective[0x10C / 4] = 3;
+        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB4F4.s")
@@ -792,7 +922,7 @@ void func_801EDF9C(MtxF_t arg0, f32 x, f32 y, f32 z) {
 void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     MtxF mtx;
 
-    func_801EDF9C((float (*)[4]) & mtx, arg1, arg2, arg3);
+    func_801EDF9C((float(*)[4]) & mtx, arg1, arg2, arg3);
 
     _MtxF_to_Mtx(&mtx, arg0);
 }
@@ -814,7 +944,7 @@ void func_801EE040(float (*)[4], f32, f32, f32, f32);
 void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     MtxF mtx;
 
-    func_801EE040((float (*)[4]) & mtx, arg1, arg2, arg3, arg4);
+    func_801EE040((float(*)[4]) & mtx, arg1, arg2, arg3, arg4);
 
     _MtxF_to_Mtx(&mtx, arg0);
 }
@@ -839,7 +969,7 @@ void func_801EE274(float (*)[4], f32, f32, f32, f32, f32, f32, f32);
 void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
     MtxF mtx;
 
-    func_801EE274((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    func_801EE274((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -862,7 +992,7 @@ void func_801EE4D0(float (*)[4], f32, f32, f32, f32, f32, f32);
 void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     MtxF mtx;
 
-    func_801EE4D0((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    func_801EE4D0((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -885,7 +1015,7 @@ void func_801EE6F4(float (*)[4], f32, f32, f32, f32, f32, f32);
 void func_801EE8C0(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     MtxF mtx;
 
-    func_801EE6F4((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    func_801EE6F4((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -917,7 +1047,7 @@ void func_801EE91C(MtxF_t mf, f32 x, f32 y, f32 z) {
 void func_801EE97C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     MtxF sp18;
 
-    func_801EE91C((float (*)[4]) & sp18, arg1, arg2, arg3);
+    func_801EE91C((float(*)[4]) & sp18, arg1, arg2, arg3);
     _MtxF_to_Mtx(&sp18, arg0);
 }
 
