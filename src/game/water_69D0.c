@@ -1222,8 +1222,14 @@ extern f32 D_801924D8;
 extern f32 D_800D46E0;
 extern f32 D_801924D4;
 extern void* D_80164420[];
-extern f32 D_8019245C[];
-extern f32 D_80192458[];
+extern f32 D_80192460[];
+
+#ifdef NON_MATCHING
+/* Scratch BSS for the playable build (no retail home; draft-only names). */
+f32 D_801924D4;
+f32 D_801924D8;
+void* D_80164420[2];
+#endif
 
 void func_80050B78(void*, f32*, f32*);
 
@@ -1248,10 +1254,15 @@ void func_80051238(void) {
     D_801924D8 += D_800D46E4;
     D_801924D4 += D_800D46E0;
 
-    func_80050B78(D_80164420[0], &D_8019245C[0], &D_80192458[0]);
+    /* D_80192458/D_8019245C were draft-era aliases into gWaterLevel's 8-byte
+       bss (0x80192458) and D_80192460 (0x80192460): spell the addresses out. */
+    {
+        f32* wl_base = (f32*) &gWaterLevel; /* 0x80192458 */
+        func_80050B78(D_80164420[0], &wl_base[1], &wl_base[0]);
 
-    if (D_801CE64C == 1) {
-        func_80050B78(D_80164420[1], &D_8019245C[1], &D_80192458[1]);
+        if (D_801CE64C == 1) {
+            func_80050B78(D_80164420[1], &D_80192460[0], &wl_base[1]);
+        }
     }
 }
 #else

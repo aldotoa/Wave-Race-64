@@ -44,6 +44,11 @@ Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
 Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
 
 #ifdef NON_MATCHING
+/* Scratch BSS for the playable build (no retail home; draft-only name). */
+s32 D_801CB3F0[2];
+#endif
+
+#ifdef NON_MATCHING
 Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
     Struct_1C3D00_802C5EB0* ptr;
     s32 i;
