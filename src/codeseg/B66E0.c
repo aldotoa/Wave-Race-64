@@ -84,8 +84,13 @@ Gfx* func_801E946C(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, 
 #endif
 
 #ifdef NON_MATCHING
-void func_801E9858(Gfx* glistp, s32 a1, char* buf, s32 a3, s32 a4) {
+void func_801E9858(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4) {
     /* Main string glyph display list generator */
+    ((void) glistp);
+    ((void) a1);
+    ((void) a2);
+    ((void) a3);
+    ((void) a4);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E9858.s")

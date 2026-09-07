@@ -32,16 +32,18 @@ Gfx* func_i6_802C5B74(Gfx* glistp) {
 }
 
 #ifdef NON_MATCHING
-void func_i6_802C5C2C(void) {
+Gfx* func_i6_802C5C2C(Gfx* arg0) {
     /* City canal wall collision and rebound force evaluator */
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i6/ovl_1C2250/func_i6_802C5C2C.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_i6_802C6B34(void) {
+void func_i6_802C6B34(Gfx* arg0) {
     /* Twilight City night lighting and specular reflection setup */
+    ((void) arg0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i6/ovl_1C2250/func_i6_802C6B34.s")

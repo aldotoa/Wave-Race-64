@@ -105,9 +105,67 @@ void SysMain_GfxInitBuffers(void) {
 #ifndef NON_MATCHING
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_main/SysMain_Thread.s")
 #else
-void* SysMain_Thread(void* entry) {
+/* Linker-script absolute symbols (undefined_syms_auto.ld); externs only. */
+typedef struct {
+    char pad[0xA40];
+    Mtx unk_A40;
+} SysMain_F820;
+
+extern SysMain_F820 D_8011F820;
+extern u8 D_801DAFA0[];
+extern u8 D_801DAFA0_2[];
+extern u8 D_80228E10[];
+extern u8 D_802A0000[];
+extern u8 D_802C5800[];
+extern u8 D_8038F800[];
+extern u8 D_80400000[];
+extern u8 D_1008290[];
+extern u8 D_1008290_2[];
+extern u8 D_106FB70[];
+extern u8 D_FE320[];
+extern s32 D_80151958;
+extern s32 D_8015195C;
+extern s32 D_80151964;
+extern s32 D_80151968;
+extern s32 D_8015196C;
+extern s32 D_80151970;
+extern s32 D_80151974;
+extern s32 D_80151978;
+extern s32 D_8015197C;
+extern s32 D_80151980;
+extern s32 D_80151988;
+extern s32 D_8015198C;
+extern s32 D_80151990;
+extern s32 D_80151994;
+extern s32 D_80151998;
+extern s32 D_8015199C;
+extern s32 D_801519A0;
+extern s32 D_801519A4;
+extern s32 D_801519A8;
+extern s32 D_801519AC;
+extern s32 D_801519B0;
+extern s32 D_801519B4;
+extern s32 D_801519B8;
+extern s32 D_801519BC;
+extern s32 D_801519C0;
+extern s32 D_801519C4;
+extern s32 D_801519C8;
+extern s32 D_801519CC;
+extern s32 D_801519D0;
+extern s32 D_801519D4;
+extern OSMesgQueue D_80154100;
+extern OSMesgQueue D_80154118;
+extern u32 gFrameCounter;
+extern u8 codeseg_ROM_END[];
+extern u8 gAudioHeap[];
+extern u8 main_segment_TEXT_START[];
+extern OSViMode D_800E89A0;
+extern OSViMode D_800E8E00;
+extern OSViMode D_800E8770;
+extern OSViMode D_800E8BD0;
+void SysMain_Thread(void* entry) {
     s32 pad;
-    Matrix mtx; // Guess
+    MtxF mtx; // Guess
     u32* temp_v1;
     u32* temp_v0;
 
@@ -125,7 +183,7 @@ void* SysMain_Thread(void* entry) {
     D_801519A8 = osVirtualToPhysical(main_segment_TEXT_START);
 
     D_80151984 = ALIGN16(D_80151970);
-    D_80151988 = D_80151984 + ALIGN16(D_1008290 - D_1000000);
+    D_80151988 = D_80151984 + ALIGN16((u32) D_1008290 - (u32) D_1000000);
 
     D_8015198C = D_80151988;
     D_80151990 = D_8015198C + ALIGN16(D_106FB70 - D_1008290_2);
@@ -151,12 +209,13 @@ void* SysMain_Thread(void* entry) {
     D_801519AC = D_8015197C;
     D_801519B0 = D_80151980;
 
-    D_801519D4 = (u32) (osVirtualToPhysical((void*) 0x8029A200) -
-                        (D_80151970 + ALIGN16(D_1008290 - D_1000000) + ALIGN16(D_106FB70 - D_1008290_2)));
+    D_801519D4 =
+        (u32) (osVirtualToPhysical((void*) 0x8029A200) - (D_80151970 + ALIGN16((u32) D_1008290 - (u32) D_1000000) +
+                                                          ALIGN16((u32) D_106FB70 - (u32) D_1008290_2)));
 
     GameLoad_LoadCodeseg();
 
-    game_dma_copy((codeseg_ROM_END,  D_80151984, ALIGN16(D_FE320 - codeseg_ROM_END));
+    game_dma_copy(codeseg_ROM_END, (void*) D_80151984, ALIGN16(D_FE320 - codeseg_ROM_END));
     game_dma_copy(D_FE320, D_8015198C, ALIGN16(D_165C00 - D_FE320));
 
     D_8011F8E0 = 0;
@@ -236,9 +295,9 @@ void* SysMain_Thread(void* entry) {
         if (D_800DAB1C == 3) {
             if ((gGameState == GAME_STATE_BOOT_UP) && (D_801CE63C != 0)) {
                 if (osTvType == OS_TV_NTSC) {
-                    osViSetMode(D_800E89A0);
+                    osViSetMode(&D_800E89A0);
                 } else {
-                    osViSetMode(D_800E8E00);
+                    osViSetMode(&D_800E8E00);
                 }
                 osViSetSpecialFeatures(OS_VI_GAMMA_OFF | OS_VI_GAMMA_DITHER_ON);
             }
@@ -246,9 +305,9 @@ void* SysMain_Thread(void* entry) {
         } else {
             if ((gPrevGameState == 6) && (D_801CE63C != 0)) {
                 if (osTvType == 1) {
-                    osViSetMode(D_800E8770);
+                    osViSetMode(&D_800E8770);
                 } else {
-                    osViSetMode(D_800E8BD0);
+                    osViSetMode(&D_800E8BD0);
                 }
 
                 osViSetSpecialFeatures(OS_VI_GAMMA_OFF | OS_VI_GAMMA_DITHER_ON | OS_VI_DIVOT_OFF |

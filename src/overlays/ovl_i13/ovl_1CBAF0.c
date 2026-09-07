@@ -1,5 +1,28 @@
 #include "global.h"
 
+/* Forward declarations (verbatim copies of the same-file draft definitions)
+   and file-data externs. Prototypes/externs emit no code, so the matching
+   build is unaffected; they only cure implicit declarations in this TU. */
+void func_i13_802C82A4(s32 arg0);
+void func_i13_802C8CBC(void);
+void func_800C3E6C(s32);
+extern s32 D_i13_802C8D50;
+extern s32 D_i13_802C8D54;
+extern s32 D_i13_802C8D58;
+extern s32 D_i13_802C8D5C;
+extern s32 D_i13_802C8D70;
+extern s32 D_i13_802C8D74;
+extern s32 D_i13_802C8D78;
+extern s32 D_i13_802C8D80;
+extern s32 D_i13_802C8D84;
+extern s32 D_i13_802C8D98;
+extern s32 D_i13_802C8DC0;
+extern s32 D_i13_802C8DC4;
+extern s32 D_i13_802C8DC8;
+extern s32 D_i13_802C8DCC;
+extern s32 D_i13_802C8DD0;
+extern s32 D_i13_802C8DD4;
+
 #ifdef NON_MATCHING
 Gfx* func_i13_802C5800(Gfx* arg0) {
     return arg0;

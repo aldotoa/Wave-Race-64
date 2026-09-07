@@ -636,8 +636,9 @@ s32 func_80053268(s32 arg0, UnkStruct_80052E90_arg1_s* arg1, s32 arg2, s32 arg3)
 
 // Fun float functions
 #ifdef NON_MATCHING
-void func_800534AC(f32* arg0, f32* arg1, f32* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8,
-                   f32 arg9, f32 arg10, f32 arg11, f32 arg12, f32 arg13) {
+void func_800534AC(UnkStruct_80052C6C_2* arg0_in, f32* arg1, f32* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6,
+                   f32 arg7, f32 arg8, f32 arg9, f32 arg10, f32 arg11, f32 arg12, f32 arg13) {
+    f32* arg0 = (f32*) arg0_in;
     f32 temp_fv0;
     f32 temp_ft3;
     f32 temp_fa0;
@@ -780,8 +781,10 @@ void func_80053A5C(UnkStruct_80052E90_arg1_s* arg0, f32 arg1, UnkStruct_80052E90
 }
 
 #ifdef NON_MATCHING
-void func_80053C08(s32 arg0) {
+void func_80053C08(f32 arg0, s32 arg1) {
     /* Water surface wave height compensation for camera elevation */
+    ((void) arg0);
+    ((void) arg1);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80053C08.s")
@@ -2280,8 +2283,11 @@ void func_8006719C(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_80067810(void) {
+Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2) {
     /* Winner podium presentation camera framing */
+    ((void) arg1);
+    ((void) arg2);
+    return glistp;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067810.s")
@@ -2323,8 +2329,9 @@ void func_800683A0(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_80068538(void) {
+Gfx* func_80068538(Gfx* glistp) {
     /* Multiplayer aspect ratio and scissor box calculator */
+    return glistp;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80068538.s")
@@ -2424,8 +2431,14 @@ void func_8006977C(void* arg0, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
-void func_80069798(void) {
+void func_80069798(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, void* arg5) {
     /* Camera master cleanup and shutdown coordinator */
+    ((void) arg0);
+    ((void) arg1);
+    ((void) arg2);
+    ((void) arg3);
+    ((void) arg4);
+    ((void) arg5);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80069798.s")
