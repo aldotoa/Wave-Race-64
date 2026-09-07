@@ -2,9 +2,18 @@
 
 #ifdef AVOID_UB
 /* AVOID_UB reroutes the thread-tail through this unified struct (see the
-   header); it has no definition anywhere, so provide it with the original
-   { NULL, -1 } init. Matching builds never see this. */
-OSThread_ListHead __osThreadTail_fix = { NULL, -1, NULL, NULL, NULL, 0 };
+   header); it has no definition anywhere, so provide it. queue/tlnext
+   point at itself exactly like the original __osRunQueue/__osActiveQueue
+   point at &__osThreadTail (priority -1 keeps new threads preempting).
+   Matching builds never see this. */
+OSThread_ListHead __osThreadTail_fix = {
+    NULL,
+    -1,
+    (OSThread*) &__osThreadTail_fix,
+    (OSThread*) &__osThreadTail_fix,
+    NULL,
+    0,
+};
 #endif
 
 void osSetThreadPri(OSThread* thread, OSPri pri) {
