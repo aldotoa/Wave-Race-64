@@ -497,14 +497,58 @@ s32 func_8007BE64(void) {
     return func_8007BD20();
 }
 
-#ifdef NON_MATCHING
+/* Splat-owned EEPROM tables (bss/data); element strides below must match the stub. */
+extern UnkStruct_func_8007AF78_1 D_801C1FF0[][3];
+extern s32 D_801C22C0[][5];
+extern s32 D_801C24A0[][9];
+extern s32 D_800D82B0[];
+extern s32 D_801AEBC0;
+
+/* Course record save slot index boundary verification (decomp.me o9O0U) */
 s32 func_8007BEA4(s32 arg0) {
-    /* Course record save slot index boundary verification */
+    s32 pad[1]; /* frame-keeping unused local */
+    s32 temp_v0;
+    s32 i;
+    s32 var_v0;
+
+    if (D_800D8260 == 0) {
+        return 1;
+    }
+    if ((arg0 <= 0) || (arg0 >= 9)) {
+        return 0;
+    }
+
+    i = arg0 - 1;
+    for (var_v0 = 0; var_v0 < 3; var_v0++) {
+        /* unk60/unk1A8 viewed through UnkStruct_8007CB68_2; the casts emit no code */
+        func_8007AF78(&D_801C1FF0[arg0][var_v0],
+                      (UnkStruct_func_8007AF78_2*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][var_v0]);
+    }
+
+    func_8007AF78((UnkStruct_func_8007AF78_1*) &D_801C22C0[arg0],
+                  (UnkStruct_func_8007AF78_2*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][var_v0]);
+
+    for (var_v0 = 0; var_v0 < 2; var_v0++) {
+        func_8007B2BC(D_801C24A0[arg0][var_v0],
+                      (UnkStruct_8007B2BC*) &((UnkStruct_8007CB68_2*) D_801AEA18)->unk1A8[i][var_v0]);
+    }
+
+    func_8007B31C();
+    D_801AEA18->unk2 = Save_GenCheckSum((u8*) D_801AEA18);
+    if (osEepromLongWrite(&D_801540D0, 0U, (u8*) D_801AEA18, 0x10) != 0) {
+        return 3;
+    }
+    if (osEepromLongWrite(&D_801540D0, ((u32) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i] - (u32) D_801AEA18) >> 3,
+                          (u8*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i], 0x18) != 0) {
+        return 3;
+    }
+    temp_v0 = D_800D82B0[i];
+    if (osEepromLongWrite(&D_801540D0, (((u32) &D_801AEBC0 - (u32) D_801AEA18) + temp_v0) >> 3,
+                          (u8*) D_801AEA18 + temp_v0 + 0x1A8, 0x10) != 0) {
+        return 3;
+    }
     return 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007BEA4.s")
-#endif
 
 s32 func_8007C0B8(s32 arg0) {
     s32 temp_v0;
