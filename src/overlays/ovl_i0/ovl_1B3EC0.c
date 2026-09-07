@@ -19,6 +19,17 @@ extern s32 D_i0_802C6BFC[];
 extern s32 D_805AF88;
 void func_i0_802C6A1C(s32 arg0);
 
+#ifdef NON_MATCHING
+/* Skeletal stand-in for the playable build. No asm exists in-repo (the
+   matching stub never calls it; the draft in this TU reverse-engineered
+   the call), so there is no GLOBAL_ASM leg by design. Caller passes Gfx*
+   and uses the result as Gfx*; true body to be m2c'd from ROM later. */
+Gfx* func_8009328C(Gfx* arg0);
+Gfx* func_8009328C(Gfx* arg0) {
+    return arg0;
+}
+#endif
+
 /* Training stage entry (0x18 bytes) and its per-step data (0x18 bytes) */
 typedef struct {
     s16 unk0;
@@ -147,74 +158,77 @@ Gfx* func_i0_802C5A7C(Gfx* arg0) {
     }
     s0 = func_8009328C(s0);
     switch (D_i0_802C6BE0) {
-    case 0:
-        g = s0;
-        g->words.w0 = 0x06000000;
-        g->words.w1 = (u32)(uintptr_t)D_805A6F8;
-        g = func_801E946C(s0 + 1, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-        g = func_801E946C(g, 0, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-        if (D_i0_802C6BEC == 0) {
-            base = 0xA6;
-        } else {
-            base = 0x8C;
-        }
-        g = func_801E3EE0(g, 1, 0x58, 0x5F, base + 0x14, 2);
-        ((DLChunk*)g)->unkC = 0x07080200;
-        ((DLChunk*)g)->unk10 = 0xE6000000;
-        ((DLChunk*)g)->unk0 = 0xFD700000;
-        ((DLChunk*)g)->unk20 = 0xE7000000;
-        ((DLChunk*)g)->unk18 = 0xF3000000;
-        ((DLChunk*)g)->unk8 = 0xF5700000;
-        ((DLChunk*)g)->unk4 = (s32)(uintptr_t)&D_803D610;
-        ((DLChunk*)g)->unk1C = 0x072FF040;
-        ((DLChunk*)g)->unk28 = 0xF5684000;
-        ((DLChunk*)g)->unk2C = 0x80200;
-        ((DLChunk*)g)->unk30 = 0xF2000000;
-        ((DLChunk*)g)->unk34 = 0x3FC014;
-        ((DLChunk*)g)->unk24 = 0;
-        ((DLChunk*)g)->unk14 = 0;
-        ((DLChunk*)g)->unk48 = 0xB2000000;
-        ((DLChunk*)g)->unk40 = 0xB3000000;
-        ((DLChunk*)g)->unk3C = (s32)((((base + 0x2C) * 4) & 0xFFF) | 0x80000);
-        ((DLChunk*)g)->unk4C = 0x04000400;
-        ((DLChunk*)g)->unk38 = (s32)((((base + 0x32) * 4) & 0xFFF) | 0xE4480000);
-        ((DLChunk*)g)->unk44 = 0;
-        s0 = (Gfx*)((DLChunk*)g + 1);
-        if ((D_i0_802C6BEC == 0) && (D_i0_802C6BE8 == 0x14)) {
-            if ((D_i0_802C6BE4 % 30) < 0x14) {
-                s0 = func_801E3EE0(func_801E946C(s0, 7, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), 1, 0x56, 0x5E, 0xA6, 2);
+        case 0:
+            g = s0;
+            g->words.w0 = 0x06000000;
+            g->words.w1 = (u32) (uintptr_t) D_805A6F8;
+            g = func_801E946C(s0 + 1, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            g = func_801E946C(g, 0, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            if (D_i0_802C6BEC == 0) {
+                base = 0xA6;
+            } else {
+                base = 0x8C;
             }
-            t3 = D_i0_802C6BE4 + 1;
-            D_i0_802C6BE4 = t3;
-            if (t3 >= 0x1E) {
-                D_i0_802C6BE4 = 0;
+            g = func_801E3EE0(g, 1, 0x58, 0x5F, base + 0x14, 2);
+            ((DLChunk*) g)->unkC = 0x07080200;
+            ((DLChunk*) g)->unk10 = 0xE6000000;
+            ((DLChunk*) g)->unk0 = 0xFD700000;
+            ((DLChunk*) g)->unk20 = 0xE7000000;
+            ((DLChunk*) g)->unk18 = 0xF3000000;
+            ((DLChunk*) g)->unk8 = 0xF5700000;
+            ((DLChunk*) g)->unk4 = (s32) (uintptr_t) &D_803D610;
+            ((DLChunk*) g)->unk1C = 0x072FF040;
+            ((DLChunk*) g)->unk28 = 0xF5684000;
+            ((DLChunk*) g)->unk2C = 0x80200;
+            ((DLChunk*) g)->unk30 = 0xF2000000;
+            ((DLChunk*) g)->unk34 = 0x3FC014;
+            ((DLChunk*) g)->unk24 = 0;
+            ((DLChunk*) g)->unk14 = 0;
+            ((DLChunk*) g)->unk48 = 0xB2000000;
+            ((DLChunk*) g)->unk40 = 0xB3000000;
+            ((DLChunk*) g)->unk3C = (s32) ((((base + 0x2C) * 4) & 0xFFF) | 0x80000);
+            ((DLChunk*) g)->unk4C = 0x04000400;
+            ((DLChunk*) g)->unk38 = (s32) ((((base + 0x32) * 4) & 0xFFF) | 0xE4480000);
+            ((DLChunk*) g)->unk44 = 0;
+            s0 = (Gfx*) ((DLChunk*) g + 1);
+            if ((D_i0_802C6BEC == 0) && (D_i0_802C6BE8 == 0x14)) {
+                if ((D_i0_802C6BE4 % 30) < 0x14) {
+                    s0 = func_801E3EE0(
+                        func_801E946C(s0, 7, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), 1,
+                        0x56, 0x5E, 0xA6, 2);
+                }
+                t3 = D_i0_802C6BE4 + 1;
+                D_i0_802C6BE4 = t3;
+                if (t3 >= 0x1E) {
+                    D_i0_802C6BE4 = 0;
+                }
             }
-        }
-        s0->words.w0 = 0x06000000;
-        s0->words.w1 = (u32)(uintptr_t)D_106F168;
-        s0 = s0 + 1;
-        break;
-    case 1:
-        s0 = func_i0_802C6044(s0);
-        s0->words.w0 = 0x06000000;
-        s0->words.w1 = (u32)(uintptr_t)D_106F168;
-        s0 = s0 + 1;
-        a1 = 0;
-        x = 0;
-        if (D_802C6F0C > 0) {
-            do {
-                g = s0;
-                a1 += 1;
-                g->words.w0 = (s32)(((u32)(((x + D_i0_802C6BD0 + 0xE) & 0x3FF) * 4)) | 0xF639C000);
-                s0 = s0 + 1;
-                g->words.w1 = (s32)(((u32)((((x + D_i0_802C6BD0) - 3) & 0x3FF) * 4)) | 0x164000);
-                x += 0x14;
-            } while (a1 < D_802C6F0C);
-        }
-        break;
+            s0->words.w0 = 0x06000000;
+            s0->words.w1 = (u32) (uintptr_t) D_106F168;
+            s0 = s0 + 1;
+            break;
+        case 1:
+            s0 = func_i0_802C6044(s0);
+            s0->words.w0 = 0x06000000;
+            s0->words.w1 = (u32) (uintptr_t) D_106F168;
+            s0 = s0 + 1;
+            a1 = 0;
+            x = 0;
+            if (D_802C6F0C > 0) {
+                do {
+                    g = s0;
+                    a1 += 1;
+                    g->words.w0 = (s32) (((u32) (((x + D_i0_802C6BD0 + 0xE) & 0x3FF) * 4)) | 0xF639C000);
+                    s0 = s0 + 1;
+                    g->words.w1 = (s32) (((u32) ((((x + D_i0_802C6BD0) - 3) & 0x3FF) * 4)) | 0x164000);
+                    x += 0x14;
+                } while (a1 < D_802C6F0C);
+            }
+            break;
     }
     if (D_i0_802C6BEC != 0) {
-        s0 = func_i0_802C6AE4(func_801E946C(s0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF));
+        s0 = func_i0_802C6AE4(
+            func_801E946C(s0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF));
     }
     cue = D_i0_802C6BC8 + 1;
     if (D_i0_802C6BC8 < 0x14) {
@@ -224,25 +238,25 @@ Gfx* func_i0_802C5A7C(Gfx* arg0) {
         }
     }
     switch (D_i0_802C6BE0) {
-    case 0:
-        if (D_i0_802C6BE8 < 0x14) {
-            D_i0_802C6BE8 += 1;
-        }
-        if ((D_801CE65A->unk0 & 0xB000) && (D_i0_802C6BE8 == 0x14)) {
-            D_i0_802C6BE0 = 1;
-            D_802C6F14 = 0;
-            AudioGeneral_PlaySound(0x11, 0);
-        } else {
-            f14 = D_802C6F14 + 1;
-            D_802C6F14 = f14;
-            if (f14 >= 0x258) {
-                func_i0_802C6A1C(7);
+        case 0:
+            if (D_i0_802C6BE8 < 0x14) {
+                D_i0_802C6BE8 += 1;
             }
-        }
-        break;
-    case 1:
-        func_i0_802C63AC();
-        break;
+            if ((D_801CE65A->unk0 & 0xB000) && (D_i0_802C6BE8 == 0x14)) {
+                D_i0_802C6BE0 = 1;
+                D_802C6F14 = 0;
+                AudioGeneral_PlaySound(0x11, 0);
+            } else {
+                f14 = D_802C6F14 + 1;
+                D_802C6F14 = f14;
+                if (f14 >= 0x258) {
+                    func_i0_802C6A1C(7);
+                }
+            }
+            break;
+        case 1:
+            func_i0_802C63AC();
+            break;
     }
     return s0;
 }
@@ -344,107 +358,107 @@ void func_i0_802C63AC(void) {
             if (h == -1) {
                 TrainingStep* body = (TrainingStep*) ((char*) entry->unk0 + off);
 
-            D_801CE608.gameMode = body->unk4;
-            D_801CE608.player = body->unk10;
-            D_801CE608.rider = body->unk12;
-            gDifficulty = body->unk14;
-            if (body->unk16 == 4) {
-                D_800DAB68 = 1;
-            }
-            switch (D_801CE608.gameMode) {
-                case 0:
-                    cue = 10;
-                    D_801CE608.waveLevel = 0;
-                    D_801CE608.unk_14 = 0;
-                    break;
-                case 1:
-                    D_801CB350[10][0] = 0;
-                    D_801CB350[10][1] = 0;
-                    cue = 10;
-                    D_801CE608.waveLevel = 0;
-                    D_801CE608.unk_14 = 0;
-                    break;
-                case 4: {
-                    s32* p;
-                    s32* end;
-                    s32* r;
-                    s32* q;
-
-                    D_801CE608.waveLevel = 0;
-                    D_801CE608.unk_14 = 0;
-                    if (gDifficulty == DIFFICULTY_NORMAL) {
-                        D_801CE608.powerMisses = D_801CB308[0][1];
-                        D_801CE608.lapCount = D_801CB308[0][2];
-                    } else if (gDifficulty == DIFFICULTY_HARD) {
-                        D_801CE608.powerMisses = D_801CB308[1][1];
-                        D_801CE608.lapCount = D_801CB308[1][2];
-                    } else {
-                        D_801CE608.powerMisses = D_801CB308[2][1];
-                        D_801CE608.lapCount = D_801CB308[2][2];
-                    }
-                    cue = 10;
-                    D_801CE6F8 = 1;
-                    p = D_801CB340;
-                    end = &D_801CB350[0][0];
-                    do {
-                        p++;
-                        p[-1] = 0;
-                    } while ((u32) p < (u32) end);
-                    D_801CB334 = 0;
-                    if (body->unk16 == 2) {
-                        D_801CB334 = 1;
-                    }
-                    D_801CB330 = *(s16*) ((char*) D_800EAC14 + gDifficulty * 0x10 + D_801CB334 * 2);
-                    r = &D_801CB350[0][0];
-                    q = (s32*) ((char*) &D_801CB350[0][0] + 0x80);
-                    do {
-                        r += 4;
-                        q++;
-                        r[-4] = 0;
-                        r[-3] = 0;
-                        r[-2] = 0;
-                        r[-1] = 0;
-                        q[-1] = 0;
-                    } while (r != (s32*) ((char*) &D_801CB350[0][0] + 0x80));
-                    break;
+                D_801CE608.gameMode = body->unk4;
+                D_801CE608.player = body->unk10;
+                D_801CE608.rider = body->unk12;
+                gDifficulty = body->unk14;
+                if (body->unk16 == 4) {
+                    D_800DAB68 = 1;
                 }
-                case 5:
-                    cue = 0x3C;
-                    break;
-                case 11:
-                    cue = 10;
-                    D_801CE608.waveLevel = 0;
-                    D_801CE608.powerMisses = 1;
-                    D_801CE608.lapCount = 1;
-                    D_801CE608.unk_14 = 0;
-                    break;
-                default:
-                    cue = 2;
-                    break;
-            }
-            AudioGeneral_PlaySound(0x37, 0);
-            func_i0_802C6A1C(cue);
-        } else {
-            s32 t;
+                switch (D_801CE608.gameMode) {
+                    case 0:
+                        cue = 10;
+                        D_801CE608.waveLevel = 0;
+                        D_801CE608.unk_14 = 0;
+                        break;
+                    case 1:
+                        D_801CB350[10][0] = 0;
+                        D_801CB350[10][1] = 0;
+                        cue = 10;
+                        D_801CE608.waveLevel = 0;
+                        D_801CE608.unk_14 = 0;
+                        break;
+                    case 4: {
+                        s32* p;
+                        s32* end;
+                        s32* r;
+                        s32* q;
 
-            D_802C6EE0 = h;
-            D_802C6EE4 = 0;
-            switch (sub->unk16) {
-                case 1:
-                    if (D_800DAA00 > 0) {
-                        D_802C6EE4 = 1;
+                        D_801CE608.waveLevel = 0;
+                        D_801CE608.unk_14 = 0;
+                        if (gDifficulty == DIFFICULTY_NORMAL) {
+                            D_801CE608.powerMisses = D_801CB308[0][1];
+                            D_801CE608.lapCount = D_801CB308[0][2];
+                        } else if (gDifficulty == DIFFICULTY_HARD) {
+                            D_801CE608.powerMisses = D_801CB308[1][1];
+                            D_801CE608.lapCount = D_801CB308[1][2];
+                        } else {
+                            D_801CE608.powerMisses = D_801CB308[2][1];
+                            D_801CE608.lapCount = D_801CB308[2][2];
+                        }
+                        cue = 10;
+                        D_801CE6F8 = 1;
+                        p = D_801CB340;
+                        end = &D_801CB350[0][0];
+                        do {
+                            p++;
+                            p[-1] = 0;
+                        } while ((u32) p < (u32) end);
+                        D_801CB334 = 0;
+                        if (body->unk16 == 2) {
+                            D_801CB334 = 1;
+                        }
+                        D_801CB330 = *(s16*) ((char*) D_800EAC14 + gDifficulty * 0x10 + D_801CB334 * 2);
+                        r = &D_801CB350[0][0];
+                        q = (s32*) ((char*) &D_801CB350[0][0] + 0x80);
+                        do {
+                            r += 4;
+                            q++;
+                            r[-4] = 0;
+                            r[-3] = 0;
+                            r[-2] = 0;
+                            r[-1] = 0;
+                            q[-1] = 0;
+                        } while (r != (s32*) ((char*) &D_801CB350[0][0] + 0x80));
+                        break;
                     }
-                    break;
-                case 3:
-                    if (D_i0_802C6BC0 != 0) {
-                        D_802C6EE0 = 5;
-                    }
-                    break;
+                    case 5:
+                        cue = 0x3C;
+                        break;
+                    case 11:
+                        cue = 10;
+                        D_801CE608.waveLevel = 0;
+                        D_801CE608.powerMisses = 1;
+                        D_801CE608.lapCount = 1;
+                        D_801CE608.unk_14 = 0;
+                        break;
+                    default:
+                        cue = 2;
+                        break;
+                }
+                AudioGeneral_PlaySound(0x37, 0);
+                func_i0_802C6A1C(cue);
+            } else {
+                s32 t;
+
+                D_802C6EE0 = h;
+                D_802C6EE4 = 0;
+                switch (sub->unk16) {
+                    case 1:
+                        if (D_800DAA00 > 0) {
+                            D_802C6EE4 = 1;
+                        }
+                        break;
+                    case 3:
+                        if (D_i0_802C6BC0 != 0) {
+                            D_802C6EE0 = 5;
+                        }
+                        break;
+                }
+                t = D_802C6EE0;
+                D_i0_802C6BD0 = D_i0_802C6E08[t].unk10;
+                AudioGeneral_PlaySound(0x11, 0);
             }
-            t = D_802C6EE0;
-            D_i0_802C6BD0 = D_i0_802C6E08[t].unk10;
-            AudioGeneral_PlaySound(0x11, 0);
-        }
         }
     } else if ((D_801CE65A->unk0 & 0x4000) != 0) {
         flag = 0;

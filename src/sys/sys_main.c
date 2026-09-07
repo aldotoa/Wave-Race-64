@@ -112,17 +112,17 @@ typedef struct {
 } SysMain_F820;
 
 extern SysMain_F820 D_8011F820;
-extern u8 D_801DAFA0[];
-extern u8 D_801DAFA0_2[];
 extern u8 D_80228E10[];
 extern u8 D_802A0000[];
-extern u8 D_802C5800[];
 extern u8 D_8038F800[];
 extern u8 D_80400000[];
 extern u8 D_1008290[];
-extern u8 D_1008290_2[];
 extern u8 D_106FB70[];
 extern u8 D_FE320[];
+/* Bare addresses only (functions/data defined in other TUs or asm). */
+extern u8 func_801DAFA0[];
+extern u8 func_i3_802C5800[];
+extern u8 gAudioGlobalsEndMarker[];
 extern s32 D_80151958;
 extern s32 D_8015195C;
 extern s32 D_80151964;
@@ -157,8 +157,6 @@ extern OSMesgQueue D_80154100;
 extern OSMesgQueue D_80154118;
 extern u32 gFrameCounter;
 extern u8 codeseg_ROM_END[];
-extern u8 gAudioHeap[];
-extern u8 main_segment_TEXT_START[];
 extern OSViMode D_800E89A0;
 extern OSViMode D_800E8E00;
 extern OSViMode D_800E8770;
@@ -169,24 +167,24 @@ void SysMain_Thread(void* entry) {
     u32* temp_v1;
     u32* temp_v0;
 
-    D_80151964 = osVirtualToPhysical(main_segment_TEXT_START);
-    D_80151968 = osVirtualToPhysical(D_801DAFA0);
+    D_80151964 = osVirtualToPhysical(func_80046850);
+    D_80151968 = osVirtualToPhysical(func_801DAFA0);
 
     D_8015196C = D_80151968;
-    D_80151970 = D_8015196C + (D_80228E10 - D_801DAFA0_2);
+    D_80151970 = D_8015196C + (D_80228E10 - func_801DAFA0);
 
     D_80151974 = osVirtualToPhysical(D_802A0000);
-    D_80151978 = osVirtualToPhysical(D_802C5800);
+    D_80151978 = osVirtualToPhysical(func_i3_802C5800);
     D_8015197C = osVirtualToPhysical(D_8038F800);
     D_80151980 = osVirtualToPhysical(D_80400000);
-    D_801519A4 = osVirtualToPhysical(gAudioHeap);
-    D_801519A8 = osVirtualToPhysical(main_segment_TEXT_START);
+    D_801519A4 = osVirtualToPhysical(gAudioGlobalsEndMarker + 0x18);
+    D_801519A8 = osVirtualToPhysical(func_801DAFA0);
 
     D_80151984 = ALIGN16(D_80151970);
     D_80151988 = D_80151984 + ALIGN16((u32) D_1008290 - (u32) D_1000000);
 
     D_8015198C = D_80151988;
-    D_80151990 = D_8015198C + ALIGN16(D_106FB70 - D_1008290_2);
+    D_80151990 = D_8015198C + ALIGN16((u32) D_106FB70 - (u32) D_1008290);
 
     D_801519CC = osVirtualToPhysical((u8*) 0x802C5800);
     D_801519D0 = D_801519CC + 0x11000;
@@ -200,8 +198,8 @@ void SysMain_Thread(void* entry) {
     D_801519B4 = osVirtualToPhysical((u8*) 0x80316800);
     D_801519B8 = D_801519B4 + 0x79000;
 
-    D_80151994 = osVirtualToPhysical(&D_8011F820);
-    D_80151998 = osVirtualToPhysical(&D_8011F820 + 1);
+    D_80151994 = osVirtualToPhysical(D_8011EDE0);
+    D_80151998 = osVirtualToPhysical(D_8011F8E0);
 
     D_8015199C = osVirtualToPhysical(D_8011F8E8);
     D_801519A0 = osVirtualToPhysical(D_8011F8E8 + 2);
@@ -210,8 +208,8 @@ void SysMain_Thread(void* entry) {
     D_801519B0 = D_80151980;
 
     D_801519D4 =
-        (u32) (osVirtualToPhysical((void*) 0x8029A200) - (D_80151970 + ALIGN16((u32) D_1008290 - (u32) D_1000000) +
-                                                          ALIGN16((u32) D_106FB70 - (u32) D_1008290_2)));
+        (u32) (osVirtualToPhysical((void*) 0x8029A200) -
+               (D_80151970 + ALIGN16((u32) D_1008290 - (u32) D_1000000) + ALIGN16((u32) D_106FB70 - (u32) D_1008290)));
 
     GameLoad_LoadCodeseg();
 

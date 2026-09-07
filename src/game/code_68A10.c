@@ -218,16 +218,15 @@ void func_800AE210(s32 rider) {
 }
 
 #ifdef NON_MATCHING
-s64 D_801D7B20;
-s64 D_801D7B28;
-s64 D_801D7B30;
-s64 D_801D7B40;
-s64 D_801D7B48;
-s64 D_801D7B50;
-s64 D_801D7B58;
-
-/* BSS-migrated (bss1 size 0x20 = 2 entries); tentative def merges with bss.o */
-UnkStruct_801D7AF0 D_801D7AF0[2];
+/* BSS lives in splat bss1 (strong defs); declare only, with splat sizes. */
+extern s32 D_801D7B20;
+extern s64 D_801D7B28;
+extern s64 D_801D7B30;
+extern s32 D_801D7B40;
+extern s64 D_801D7B48;
+extern s64 D_801D7B50;
+extern s32 D_801D7B58;
+extern UnkStruct_801D7AF0 D_801D7AF0[];
 
 void func_800AE7C4(void) {
     s32 var_a1;

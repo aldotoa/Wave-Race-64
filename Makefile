@@ -151,6 +151,10 @@ endif
 ifeq ($(NON_MATCHING),1)
     BUILD_DEFINES   += -DNON_MATCHING -DAVOID_UB
     CPPFLAGS += -DNON_MATCHING -DAVOID_UB
+# Dead jump-table labels orphaned by replaced stubs (shared-rodata jump
+# tables reference them; nothing in C builds reads those words).
+# Matching builds never see this file.
+    LD_EXTRA_SCRIPTS := -T linker_scripts/$(VERSION)/$(REV)/nonmatching_jlabels.ld
 endif
 
 MAKE = make
@@ -518,7 +522,7 @@ $(ROM): $(ELF)
 $(ELF): $(O_FILES) $(LD_SCRIPT)
 	$(call print,Linking:,$<,$@)
 	$(V)$(LD) $(LDFLAGS) -T $(LD_SCRIPT) \
-		-T linker_scripts/$(VERSION)/$(REV)/auto/undefined_funcs_auto.ld  -T linker_scripts/$(VERSION)/$(REV)/auto/undefined_syms_auto.ld -T linker_scripts/$(VERSION)/$(REV)/libultra_undefined_syms.txt -T linker_scripts/$(VERSION)/$(REV)/resolve.txt \
+		-T linker_scripts/$(VERSION)/$(REV)/auto/undefined_funcs_auto.ld  -T linker_scripts/$(VERSION)/$(REV)/auto/undefined_syms_auto.ld -T linker_scripts/$(VERSION)/$(REV)/libultra_undefined_syms.txt -T linker_scripts/$(VERSION)/$(REV)/resolve.txt $(LD_EXTRA_SCRIPTS) \
 		-Map $(LD_MAP) -o $@
 
 # PreProcessor
