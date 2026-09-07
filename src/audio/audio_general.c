@@ -15,6 +15,11 @@ void func_800BF964(void);
 void func_800C1540(s32 arg0, u32 arg1, u32 arg2);
 void func_800C15C8(s32 arg0, u32 arg1);
 void func_800C3320(u32 arg0, s32 arg1, s32 arg2);
+void func_800C317C(s32 arg0, s32 arg1);
+void func_800C3240(s8 arg0);
+void func_800C3270(s8 arg0);
+void func_800C36F8(s32 arg0);
+void func_800C1EB8(s32 arg0);
 void func_800C3494(void);
 void func_800C40B0(void);
 void func_800BFEF8(u8* arg0);
@@ -405,7 +410,20 @@ void func_800C00B0(s8 vol, f32 freqMod) {
 }
 
 #ifdef NON_MATCHING
-/* Master music track transition and channel modulation coordinator (m2c initial translation) */
+/* Master music track transition and channel modulation coordinator.
+   Diff floor 11246 (TU-verified; started 12474 from raw m2c): branches and
+   calls all align, FRAME NOW MATCHES (0x60). Sequential float merges are
+   safe (var_fv1_2->var_fv1 -68, var_fv1_3->temp_fv1 -> frame match);
+   cross-case int merges are still poison (see PlaySound note). Slot map:
+   0x18/0x1C/0x58/0x5B/0x64/0x67 MATCH; sp30 at 0x28 vs 0x30, var_a3 byte at
+   0x46 vs 0x57, float spill once at 0x24 vs 3x at 0x3C -- remaining tail is
+   float live-range + packing alignment. Fixed m2c ghost local sp57 (-1000);
+   most-used-first decls -189. Do NOT "clean" goto skeleton (+1900).
+   Next: float spill structure (why retail spills fv1 3x), char packing.
+   Ruled out: dropping no-op (s8) cast (neutral -- IDO folds it), splitting
+   the double-add into two statements (neutral -- IDO reassociates floats
+   under -O2 regardless of source association).
+   Parked. */
 extern s32 D_800E7CA0;
 extern s32 D_800E7CA4;
 extern s32 D_800E7CB4;
@@ -418,26 +436,23 @@ extern s8 D_801D7DFC;
 extern s8 D_801D7E04;
 
 void func_800C010C(s8* arg0, s8 arg1) {
-    f32* sp24;
-    s32 sp28;
     s32 sp30;
-    f32 sp3C;
-    u8 sp57;
     s32 sp58;
     s32 sp5C;
+    s32 sp28;
+    f32* sp24;
+    f32 sp3C;
+    s8 var_v1;
+    u8 var_a3;
+    s8 temp_v0_9;
+    s32 var_v0;
     f32 temp_fv0;
     f32 temp_fv1;
     f32 var_fv1;
-    f32 var_fv1_2;
-    f32 var_fv1_3;
-    s32 var_v0;
-    s8 temp_v0_9;
-    s8 var_v1;
-    u8 var_a3;
 
     if (D_800E7C94 == 4) {
         if ((arg0[0x18] != 0) && (arg1 < 2)) {
-            func_800BFFEC((u8) ((sp57 * arg1) + 2), 1U, 0x7FU);
+            func_800BFFEC((u8) ((var_a3 * arg1) + 2), 1U, 0x7FU);
             arg0[0x18] = 0;
         }
     } else if (D_800E7C94 == 7) {
@@ -508,25 +523,20 @@ void func_800C010C(s8* arg0, s8 arg1) {
             var_v1 = 0;
             if (arg0[0x3] != 0) {
                 if (arg0[0x3] >= 0x65) {
-                    sp57 = var_a3;
                     func_800BFFEC((u8) (var_a3 + 2), 0xBU, (u8) ((arg0[0x3] / 2) + 0x3C));
                     goto block_59;
                 }
                 if (arg0[0x3] >= 0x51) {
-                    sp57 = var_a3;
                     func_800BFFEC((u8) (var_a3 + 2), 0xCU, (u8) ((arg0[0x3] / 2) + 0x4B));
                     goto block_59;
                 }
                 if ((arg0[0x3] >= 0x29) || ((arg0[0x3] >= 0xB) && (arg0[0x1F] >= 0x1F))) {
-                    sp57 = var_a3;
                     func_800BFFEC((u8) (var_a3 + 2), 0xDU, (u8) ((arg0[0x3] / 2) + 0x56));
                     goto block_59;
                 }
                 if (arg0[0x3] >= 0xB) {
-                    sp57 = var_a3;
                     func_800BFFEC((u8) (var_a3 + 2), 0xEU, (u8) (arg0[0x3] + 0x50));
-block_59:
-                    var_a3 = sp57;
+block_59: ;
                 }
                 arg0[0x3] = 1;
                 sp30 = (s32) var_a3;
@@ -537,7 +547,7 @@ block_59:
             arg0[0x7] = arg0[0x3];
         } else {
             sp30 = (s32) var_a3;
-            var_v1 = 0x7F - ((s8) arg0[0xF] / 4);
+            var_v1 = 0x7F - (arg0[0xF] / 4);
         }
         AudioThread_QueueCmdS8(((sp30 & 0xFF) << 8) | 0x06000000 | 6, var_v1);
         if (arg0[0x7] == 0) {
@@ -617,42 +627,41 @@ block_59:
         }
         if (arg0[0x1D] != 0) {
             sp58 = 0x7F;
-            var_fv1_2 = var_fv1 + D_800E7DC8[sp5C]
+            var_fv1 = var_fv1 + D_800E7DC8[sp5C]
                         + (D_800E7DC8[D_800E7F75[-arg0[0x1D]]] * D_800E7F78[arg0[0x1D]]);
             arg0[0x1D] = (s8) (arg0[0x1D] - 1);
         } else {
-            var_fv1_2 = var_fv1 + D_800E7DC8[sp5C];
+            var_fv1 = var_fv1 + D_800E7DC8[sp5C];
         }
         sp24 = (f32*) ((u8*) D_800E7CC8 + sp28);
         temp_fv0 = *sp24;
-        temp_fv1 = ((var_fv1_2 - temp_fv0) / 2.5f) + temp_fv0;
+        temp_fv1 = ((var_fv1 - temp_fv0) / 2.5f) + temp_fv0;
         *sp24 = temp_fv1;
         if (temp_fv1 < 0.8409f) {
             sp3C = temp_fv1;
             AudioThread_QueueCmdS8(0x06000005, -3);
-            var_fv1_3 = temp_fv1 * 1.18921f;
+            temp_fv1 = temp_fv1 * 1.18921f;
         } else if (temp_fv1 > 1.1892f) {
             sp3C = temp_fv1;
             AudioThread_QueueCmdS8(0x06000005, 3);
-            var_fv1_3 = temp_fv1 / 1.18921f;
+            temp_fv1 = temp_fv1 / 1.18921f;
         } else {
             sp3C = temp_fv1;
             AudioThread_QueueCmdS8(0x06000005, 0);
-            var_fv1_3 = temp_fv1;
         }
         switch (arg1) { /* switch 1; irregular */
             case 0: /* switch 1 */
                 AudioThread_QueueCmdF32(0x04000000U,
-                                        var_fv1_3 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+                                        temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
                 AudioThread_QueueCmdF32(0x01000000U, (f32) sp58 / 127.0f);
                 break;
             case 1: /* switch 1 */
                 AudioThread_QueueCmdF32(0x04000300U,
-                                        var_fv1_3 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+                                        temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
                 AudioThread_QueueCmdF32(0x01000300U, (f32) sp58 / 127.0f);
                 break;
             case 2: /* switch 1 */
-                func_800C00B0((s8) sp58, var_fv1_3 * D_801D7E20);
+                func_800C00B0((s8) sp58, temp_fv1 * D_801D7E20);
                 AudioThread_QueueCmdF32(0x01000300U, D_801D7E24 * 0.8f);
                 AudioThread_QueueCmdF32(0x01000500U, D_801D7E24);
                 AudioThread_QueueCmdS8(0x03000300, D_801D7E28);
@@ -1067,6 +1076,16 @@ void func_800C1B98(void) {
 }
 
 #ifdef NON_MATCHING
+/* Dynamic music volume and menu-state modulator.
+   Diff floor 605 (probed): float/branch/call structure all matches; left is
+   two delay-slot fills (beqzl/b + lui a0 where retail has nop) plus .rodata
+   label naming (retail .late_rodata D_800EC39C..A8 vs probe-local pool;
+   verify pool layout + ROM hash at promotion). Parked.
+   Bisection note: deleting the enclosing beql-into-else branch flips the
+   case-0 test to beqz (S5), so the lever is the beql context, but no
+   byte-preserving spelling of the switch (~20 variants: case order, default,
+   if/else, nesting, load order/split, decl order, u32/u8/register) changes
+   the fills. Scheduler-opaque. */
 void func_800C1BD8(f32 arg0, f32 arg1) {
     f32 var_fv0;
     s32 temp_v0;
@@ -1879,8 +1898,230 @@ void func_800C37D4(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
-void AudioGeneral_PlaySound(u32 sfxId, u32 arg1) {
-    /* Master sound effect dispatcher with priority queue and channel routing */
+/* Master sound effect dispatcher (m2c scaffold, hand-fixed head switch).
+   Diff floor 1544 (TU-verified): both jump tables dispatch correctly, all
+   calls/branches match; left is a systematic one-register shift plus frame
+   0x48 vs retail 0x38. Merging per-case locals (var_a0/var_a0_2, temp_v0/
+   temp_v0_2) explodes to ~77k: the merged live ranges spill everywhere, so
+   the original keeps them split and the frame gap is scheduler allocation,
+   not source structure. Killed var_a2 local (reassign arg0 directly, -219).
+   Parked; next lever is declaration-order sweep.
+   Micro finding (bisected, all negative in full TU): an isolated
+   top-copy/modify/call-use homes in a2 with entry copy, but in the full
+   function the same shape homes in v0 (1763-1799 over 4 TU variants:
+   separate vs initializer vs first-declared copy). The a2 trigger needs
+   full-context jtbl/call pressure micros can't replicate -- or a different
+   source shape (e.g. sfxId threading through a helper).
+   Ruled out: case-block scoping (byte-identical output -- IDO allocates
+   stack function-wide regardless of block scope). Decl-order sweep
+   (9 standalone variants, TU-verified): frame insensitive (0x48 always),
+   best (full reverse) only -20 in TU -- standalone deltas are jtbl noise.
+   Retail fits all vars in 3 word slots + arg spills; the sharing trigger
+   is still unknown. */
+extern s8 D_801D7DFC;
+extern s8 D_801D7E04;
+extern s32 D_800E7CA0;
+extern s32 D_800E7CA8;
+void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
+    s32 sp30;
+    s32 sp24;
+    s32 temp_v0;
+    s32 temp_v0_2;
+    s32 temp_v1;
+    s32 var_a0;
+    s32 var_a0_2;
+    s32 var_v0;
+    s32 var_v1;
+    u32 var_a0_3;
+
+    if (D_800E7C94 != 7) {
+        switch (arg0) {                             /* switch 1; jump table: jtbl_800EC414 */
+            case 0xA:
+            case 0x21:
+            case 0x26:
+            case 0x27:
+            case 0x28:
+            case 0x29:
+            case 0x35:
+                return;
+            default:
+                break;
+        }
+    }
+        if ((D_801D7DC0 != 3) && ((arg0 == 0x28) || (arg0 == 0x29))) {
+            if ((D_801D7DFC != 0) && !(arg1 & 0x80) && (arg1 & 0xF)) {
+                arg0 = 1;
+            }
+            if ((D_801D7E04 != 0) && ((arg1 & 0x80) == 0x80) && (arg1 & 0xF)) {
+                arg0 = 1;
+            }
+        }
+        AudioThread_QueueCmdS8(0x06000F00, (s8) arg0);
+        if ((D_800E7C94 == 7) && (D_800E7CB8 == 0)) {
+            if (arg0 == 0x23) {
+                D_800E7CD8 = 0xA;
+                D_800E7CD4 = 0xB4;
+                D_800E7CA0 = 1;
+                D_800E7CE8 = 0x140;
+            }
+            if (arg0 == 0x21) {
+                D_800E7CE8 = 0xA0;
+            }
+        }
+        switch (arg0) {                           /* switch 2 */
+        case 0x21:                                  /* switch 2 */
+            func_800C1EB8(0x12);
+            if (D_801D7DC0 == 2) {
+                if ((arg1 & 1) == 1) {
+                    sp30 = 0x3D;
+                    AudioThread_QueueCmdS8(0x06000F00, 0x39);
+                } else if ((arg1 & 2) == 2) {
+                    sp30 = 0x2E;
+                } else {
+                    sp30 = (gAudioRandom & 1) + 0x3E;
+                }
+                func_800C33C8(sp30, 0x1EU, 0x64, 0x28U);
+                return;
+            }
+            temp_v0 = arg1 & 0x80;
+            if (D_801D7DC0 == 1) {
+                if (temp_v0 == 0) {
+                    break;
+                }
+                if (D_800E7CA8 != 0) {
+                    return;
+                }
+                if (D_800E7C98 != 0) {
+                    func_800C15C8(0x1A, 0U);
+                    AudioGeneral_DisableSeqPlayer2(0xAU);
+                    D_800E7CEC = 0x12;
+                }
+                D_800E7CA8 = 1;
+                func_800C33C8(0x3B, 0x10U, 0x64, 0x28U);
+                return;
+            }
+            if (temp_v0 != 0) {
+                if (D_800E7C98 != 0) {
+                    func_800C15C8(0x1A, 0U);
+                    AudioGeneral_DisableSeqPlayer2(0xAU);
+                    D_800E7CEC = 0x12;
+                }
+                var_v1 = 0;
+                if (D_801D7DF8[2] == 0) {
+                    sp30 = 0x39;
+                } else if (D_801D7DF8[2] == 4) {
+                    sp30 = 0x3A;
+                } else {
+                    sp30 = 0x3B;
+                }
+                sp24 = 0x10;
+                if ((arg1 & 1) == 1) {
+                    var_v1 = 0;
+                    AudioThread_QueueCmdS8(0x06000F00, 0x39);
+                }
+            } else if (arg1 == 1) {
+                sp30 = 0x3D;
+                sp24 = 0x1E;
+                var_v1 = 0;
+                AudioThread_QueueCmdS8(0x06000F00, 0x39);
+            } else {
+                var_v1 = gAudioRandom & 1;
+                if (D_801D7DF8[2] == 0) {
+                    var_a0 = 0x2D;
+                } else if (D_801D7DF8[2] == 3) {
+                    var_a0 = 0x30;
+                } else {
+                    var_a0 = 0x36;
+                    if (D_801D7DF8[0] != 0) {
+                        var_a0 = 0x33;
+                    }
+                }
+                sp24 = 0x1E;
+                sp30 = var_a0;
+            }
+            func_800C33C8(sp30 + var_v1, sp24, 0x64, 0x32U);
+            D_801D7DF8[0] = 0;
+            D_801D7DF8[3] = (s8) D_801D7DF8[2];
+            return;
+        case 0x26:                                  /* switch 2 */
+        case 0x27:                                  /* switch 2 */
+            if (D_801D7DF8[4] == 5) {
+                goto lbl_3C0C;
+            }
+            if ((arg1 & 0x80) == 0) {
+                goto lbl_3C1C;
+            }
+        lbl_3C0C:
+            if (D_801D7E00[4] == 5) {
+                return;
+            }
+            if ((arg1 & 0x80) != 0x80) {
+                return;
+            }
+        lbl_3C1C:
+            func_800C3320((gAudioRandom & 3) + 0x61, 0xA, 0x14);
+            return;
+        case 0x1:                                   /* switch 2 */
+        case 0x28:                                  /* switch 2 */
+        case 0x29:                                  /* switch 2 */
+            temp_v0_2 = arg1 & 0x80;
+            temp_v1 = arg1 & 0xF;
+            switch (temp_v0_2) {                    /* switch 3; irregular */
+            case 0x0:                               /* switch 3 */
+                D_801D7DF8[0] = 1;
+                D_801D7DF8[1] = 1;
+                break;
+            case 0x80:                              /* switch 3 */
+                D_801D7E00[0] = 1;
+                D_801D7E00[1] = 1;
+                break;
+            }
+            if (temp_v1 == 0) {
+                var_a0_2 = 0x22;
+            } else if (temp_v1 == 1) {
+                var_a0_2 = 0x19;
+            } else if (temp_v1 == 2) {
+                var_a0_2 = 0x1A;
+            } else {
+                var_a0_2 = (gAudioRandom & 1) + 0x1B;
+            }
+            func_800C33C8(var_a0_2, 0x19U, 0x28, 0x28U);
+            return;
+        case 0xA:                                   /* switch 2 */
+            var_v0 = 4;
+            if (D_801D7DC4 == 0) {
+                var_v0 = 8;
+            }
+            if (var_v0 == (arg1 & 0xF)) {
+                if ((arg1 & 0x80) != 0) {
+                    var_a0_3 = 0x20;
+                } else {
+                    var_a0_3 = (gAudioRandom & 1) + 0x1D;
+                }
+                func_800C3320(var_a0_3, 0x14, 0x28);
+                return;
+            }
+            break;
+        case 0x22:                                  /* switch 2 */
+            func_800C3320(arg1 + 0xA, 0x5A, 1);
+            return;
+        case 0x23:                                  /* switch 2 */
+            func_800C3320(0xAU, 0x64, 0x3C);
+            return;
+        case 0x2D:                                  /* switch 2 */
+            func_800C32A0(0U, 0x7F, 0x14);
+            return;
+        case 0x33:                                  /* switch 2 */
+            func_800C3408((gAudioRandom & 1) + 0x40, 0x18, 0x14);
+            return;
+        case 0x35:                                  /* switch 2 */
+            D_800E7CF4 += 1;
+            D_800E7CF0 = 0x64;
+            if ((D_800E7CF4 == 4) || (D_800E7CF4 == 0xC)) {
+                func_800C32A0((gAudioRandom & 1) + 0x17, 0x7F, 0x3C);
+            }
+            break;
+        }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/AudioGeneral_PlaySound.s")

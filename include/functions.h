@@ -6,7 +6,7 @@
 
 // 0x800B
 
-void func_800C010C(u32, u32);
+void func_800C010C(s8*, s8);
 void func_i4_802C6BAC(void);
 void Game_EnterGameplay(void);
 void func_801EBD28(void);
