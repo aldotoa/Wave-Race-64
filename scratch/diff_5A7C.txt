@@ -1,0 +1,382 @@
+make: `build/src/overlays/ovl_i0/ovl_1B3EC0.o' is up to date.
+TARGET                                                   CURRENT (9034)                             
+27c:    lui     a1,%hi(D_801CE63C)                       27c:    lui     a1,%hi(D_801CE63C)         
+280:    addiu   a1,a1,%lo(D_801CE63C)                    280:    addiu   a1,a1,%lo(D_801CE63C)      
+284:    lw      t6,0(a1)                                 284:    lw      t6,0(a1)                   
+288:    addiu   sp,sp,-0x50                       i      288:    addiu   sp,sp,-0x58                
+28c:    sw      s0,0x40(sp)                       r      28c:    sw      ra,0x44(sp)                
+290:    move    s0,a0                             |      290:    sw      s1,0x40(sp)                
+294:    beqz    t6,2fc ~>                                294:    beqz    t6,2fc ~>                  
+298:    sw      ra,0x44(sp)                       r      298:    sw      s0,0x3c(sp)                
+29c:    lui     v1,%hi(D_802C6F08)                       29c:    lui     v1,%hi(D_802C6F08)         
+2a0:    addiu   v1,v1,%lo(D_802C6F08)                    2a0:    addiu   v1,v1,%lo(D_802C6F08)      
+2a4:    li      a2,1                                     2a4:    li      a2,1                       
+2a8:    sw      zero,0(a1)                               2a8:    sw      zero,0(a1)                 
+2ac:    sw      a2,0(v1)                                 2ac:    sw      a2,0(v1)                   
+2b0:    lui     v0,%hi(D_801CB280)                       2b0:    lui     v0,%hi(D_801CB280)         
+2b4:    lb      v0,%lo(D_801CB280)(v0)                   2b4:    lb      v0,%lo(D_801CB280)(v0)     
+2b8:    addiu   t9,a2,1                           |      2b8:    li      t8,2                       
+2bc:    lui     at,%hi(D_i0_802C6BD8)                    2bc:    lui     at,%hi(D_i0_802C6BD8)      
+2c0:    andi    t7,v0,0x1                                2c0:    andi    t7,v0,0x1                  
+2c4:    beqz    t7,2d4 ~>                                2c4:    beqz    t7,2d4 ~>                  
+2c8:    andi    t1,v0,0x2                         r      2c8:    andi    t9,v0,0x2                  
+2cc:    sw      t9,0(v1)                          r      2cc:    sw      t8,0(v1)                   
+2d0:    sw      a2,%lo(D_i0_802C6BD8)(at)                2d0:    sw      a2,%lo(D_i0_802C6BD8)(at)  
+2d4: ~> beqz    t1,2f0 ~>                         r      2d4: ~> beqz    t9,2f0 ~>                  
+2d8:    andi    t4,v0,0x8                         r      2d8:    andi    t3,v0,0x8                  
+2dc:    lw      t2,0(v1)                          r      2dc:    lw      t1,0(v1)                   
+2e0:    lui     at,%hi(D_i0_802C6BDC)                    2e0:    lui     at,%hi(D_i0_802C6BDC)      
+2e4:    addiu   t3,t2,1                           r      2e4:    addiu   t2,t1,1                    
+2e8:    sw      t3,0(v1)                          r      2e8:    sw      t2,0(v1)                   
+2ec:    sw      a2,%lo(D_i0_802C6BDC)(at)                2ec:    sw      a2,%lo(D_i0_802C6BDC)(at)  
+2f0: ~> beqz    t4,2fc ~>                         r      2f0: ~> beqz    t3,2fc ~>                  
+2f4:    lui     at,%hi(D_i0_802C6BC0)                    2f4:    lui     at,%hi(D_i0_802C6BC0)      
+2f8:    sw      a2,%lo(D_i0_802C6BC0)(at)                2f8:    sw      a2,%lo(D_i0_802C6BC0)(at)  
+2fc: ~> jal     func_8009328C                            2fc: ~> jal     func_8009328C              
+300:    move    a0,s0                             |      300:    nop                                
+304:    lui     v1,%hi(D_i0_802C6BE0)                    304:    lui     v1,%hi(D_i0_802C6BE0)      
+308:    lw      v1,%lo(D_i0_802C6BE0)(v1)                308:    lw      v1,%lo(D_i0_802C6BE0)(v1)  
+30c:    move    s0,v0                             r      30c:    move    s1,v0                      
+310:    move    v0,s0                             |      310:    lui     t4,0x600                   
+314:    beqz    v1,330 ~>                         i      314:    beqz    v1,330 ~>                  
+318:    addiu   a0,s0,8                           |      318:    lui     t5,%hi(D_805A6F8)          
+31c:    li      at,1                                     31c:    li      at,1                       
+320:    beq     v1,at,624 ~>                             320:    beq     v1,at,610 ~>               
+324:    nop                                              324:    nop                                
+328:    b       6cc ~>                                   328:    b       6b8 ~>                     
+32c:    nop                                              32c:    nop                                
+330: ~> lui     t6,%hi(D_805A6F8)                 <                                                 
+334:    addiu   t6,t6,%lo(D_805A6F8)              r      330: ~> addiu   t5,t5,%lo(D_805A6F8)       
+338:    lui     t5,0x600                          <                                                 
+33c:    sw      t5,0(v0)                          r      334:    sw      t4,0(s1)                   
+340:    sw      t6,4(v0)                          r      338:    sw      t5,4(s1)                   
+344:    li      t6,0xff                           r      33c:    li      t5,0xff                    
+348:    li      t5,0xff                           r      340:    li      t4,0xff                    
+34c:    li      t7,0xff                           r      344:    li      t6,0xff                    
+350:    li      t8,0xff                           r      348:    li      t7,0xff                    
+354:    li      t9,0xff                           r      34c:    li      t8,0xff                    
+358:    li      t1,0xff                           r      350:    li      t9,0xff                    
+35c:    li      t2,0xff                           r      354:    li      t1,0xff                    
+360:    li      t3,0xff                           r      358:    li      t2,0xff                    
+364:    li      t4,0xff                           r      35c:    li      t3,0xff                    
+368:    sw      t4,0x28(sp)                       r      360:    sw      t3,0x28(sp)                
+36c:    sw      t3,0x24(sp)                       r      364:    sw      t2,0x24(sp)                
+370:    sw      t2,0x20(sp)                       r      368:    sw      t1,0x20(sp)                
+374:    sw      t1,0x1c(sp)                       r      36c:    sw      t9,0x1c(sp)                
+378:    sw      t9,0x18(sp)                       r      370:    sw      t8,0x18(sp)                
+37c:    sw      t8,0x14(sp)                       r      374:    sw      t7,0x14(sp)                
+380:    sw      t7,0x10(sp)                       r      378:    sw      t6,0x10(sp)                
+384:    sw      t7,0x34(sp)                       r      37c:    sw      t6,0x34(sp)                
+388:    sw      t5,0x2c(sp)                       r      380:    sw      t4,0x2c(sp)                
+38c:    sw      t6,0x30(sp)                       r      384:    sw      t5,0x30(sp)                
+                                                  >      388:    addiu   a0,s1,8                    
+390:    move    a1,zero                                  38c:    move    a1,zero                    
+394:    li      a2,0xff                                  390:    li      a2,0xff                    
+398:    jal     func_801E946C                            394:    jal     func_801E946C              
+39c:    li      a3,0xff                                  398:    li      a3,0xff                    
+3a0:    li      t8,0xff                           r      39c:    li      t7,0xff                    
+3a4:    li      t9,0xff                           r      3a0:    li      t8,0xff                    
+3a8:    li      t1,0xff                           r      3a4:    li      t9,0xff                    
+3ac:    li      t2,0xff                           r      3a8:    li      t1,0xff                    
+3b0:    li      t3,0xff                           r      3ac:    li      t2,0xff                    
+3b4:    li      t4,0xff                           r      3b0:    li      t3,0xff                    
+3b8:    li      t5,0xff                           r      3b4:    li      t4,0xff                    
+3bc:    li      t6,0xff                           r      3b8:    li      t5,0xff                    
+3c0:    li      t7,0xff                           r      3bc:    li      t6,0xff                    
+3c4:    sw      t7,0x34(sp)                       r      3c0:    sw      t6,0x34(sp)                
+3c8:    sw      t6,0x30(sp)                       r      3c4:    sw      t5,0x30(sp)                
+3cc:    sw      t5,0x2c(sp)                       r      3c8:    sw      t4,0x2c(sp)                
+3d0:    sw      t4,0x28(sp)                       r      3cc:    sw      t3,0x28(sp)                
+3d4:    sw      t3,0x24(sp)                       r      3d0:    sw      t2,0x24(sp)                
+3d8:    sw      t2,0x20(sp)                       r      3d4:    sw      t1,0x20(sp)                
+3dc:    sw      t1,0x1c(sp)                       r      3d8:    sw      t9,0x1c(sp)                
+3e0:    sw      t9,0x18(sp)                       r      3dc:    sw      t8,0x18(sp)                
+3e4:    sw      t8,0x14(sp)                       r      3e0:    sw      t7,0x14(sp)                
+3e8:    move    a0,v0                                    3e4:    move    a0,v0                      
+3ec:    move    a1,zero                                  3e8:    move    a1,zero                    
+3f0:    li      a2,0xff                                  3ec:    li      a2,0xff                    
+3f4:    li      a3,0xff                                  3f0:    li      a3,0xff                    
+3f8:    jal     func_801E946C                            3f4:    jal     func_801E946C              
+3fc:    sw      zero,0x10(sp)                            3f8:    sw      zero,0x10(sp)              
+400:    lui     t8,%hi(D_i0_802C6BEC)             r      3fc:    lui     t7,%hi(D_i0_802C6BEC)      
+404:    lw      t8,%lo(D_i0_802C6BEC)(t8)         r      400:    lw      t7,%lo(D_i0_802C6BEC)(t7)  
+408:    move    s0,v0                                    404:    move    s0,v0                      
+40c:    move    a0,s0                                    408:    move    a0,s0                      
+410:    bnez    t8,420 ~>                         r      40c:    bnez    t7,41c ~>                  
+414:    li      a1,1                                     410:    li      a1,1                       
+418:    b       424 ~>                                   414:    b       420 ~>                     
+41c:    li      v1,0xa6                           r      418:    li      t0,0xa6                    
+420: ~> li      v1,0x8c                           r      41c: ~> li      t0,0x8c                    
+424: ~> addiu   t9,v1,0x14                        r      420: ~> addiu   t8,t0,0x14                 
+428:    li      t1,2                              r      424:    li      t9,2                       
+42c:    sw      t1,0x14(sp)                       r      428:    sw      t9,0x14(sp)                
+430:    sw      t9,0x10(sp)                       r      42c:    sw      t8,0x10(sp)                
+434:    li      a2,0x58                                  430:    li      a2,0x58                    
+438:    li      a3,0x5f                                  434:    li      a3,0x5f                    
+43c:    jal     func_801E3EE0                            438:    jal     func_801E3EE0              
+440:    sw      v1,0x48(sp)                       r      43c:    sw      t0,0x4c(sp)                
+444:    lw      v1,0x48(sp)                       r      440:    lw      t0,0x4c(sp)                
+448:    lui     t5,0x708                          r      444:    lui     t1,0x708                   
+44c:    ori     t5,t5,0x200                       r      448:    ori     t1,t1,0x200                
+450:    sw      t5,0xc(v0)                        r      44c:    sw      t1,0xc(v0)                 
+454:    lui     t2,0xfd70                         r      450:    lui     t6,0xf570                  
+458:    lui     t6,0xe600                         r      454:    lui     t7,%hi(D_803D610)          
+45c:    sw      t6,0x10(v0)                       <                                                 
+460:    sw      t2,0(v0)                          <                                                 
+464:    lui     t3,%hi(D_803D610)                 r      458:    lui     t2,0xe600                  
+468:    lui     t4,0xf570                         r      45c:    lui     t3,0xfd70                  
+46c:    lui     t7,0xf300                         |      460:    sw      t6,8(v0)                   
+470:    lui     t8,0x72f                          |      464:    addiu   t7,t7,%lo(D_803D610)       
+474:    lui     t9,0xe700                         r      468:    lui     t8,0x72f                   
+478:    lui     t1,0xf568                         i      46c:    lui     t1,0x8                     
+47c:    addiu   t5,v1,0x32                        |      470:    sll     v1,t0,0x2                  
+480:    ori     t1,t1,0x4000                      |      474:    sw      t2,0x10(v0)                
+484:    sw      t9,0x20(v0)                       r      478:    sw      t3,0(v0)                   
+                                                  >      47c:    sw      t7,4(v0)                   
+488:    ori     t8,t8,0xf040                             480:    ori     t8,t8,0xf040               
+48c:    sw      t7,0x18(v0)                       |      484:    lui     t9,0xf568                  
+490:    sw      t4,8(v0)                          |      488:    ori     t1,t1,0x200                
+494:    addiu   t3,t3,%lo(D_803D610)              r      48c:    addiu   t6,v1,0xb0                 
+498:    lui     t2,0x8                            r      490:    lui     t4,0xe700                  
+49c:    sll     t6,t5,0x2                         |      494:    sw      t8,0x1c(v0)                
+4a0:    ori     t2,t2,0x200                       r      498:    ori     t9,t9,0x4000               
+4a4:    sw      t3,4(v0)                          r      49c:    sw      t1,0x2c(v0)                
+4a8:    lui     t4,0x3f                           r      4a0:    lui     t2,0xf200                  
+4ac:    sw      t8,0x1c(v0)                       |      4a4:    lui     t3,0x3f                    
+4b0:    sw      t1,0x28(v0)                       <                                                 
+4b4:    andi    t7,t6,0xfff                              4a8:    andi    t7,t6,0xfff                
+4b8:    lui     at,0xe448                         i      4ac:    lui     at,0x8                     
+4bc:    addiu   t9,v1,0x2c                        |      4b0:    sw      t4,0x20(v0)                
+4c0:    ori     t4,t4,0xc014                      <                                                 
+4c4:    lui     t3,0xf200                         r      4b4:    lui     t5,0xf300                  
+4c8:    sw      t2,0x2c(v0)                       r      4b8:    sw      t9,0x28(v0)                
+                                                  >      4bc:    sw      t2,0x30(v0)                
+4cc:    sll     t1,t9,0x2                         |      4c0:    ori     t3,t3,0xc014               
+4d0:    or      t8,t7,at                                 4c4:    or      t8,t7,at                   
+                                                  >      4c8:    addiu   t1,v1,0xc8                 
+4d4:    sw      t3,0x30(v0)                       r      4cc:    sw      t5,0x18(v0)                
+4d8:    sw      t4,0x34(v0)                       r      4d0:    sw      t3,0x34(v0)                
+4dc:    lui     at,0x8                            r      4d4:    lui     t4,0xb200                  
+                                                  >      4d8:    lui     t9,0x400                   
+4e0:    andi    t2,t1,0xfff                              4dc:    andi    t2,t1,0xfff                
+4e4:    lui     t6,0x400                          r      4e0:    lui     at,0xe448                  
+4e8:    ori     t6,t6,0x400                       |      4e4:    sw      t4,0x48(v0)                
+4ec:    or      t3,t2,at                          <                                                 
+4f0:    lui     t4,0xb300                         r      4e8:    lui     t5,0xb300                  
+4f4:    lui     t5,0xb200                         |      4ec:    ori     t9,t9,0x400                
+4f8:    sw      zero,0x24(v0)                     |      4f0:    or      t3,t2,at                   
+4fc:    sw      zero,0x14(v0)                     i      4f4:    sw      zero,0x24(v0)              
+500:    sw      t5,0x48(v0)                       r      4f8:    sw      zero,0x14(v0)              
+504:    sw      t4,0x40(v0)                       r      4fc:    sw      t5,0x40(v0)                
+508:    sw      t3,0x3c(v0)                       r      500:    sw      t8,0x3c(v0)                
+50c:    sw      t6,0x4c(v0)                       r      504:    sw      t9,0x4c(v0)                
+510:    sw      t8,0x38(v0)                       r      508:    sw      t3,0x38(v0)                
+514:    sw      zero,0x44(v0)                            50c:    sw      zero,0x44(v0)              
+518:    lui     t7,%hi(D_i0_802C6BEC)             r      510:    lui     t4,%hi(D_i0_802C6BEC)      
+51c:    lw      t7,%lo(D_i0_802C6BEC)(t7)         r      514:    lw      t4,%lo(D_i0_802C6BEC)(t4)  
+520:    addiu   s0,v0,0x50                        r      518:    addiu   s1,v0,0x50                 
+524:    lui     t8,%hi(D_i0_802C6BE8)             r      51c:    lui     t5,%hi(D_i0_802C6BE8)      
+528:    bnezl   t7,608 ~>                         |      520:    bnez    t4,5f4 ~>                  
+52c:    move    v0,s0                             |      524:    nop                                
+530:    lw      t8,%lo(D_i0_802C6BE8)(t8)         r      528:    lw      t5,%lo(D_i0_802C6BE8)(t5)  
+534:    li      at,0x14                                  52c:    li      at,0x14                    
+538:    lui     t0,%hi(D_i0_802C6BE4)             r      530:    lui     s0,%hi(D_i0_802C6BE4)      
+53c:    bne     t8,at,604 ~>                      r      534:    bne     t5,at,5f4 ~>               
+540:    addiu   t0,t0,%lo(D_i0_802C6BE4)          r      538:    addiu   s0,s0,%lo(D_i0_802C6BE4)   
+544:    lw      v1,0(t0)                          r      53c:    lw      v1,0(s0)                   
+548:    li      at,0x1e                                  540:    li      at,0x1e                    
+54c:    move    a0,s0                             r      544:    move    a0,s1                      
+550:    div     zero,v1,at                               548:    div     zero,v1,at                 
+554:    mfhi    t9                                r      54c:    mfhi    t6                         
+558:    slti    at,t9,0x14                        r      550:    slti    at,t6,0x14                 
+55c:    beqz    at,5f0 ~>                                554:    beqz    at,5e0 ~>                  
+560:    li      a1,7                                     558:    li      a1,7                       
+564:    li      t1,0xff                           r      55c:    li      t7,0xff                    
+568:    li      t2,0xff                           r      560:    li      t8,0xff                    
+56c:    li      t3,0xff                           r      564:    li      t9,0xff                    
+570:    li      t4,0xff                           r      568:    li      t1,0xff                    
+574:    li      t5,0xff                           r      56c:    li      t2,0xff                    
+578:    li      t6,0xff                           r      570:    li      t3,0xff                    
+57c:    li      t7,0xff                           r      574:    li      t4,0xff                    
+580:    li      t8,0xff                           r      578:    li      t5,0xff                    
+584:    li      t9,0xff                           r      57c:    li      t6,0xff                    
+588:    sw      t9,0x34(sp)                       r      580:    sw      t6,0x34(sp)                
+58c:    sw      t8,0x30(sp)                       r      584:    sw      t5,0x30(sp)                
+590:    sw      t7,0x2c(sp)                       r      588:    sw      t4,0x2c(sp)                
+594:    sw      t6,0x28(sp)                       r      58c:    sw      t3,0x28(sp)                
+598:    sw      t5,0x24(sp)                       r      590:    sw      t2,0x24(sp)                
+59c:    sw      t4,0x20(sp)                       r      594:    sw      t1,0x20(sp)                
+5a0:    sw      t3,0x1c(sp)                       r      598:    sw      t9,0x1c(sp)                
+5a4:    sw      t2,0x18(sp)                       r      59c:    sw      t8,0x18(sp)                
+5a8:    sw      t1,0x14(sp)                       r      5a0:    sw      t7,0x14(sp)                
+5ac:    li      a2,0xff                                  5a4:    li      a2,0xff                    
+5b0:    li      a3,0xff                                  5a8:    li      a3,0xff                    
+5b4:    jal     func_801E946C                            5ac:    jal     func_801E946C              
+5b8:    sw      zero,0x10(sp)                            5b0:    sw      zero,0x10(sp)              
+5bc:    li      t1,0xa6                           r      5b4:    li      t7,0xa6                    
+5c0:    li      t2,2                              r      5b8:    li      t8,2                       
+5c4:    sw      t2,0x14(sp)                       r      5bc:    sw      t8,0x14(sp)                
+5c8:    sw      t1,0x10(sp)                       r      5c0:    sw      t7,0x10(sp)                
+5cc:    move    a0,v0                                    5c4:    move    a0,v0                      
+5d0:    li      a1,1                                     5c8:    li      a1,1                       
+5d4:    li      a2,0x56                                  5cc:    li      a2,0x56                    
+5d8:    jal     func_801E3EE0                            5d0:    jal     func_801E3EE0              
+5dc:    li      a3,0x5e                                  5d4:    li      a3,0x5e                    
+5e0:    lui     t0,%hi(D_i0_802C6BE4)             |      5d8:    move    s1,v0                      
+5e4:    addiu   t0,t0,%lo(D_i0_802C6BE4)          <                                                 
+5e8:    lw      v1,0(t0)                          r      5dc:    lw      v1,0(s0)                   
+5ec:    move    s0,v0                             <                                                 
+5f0: ~> addiu   t3,v1,1                           r      5e0: ~> addiu   v0,v1,1                    
+5f4:    slti    at,t3,0x1e                        r      5e4:    slti    at,v0,0x1e                 
+5f8:    bnez    at,604 ~>                                5e8:    bnez    at,5f4 ~>                  
+5fc:    sw      t3,0(t0)                          r      5ec:    sw      v0,0(s0)                   
+600:    sw      zero,0(t0)                        r      5f0:    sw      zero,0(s0)                 
+604: ~> move    v0,s0                             |      5f4: ~> lui     t1,%hi(D_106F168)          
+608: ~> lui     t6,%hi(D_106F168)                 r      5f8:    lui     t9,0x600                   
+60c:    addiu   t6,t6,%lo(D_106F168)              r      5fc:    addiu   t1,t1,%lo(D_106F168)       
+610:    lui     t5,0x600                          <                                                 
+614:    sw      t5,0(v0)                          r      600:    sw      t9,0(s1)                   
+618:    sw      t6,4(v0)                          r      604:    sw      t1,4(s1)                   
+61c:    b       6cc ~>                                   608:    b       6b8 ~>                     
+620:    addiu   s0,s0,8                           r      60c:    addiu   s1,s1,8                    
+624: ~> jal     func_i0_802C6044                         610: ~> jal     func_i0_802C6044           
+628:    move    a0,s0                             r      614:    move    a0,s1                      
+62c:    lui     t8,%hi(D_106F168)                 r      618:    lui     t3,%hi(D_106F168)          
+630:    lui     t0,%hi(D_802C6F0C)                r      61c:    lui     a3,%hi(D_802C6F0C)         
+634:    addiu   t8,t8,%lo(D_106F168)              <                                                 
+638:    lui     t7,0x600                          r      620:    lui     t2,0x600                   
+63c:    addiu   t0,t0,%lo(D_802C6F0C)             r      624:    addiu   t3,t3,%lo(D_106F168)       
+                                                  >      628:    addiu   a3,a3,%lo(D_802C6F0C)      
+640:    sw      t7,0(v0)                          r      62c:    sw      t2,0(v0)                   
+644:    sw      t8,4(v0)                          r      630:    sw      t3,4(v0)                   
+648:    lw      t9,0(t0)                          r      634:    lw      t4,0(a3)                   
+64c:    addiu   s0,v0,8                           r      638:    addiu   s1,v0,8                    
+650:    move    a1,zero                           r      63c:    move    a0,zero                    
+654:    blez    t9,6cc ~>                         r      640:    blez    t4,6b8 ~>                  
+658:    move    v1,zero                                  644:    move    v1,zero                    
+65c:    lui     a3,0x16                           r      648:    lui     a2,0x16                    
+660:    lui     a2,0xf639                         r      64c:    lui     a1,0xf639                  
+664:    lui     a0,%hi(D_i0_802C6BD0)             r      650:    lui     v0,%hi(D_i0_802C6BD0)      
+668:    addiu   a0,a0,%lo(D_i0_802C6BD0)          r      654:    addiu   v0,v0,%lo(D_i0_802C6BD0)   
+66c:    ori     a2,a2,0xc000                      r      658:    ori     a1,a1,0xc000               
+670:    ori     a3,a3,0x4000                      r      65c:    ori     a2,a2,0x4000               
+674:    lw      t1,0(a0)                          r      660:    lw      t5,0(v0)                   
+678: ~> move    v0,s0                             r      664: ~> move    s0,s1                      
+67c:    addiu   a1,a1,1                           r      668:    addiu   a0,a0,1                    
+680:    addu    t2,v1,t1                          r      66c:    addu    t6,v1,t5                   
+684:    addiu   t3,t2,0xe                         r      670:    addiu   t7,t6,0xe                  
+688:    andi    t4,t3,0x3ff                       r      674:    andi    t8,t7,0x3ff                
+68c:    sll     t5,t4,0x2                         r      678:    sll     t9,t8,0x2                  
+690:    or      t6,t5,a2                          r      67c:    or      t1,t9,a1                   
+694:    sw      t6,0(v0)                          r      680:    sw      t1,0(s1)                   
+698:    lw      t7,0(a0)                          r      684:    lw      t2,0(v0)                   
+69c:    addiu   s0,s0,8                           r      688:    addiu   s1,s1,8                    
+6a0:    addu    t8,v1,t7                          r      68c:    addu    t3,v1,t2                   
+6a4:    addiu   t9,t8,-3                          r      690:    addiu   t4,t3,-3                   
+6a8:    andi    t1,t9,0x3ff                       r      694:    andi    t5,t4,0x3ff                
+6ac:    sll     t2,t1,0x2                         r      698:    sll     t6,t5,0x2                  
+6b0:    or      t3,t2,a3                          r      69c:    or      t7,t6,a2                   
+6b4:    sw      t3,4(v0)                          r      6a0:    sw      t7,4(s0)                   
+6b8:    lw      t4,0(t0)                          r      6a4:    lw      t8,0(a3)                   
+6bc:    addiu   v1,v1,0x14                               6a8:    addiu   v1,v1,0x14                 
+6c0:    slt     at,a1,t4                          r      6ac:    slt     at,a0,t8                   
+6c4:    bnezl   at,678 ~>                                6b0:    bnezl   at,664 ~>                  
+6c8:    lw      t1,0(a0)                                 6b4:    lw      t5,0(v0)                   
+6cc: ~> lui     t5,%hi(D_i0_802C6BEC)             r      6b8: ~> lui     t9,%hi(D_i0_802C6BEC)      
+6d0:    lw      t5,%lo(D_i0_802C6BEC)(t5)         r      6bc:    lw      t9,%lo(D_i0_802C6BEC)(t9)  
+6d4:    move    a0,s0                             r      6c0:    move    a0,s1                      
+6d8:    move    a1,zero                                  6c4:    move    a1,zero                    
+6dc:    beqz    t5,744 ~>                         r      6c8:    beqz    t9,730 ~>                  
+6e0:    li      a2,0xff                                  6cc:    li      a2,0xff                    
+6e4:    li      t6,0xff                           r      6d0:    li      t1,0xff                    
+6e8:    li      t7,0xff                           r      6d4:    li      t2,0xff                    
+6ec:    li      t8,0xff                           r      6d8:    li      t3,0xff                    
+6f0:    li      t9,0xff                           r      6dc:    li      t4,0xff                    
+6f4:    li      t1,0xff                           r      6e0:    li      t5,0xff                    
+6f8:    li      t2,0xff                           r      6e4:    li      t6,0xff                    
+6fc:    li      t3,0xff                           r      6e8:    li      t7,0xff                    
+700:    li      t4,0xff                           r      6ec:    li      t8,0xff                    
+704:    li      t5,0xff                           r      6f0:    li      t9,0xff                    
+708:    sw      t5,0x30(sp)                       r      6f4:    sw      t9,0x30(sp)                
+70c:    sw      t4,0x2c(sp)                       r      6f8:    sw      t8,0x2c(sp)                
+710:    sw      t3,0x28(sp)                       r      6fc:    sw      t7,0x28(sp)                
+714:    sw      t2,0x24(sp)                       r      700:    sw      t6,0x24(sp)                
+718:    sw      t1,0x20(sp)                       r      704:    sw      t5,0x20(sp)                
+71c:    sw      t9,0x1c(sp)                       r      708:    sw      t4,0x1c(sp)                
+720:    sw      t8,0x18(sp)                       r      70c:    sw      t3,0x18(sp)                
+724:    sw      t7,0x14(sp)                       r      710:    sw      t2,0x14(sp)                
+728:    sw      t6,0x10(sp)                       r      714:    sw      t1,0x10(sp)                
+72c:    sw      t6,0x34(sp)                       r      718:    sw      t1,0x34(sp)                
+730:    jal     func_801E946C                            71c:    jal     func_801E946C              
+734:    li      a3,0xff                                  720:    li      a3,0xff                    
+738:    jal     func_i0_802C6AE4                         724:    jal     func_i0_802C6AE4           
+73c:    move    a0,v0                                    728:    move    a0,v0                      
+740:    move    s0,v0                             r      72c:    move    s1,v0                      
+744: ~> lui     a0,%hi(D_i0_802C6BC8)             r      730: ~> lui     a1,%hi(D_i0_802C6BC8)      
+748:    addiu   a0,a0,%lo(D_i0_802C6BC8)          r      734:    addiu   a1,a1,%lo(D_i0_802C6BC8)   
+74c:    lw      v0,0(a0)                          r      738:    lw      v0,0(a1)                   
+750:    lui     v1,%hi(D_i0_802C6BE0)                    73c:    lui     v1,%hi(D_i0_802C6BE0)      
+754:    lw      v1,%lo(D_i0_802C6BE0)(v1)                740:    lw      v1,%lo(D_i0_802C6BE0)(v1)  
+758:    slti    at,v0,0x14                               744:    slti    at,v0,0x14                 
+75c:    beqz    at,77c ~>                                748:    beqz    at,768 ~>                  
+760:    addiu   t7,v0,1                           r      74c:    addiu   a0,v0,1                    
+764:    li      at,0x14                                  750:    li      at,0x14                    
+768:    bne     t7,at,77c ~>                      r      754:    bne     a0,at,768 ~>               
+76c:    sw      t7,0(a0)                          r      758:    sw      a0,0(a1)                   
+770:    li      t9,2                              r      75c:    li      t2,2                       
+774:    lui     at,%hi(gRiderGameModes)                  760:    lui     at,%hi(gRiderGameModes)    
+778:    sw      t9,%lo(gRiderGameModes)(at)       r      764:    sw      t2,%lo(gRiderGameModes)(at)
+77c: ~> beqz    v1,798 ~>                                768: ~> beqz    v1,784 ~>                  
+780:    lui     t2,%hi(D_801CE65A)                r      76c:    lui     t4,%hi(D_801CE65A)         
+784:    li      at,1                                     770:    li      at,1                       
+788:    beq     v1,at,828 ~>                             774:    beq     v1,at,814 ~>               
+78c:    nop                                              778:    nop                                
+790:    b       834 ~>                                   77c:    b       820 ~>                     
+794:    lw      ra,0x44(sp)                              780:    lw      ra,0x44(sp)                
+798: ~> lui     v1,%hi(D_i0_802C6BE8)                    784: ~> lui     v1,%hi(D_i0_802C6BE8)      
+79c:    addiu   v1,v1,%lo(D_i0_802C6BE8)                 788:    addiu   v1,v1,%lo(D_i0_802C6BE8)   
+7a0:    lw      v0,0(v1)                                 78c:    lw      v0,0(v1)                   
+7a4:    slti    at,v0,0x14                               790:    slti    at,v0,0x14                 
+7a8:    beqz    at,7b4 ~>                                794:    beqz    at,7a0 ~>                  
+7ac:    addiu   t1,v0,1                           r      798:    addiu   t3,v0,1                    
+7b0:    sw      t1,0(v1)                          r      79c:    sw      t3,0(v1)                   
+7b4: ~> lhu     t2,%lo(D_801CE65A)(t2)            r      7a0: ~> lhu     t4,%lo(D_801CE65A)(t4)     
+7b8:    lui     v0,%hi(D_802C6F14)                <                                                 
+7bc:    addiu   v0,v0,%lo(D_802C6F14)             <                                                 
+7c0:    andi    t3,t2,0xb000                      r      7a4:    andi    t5,t4,0xb000               
+7c4:    beqzl   t3,808 ~>                         |      7a8:    beqz    t5,7e8 ~>                  
+7c8:    lw      t6,0(v0)                          |      7ac:    nop                                
+7cc:    lw      t4,0(v1)                          r      7b0:    lw      t6,0(v1)                   
+7d0:    li      at,0x14                           |      7b4:    lui     v1,%hi(D_802C6F14)         
+7d4:    li      t5,1                              r      7b8:    li      at,0x14                    
+7d8:    bne     t4,at,804 ~>                      r      7bc:    bne     t6,at,7e8 ~>               
+                                                  >      7c0:    addiu   v1,v1,%lo(D_802C6F14)      
+7dc:    li      a0,0x11                           r      7c4:    li      t7,1                       
+7e0:    lui     v0,%hi(D_802C6F14)                r      7c8:    lui     at,%hi(D_i0_802C6BE0)      
+7e4:    lui     at,%hi(D_i0_802C6BE0)             |      7cc:    sw      t7,%lo(D_i0_802C6BE0)(at)  
+7e8:    addiu   v0,v0,%lo(D_802C6F14)             <                                                 
+7ec:    sw      t5,%lo(D_i0_802C6BE0)(at)         r      7d0:    sw      zero,0(v1)                 
+7f0:    sw      zero,0(v0)                        |      7d4:    li      a0,0x11                    
+7f4:    jal     AudioGeneral_PlaySound                   7d8:    jal     AudioGeneral_PlaySound     
+7f8:    move    a1,zero                                  7dc:    move    a1,zero                    
+7fc:    b       834 ~>                                   7e0:    b       820 ~>                     
+800:    lw      ra,0x44(sp)                              7e4:    lw      ra,0x44(sp)                
+                                                  >      7e8: ~> lui     v1,%hi(D_802C6F14)         
+                                                  >      7ec:    addiu   v1,v1,%lo(D_802C6F14)      
+804: ~> lw      t6,0(v0)                          r      7f0:    lw      v0,0(v1)                   
+808: ~> addiu   t7,t6,1                           r      7f4:    addiu   v0,v0,1                    
+80c:    slti    at,t7,0x258                       r      7f8:    slti    at,v0,0x258                
+810:    bnez    at,830 ~>                                7fc:    bnez    at,81c ~>                  
+814:    sw      t7,0(v0)                          r      800:    sw      v0,0(v1)                   
+818:    jal     func_i0_802C6A1C                         804:    jal     func_i0_802C6A1C           
+81c:    li      a0,7                                     808:    li      a0,7                       
+820:    b       834 ~>                                   80c:    b       820 ~>                     
+824:    lw      ra,0x44(sp)                              810:    lw      ra,0x44(sp)                
+828: ~> jal     func_i0_802C63AC                         814: ~> jal     func_i0_802C63AC           
+82c:    nop                                              818:    nop                                
+830: ~> lw      ra,0x44(sp)                              81c: ~> lw      ra,0x44(sp)                
+834: ~> move    v0,s0                             r      820: ~> move    v0,s1                      
+                                                  >      824:    lw      s1,0x40(sp)                
+838:    lw      s0,0x40(sp)                       s      828:    lw      s0,0x3c(sp)                
+83c:    jr      ra                                       82c:    jr      ra                         
+840:    addiu   sp,sp,0x50                        i      830:    addiu   sp,sp,0x58                 

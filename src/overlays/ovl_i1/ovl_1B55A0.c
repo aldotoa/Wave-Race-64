@@ -49,9 +49,52 @@ void func_i1_802C5900(void) {
     }
 }
 
+extern s32 D_802C96AC;
+extern s32 D_802C96B0;
+extern s32 D_802C96B4;
+extern s32 D_i1_802C9444[];
+extern s32 D_80226890[];
+void func_800C37D4(s32 arg0);
+
 #ifdef NON_MATCHING
 void func_i1_802C59E8(s32 arg0) {
-    /* Primary course navigation engine initialization */
+    /* Course table init: copies defaults, scans arg0's row, fires audio cue.
+       Diff floor 2190 probe-verified (TU form scores higher from trailing-
+       function leakage): memcpy loop exact, scan body nearly exact (row a2,
+       dst v1, end t1 all match). Left: setup hoist cluster, counter/table
+       addrs recomputed in-loop by retail (value-load clobbers addr-reg)
+       vs hoisted once here, -1 const in a3 vs t2. Tried: key/val split
+       (-110), assign reorder (-35), 4-arg call (+120, reverted -- retail
+       jal slot reloads arg0), volatile (shuffled, reverted), explicit
+       load/store rewrite (added pressure, reverted), val-reuse (+180).
+       Parked. */
+    s32 *dst;
+    s32 var_a1;
+    s32 *row;
+    s32 *end;
+    s32 key;
+    s32 val;
+
+    D_802C96A8 = D_i1_802C94C8;
+    D_802C96A8.unk_0 = 1;
+    dst = (s32 *)&D_802C96A8;
+    var_a1 = 0x122;
+    row = (s32 *)((u8 *)D_i1_802C9444 + arg0 * 12);
+    end = &D_802C96B4;
+    do {
+        key = *row;
+        dst++;
+        dst[2] = var_a1;
+        dst[5] = key;
+        if (key != -1) {
+            D_802C96AC++;
+            val = D_80226890[key * 2 + 1] + 1;
+            D_802C96B0 += val;
+            var_a1 += val;
+        }
+        row++;
+    } while (dst != end);
+    func_800C37D4(arg0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C59E8.s")

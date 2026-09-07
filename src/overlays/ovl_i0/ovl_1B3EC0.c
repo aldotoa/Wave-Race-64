@@ -579,7 +579,10 @@ void func_i0_802C6A1C(s32 arg0) {
 #ifdef NON_MATCHING
 Gfx* func_i0_802C6AE4(Gfx* arg0) {
     /* Training text glyph scroller: advances two text rows leftward, draws
-       visible glyphs, resets both when fully scrolled out */
+       visible glyphs, resets both when fully scrolled out.
+       Diff floor 220: loop/call/epilogue all match; only the reset block
+       differs (retail groups both constants before both stores under one
+       shared lui, all probed rewrites keep per-store luis). Parked. */
     s32 count = 0;
     s32* ptr = D_i0_802C6BF0;
     s32 i = 0;

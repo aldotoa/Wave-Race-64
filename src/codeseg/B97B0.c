@@ -45,8 +45,43 @@ void func_801EBFE4(void) {
 #endif
 
 #ifdef NON_MATCHING
+/* Race-setup init: default game-state globals, conditional counter bump
+   through D_800DA9B0, then the 96960/transition/VI-black call sequence.
+   Diff floor 410 probe-verified: calls/structure/stack exact; remainder is
+   register rotation (h/lh in v0 vs t0, consts in t0/t1 vs a3/v0, chain shift).
+   Tried: v1 decl-last (+37), drop t3 index temp (-40, kept: fixed v1 home),
+   early named h (+25), s16 h (neutral). Next: h-to-t0 lever. */
 void func_801EC0D4(void) {
-    /* Controller connection check and unplugged alert */
+    s32 v1 = 1;
+    s32 args[4];
+    s32 h;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_RACE_RESULTS;
+    D_801CE638 = 9;
+    D_801CE63C = v1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    gRiderGameModes = UNACTIVE_MODE;
+    h = D_801CE6F4[0];
+    D_801CE64C = v1;
+    gGameModeState = 0;
+    args[2] = 2;
+    args[3] = 3;
+    args[0] = 0;
+    args[1] = v1;
+    if (h != 0) {
+        args[D_800DA9B0[D_800D48DC]] += 4;
+    }
+    func_80096960(2, args[0], args[1], args[2], args[3]);
+    FadeTransition_SetProps(4, 1, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective[0].viewMode = 1;
+    osViBlack(1);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC0D4.s")
@@ -884,7 +919,105 @@ void func_801FA3C0(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801FAD68(void) {
+/* Bresenham line enumerator: fills xs/ys point arrays plus count.
+   Diff floor 2097 probe-verified (TU has 16 pre-existing NON_MATCHING
+   errors in unrelated drafts, so TU-wide build is impossible; probe only).
+   Tried: decl computation-order (neutral), sign if/else (+210, bgtz wrong),
+   sign goto (X-sign exact incl. delay-filled li's, Y lateral at bgtz).
+   Remaining: dx/dy home rotation, ys-ptr s1 vs temp, sll+addu vs folded
+   addiu for arg5/6+s0 (micro-proven fold; non-const s0 needs zero-cost
+   mechanism), Y-sign bgtz. */
+void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5, s32 *arg6) {
+    s32 var_v1;
+    s32 var_t1;
+    s32 var_v0;
+    s32 var_t0;
+    s32 var_t2;
+    s32 sign;
+    s32 var_t4;
+    s32 err;
+    s32 var_s0;
+    s32 *var_a1;
+    s32 *var_s1;
+
+    var_v1 = arg2 - arg0;
+    var_t1 = arg3 - arg1;
+    var_v0 = var_v1;
+    var_t0 = var_t1;
+    if (var_v1 == 0) {
+        var_t2 = 0;
+    } else {
+        if (var_v1 <= 0) {
+            goto sign_neg_x;
+        }
+        sign = 1;
+        goto sign_join_x;
+    sign_neg_x:;
+        sign = -1;
+    sign_join_x:;
+        var_t2 = sign;
+    }
+    if (var_t1 == 0) {
+        var_t4 = 0;
+    } else {
+        if (var_t1 <= 0) {
+            goto sign_neg_y;
+        }
+        sign = 1;
+        goto sign_join_y;
+    sign_neg_y:;
+        sign = -1;
+    sign_join_y:;
+        var_t4 = sign;
+    }
+    err = 0;
+    if (var_v1 < 0) {
+        var_v0 = -var_v1;
+    }
+    var_v1 = arg0;
+    if (var_t1 < 0) {
+        var_t0 = -var_t1;
+    }
+    *arg5 = arg0;
+    var_t1 = arg1;
+    var_s0 = 1;
+    *arg6 = arg1;
+    if (var_v0 >= var_t0) {
+        if (arg0 != arg2) {
+            var_a1 = arg5 + var_s0;
+            var_s1 = arg6 + var_s0;
+            do {
+                err += var_t0;
+                var_v1 += var_t2;
+                if ((err * 2) >= var_v0) {
+                    err -= var_v0;
+                    var_t1 += var_t4;
+                }
+                *var_a1 = var_v1;
+                *var_s1 = var_t1;
+                var_s0 += 1;
+                var_a1 += 1;
+                var_s1 += 1;
+            } while (var_v1 != arg2);
+        }
+    } else if (arg1 != arg3) {
+        var_a1 = arg5 + var_s0;
+        var_s1 = arg6 + var_s0;
+        do {
+            err += var_v0;
+            var_t1 += var_t4;
+            if ((err * 2) >= var_t0) {
+                err -= var_t0;
+                var_v1 += var_t2;
+            }
+            *var_a1 = var_v1;
+            *var_s1 = var_t1;
+            var_s0 += 1;
+            var_a1 += 1;
+            var_s1 += 1;
+        } while (var_t1 != arg3);
+    }
+    *arg4 = var_s0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FAD68.s")
