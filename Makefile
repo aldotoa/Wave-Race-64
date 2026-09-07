@@ -149,8 +149,12 @@ ifeq ($(VERSION),ln)
 endif
 
 ifeq ($(NON_MATCHING),1)
-    BUILD_DEFINES   += -DNON_MATCHING -DAVOID_UB
-    CPPFLAGS += -DNON_MATCHING -DAVOID_UB
+    BUILD_DEFINES   += -DNON_MATCHING
+    CPPFLAGS += -DNON_MATCHING
+# NOTE: -DAVOID_UB is intentionally NOT set here. It belongs to the native
+# macOS port (see MAC_CFLAGS); on the N64 ROM it reroutes libultra thread
+# symbols through __osThreadTail_fix in only some TUs, splitting the thread
+# system in two and hanging the boot.
 # Dead jump-table labels orphaned by replaced stubs (shared-rodata jump
 # tables reference them; nothing in C builds reads those words).
 # Matching builds never see this file.
