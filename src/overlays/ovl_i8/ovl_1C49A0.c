@@ -84,7 +84,7 @@ void func_i8_802C6E68(void* arg0) {
 }
 
 extern u8 D_80226DC4[];
-s32 func_801E9B04(s32, s32);
+s32 func_801E9B04(s32, s8);
 
 s32 func_i8_802C6EB8(s8* str, s32 arg1) {
     s32 total = 0;

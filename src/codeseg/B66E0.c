@@ -97,8 +97,130 @@ void func_801E9858(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801E9B04(void) {
-    /* Formatted integer digit printer */
+/* Proportional-font glyph mapper: (mode, char) -> glyph index, 0xFF = space
+   (fixed-width 12 in caller func_i8_802C6EB8 string-width accumulator).
+   Diff floor 2885 probe-verified: head (sign-extend, a1 ghost home, beqzl
+   join), all value arms, all a1-chain links (bnel/bne likely-ness), switch
+   beq-chains, and the irregular 0x2E case order (0,2,1) all exact. Remainder
+   is purely default-return convergence: retail shares ONE `jr; or v0,v1`
+   reached via `bne + nop`, while every C shape toward it either
+   const-propagates to per-site `jr; move v0,zero` (all `return var_v1`
+   spellings: in-switch, after-switch, |0-masked, register-qualified) or
+   emits `bnel + move` / `b` edges (all goto spellings: plain, inverted,
+   1-case-switch, early-def, upper else-goto, 0x2F 2-case-switch). Suspect a
+   uopt global-analysis cutoff on 20-return functions; not triggerable from C
+   (micros m1-m10 in scratch history). Parked. */
+s32 func_801E9B04(s32 arg0, s8 arg1) {
+    s32 var_v1;
+
+    var_v1 = 0;
+    if ((arg1 >= 0x30) && (arg1 < 0x3A)) {
+        return arg1 - 0x30;
+    }
+    if ((arg1 >= 0x41) && (arg1 < 0x5B)) {
+        if ((arg0 == 0) || (arg0 == 1) || (arg0 == 2)) {
+            return arg1 - 0x37;
+        }
+        return var_v1;
+    }
+    if (arg1 == 0x2F) {
+        if (arg0 != 2) {
+            if (arg0 == 5) {
+                return 0xA;
+            }
+            return var_v1;
+        }
+        return 0x28;
+    }
+    if (arg1 == 0x2D) {
+        switch (arg0) {
+        case 0:
+        case 1:
+            return 0x24;
+        case 2:
+            return 0x25;
+        default:
+            return var_v1;
+        }
+    } else if (arg1 == 0x27) {
+        switch (arg0) {
+        case 0:
+        case 1:
+            return 0x25;
+        case 2:
+            return 0x26;
+        case 3:
+            return 0xA;
+        default:
+            return var_v1;
+        }
+    } else if (arg1 == 0x40) {
+        switch (arg0) {
+        case 0:
+        case 1:
+            return 0x26;
+        case 2:
+            return 0x27;
+        case 3:
+            return 0xB;
+        default:
+            return var_v1;
+        }
+    } else {
+        if (arg1 == 0x26) {
+            if (arg0 == 2) {
+                return 0x24;
+            }
+            return var_v1;
+        }
+        if (arg1 == 0x2E) {
+            switch (arg0) {
+            case 0:
+                return 0x27;
+            case 2:
+                return 0x29;
+            case 1:
+                return 0x29;
+            default:
+                return var_v1;
+            }
+        } else {
+            if (arg1 == 0x7C) {
+                if (arg0 == 2) {
+                    return 0x2A;
+                }
+                return var_v1;
+            }
+            if (arg1 == 0x3C) {
+                if (arg0 == 2) {
+                    return 0x2B;
+                }
+                return var_v1;
+            }
+            if (arg1 == 0x3E) {
+                if (arg0 == 2) {
+                    return 0x2C;
+                }
+                return var_v1;
+            }
+            if (arg1 == 0xA) {
+                if (arg0 == 1) {
+                    return 0x28;
+                }
+                return var_v1;
+            }
+            if (arg1 == 0x2B) {
+                if (arg0 == 2) {
+                    return 0x2D;
+                }
+                return var_v1;
+            }
+            if (arg1 == 0x20) {
+                var_v1 = 0xFF;
+            }
+            return var_v1;
+        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E9B04.s")
