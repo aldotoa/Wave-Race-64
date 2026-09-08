@@ -268,13 +268,34 @@ void func_801EBD28(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EBD28.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EBFE4(void) {
-    /* Mode select cleanup and state reset */
+    /* Course-select state init: default globals, fade transition, then
+       camera + audio + VI-black tail. The gCameraPerspective store sits in
+       the beqz delay slot (executes on both paths); spelled here as
+       straight-line code before the if. */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_COURSE_SELECT;
+    D_801CE638 = 5;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    gCourseID = SUNNY_BEACH;
+    gRiderGameModes = UNACTIVE_MODE;
+    D_801CE64C = 1;
+    gGameModeState = GMODE_STATE_0;
+    FadeTransition_SetProps(2, 4, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective[0].viewMode = 1;
+    if (D_800DA9AC != 0) {
+        D_800DA9D0 = 0;
+    }
+    func_800C21F4(0xA, 0);
+    osViBlack(1);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EBFE4.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Race-setup init: default game-state globals, conditional counter bump
