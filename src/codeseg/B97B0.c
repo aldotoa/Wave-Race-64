@@ -23,22 +23,22 @@ void func_801EB180(void) {
        state 0 (black screen) forever. The D_800DAB60 store sits in a
        non-likely branch delay slot in the stub (executes on both paths);
        spelled here as straight-line code before the if. */
-    s32 i;
-    s32 sp24;
-    s16 temp_a2;
-    s32 var_v1;
-    s32 temp_v0;
-    s32 courseId;
-    s32 gRidersVal;
-    s32* pDA9F8;
-    s32* pDA9FC;
-    s32* pGiders;
-    u8* eacRow;
-    UnkStruct_800D96A4* tableRow;
-    UnkStruct_800D96A4* tableRow2;
-    UnkStruct_80192690* rider;
-    UnkStruct_80192690* riderEnd;
-    UnkStruct_800DB568* courseTable;
+    s32 unusedFrameKeeper; /* frame-keeping: unused in C, but each named auto reserves a stack home */
+    s32 playerStartParam;
+    s16 rivalStartParam;
+    s32 coursePairIdx;
+    s32 attractIdx;
+    s32 clampedCourse;
+    s32 riderCount;
+    s32* attractIdxPtr;
+    s32* pairIdxPtr;
+    s32* riderCountPtr;
+    u8* pairRowBytes;
+    UnkStruct_800D96A4* rivalSpawn;
+    UnkStruct_800D96A4* playerSpawn;
+    UnkStruct_80192690* riderCursor;
+    UnkStruct_80192690* ridersEnd;
+    UnkStruct_800DB568* courseInfo;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -50,9 +50,9 @@ void func_801EB180(void) {
     D_800DAB1C = 0;
     D_800D461C = 3;
     gGameModes = GMODE_TIME_TRIALS;
-    pGiders = &gRiders;
+    riderCountPtr = &gRiders;
     gPlayers = ONE_PLAYER;
-    *pGiders = 2;
+    *riderCountPtr = 2;
     D_800D49B0 = 0x14;
     gBuoyMisses = 5;
     D_801CE728[0] = 3;
@@ -72,57 +72,57 @@ void func_801EB180(void) {
         D_800DAB60 = 0;
     }
     D_800DAB64 = 0;
-    pDA9F8 = &D_800DA9F8;
+    attractIdxPtr = &D_800DA9F8;
     D_800DAA08 = 0;
-    temp_v0 = *pDA9F8 + 1;
-    *pDA9F8 = temp_v0;
-    if (temp_v0 >= 3) {
-        *pDA9F8 = 0;
+    attractIdx = *attractIdxPtr + 1;
+    *attractIdxPtr = attractIdx;
+    if (attractIdx >= 3) {
+        *attractIdxPtr = 0;
     }
-    pDA9FC = &D_800DA9FC;
-    var_v1 = *pDA9FC + 1;
-    *pDA9FC = var_v1;
-    if (var_v1 >= 4) {
-        *pDA9FC = 0;
-        var_v1 = 0;
+    pairIdxPtr = &D_800DA9FC;
+    coursePairIdx = *pairIdxPtr + 1;
+    *pairIdxPtr = coursePairIdx;
+    if (coursePairIdx >= 4) {
+        *pairIdxPtr = 0;
+        coursePairIdx = 0;
     }
-    gRidersVal = *pGiders;
-    eacRow = (u8*) D_800EAC44 + var_v1 * 8;
-    temp_a2 = *(s16*) (eacRow + 2);
-    sp24 = *(s16*) eacRow;
-    if (gRidersVal > 0) {
-        tableRow = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + temp_a2 * 0xC);
-        rider = D_80192690;
-        riderEnd = &D_80192690[gRidersVal];
+    riderCount = *riderCountPtr;
+    pairRowBytes = (u8*) D_800EAC44 + coursePairIdx * 8;
+    rivalStartParam = *(s16*) (pairRowBytes + 2);
+    playerStartParam = *(s16*) pairRowBytes;
+    if (riderCount > 0) {
+        rivalSpawn = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + rivalStartParam * 0xC);
+        riderCursor = D_80192690;
+        ridersEnd = &D_80192690[riderCount];
         do {
-            rider = (UnkStruct_80192690*) ((u8*) rider + 0x1718);
-            rider[-1].unkB68 = temp_a2;
-            rider[-1].unkB6C = tableRow->unk0;
-            rider[-1].unkB70 = tableRow->unk4;
-            rider[-1].unkB74 = tableRow->unk8;
-        } while ((u32) rider < (u32) riderEnd);
+            riderCursor = (UnkStruct_80192690*) ((u8*) riderCursor + 0x1718);
+            riderCursor[-1].unkB68 = rivalStartParam;
+            riderCursor[-1].unkB6C = rivalSpawn->unk0;
+            riderCursor[-1].unkB70 = rivalSpawn->unk4;
+            riderCursor[-1].unkB74 = rivalSpawn->unk8;
+        } while ((u32) riderCursor < (u32) ridersEnd);
     }
-    rider = &D_80192690[D_800D48DC];
-    rider->unkB68 = sp24;
-    tableRow2 = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + sp24 * 0xC);
+    riderCursor = &D_80192690[D_800D48DC];
+    riderCursor->unkB68 = playerStartParam;
+    playerSpawn = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + playerStartParam * 0xC);
     D_801CE6F4[1] = 0;
-    rider->unkB6C = tableRow2->unk0;
-    rider->unkB70 = tableRow2->unk4;
-    rider->unkB74 = tableRow2->unk8;
+    riderCursor->unkB6C = playerSpawn->unk0;
+    riderCursor->unkB70 = playerSpawn->unk4;
+    riderCursor->unkB74 = playerSpawn->unk8;
     D_801CE6F4[0] = D_801CE6F4[1];
     gRiderGameModes = UNACTIVE_MODE;
     D_801CE64C = 0;
     gGameModeState = GMODE_STATE_STARTED;
-    func_80096960(1, sp24, temp_a2, 0, 0);
-    courseId = gCourseID;
-    if (courseId < DOLPHIN_PARK) {
-        courseId = DOLPHIN_PARK;
+    func_80096960(1, playerStartParam, rivalStartParam, 0, 0);
+    clampedCourse = gCourseID;
+    if (clampedCourse < DOLPHIN_PARK) {
+        clampedCourse = DOLPHIN_PARK;
     }
-    if (courseId >= RIDER_SELECTION) {
-        courseId = SOUTHERN_ISLAND;
+    if (clampedCourse >= RIDER_SELECTION) {
+        clampedCourse = SOUTHERN_ISLAND;
     }
-    courseTable = &D_800DB568[courseId];
-    func_8009684C(0x08060000, courseTable->unk0, courseTable->unk2);
+    courseInfo = &D_800DB568[clampedCourse];
+    func_8009684C(0x08060000, courseInfo->unk0, courseInfo->unk2);
     func_8004A208();
     FadeTransition_SetProps(0, 0, 0);
     func_801E6A4C(0, 0);
@@ -322,35 +322,35 @@ void func_801EBFE4(void) {
    through D_800DA9B0, then the 96960/transition/VI-black call sequence.
    Diff floor 410 probe-verified: calls/structure/stack exact; remainder is
    register rotation (h/lh in v0 vs t0, consts in t0/t1 vs a3/v0, chain shift).
-   Tried: v1 decl-last (+37), drop t3 index temp (-40, kept: fixed v1 home),
-   early named h (+25), s16 h (neutral). Next: h-to-t0 lever. */
+   Tried: one decl-last (+37), drop t3 index temp (-40, kept: fixed one home),
+   early named menuResult (+25), s16 menuResult (neutral). Next: menuResult-to-t0 lever. */
 void func_801EC0D4(void) {
-    s32 v1 = 1;
-    s32 args[4];
-    s32 h;
+    s32 one = 1;
+    s32 packedArgs[4];
+    s32 menuResult;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
     gGameState = GAME_STATE_RACE_RESULTS;
     D_801CE638 = 9;
-    D_801CE63C = v1;
+    D_801CE63C = one;
     D_801CE640 = 0;
     D_801CE644 = 0;
     D_800DAB1C = 0;
     D_800D461C = 2;
     gPlayers = ONE_PLAYER;
     gRiderGameModes = UNACTIVE_MODE;
-    h = D_801CE6F4[0];
-    D_801CE64C = v1;
+    menuResult = D_801CE6F4[0];
+    D_801CE64C = one;
     gGameModeState = 0;
-    args[2] = 2;
-    args[3] = 3;
-    args[0] = 0;
-    args[1] = v1;
-    if (h != 0) {
-        args[D_800DA9B0[D_800D48DC]] += 4;
+    packedArgs[2] = 2;
+    packedArgs[3] = 3;
+    packedArgs[0] = 0;
+    packedArgs[1] = one;
+    if (menuResult != 0) {
+        packedArgs[D_800DA9B0[D_800D48DC]] += 4;
     }
-    func_80096960(2, args[0], args[1], args[2], args[3]);
+    func_80096960(2, packedArgs[0], packedArgs[1], packedArgs[2], packedArgs[3]);
     FadeTransition_SetProps(4, 1, 0);
     func_801E6A4C(0, 0);
     gCameraPerspective[0].viewMode = 1;
@@ -408,24 +408,24 @@ void func_801EC3AC(void) {
        rider-table entry setup from option bytes, then fade/audio
        teardown. FLOOR 26/85 (all pure temp-coloring: same opcodes,
        order, immediates, frame; stub uses t2/t3/t5/t0/t1/t6 where the
-       probe uses t4/t5/v1/t3/t2/t0). Load-bearing: idx var (separate
+       probe uses t4/t5/v1/t3/t2/t0). Load-bearing: playerSlot var (separate
        load statement pins the x5912 chain late + t6 accum; fusing it
-       into the rider expression hoists the chain early), half var
+       into the rider expression hoists the chain early), flagCopy var
        (keeps the lh; inline also keeps it but costs an auto slot),
-       rider computed before the mode stores (scheduler weave).
+       playerRider computed before the mode stores (scheduler weave).
        First-temp follows auto count (1->t2, 2->t3, 3->t4) while a
-       late chain needs the idx temp: t2-first + late-chain is
+       late chain needs the playerSlot temp: t2-first + late-chain is
        unreachable (decl order, s16/s32, register hint all inert).
        Expression-nesting sweep (~15 probes: ptr-add/split chain forms,
-       u32 idx, char* rider, named three/optbytes consts, store-order
+       u32 playerSlot, char* playerRider, named three/optbytes consts, store-order
        shuffles incl. B68-last and nine/modestate swaps) either
        reproduces this exact 26 or adds rows; failed variants fix
        nothing vs this floor. T4 confirms nine-before-modestate.
        The D_801CE6F4[0] store sits in the func_80096960 delay slot
        (both paths); spelled as straight-line code before the call. */
-    UnkStruct_80192690* rider;
-    s16 half;
-    s32 idx;
+    UnkStruct_80192690* playerRider;
+    s16 flagCopy;
+    s32 playerSlot;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -438,19 +438,19 @@ void func_801EC3AC(void) {
     D_800D461C = 3;
     gPlayers = ONE_PLAYER;
     gRiders = 1;
-    idx = D_800D48DC;
-    rider = &D_80192690[idx];
+    playerSlot = D_800D48DC;
+    playerRider = &D_80192690[playerSlot];
     gCourseID = RIDER_SELECTION;
     gRiderGameModes = AI_MODE;
     D_801CE64C = 2;
     gGameModeState = GMODE_STATE_STARTED;
     D_801CE6F4[1] = 0;
-    rider->unkB68 = 0;
-    rider->unkB6C = D_800DA950[0].unk_B[0];
-    rider->unkB70 = D_800DA950[0].unk_B[1];
-    rider->unkB74 = D_800DA950[0].unk_B[2];
-    half = D_801CE6F4[1];
-    D_801CE6F4[0] = half;
+    playerRider->unkB68 = 0;
+    playerRider->unkB6C = D_800DA950[0].unk_B[0];
+    playerRider->unkB70 = D_800DA950[0].unk_B[1];
+    playerRider->unkB74 = D_800DA950[0].unk_B[2];
+    flagCopy = D_801CE6F4[1];
+    D_801CE6F4[0] = flagCopy;
     func_80096960(2, 0, 1, 2, 3);
     FadeTransition_SetProps(2, 4, 0);
     func_801E6A4C(0, 0);
@@ -536,7 +536,7 @@ void func_801EC780(void) {
 }
 
 void func_801EC830(void) {
-    s32 var_v1;
+    s32 needsFade;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -552,16 +552,16 @@ void func_801EC830(void) {
     D_801CE64C = 1;
     gGameModeState = GMODE_STATE_0;
 
-    var_v1 = false;
+    needsFade = false;
 
     if (D_801CE608.gameMode == 4) {
         if (gPrevGameState == 0x43) {
-            var_v1 = true;
+            needsFade = true;
         }
     } else if ((gPrevGameState != 0x32) && (gPrevGameState != 0x39)) {
-        var_v1 = true;
+        needsFade = true;
     }
-    if (var_v1) {
+    if (needsFade) {
         FadeTransition_SetProps(4, 1, 0);
         osViBlack(true);
     }

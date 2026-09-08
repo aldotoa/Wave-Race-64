@@ -22,31 +22,31 @@ void func_i15_802C5CE8(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5CE8.s")
 #endif
 
-void func_i15_802C5EE4(s32 arg0) {
-    UnkStruct_D_802C6E80* thing;
-    s32 i;
+void func_i15_802C5EE4(s32 effectKind) {
+    UnkStruct_D_802C6E80* slot;
+    s32 slotIdx;
 
-    for (i = 0, thing = &D_802C6E80[0]; i < 10; i++, thing++) {
-        if (thing->unk0 == 0) {
+    for (slotIdx = 0, slot = &D_802C6E80[0]; slotIdx < 10; slotIdx++, slot++) {
+        if (slot->unk0 == 0) {
             break;
         }
     }
 
-    thing = &D_802C6E80[i];
+    slot = &D_802C6E80[slotIdx];
 
-    if (i != 10) {
-        thing->unk0 = 1;
-        thing->unk4 = arg0;
-        thing->unkC = 235;
-        if (arg0 != 10) {
-            thing->unk8 = 32;
+    if (slotIdx != 10) {
+        slot->unk0 = 1;
+        slot->unk4 = effectKind;
+        slot->unkC = 235;
+        if (effectKind != 10) {
+            slot->unk8 = 32;
         } else {
-            thing->unk8 = 28;
+            slot->unk8 = 28;
         }
     }
 }
 
-Gfx* func_i15_802C5F50(Gfx* arg0) {
+Gfx* func_i15_802C5F50(Gfx* gfx) {
     /* Award-ceremony scene composer: state reset, then Gfx chain through
        race-scene builders with conditional fade/audio teardown. Calls
        that ignore their result (6C1C/EB180/EC9C8) still take the live
@@ -55,13 +55,13 @@ Gfx* func_i15_802C5F50(Gfx* arg0) {
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == GAME_STATE_CEREMONY) {
-            return Gfx_FillViewport(arg0, 0xFF, 0xFF, 0xFF);
+            return Gfx_FillViewport(gfx, 0xFF, 0xFF, 0xFF);
         }
     }
     D_800DAB2C = 0;
-    arg0 = func_80091DBC(arg0);
-    arg0 = Game_BuildRaceScene(arg0);
-    arg0 = func_i15_802C602C(arg0);
+    gfx = func_80091DBC(gfx);
+    gfx = Game_BuildRaceScene(gfx);
+    gfx = func_i15_802C602C(gfx);
     if (gGameState == GAME_STATE_CEREMONY) {
         func_i15_802C6C1C();
     } else if (D_80228A16 == 1) {
@@ -71,7 +71,7 @@ Gfx* func_i15_802C5F50(Gfx* arg0) {
             func_801EC9C8();
         }
     }
-    return arg0;
+    return gfx;
 }
 
 #ifdef NON_MATCHING
