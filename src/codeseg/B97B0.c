@@ -940,7 +940,7 @@ void func_801EDF9C(MtxF_t arg0, f32 x, f32 y, f32 z) {
 void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     MtxF mtx;
 
-    func_801EDF9C((float(*)[4]) & mtx, arg1, arg2, arg3);
+    func_801EDF9C((float (*)[4]) & mtx, arg1, arg2, arg3);
 
     _MtxF_to_Mtx(&mtx, arg0);
 }
@@ -962,7 +962,7 @@ void func_801EE040(float (*)[4], f32, f32, f32, f32);
 void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     MtxF mtx;
 
-    func_801EE040((float(*)[4]) & mtx, arg1, arg2, arg3, arg4);
+    func_801EE040((float (*)[4]) & mtx, arg1, arg2, arg3, arg4);
 
     _MtxF_to_Mtx(&mtx, arg0);
 }
@@ -987,7 +987,7 @@ void func_801EE274(float (*)[4], f32, f32, f32, f32, f32, f32, f32);
 void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
     MtxF mtx;
 
-    func_801EE274((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    func_801EE274((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -1010,7 +1010,7 @@ void func_801EE4D0(float (*)[4], f32, f32, f32, f32, f32, f32);
 void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     MtxF mtx;
 
-    func_801EE4D0((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    func_801EE4D0((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -1033,7 +1033,7 @@ void func_801EE6F4(float (*)[4], f32, f32, f32, f32, f32, f32);
 void func_801EE8C0(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     MtxF mtx;
 
-    func_801EE6F4((float(*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
+    func_801EE6F4((float (*)[4]) & mtx, arg1, arg2, arg3, arg4, arg5, arg6);
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
@@ -1065,7 +1065,7 @@ void func_801EE91C(MtxF_t mf, f32 x, f32 y, f32 z) {
 void func_801EE97C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
     MtxF sp18;
 
-    func_801EE91C((float(*)[4]) & sp18, arg1, arg2, arg3);
+    func_801EE91C((float (*)[4]) & sp18, arg1, arg2, arg3);
     _MtxF_to_Mtx(&sp18, arg0);
 }
 
