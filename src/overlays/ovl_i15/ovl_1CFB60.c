@@ -2,6 +2,8 @@
 
 Gfx* Gfx_FillViewport(Gfx* gfxPtr, u16 red, u16 green, u16 blue);
 void* func_80091DBC(Gfx* gdl);
+Gfx* func_i15_802C602C(Gfx* arg0);
+void func_i15_802C6C1C(void);
 
 #ifdef NON_MATCHING
 Gfx* func_i15_802C5800(Gfx* arg0) {
@@ -44,7 +46,6 @@ void func_i15_802C5EE4(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 Gfx* func_i15_802C5F50(Gfx* arg0) {
     /* Award-ceremony scene composer: state reset, then Gfx chain through
        race-scene builders with conditional fade/audio teardown. Calls
@@ -72,9 +73,6 @@ Gfx* func_i15_802C5F50(Gfx* arg0) {
     }
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5F50.s")
-#endif
 
 #ifdef NON_MATCHING
 Gfx* func_i15_802C602C(Gfx* arg0) {
