@@ -7,12 +7,7 @@
    point at &__osThreadTail (priority -1 keeps new threads preempting).
    Matching builds never see this. */
 OSThread_ListHead __osThreadTail_fix = {
-    NULL,
-    -1,
-    (OSThread*) &__osThreadTail_fix,
-    (OSThread*) &__osThreadTail_fix,
-    NULL,
-    0,
+    NULL, -1, (OSThread*) &__osThreadTail_fix, (OSThread*) &__osThreadTail_fix, NULL, 0,
 };
 #endif
 

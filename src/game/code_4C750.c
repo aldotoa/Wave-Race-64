@@ -1077,7 +1077,7 @@ void Game_EnterGameplay(void) {
 /* Clears the fixed work color/depth images at 0x802A0000 to near-white. */
 Gfx* Gfx_ClearWorkImages(Gfx* gdl) {
     gSPClearGeometryMode(gdl++, G_ZBUFFER | G_TEXTURE_ENABLE | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
-                                       G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | 0xFFE0CDF8);
+                                    G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | 0xFFE0CDF8);
 
     gSPSetGeometryMode(gdl++, G_ZBUFFER | G_SHADE);
     gSPTexture(gdl++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
@@ -1319,8 +1319,8 @@ Gfx* Menu_DrawFrame(Gfx* gdl, s32 style, s32 x, s32 y, s32 w, s32 h) {
     for (i = 0; i < slices; i++) {
         uly = (y + (f32) h / (f32) slices * i) * 4.0f;
         lry = (y + (f32) h / (f32) slices * i + (f32) h / (f32) slices) * 4.0f;
-        gDPLoadTextureBlock(gdl++, timg + texWidth * texHeight * i, G_IM_FMT_RGBA, G_IM_SIZ_16b, texWidth, texHeight,
-                            0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gdl++, timg + texWidth * texHeight * i, G_IM_FMT_RGBA, G_IM_SIZ_16b, texWidth, texHeight, 0,
+                            G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPScisTextureRectangle(gdl++, x << 2, uly, (x + w) << 2, lry, G_TX_RENDERTILE, 0, 0, dsdx, dsdy);
     }
 

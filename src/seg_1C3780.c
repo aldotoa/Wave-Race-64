@@ -45,11 +45,11 @@ Gfx* func_1C3780_802C58F4(Gfx* gDisplayListHead) {
                                         func_801E946C(
                                             Menu_DrawFrame(
                                                 Menu_DrawFrame(
-                                                    Menu_DrawFrame(
-                                                        Menu_DrawFrame(Menu_DrawFrame(gDisplayListHead, 0, D_802C5D88 + 8,
-                                                                                    0x1E, 0x108, 0x18),
-                                                                      0, D_802C5D8C + 8, 0x50, 0x108, 0x10),
-                                                        0, D_802C5D8C + 8, 0x62, 0x108, 0x18),
+                                                    Menu_DrawFrame(Menu_DrawFrame(Menu_DrawFrame(gDisplayListHead, 0,
+                                                                                                 D_802C5D88 + 8, 0x1E,
+                                                                                                 0x108, 0x18),
+                                                                                  0, D_802C5D8C + 8, 0x50, 0x108, 0x10),
+                                                                   0, D_802C5D8C + 8, 0x62, 0x108, 0x18),
                                                     2, D_802C5D88 + 8, 0x8C, 0x108, 0x18),
                                                 2, D_802C5D88 + 8, 0xA5, 0x108, 0x18),
                                             0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF),

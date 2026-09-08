@@ -217,7 +217,8 @@ void func_8007E938(UnkStruct_80192690* arg0, f32 arg1, f32 arg2, f32 arg3, UnkSt
                     arg0->unk16D8 = 2;
                     if (var_v0->unkBC == 0) {
                         var_v0->unkBC = 1;
-                        Spray_SpawnBurst(var_v0->unk0, var_v0->unk4, var_v0->unk8, arg4->unkC, arg4->unk10, arg4->unk14);
+                        Spray_SpawnBurst(var_v0->unk0, var_v0->unk4, var_v0->unk8, arg4->unkC, arg4->unk10,
+                                         arg4->unk14);
                     }
                 }
                 arg0->unkC50 = temp_fs0;

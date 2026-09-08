@@ -664,8 +664,7 @@ void func_800998B0(UnkStruct_801CED60* dst, UnkStruct_801CED60* src, s32 flag) {
     s0 = s7;
     s2 = s0[0];
     do {
-        func_80099858((struct UnkStruct_80099858*) s3, (s2 << 24) >> 24, ((u8*) s0)[1], s0[2], s4,
-                      flag);
+        func_80099858((struct UnkStruct_80099858*) s3, (s2 << 24) >> 24, ((u8*) s0)[1], s0[2], s4, flag);
         s2 = s0[10];
         s1++;
         s3++;

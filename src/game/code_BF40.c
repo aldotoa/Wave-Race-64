@@ -52,13 +52,13 @@ void Wall_CollideRider(struct UnkStruct_801C3C50* rider, struct UnkStruct_8004B0
                 while (*cellByte != 0) {
                     wallSeg = (*cellByte) + (0, D_80192538); // FAKE
 
-                    edgeDist =
-                        ((wallSeg->unk0 - hullPt->unk0) * wallSeg->unk8) + ((wallSeg->unk4 - hullPt->unk8) * wallSeg->unkC);
+                    edgeDist = ((wallSeg->unk0 - hullPt->unk0) * wallSeg->unk8) +
+                               ((wallSeg->unk4 - hullPt->unk8) * wallSeg->unkC);
 
                     if ((edgeDist > 0.0f) && (edgeDist < 16.0f)) {
 
                         penDepth = ((hullPt->unk0 - wallSeg->unk0) * wallSeg->unk10) +
-                                  ((hullPt->unk8 - wallSeg->unk4) * wallSeg->unk14);
+                                   ((hullPt->unk8 - wallSeg->unk4) * wallSeg->unk14);
 
                         if ((penDepth > 0.0f) && (penDepth < wallSeg->unk18)) {
                             penDepth = (-hullPt->unkC * wallSeg->unk8) - (hullPt->unk14 * wallSeg->unkC);

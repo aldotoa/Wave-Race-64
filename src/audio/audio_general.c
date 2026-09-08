@@ -536,7 +536,7 @@ void func_800C010C(s8* arg0, s8 arg1) {
                 }
                 if (arg0[0x3] >= 0xB) {
                     func_800BFFEC((u8) (var_a3 + 2), 0xEU, (u8) (arg0[0x3] + 0x50));
-block_59: ;
+                block_59:;
                 }
                 arg0[0x3] = 1;
                 sp30 = (s32) var_a3;
@@ -627,8 +627,7 @@ block_59: ;
         }
         if (arg0[0x1D] != 0) {
             sp58 = 0x7F;
-            var_fv1 = var_fv1 + D_800E7DC8[sp5C]
-                        + (D_800E7DC8[D_800E7F75[-arg0[0x1D]]] * D_800E7F78[arg0[0x1D]]);
+            var_fv1 = var_fv1 + D_800E7DC8[sp5C] + (D_800E7DC8[D_800E7F75[-arg0[0x1D]]] * D_800E7F78[arg0[0x1D]]);
             arg0[0x1D] = (s8) (arg0[0x1D] - 1);
         } else {
             var_fv1 = var_fv1 + D_800E7DC8[sp5C];
@@ -650,14 +649,12 @@ block_59: ;
             AudioThread_QueueCmdS8(0x06000005, 0);
         }
         switch (arg1) { /* switch 1; irregular */
-            case 0: /* switch 1 */
-                AudioThread_QueueCmdF32(0x04000000U,
-                                        temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+            case 0:     /* switch 1 */
+                AudioThread_QueueCmdF32(0x04000000U, temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
                 AudioThread_QueueCmdF32(0x01000000U, (f32) sp58 / 127.0f);
                 break;
             case 1: /* switch 1 */
-                AudioThread_QueueCmdF32(0x04000300U,
-                                        temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
+                AudioThread_QueueCmdF32(0x04000300U, temp_fv1 * (((f32) ((s32) gAudioRandom & 0xF) * 0.002f) + 0.97f));
                 AudioThread_QueueCmdF32(0x01000300U, (f32) sp58 / 127.0f);
                 break;
             case 2: /* switch 1 */
@@ -693,8 +690,7 @@ block_59: ;
             } else {
                 arg0[0x11] = (s8) ((temp_v0_9 / 2) + 0x14);
             }
-            AudioThread_QueueCmdF32((((u32) sp28) << 8) | 0x04000000,
-                                    ((f32) arg0[0x0] / 100.0f) + 0.6f);
+            AudioThread_QueueCmdF32((((u32) sp28) << 8) | 0x04000000, ((f32) arg0[0x0] / 100.0f) + 0.6f);
             if ((D_801D7DC4 != 3) && (D_801D7DC4 != 6)) {
                 var_v0 = (gAudioRandom & 3) * 4;
             } else {
@@ -735,22 +731,19 @@ block_59: ;
             }
             if (arg0[0x12] == 0x40) {
                 if (arg0[0x7] != 0) {
-                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E0C),
-                                  (u8) arg0[0x13]);
+                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E0C), (u8) arg0[0x13]);
                 }
                 goto block_174;
             }
             if (arg0[0x12] == 0x41) {
                 if (D_801D7E10 != 0) {
-                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E10),
-                                  (u8) arg0[0x13]);
+                    func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x14] + D_801D7E10), (u8) arg0[0x13]);
                     goto block_173;
                 }
             } else {
-                func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x12] + arg0[0x14]),
-                              (u8) arg0[0x13]);
-block_173:
-block_174:
+                func_800BFFEC((u8) (sp30 + 2), (u8) (arg0[0x12] + arg0[0x14]), (u8) arg0[0x13]);
+            block_173:
+            block_174:
                 if (arg0[0x12] == 0x14) {
                     if ((arg1 == 0) && (arg0[0x13] >= 0x65)) {
                         D_800E7CB4 = 1;
@@ -758,15 +751,15 @@ block_174:
                     }
                     if ((arg1 == 2) && (D_800E7CB4 != 0)) {
                         switch (D_801D7DE0) { /* switch 2; irregular */
-                            case 0: /* switch 2 */
+                            case 0:           /* switch 2 */
                                 func_800C3240((arg0[0x1B] * 4) + (gAudioRandom & 1));
                                 break;
                             case 2: /* switch 2 */
                                 func_800C3270((arg0[0x1B] * 4) + (gAudioRandom & 1));
                                 break;
                             default: /* switch 2 */
-                            case 1: /* switch 2 */
-                            case 3: /* switch 2 */
+                            case 1:  /* switch 2 */
+                            case 3:  /* switch 2 */
                                 func_800C317C(0, (arg0[0x1B] * 4) + (gAudioRandom & 1));
                                 break;
                         }
@@ -1935,7 +1928,7 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
     u32 var_a0_3;
 
     if (D_800E7C94 != 7) {
-        switch (arg0) {                             /* switch 1; jump table: jtbl_800EC414 */
+        switch (arg0) { /* switch 1; jump table: jtbl_800EC414 */
             case 0xA:
             case 0x21:
             case 0x26:
@@ -1948,28 +1941,28 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
                 break;
         }
     }
-        if ((D_801D7DC0 != 3) && ((arg0 == 0x28) || (arg0 == 0x29))) {
-            if ((D_801D7DFC != 0) && !(arg1 & 0x80) && (arg1 & 0xF)) {
-                arg0 = 1;
-            }
-            if ((D_801D7E04 != 0) && ((arg1 & 0x80) == 0x80) && (arg1 & 0xF)) {
-                arg0 = 1;
-            }
+    if ((D_801D7DC0 != 3) && ((arg0 == 0x28) || (arg0 == 0x29))) {
+        if ((D_801D7DFC != 0) && !(arg1 & 0x80) && (arg1 & 0xF)) {
+            arg0 = 1;
         }
-        AudioThread_QueueCmdS8(0x06000F00, (s8) arg0);
-        if ((D_800E7C94 == 7) && (D_800E7CB8 == 0)) {
-            if (arg0 == 0x23) {
-                D_800E7CD8 = 0xA;
-                D_800E7CD4 = 0xB4;
-                D_800E7CA0 = 1;
-                D_800E7CE8 = 0x140;
-            }
-            if (arg0 == 0x21) {
-                D_800E7CE8 = 0xA0;
-            }
+        if ((D_801D7E04 != 0) && ((arg1 & 0x80) == 0x80) && (arg1 & 0xF)) {
+            arg0 = 1;
         }
-        switch (arg0) {                           /* switch 2 */
-        case 0x21:                                  /* switch 2 */
+    }
+    AudioThread_QueueCmdS8(0x06000F00, (s8) arg0);
+    if ((D_800E7C94 == 7) && (D_800E7CB8 == 0)) {
+        if (arg0 == 0x23) {
+            D_800E7CD8 = 0xA;
+            D_800E7CD4 = 0xB4;
+            D_800E7CA0 = 1;
+            D_800E7CE8 = 0x140;
+        }
+        if (arg0 == 0x21) {
+            D_800E7CE8 = 0xA0;
+        }
+    }
+    switch (arg0) { /* switch 2 */
+        case 0x21:  /* switch 2 */
             func_800C1EB8(0x12);
             if (D_801D7DC0 == 2) {
                 if ((arg1 & 1) == 1) {
@@ -2043,8 +2036,8 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
             D_801D7DF8[0] = 0;
             D_801D7DF8[3] = (s8) D_801D7DF8[2];
             return;
-        case 0x26:                                  /* switch 2 */
-        case 0x27:                                  /* switch 2 */
+        case 0x26: /* switch 2 */
+        case 0x27: /* switch 2 */
             if (D_801D7DF8[4] == 5) {
                 goto lbl_3C0C;
             }
@@ -2061,20 +2054,20 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
         lbl_3C1C:
             func_800C3320((gAudioRandom & 3) + 0x61, 0xA, 0x14);
             return;
-        case 0x1:                                   /* switch 2 */
-        case 0x28:                                  /* switch 2 */
-        case 0x29:                                  /* switch 2 */
+        case 0x1:  /* switch 2 */
+        case 0x28: /* switch 2 */
+        case 0x29: /* switch 2 */
             temp_v0_2 = arg1 & 0x80;
             temp_v1 = arg1 & 0xF;
-            switch (temp_v0_2) {                    /* switch 3; irregular */
-            case 0x0:                               /* switch 3 */
-                D_801D7DF8[0] = 1;
-                D_801D7DF8[1] = 1;
-                break;
-            case 0x80:                              /* switch 3 */
-                D_801D7E00[0] = 1;
-                D_801D7E00[1] = 1;
-                break;
+            switch (temp_v0_2) { /* switch 3; irregular */
+                case 0x0:        /* switch 3 */
+                    D_801D7DF8[0] = 1;
+                    D_801D7DF8[1] = 1;
+                    break;
+                case 0x80: /* switch 3 */
+                    D_801D7E00[0] = 1;
+                    D_801D7E00[1] = 1;
+                    break;
             }
             if (temp_v1 == 0) {
                 var_a0_2 = 0x22;
@@ -2087,7 +2080,7 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
             }
             func_800C33C8(var_a0_2, 0x19U, 0x28, 0x28U);
             return;
-        case 0xA:                                   /* switch 2 */
+        case 0xA: /* switch 2 */
             var_v0 = 4;
             if (D_801D7DC4 == 0) {
                 var_v0 = 8;
@@ -2102,26 +2095,26 @@ void AudioGeneral_PlaySound(s32 arg0, s32 arg1) {
                 return;
             }
             break;
-        case 0x22:                                  /* switch 2 */
+        case 0x22: /* switch 2 */
             func_800C3320(arg1 + 0xA, 0x5A, 1);
             return;
-        case 0x23:                                  /* switch 2 */
+        case 0x23: /* switch 2 */
             func_800C3320(0xAU, 0x64, 0x3C);
             return;
-        case 0x2D:                                  /* switch 2 */
+        case 0x2D: /* switch 2 */
             func_800C32A0(0U, 0x7F, 0x14);
             return;
-        case 0x33:                                  /* switch 2 */
+        case 0x33: /* switch 2 */
             func_800C3408((gAudioRandom & 1) + 0x40, 0x18, 0x14);
             return;
-        case 0x35:                                  /* switch 2 */
+        case 0x35: /* switch 2 */
             D_800E7CF4 += 1;
             D_800E7CF0 = 0x64;
             if ((D_800E7CF4 == 4) || (D_800E7CF4 == 0xC)) {
                 func_800C32A0((gAudioRandom & 1) + 0x17, 0x7F, 0x3C);
             }
             break;
-        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/AudioGeneral_PlaySound.s")

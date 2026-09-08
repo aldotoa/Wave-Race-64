@@ -68,18 +68,18 @@ void func_i1_802C59E8(s32 arg0) {
        jal slot reloads arg0), volatile (shuffled, reverted), explicit
        load/store rewrite (added pressure, reverted), val-reuse (+180).
        Parked. */
-    s32 *dst;
+    s32* dst;
     s32 var_a1;
-    s32 *row;
-    s32 *end;
+    s32* row;
+    s32* end;
     s32 key;
     s32 val;
 
     D_802C96A8 = D_i1_802C94C8;
     D_802C96A8.unk_0 = 1;
-    dst = (s32 *)&D_802C96A8;
+    dst = (s32*) &D_802C96A8;
     var_a1 = 0x122;
-    row = (s32 *)((u8 *)D_i1_802C9444 + arg0 * 12);
+    row = (s32*) ((u8*) D_i1_802C9444 + arg0 * 12);
     end = &D_802C96B4;
     do {
         key = *row;

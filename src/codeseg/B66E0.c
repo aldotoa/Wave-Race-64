@@ -134,37 +134,37 @@ s32 func_801E9B04(s32 arg0, s8 arg1) {
     }
     if (arg1 == 0x2D) {
         switch (arg0) {
-        case 0:
-        case 1:
-            return 0x24;
-        case 2:
-            return 0x25;
-        default:
-            return var_v1;
+            case 0:
+            case 1:
+                return 0x24;
+            case 2:
+                return 0x25;
+            default:
+                return var_v1;
         }
     } else if (arg1 == 0x27) {
         switch (arg0) {
-        case 0:
-        case 1:
-            return 0x25;
-        case 2:
-            return 0x26;
-        case 3:
-            return 0xA;
-        default:
-            return var_v1;
+            case 0:
+            case 1:
+                return 0x25;
+            case 2:
+                return 0x26;
+            case 3:
+                return 0xA;
+            default:
+                return var_v1;
         }
     } else if (arg1 == 0x40) {
         switch (arg0) {
-        case 0:
-        case 1:
-            return 0x26;
-        case 2:
-            return 0x27;
-        case 3:
-            return 0xB;
-        default:
-            return var_v1;
+            case 0:
+            case 1:
+                return 0x26;
+            case 2:
+                return 0x27;
+            case 3:
+                return 0xB;
+            default:
+                return var_v1;
         }
     } else {
         if (arg1 == 0x26) {
@@ -175,14 +175,14 @@ s32 func_801E9B04(s32 arg0, s8 arg1) {
         }
         if (arg1 == 0x2E) {
             switch (arg0) {
-            case 0:
-                return 0x27;
-            case 2:
-                return 0x29;
-            case 1:
-                return 0x29;
-            default:
-                return var_v1;
+                case 0:
+                    return 0x27;
+                case 2:
+                    return 0x29;
+                case 1:
+                    return 0x29;
+                default:
+                    return var_v1;
             }
         } else {
             if (arg1 == 0x7C) {
