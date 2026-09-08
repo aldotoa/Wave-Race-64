@@ -1,0 +1,66 @@
+name: CI
+
+# Tier 1 checks: everything verifiable without the baserom (which cannot
+# live in git). ROM-match verification remains a local `make` step.
+on: [push, pull_request]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Packages
+      run: sudo apt-get update && sudo apt-get install -y python3 python3-pip clang-format-20 clang-tidy-20 clang-tools-20
+
+    - name: Check Format
+      run: ./tools/check_format.sh
+
+  compile-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Packages
+      run: sudo apt-get update && sudo apt-get install -y build-essential python3 binutils-mips-linux-gnu
+
+    - name: Fetch IDO Static Recomp
+      # Pinned: IDO itself is not in this repo (gitignored build output),
+      # so CI clones decompals/ido-static-recomp and builds the 5.3 cc.
+      # m2c / Torch submodules are intentionally NOT initialized:
+      # neither is needed to compile objects.
+      run: |
+        git clone https://github.com/decompals/ido-static-recomp tools/ido-static-recomp
+        git -C tools/ido-static-recomp checkout d5aec59932034b8a20f23f471297a55c45dcbc45
+
+    - name: Build Tools (n64crc + IDO 5.3)
+      run: make -C tools
+
+    - name: Decomp Hygiene
+      # AGENTS.md promotion rules, mechanically enforced: in-progress
+      # probe scaffolding must never be committed.
+      run: |
+        PROBES=$(git ls-files 'scratch/probe_*' 'expected/*probe*')
+        if [ -n "$PROBES" ]; then
+          echo "::error::In-progress probe files must not be committed. Delete them before pushing:"
+          echo "$PROBES"
+          exit 1
+        fi
+
+    - name: Compile All C Objects (IDO, matching)
+      # Compile-only: linking needs the baserom, which cannot live in git.
+      # This is the same IDO 5.3 compile every C TU gets during a local
+      # `make`, minus the link. Only C objects: committed asm .s objects
+      # are disassembly output (some .incbin splat-extracted binaries),
+      # never hand-edited, so compiling them proves nothing.
+      # Deliberately WITHOUT RUN_CC_CHECK and WITHOUT NON_MATCHING=1:
+      # both flags compile in-progress #ifdef NON_MATCHING drafts, and
+      # parked scaffolding such as the func_801EB4F4 draft in
+      # src/codeseg/B97B0.c is not compilable yet (placeholder types).
+      # Re-enable draft compilation once parked drafts are clean.
+      run: |
+        CFILES=$(make print-C_FILES | sed -n 's/.*set to \[\(.*\)\]/\1/p')
+        OBJS=$(for f in $CFILES; do echo "build/${f%.c}.o"; done)
+        make -j "$(nproc)" $OBJS
