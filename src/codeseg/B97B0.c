@@ -10,6 +10,9 @@ extern s32 D_800DA9FC;
 extern s32 D_800DAA08;
 extern s32 D_801CB334;
 extern s16 D_800EAC44[];
+extern s16 D_800DA9AC;
+extern s32 D_801C293C;
+extern s32 D_801C2C70;
 s32 func_8009684C(s32, s16, s16);
 void func_8004A208(void);
 
@@ -26,7 +29,15 @@ void func_801EB180(void) {
     s32 var_v1;
     s32 temp_v0;
     s32 courseId;
+    s32 gRidersVal;
+    s32* pDA9F8;
+    s32* pDA9FC;
+    s32* pGiders;
+    u8* eacRow;
     UnkStruct_800D96A4* tableRow;
+    UnkStruct_800D96A4* tableRow2;
+    UnkStruct_80192690* rider;
+    UnkStruct_80192690* riderEnd;
     UnkStruct_800DB568* courseTable;
 
     gPrevGameState = gGameState;
@@ -39,8 +50,9 @@ void func_801EB180(void) {
     D_800DAB1C = 0;
     D_800D461C = 3;
     gGameModes = GMODE_TIME_TRIALS;
+    pGiders = &gRiders;
     gPlayers = ONE_PLAYER;
-    gRiders = 2;
+    *pGiders = 2;
     D_800D49B0 = 0x14;
     gBuoyMisses = 5;
     D_801CE728[0] = 3;
@@ -60,35 +72,43 @@ void func_801EB180(void) {
         D_800DAB60 = 0;
     }
     D_800DAB64 = 0;
+    pDA9F8 = &D_800DA9F8;
     D_800DAA08 = 0;
-    temp_v0 = D_800DA9F8 + 1;
-    D_800DA9F8 = temp_v0;
+    temp_v0 = *pDA9F8 + 1;
+    *pDA9F8 = temp_v0;
     if (temp_v0 >= 3) {
-        D_800DA9F8 = 0;
+        *pDA9F8 = 0;
     }
-    var_v1 = D_800DA9FC + 1;
-    D_800DA9FC = var_v1;
+    pDA9FC = &D_800DA9FC;
+    var_v1 = *pDA9FC + 1;
+    *pDA9FC = var_v1;
     if (var_v1 >= 4) {
-        D_800DA9FC = 0;
+        *pDA9FC = 0;
         var_v1 = 0;
     }
-    sp24 = D_800EAC44[var_v1 * 4];
-    temp_a2 = D_800EAC44[var_v1 * 4 + 1];
-    if (gRiders > 0) {
-        tableRow = &D_800D96A4[gCourseID][temp_a2];
-        for (i = 0; i < gRiders; i++) {
-            D_80192690[i].unkB68 = temp_a2;
-            D_80192690[i].unkB6C = tableRow->unk0;
-            D_80192690[i].unkB70 = tableRow->unk4;
-            D_80192690[i].unkB74 = tableRow->unk8;
-        }
+    gRidersVal = *pGiders;
+    eacRow = (u8*) D_800EAC44 + var_v1 * 8;
+    temp_a2 = *(s16*) (eacRow + 2);
+    sp24 = *(s16*) eacRow;
+    if (gRidersVal > 0) {
+        tableRow = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + temp_a2 * 0xC);
+        rider = D_80192690;
+        riderEnd = &D_80192690[gRidersVal];
+        do {
+            rider = (UnkStruct_80192690*) ((u8*) rider + 0x1718);
+            rider[-1].unkB68 = temp_a2;
+            rider[-1].unkB6C = tableRow->unk0;
+            rider[-1].unkB70 = tableRow->unk4;
+            rider[-1].unkB74 = tableRow->unk8;
+        } while ((u32) rider < (u32) riderEnd);
     }
-    D_80192690[D_800D48DC].unkB68 = sp24;
-    tableRow = &D_800D96A4[gCourseID][sp24];
+    rider = &D_80192690[D_800D48DC];
+    rider->unkB68 = sp24;
+    tableRow2 = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + sp24 * 0xC);
     D_801CE6F4[1] = 0;
-    D_80192690[D_800D48DC].unkB6C = tableRow->unk0;
-    D_80192690[D_800D48DC].unkB70 = tableRow->unk4;
-    D_80192690[D_800D48DC].unkB74 = tableRow->unk8;
+    rider->unkB6C = tableRow2->unk0;
+    rider->unkB70 = tableRow2->unk4;
+    rider->unkB74 = tableRow2->unk8;
     D_801CE6F4[0] = D_801CE6F4[1];
     gRiderGameModes = UNACTIVE_MODE;
     D_801CE64C = 0;
