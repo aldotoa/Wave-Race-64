@@ -319,13 +319,31 @@ void func_801EC0D4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC0D4.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EC20C(void) {
-    /* Title screen attract demo timer and transition */
+    /* Time-trial results init: default globals, then (unless coming from
+       GAME_STATE_64) rider table setup + fade/audio teardown. The 5th arg
+       to func_80096960 goes in the 0x10(sp) outgoing slot. */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_TIME_TRIALS_RESULTS;
+    D_801CE638 = 3;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 2;
+    gPlayers = ONE_PLAYER;
+    gRiderGameModes = UNACTIVE_MODE;
+    D_801CE64C = 1;
+    gGameModeState = GMODE_STATE_0;
+    if (gPrevGameState != GAME_STATE_64) {
+        func_80096960(2, 0, 1, 2, 3);
+        FadeTransition_SetProps(4, 1, 0);
+        func_801E6A4C(0, 0);
+    }
+    gCameraPerspective[0].viewMode = 1;
+    func_800C21F4(3, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC20C.s")
-#endif
 
 void func_801EC304(void) {
     gPrevGameState = gGameState;
