@@ -1,5 +1,10 @@
 #include "global.h"
 
+Gfx* Gfx_FillViewport(Gfx* gfxPtr, u16 red, u16 green, u16 blue);
+void* func_80091DBC(Gfx* gdl);
+Gfx* func_i15_802C602C(Gfx* arg0);
+void func_i15_802C6C1C(void);
+
 #ifdef NON_MATCHING
 Gfx* func_i15_802C5800(Gfx* arg0) {
     /* Glacier Coast floating iceberg and mist particle display list renderer */
@@ -41,17 +46,40 @@ void func_i15_802C5EE4(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_i15_802C5F50(void) {
-    /* Glacier Coast freezing mist particle update */
+Gfx* func_i15_802C5F50(Gfx* arg0) {
+    /* Award-ceremony scene composer: state reset, then Gfx chain through
+       race-scene builders with conditional fade/audio teardown. Calls
+       that ignore their result (6C1C/EB180/EC9C8) still take the live
+       Gfx pointer in a0 in the stub; the chain value is preserved across
+       them via the outgoing-arg spill slot. */
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+        if (gGameState == GAME_STATE_CEREMONY) {
+            return Gfx_FillViewport(arg0, 0xFF, 0xFF, 0xFF);
+        }
+    }
+    D_800DAB2C = 0;
+    arg0 = func_80091DBC(arg0);
+    arg0 = Game_BuildRaceScene(arg0);
+    arg0 = func_i15_802C602C(arg0);
+    if (gGameState == GAME_STATE_CEREMONY) {
+        func_i15_802C6C1C();
+    } else if (D_80228A16 == 1) {
+        if (D_801CE630 == 2) {
+            func_801EB180();
+        } else {
+            func_801EC9C8();
+        }
+    }
+    return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5F50.s")
-#endif
 
 #ifdef NON_MATCHING
-void func_i15_802C602C(void) {
-    /* Glacier Coast iceberg rebound collision impulse handler */
+Gfx* func_i15_802C602C(Gfx* arg0) {
+    /* Glacier Coast iceberg rebound collision impulse handler. Signature
+       proven by func_i15_802C5F50's stub (takes the live Gfx pointer,
+       result feeds the next chain call). */
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C602C.s")
