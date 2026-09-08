@@ -357,6 +357,11 @@ void func_801EC3AC(void) {
        First-temp follows auto count (1->t2, 2->t3, 3->t4) while a
        late chain needs the idx temp: t2-first + late-chain is
        unreachable (decl order, s16/s32, register hint all inert).
+       Expression-nesting sweep (~15 probes: ptr-add/split chain forms,
+       u32 idx, char* rider, named three/optbytes consts, store-order
+       shuffles incl. B68-last and nine/modestate swaps) either
+       reproduces this exact 26 or adds rows; failed variants fix
+       nothing vs this floor. T4 confirms nine-before-modestate.
        The D_801CE6F4[0] store sits in the func_80096960 delay slot
        (both paths); spelled as straight-line code before the call. */
     UnkStruct_80192690* rider;
