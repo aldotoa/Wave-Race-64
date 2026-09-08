@@ -345,7 +345,52 @@ void func_801EC304(void) {
 
 #ifdef NON_MATCHING
 void func_801EC3AC(void) {
-    /* Options and sound test menu transition */
+    /* Options change-names init (GAME_STATE 0x3E): default globals,
+       rider-table entry setup from option bytes, then fade/audio
+       teardown. FLOOR 26/85 (all pure temp-coloring: same opcodes,
+       order, immediates, frame; stub uses t2/t3/t5/t0/t1/t6 where the
+       probe uses t4/t5/v1/t3/t2/t0). Load-bearing: idx var (separate
+       load statement pins the x5912 chain late + t6 accum; fusing it
+       into the rider expression hoists the chain early), half var
+       (keeps the lh; inline also keeps it but costs an auto slot),
+       rider computed before the mode stores (scheduler weave).
+       First-temp follows auto count (1->t2, 2->t3, 3->t4) while a
+       late chain needs the idx temp: t2-first + late-chain is
+       unreachable (decl order, s16/s32, register hint all inert).
+       The D_801CE6F4[0] store sits in the func_80096960 delay slot
+       (both paths); spelled as straight-line code before the call. */
+    UnkStruct_80192690* rider;
+    s16 half;
+    s32 idx;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_OPTIONS_CHANGE_NAMES;
+    D_801CE638 = 0xA;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    gPlayers = ONE_PLAYER;
+    gRiders = 1;
+    idx = D_800D48DC;
+    rider = &D_80192690[idx];
+    gCourseID = RIDER_SELECTION;
+    gRiderGameModes = AI_MODE;
+    D_801CE64C = 2;
+    gGameModeState = GMODE_STATE_STARTED;
+    D_801CE6F4[1] = 0;
+    rider->unkB68 = 0;
+    rider->unkB6C = D_800DA950[0].unk_B[0];
+    rider->unkB70 = D_800DA950[0].unk_B[1];
+    rider->unkB74 = D_800DA950[0].unk_B[2];
+    half = D_801CE6F4[1];
+    D_801CE6F4[0] = half;
+    func_80096960(2, 0, 1, 2, 3);
+    FadeTransition_SetProps(2, 4, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective->viewMode = 2;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC3AC.s")
