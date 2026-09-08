@@ -226,13 +226,13 @@ Gfx* func_i2_802C5B4C(Gfx* gdl) {
     return gdl;
 }
 
-#if 0 /* TEMP PARK for playable layout (was: #ifdef NON_MATCHING): this WIP
-   emits a private jump table + rodata that overflow ovl_i2's retail ROM
-   slot by 0x20 (see waverace64.ld sanctions), breaking every later
-   overlay's file position. WIP preserved verbatim below; see 9aef6b6.
+#if 0 /* TEMP PARK for playable layout (was: #ifdef NON_MATCHING): this WIP \
+   emits a private jump table + rodata that overflow ovl_i2's retail ROM    \
+   slot by 0x20 (see waverace64.ld sanctions), breaking every later         \
+   overlay's file position. WIP preserved verbatim below; see 9aef6b6.      \
    Resume with shared jtbl refs (no private tables/floats) so it fits. */
-#define ARR_VAL(arr) (*(s32*)((u8*)(arr) + offset))
-#define ARR_PTR(arr) ((s32*)((u8*)(arr) + offset))
+#define ARR_VAL(arr) (*(s32*) ((u8*) (arr) + offset))
+#define ARR_PTR(arr) ((s32*) ((u8*) (arr) + offset))
 
 u32 func_i2_802C5E28() {
     s32 player;
@@ -702,8 +702,8 @@ Gfx* func_i2_802C6ADC(Gfx* gdl) {
     }
 
     gDPSetPrimColor(gdl++, 0, 0, alpha, 255, alpha, 255);
-    gDPLoadTextureTile(gdl++, D_80B6590, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0,
-                       G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gdl++, D_80B6590, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0, G_TX_CLAMP,
+                       G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPTextureRectangle(gdl++, (D_i2_802C8BD0[D_800DA9C0[0]] + 8) << 2, 55 << 2,
                         (D_i2_802C8BD0[D_800DA9C0[0]] + 72) << 2, 91 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
@@ -752,7 +752,7 @@ Gfx* func_i2_802C70EC(Gfx* gdl, s32 player) {
     if ((D_800DA9C8[player] == 0) || (D_802C8C58.as_array[player] == 0)) {
         ptr = &D_800DA950[D_i2_802C8BD8[D_800DA9C0[player]]];
     } else {
-        ptr = &((UnkStruct_func_i8_802C6E00 (*)[4]) D_801CB298)[player][D_i2_802C8BD8[D_800DA9C0[player]]];
+        ptr = &((UnkStruct_func_i8_802C6E00(*)[4]) D_801CB298)[player][D_i2_802C8BD8[D_800DA9C0[player]]];
     }
 
     show_stats = 0;
@@ -792,15 +792,18 @@ Gfx* func_i2_802C70EC(Gfx* gdl, s32 player) {
         gDPPipeSync(gdl++);
         gDPSetRenderMode(gdl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-        gDPLoadTextureTile(gdl++, D_80B6518, G_IM_FMT_RGBA, G_IM_SIZ_16b, 9, 6, 0, 0, 8, 5, 0,
-                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(gdl++, D_80B6518, G_IM_FMT_RGBA, G_IM_SIZ_16b, 9, 6, 0, 0, 8, 5, 0, G_TX_CLAMP, G_TX_CLAMP,
+                           G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
         gSPTextureRectangle(gdl++, ((ptr->unk_B[0] * 10) + x_pos + 0xE) << 2, 0x93 << 2,
-                            ((ptr->unk_B[0] * 10) + x_pos + 0x17) << 2, 0x99 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                            ((ptr->unk_B[0] * 10) + x_pos + 0x17) << 2, 0x99 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                            1 << 10);
         gSPTextureRectangle(gdl++, ((ptr->unk_B[1] * 10) + x_pos + 0xE) << 2, 0xB0 << 2,
-                            ((ptr->unk_B[1] * 10) + x_pos + 0x17) << 2, 0xB6 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                            ((ptr->unk_B[1] * 10) + x_pos + 0x17) << 2, 0xB6 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                            1 << 10);
         gSPTextureRectangle(gdl++, ((ptr->unk_B[2] * 10) + x_pos + 0xE) << 2, 0xCD << 2,
-                            ((ptr->unk_B[2] * 10) + x_pos + 0x17) << 2, 0xD3 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                            ((ptr->unk_B[2] * 10) + x_pos + 0x17) << 2, 0xD3 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                            1 << 10);
     }
 
     gdl = func_801E946C(gdl, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -833,7 +836,9 @@ Gfx* func_i2_802C70EC(Gfx* gdl, s32 player) {
 
     if (show_name != 0) {
         if (player == 0) {
-            gdl = func_801E9858(gdl, 1, ((UnkStruct_func_i8_802C6E00 (*)[4]) D_801CB298)[0][D_i2_802C8BD8[D_800DA9C0[player]]].unk_0, x_name, 0xCB);
+            gdl = func_801E9858(
+                gdl, 1, ((UnkStruct_func_i8_802C6E00(*)[4]) D_801CB298)[0][D_i2_802C8BD8[D_800DA9C0[player]]].unk_0,
+                x_name, 0xCB);
         } else {
             gdl = func_801E9858(gdl, 1, D_800DA950[D_i2_802C8BD8[D_800DA9C0[player]]].unk_0, x_name, 0xCB);
         }
@@ -850,11 +855,12 @@ Gfx* func_i2_802C70EC(Gfx* gdl, s32 player) {
     }
 
     if (D_802C8C58.as_array[player] >= 5) {
-        gdl = func_801E946C(gdl, (D_802C8C58.as_array[player] == 5) ? 6 : 7, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-        gDPLoadTextureTile(gdl++, D_80BBFA8, G_IM_FMT_IA, G_IM_SIZ_8b, 88, 10, 0, 0, 87, 9, 0,
-                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gdl++, (x_pos + 0x1D) << 2, 0xA2 << 2,
-                            (x_pos + 0x75) << 2, 0xAC << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gdl = func_801E946C(gdl, (D_802C8C58.as_array[player] == 5) ? 6 : 7, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF,
+                            0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+        gDPLoadTextureTile(gdl++, D_80BBFA8, G_IM_FMT_IA, G_IM_SIZ_8b, 88, 10, 0, 0, 87, 9, 0, G_TX_CLAMP, G_TX_CLAMP,
+                           G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, (x_pos + 0x1D) << 2, 0xA2 << 2, (x_pos + 0x75) << 2, 0xAC << 2, G_TX_RENDERTILE, 0,
+                            0, 1 << 10, 1 << 10);
     }
 
     gdl = func_801E946C(gdl, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -943,18 +949,19 @@ Gfx* func_i2_802C7C50(Gfx* gdl) {
     }
 
     gDPSetPrimColor(gdl++, 0, 0, 255, alpha, alpha, 255);
-    gDPLoadTextureTile(gdl++, D_80B6E98, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0,
-                       G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gdl++, D_80B6E98, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0, G_TX_CLAMP,
+                       G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPTextureRectangle(gdl++, (D_i2_802C8BD0[D_800DA9C0[1]] + 8) << 2, 55 << 2,
                         (D_i2_802C8BD0[D_800DA9C0[1]] + 72) << 2, 91 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
     gDPSetPrimColor(gdl++, 0, 0, alpha, 255, alpha, 255);
-    gDPLoadTextureTile(gdl++, D_80B6590, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0,
-                       G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gdl++, D_80B6590, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 36, 0, 0, 64 - 1, 36 - 1, 0, G_TX_CLAMP,
+                       G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPTextureRectangle(gdl++, (D_i2_802C8BD0[D_800DA9C0[0]] + 8) << 2, 55 << 2,
-                        (D_i2_802C8BD0[D_800DA9C0[0]] + offset + 8) << 2, 91 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        (D_i2_802C8BD0[D_800DA9C0[0]] + offset + 8) << 2, 91 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                        1 << 10);
 
     gdl = func_i2_802C70EC(gdl, 0);
     gdl = func_i2_802C70EC(gdl, 1);
@@ -1002,7 +1009,7 @@ void func_i2_802C84EC(s32 arg0) {
         if (D_800DA9C8[i] == 0) {
             ptr = &D_800DA950[D_i2_802C8BD8[D_800DA9C0[i]]];
         } else {
-            ptr = &((UnkStruct_func_i8_802C6E00 (*)[4]) D_801CB298)[i][D_i2_802C8BD8[D_800DA9C0[i]]];
+            ptr = &((UnkStruct_func_i8_802C6E00(*)[4]) D_801CB298)[i][D_i2_802C8BD8[D_800DA9C0[i]]];
         }
 
         rider_idx = (i == 0) ? D_800D48DC : D_800D48E0;
@@ -1042,8 +1049,9 @@ Gfx* func_i2_802C86E4(Gfx* gdl, s32 x, s32 y) {
             height = 2;
         }
 
-        gDPLoadTextureTile(gdl++, (u8*) D_80B0008 + (tex_offset << 1), G_IM_FMT_RGBA, G_IM_SIZ_16b, 130, 0, 0, 0, 130 - 1,
-                           height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(gdl++, (u8*) D_80B0008 + (tex_offset << 1), G_IM_FMT_RGBA, G_IM_SIZ_16b, 130, 0, 0, 0,
+                           130 - 1, height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_NOLOD);
         gSPTextureRectangle(gdl++, (x + 8) << 2, y2 << 2, (x + 138) << 2, (cur_y + height + 20) << 2, G_TX_RENDERTILE,
                             0, 0, 1 << 10, 1 << 10);
     }
@@ -1069,8 +1077,8 @@ Gfx* func_i2_802C88DC(Gfx* gdl) {
             height = 5;
         }
 
-        gDPLoadTextureBlock(gdl++, D_80B77A0 + tex_offset, G_IM_FMT_RGBA, G_IM_SIZ_16b, 96, height, 0,
-                            G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gdl++, D_80B77A0 + tex_offset, G_IM_FMT_RGBA, G_IM_SIZ_16b, 96, height, 0, G_TX_CLAMP,
+                            G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
         for (row = 0, cur_y = outer, next_y = outer + height; row != 288; row += 96, cur_y += 96, next_y += 96) {
             for (cur_x = 0, col = 96; col != 480; cur_x += 96, col += 96) {

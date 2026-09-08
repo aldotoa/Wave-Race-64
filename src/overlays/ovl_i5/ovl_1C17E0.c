@@ -26,7 +26,7 @@ extern u32 D_7001440;
 extern u32 D_7001640;
 
 #ifdef NON_MATCHING
-Gfx *func_i5_802C7594(Gfx *arg0) {
+Gfx* func_i5_802C7594(Gfx* arg0) {
     /* RDP command list builder: emits 5 packets per source row.
        Diff floor 10070 probe-verified: IDO fully unrolls the 2-trip loop
        (provable (0x7001640-0x7001440)/0x100) into straight-line + residual
@@ -34,18 +34,18 @@ Gfx *func_i5_802C7594(Gfx *arg0) {
        Retail keeps the plain do-while walk with all-temps allocation.
        Tried: u32 end-counter (-170, still unrolls as u8* walk).
        Next: unroll-inhibiting idiom unknown; needs matched-sibling shape. */
-    Gfx *v0;
-    Gfx *v1;
-    u32 *src = D_i5_802C7AA8;
-    u32 var_a1 = (u32)&D_7001380;
-    u32 var_a3 = (u32)&D_70013C0;
-    u32 var_t0 = (u32)&D_7001400;
-    u8 *var_t1 = (u8 *)&D_7001440;
-    u8 *var_t4 = (u8 *)&D_7001640;
+    Gfx* v0;
+    Gfx* v1;
+    u32* src = D_i5_802C7AA8;
+    u32 var_a1 = (u32) &D_7001380;
+    u32 var_a3 = (u32) &D_70013C0;
+    u32 var_t0 = (u32) &D_7001400;
+    u8* var_t1 = (u8*) &D_7001440;
+    u8* var_t4 = (u8*) &D_7001640;
     u32 t5;
 
     v0 = arg0;
-    v0->words.w1 = (u32)&D_106F6C0;
+    v0->words.w1 = (u32) &D_106F6C0;
     v0->words.w0 = 0x06000000;
     arg0++;
     do {
@@ -76,7 +76,7 @@ Gfx *func_i5_802C7594(Gfx *arg0) {
         v0 = arg0;
         arg0++;
         v1 = arg0;
-        v0->words.w1 = (u32)var_t1;
+        v0->words.w1 = (u32) var_t1;
         v0->words.w0 = 0x01020040;
         v1->words.w0 = 0x06000000;
         t5 = src[3];

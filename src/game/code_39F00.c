@@ -20,7 +20,7 @@ typedef struct CollideBox {
     /* 0x34 */ f32 halfV;
     /* 0x38 */ f32 halfW;
     /* 0x3C */ s32 soft; /* inferred: nonzero softens the impact (x0.4 pushout) */
-} CollideBox; /* size = 0x40 */
+} CollideBox;            /* size = 0x40 */
 extern CollideBox D_801BFD78[];
 extern s32 D_801C0578;
 

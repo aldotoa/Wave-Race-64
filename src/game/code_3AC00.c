@@ -1911,8 +1911,8 @@ void func_80087304(void) {
     if (((D_801C3C58->unkC == 1) || (D_801C3C58->unkC == 0)) && (D_801C3C58->unk38 < 0x320)) {
 
         Math_PointLineDistance(D_801C3C54[D_801C3C58->unk8].unk0, D_801C3C54[D_801C3C58->unk8].unk8, D_801C3C50->unk44,
-                      D_801C3C50->unk4C, D_801C3C50->unk44 + (256.0f * D_801C3C50->unk5C),
-                      D_801C3C50->unk4C + (256.0f * D_801C3C50->unk64));
+                               D_801C3C50->unk4C, D_801C3C50->unk44 + (256.0f * D_801C3C50->unk5C),
+                               D_801C3C50->unk4C + (256.0f * D_801C3C50->unk64));
 
         if ((D_801C3C50 && true) && true) // FAKE
         {}

@@ -89,15 +89,15 @@ void Guide_BuildSegments(void) {
     markZ = D_801C3C54[D_801C3C58->unk8].unk8;
 
     D_801C3C58->unk2C = (s32) Math_PointLineDistance(D_801C3C50->unk44, D_801C3C50->unk4C, markX, markZ,
-                                            (D_801C3C54[D_801C3C58->unk8].unk78 * 256.0f) + markX,
-                                            (D_801C3C54[D_801C3C58->unk8].unk7C * 256.0f) + markZ);
+                                                     (D_801C3C54[D_801C3C58->unk8].unk78 * 256.0f) + markX,
+                                                     (D_801C3C54[D_801C3C58->unk8].unk7C * 256.0f) + markZ);
 
     workX = D_801C3C54[D_801C3C58->unk10].unk0;
     workZ = D_801C3C54[D_801C3C58->unk10].unk8;
 
     D_801C3C58->unk30 = (s32) Math_PointLineDistance(D_801C3C50->unk44, D_801C3C50->unk4C, workX, workZ,
-                                            (D_801C3C54[D_801C3C58->unk10].unk78 * 256.0f) + workX,
-                                            (D_801C3C54[D_801C3C58->unk10].unk7C * 256.0f) + workZ);
+                                                     (D_801C3C54[D_801C3C58->unk10].unk78 * 256.0f) + workX,
+                                                     (D_801C3C54[D_801C3C58->unk10].unk7C * 256.0f) + workZ);
 
     /* Straight-line distances between the upcoming markers ... */
     workX = D_801C3C54[D_801C3C58->unk10].unk0 - D_801C3C54[D_801C3C58->unk18].unk0;
@@ -112,8 +112,8 @@ void Guide_BuildSegments(void) {
     /* Upcoming-turn intersection test. */
     D_801C3C58->unk3C = Math_TwoLineSegmentsIntersect(
         workX = D_801C3C54[D_801C3C58->unk10].unk0, workZ = D_801C3C54[D_801C3C58->unk10].unk8,
-        (D_801C3C54[D_801C3C58->unk10].unk70 * 256.0f) + workX,
-        (D_801C3C54[D_801C3C58->unk10].unk74 * 256.0f) + workZ, D_801C3C50->unk44, D_801C3C50->unk4C);
+        (D_801C3C54[D_801C3C58->unk10].unk70 * 256.0f) + workX, (D_801C3C54[D_801C3C58->unk10].unk74 * 256.0f) + workZ,
+        D_801C3C50->unk44, D_801C3C50->unk4C);
 }
 
 /* Refreshes the off-course flag from the lateral distance, then rebuilds
