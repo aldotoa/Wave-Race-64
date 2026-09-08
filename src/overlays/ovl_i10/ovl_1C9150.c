@@ -13,14 +13,14 @@ void func_i10_802C5800(void) {
        option bits, scan for the selected slot, then derive quotient /
        remainder (or defaults) and count nonzero words. PARKED at floor
        (best probe: clear/flag/div shapes match; scan latch + tail diverge):
-       - Clear loop: assign `end` before the cursor to land end->v0 and
+       - Clear loop: assign `clearEnd` before the cursor to land end->v0 and
          cursor->v1 (reversed order mirrors them); scope the pair so the
          base dies with the loop. IDO still shares the base into later
          stores via a copied cursor instead of bumping it directly.
-       - Scan loop: `if (*p) { k = 3; goto done; }` + post-loop `k = 3`
+       - Scan loop: `if (*slotCursor) { groupSize = 3; goto done; }` + post-loop `groupSize = 3`
          is the only shape putting k=3 on both exit paths, but IDO either
          merges the two stores into one hoisted li (losing the bnel delay
-         fill) or keeps them with a beqzl+b head; the `i < 5` latch is
+         fill) or keeps them with a beqzl+b head; the `slotIdx < 5` latch is
          always canonicalized to `li + bne`, never retail's `slti + bnez`
          (20+ latch spellings probed, including hand-rolled goto loops;
          variable trips unroll instead).
@@ -28,13 +28,13 @@ void func_i10_802C5800(void) {
          unroller off the rails (peel + unrolled copies + remainder
          masking); retail keeps it rolled behind bnel.
        Revisit with whole-file context or a new lever. */
-    s32 i;
-    s32* p;
-    s32 k;
-    s32 t;
-    s32 t5;
-    s32* ctr;
-    s32* end2;
+    s32 slotIdx;
+    s32* slotCursor;
+    s32 groupSize;
+    s32 optionBits;
+    s32 slotVal;
+    s32* activeCountPtr;
+    s32* slotEnd;
 
     if (D_801CE63C != 0) {
         if (gGameState == GAME_STATE_OPTIONS_CHANGE_CONDITIONS) {
@@ -43,59 +43,59 @@ void func_i10_802C5800(void) {
                pair into v0/v1). Scoped so the base dies with the loop;
                later stores recompute it fresh instead of sharing. */
             {
-                s32* end = &D_802C6B58;
-                s32* pc = D_802C6B40;
+                s32* clearEnd = &D_802C6B58;
+                s32* clearCursor = D_802C6B40;
                 do {
-                    pc++;
-                    pc[-1] = 0;
-                } while ((u32) pc < (u32) end);
+                    clearCursor++;
+                    clearCursor[-1] = 0;
+                } while ((u32) clearCursor < (u32) clearEnd);
             }
             D_802C6B40[4] = 1;
             D_802C6B40[3] = 1;
-            t = D_801CB280;
-            if ((t & 1) != 0) {
+            optionBits = D_801CB280;
+            if ((optionBits & 1) != 0) {
                 D_802C6B40[0] = 1;
             }
-            if ((t & 2) != 0) {
+            if ((optionBits & 2) != 0) {
                 D_802C6B40[1] = 1;
             }
-            /* i = 0 sits in the next beqz delay slot in the stub (both
-               paths); p is assigned alongside so both span the flags. */
-            i = 0;
-            p = D_802C6B40;
-            if ((t & 4) != 0) {
+            /* slotIdx = 0 sits in the next beqz delay slot in the stub (both
+               paths); slotCursor is assigned alongside so both span the flags. */
+            slotIdx = 0;
+            slotCursor = D_802C6B40;
+            if ((optionBits & 4) != 0) {
                 D_802C6B40[2] = 1;
             }
             do {
-                if (*p != 0) {
-                    k = 3;
+                if (*slotCursor != 0) {
+                    groupSize = 3;
                     goto scan_done;
                 }
-                i++;
-                p++;
-            } while (i < 5);
-            k = 3;
+                slotIdx++;
+                slotCursor++;
+            } while (slotIdx < 5);
+            groupSize = 3;
         scan_done:;
-            if (i == k) {
+            if (slotIdx == groupSize) {
                 D_802C6B30 = 1;
                 D_802C6B34 = 1;
             } else {
-                D_802C6B30 = i % k;
-                D_802C6B34 = i / k;
+                D_802C6B30 = slotIdx % groupSize;
+                D_802C6B34 = slotIdx / groupSize;
             }
-            ctr = &D_i10_802C6B14;
-            *ctr = 0;
-            p = D_802C6B40;
-            end2 = &D_802C6B4C;
-            t5 = *p;
+            activeCountPtr = &D_i10_802C6B14;
+            *activeCountPtr = 0;
+            slotCursor = D_802C6B40;
+            slotEnd = &D_802C6B4C;
+            slotVal = *slotCursor;
             do {
-                p++;
-                if (t5 != 0) {
-                    *ctr = *ctr + 1;
+                slotCursor++;
+                if (slotVal != 0) {
+                    *activeCountPtr = *activeCountPtr + 1;
                 }
-                t5 = *p;
-            } while (p != end2);
-            if (*ctr == 0) {
+                slotVal = *slotCursor;
+            } while (slotCursor != slotEnd);
+            if (*activeCountPtr == 0) {
                 D_802C6B40[3] = 0;
             }
         }

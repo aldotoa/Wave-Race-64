@@ -685,75 +685,75 @@ void func_801DF5F0(void* dst, void* src) {
 }
 
 #ifdef NON_MATCHING
-void func_801DF668(void* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5, f32* arg6) {
+void func_801DF668(void* workBuf, f32* copySrc, f32* lookupSrcDst, f32* singleA, f32* offsetTriplet, f32* streamSrc,
+                   f32* singleB) {
     /* Staff credits backdrop texture blender: gather scattered float
-       triplets into the struct at arg0. PARKED at floor (best probe: all
+       triplets into the struct at workBuf. PARKED at floor (best probe: all
        rows match except frame + cursor/trip regs + one li):
-       - IDO coalesces the bumped `dst = arg0 + 0x5C` cursor into a0 in
+       - IDO coalesces the bumped `copyDstPos = workBuf + 0x5C` cursor into a0 in
          every probed spelling (~25 variants: decl/init/bump orders, u8*/
        f32* cursors, block scopes, `register`, no-temp `dst[-1] = src[-1]`
-         form), forcing an s0 frame to home arg0; retail keeps arg0 pinned
-         in a0 with the cursor in t0 and no frame. Assignment order maps
-         1st->v0, 2nd->v1, later ones to arg-regs; temps never picked.
-       - Retail materializes `li t1,3` twice (loop1 prologue + a2-guard
-         delay slot, which executes unconditionally); single-literal probes
-         emit one shared li, while shared-trip-variable probes send the
-         loop optimizer off the rails (peel/unroll + spills + frame), so
-         trip counts must stay literal 3s.
-       The `arg2 = arg0 + 4` assign sits in the a3-guard delay slot (both
-       paths); spelled here as straight-line code before the if. Revisit
-       with whole-file context or a matched cursor-in-temp idiom. */
-    s32 i;
-    f32* src;
-    f32* dst;
-    f32* cursor;
-    f32 v;
-    s32 idx0;
-    s32 idx1;
+         form), forcing an s0 frame to home workBuf;
+       retail keeps workBuf pinned in a0 with the cursor in t0 and no frame.Assignment order maps 1st->v0, 2nd->v1,
+           later ones to arg - regs;
+       temps never picked.- Retail materializes `li t1,
+           3` twice(loop1 prologue + lookup - guard delay slot, which executes unconditionally);
+       single - literal probes emit one shared li,
+           while shared - trip - variable probes send the loop optimizer off the rails(peel / unroll + spills + frame),
+           so trip counts must stay literal 3s. The `lookupSrcDst =
+               workBuf + 4` assign sits in the singleA - guard delay slot(both paths);
+       spelled here as straight - line code before the if.Revisit with whole - file context or
+           a matched cursor - in - temp idiom.* / s32 loopCount;
+       f32* copySrcPos;
+       f32* copyDstPos;
+       f32* streamPos;
+       f32 sample;
+       s32 selIdxA;
+       s32 selIdxB;
 
-    i = 0;
-    if (arg1 != NULL) {
-        src = arg1;
-        dst = (f32*) ((u8*) arg0 + 0x5C);
-        do {
-            v = *src;
-            i += 1;
-            src += 1;
-            dst += 1;
-            dst[-1] = v;
-        } while (i != 3);
-    }
-    if (arg2 != NULL) {
-        idx0 = *(s32*) ((u8*) arg0 + 0xD0);
-        idx1 = *(s32*) ((u8*) arg0 + 0xD4);
-        v = arg2[idx0];
-        *(f32*) ((u8*) arg0 + 0x80) = v;
-        *(f32*) ((u8*) arg0 + 0x84) = arg2[idx1];
-    }
-    arg2 = (f32*) ((u8*) arg0 + 4);
-    if (arg3 != NULL) {
-        *(f32*) ((u8*) arg0 + 0x90) = *arg3;
-    }
-    if (arg4 != NULL) {
-        dst = (f32*) ((u8*) arg0 + 0x5C);
-        *(f32*) ((u8*) dst + 0x4C) = arg4[0];
-        *(f32*) ((u8*) dst + 0x58) = arg4[1];
-        *(f32*) ((u8*) dst + 0x64) = arg4[2];
-    }
-    i = 0;
-    cursor = arg5;
-    if (arg5 != NULL) {
-        do {
-            v = *cursor;
-            i += 1;
-            cursor += 1;
-            arg2 += 1;
-            arg2[8] = v;
-        } while (i != 3);
-    }
-    if (arg6 != NULL) {
-        *(f32*) ((u8*) arg0 + 0x3C) = *arg6;
-    }
+       loopCount = 0;
+       if (copySrc != NULL) {
+           copySrcPos = copySrc;
+           copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
+           do {
+               sample = *copySrcPos;
+               loopCount += 1;
+               copySrcPos += 1;
+               copyDstPos += 1;
+               copyDstPos[-1] = sample;
+           } while (loopCount != 3);
+       }
+       if (lookupSrcDst != NULL) {
+           selIdxA = *(s32*) ((u8*) workBuf + 0xD0);
+           selIdxB = *(s32*) ((u8*) workBuf + 0xD4);
+           sample = lookupSrcDst[selIdxA];
+           *(f32*) ((u8*) workBuf + 0x80) = sample;
+           *(f32*) ((u8*) workBuf + 0x84) = lookupSrcDst[selIdxB];
+       }
+       lookupSrcDst = (f32*) ((u8*) workBuf + 4);
+       if (singleA != NULL) {
+           *(f32*) ((u8*) workBuf + 0x90) = *singleA;
+       }
+       if (offsetTriplet != NULL) {
+           copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
+           *(f32*) ((u8*) copyDstPos + 0x4C) = offsetTriplet[0];
+           *(f32*) ((u8*) copyDstPos + 0x58) = offsetTriplet[1];
+           *(f32*) ((u8*) copyDstPos + 0x64) = offsetTriplet[2];
+       }
+       loopCount = 0;
+       streamPos = streamSrc;
+       if (streamSrc != NULL) {
+           do {
+               sample = *streamPos;
+               loopCount += 1;
+               streamPos += 1;
+               lookupSrcDst += 1;
+               lookupSrcDst[8] = sample;
+           } while (loopCount != 3);
+       }
+       if (singleB != NULL) {
+           *(f32*) ((u8*) workBuf + 0x3C) = *singleB;
+       }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF668.s")
