@@ -319,7 +319,6 @@ void func_801EC0D4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC0D4.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EC20C(void) {
     /* Time-trial results init: default globals, then (unless coming from
        GAME_STATE_64) rider table setup + fade/audio teardown. The 5th arg
@@ -345,9 +344,6 @@ void func_801EC20C(void) {
     gCameraPerspective[0].viewMode = 1;
     func_800C21F4(3, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC20C.s")
-#endif
 
 void func_801EC304(void) {
     gPrevGameState = gGameState;
