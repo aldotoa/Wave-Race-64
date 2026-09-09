@@ -63,10 +63,19 @@ typedef struct UnkStruct_801AEE20_s {
     /* 0x000 */ f32 unk0;
     /* 0x004 */ f32 unk4;
     /* 0x008 */ f32 unk8;
-    /* 0x00C */ char padC[0x18];  /* maybe part of unk8[7]? */
+    /* 0x00C */ f32 unkC;  /* inferred for func_8006E674 */
+    /* 0x010 */ f32 unk10; /* inferred for func_8006E674 */
+    /* 0x014 */ f32 unk14; /* inferred for func_8006E674 */
+    /* 0x018 */ f32 unk18; /* inferred for func_8006E674 */
+    /* 0x01C */ f32 unk1C; /* inferred for func_8006E674 */
+    /* 0x020 */ f32 unk20; /* inferred for func_8006E674 */
     /* 0x024 */ s32 unk24;        /* inferred */
     /* 0x028 */ s32 unk28;        /* inferred */
-    /* 0x02C */ char pad2C[0x44]; /* maybe part of unk28[0x12]? */
+    /* 0x02C */ char pad2C[0x34]; /* maybe part of unk28[0x12]? */
+    /* 0x060 */ f32 unk60; /* inferred for func_8006E674 */
+    /* 0x064 */ f32 unk64; /* inferred for func_8006E674 */
+    /* 0x068 */ f32 unk68; /* inferred for func_8006E674 */
+    /* 0x06C */ char pad6C[4];
     /* 0x070 */ f32 unk70;
     /* 0x074 */ f32 unk74;
     /* 0x078 */ f32 unk78;
@@ -77,7 +86,11 @@ typedef struct UnkStruct_801AEE20_s {
     /* 0x098 */ s32 unk98;
     /* 0x09C */ s32 unk9C; /* inferred */
     /* 0x0A0 */ s32 unkA0; /* maybe part of unk9C[0xB]? */
-    char padA4[0x24];
+    char padA4[4];
+    /* 0x0A8 */ s32 unkA8; /* inferred for func_8006E674 */
+    char padAC[0x14];
+    /* 0x0C0 */ s32 unkC0; /* inferred for func_8006E674 */
+    char padC4[4];
     /* 0x0C8 */ s32 unkC8;        /* inferred */
     /* 0x0CC */ char padCC[0x38]; /* maybe part of unkC8[0xF]? */
 } UnkStruct_801AEE20;             /* size = 0x104 */
@@ -978,7 +991,11 @@ typedef struct UnkStruct_801AE948_s {
     char pad35DC[0xB14];
     Mtx unk4100[1];
     Mtx unk4140[1];
-    char pad4180[0x7140];
+    char pad4180[0x5440];
+    Mtx unk95C0[2][12]; /* inferred for func_8006E674: ends exactly at unk9BC0 */
+    Mtx unk9BC0[2][12]; /* inferred for func_8006E674: ends exactly at unkA1C0 */
+    Mtx unkA1C0[2][32]; /* inferred for func_8006E674 */
+    char padB1C0[0x100];
     LookAt unkB2C0[1];
     Hilite unkB2E0[1];
 } UnkStruct_801AE948;
