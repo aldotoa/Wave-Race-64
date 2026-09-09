@@ -468,6 +468,19 @@ Gfx* func_80091CD8(Gfx* gdl) {
 
 #if defined(NEEDS_DATA) || defined(NON_MATCHING)
 void* func_80091DBC(Gfx* gdl) {
+    /* FLOOR (decomp.me S3XKL, LLONSIT, score 0 remotely):
+     * Probe of this exact body: TARGET CURRENT (110), all rows reloc-only,
+     * relocs agree 1:1 at matching offsets -- but the `static` binds a
+     * TU-local (renamed by asm-processor convert-statics) instead of the
+     * shared .data D_800DA914 (12 bytes, see asm/us/rev1/data/8F000.data.s),
+     * so the link resolves different addresses and the ROM breaks (measured
+     * 6171-byte scattered ripple from the .bss shift; pristine tree is OK).
+     * Shared-binding variants (pure extern, tentative def, array-index):
+     * IDO keeps D's address live in a reg (2820). Named-temp local parks the
+     * value in v0 (945: only address materialization + store placement left).
+     * Late `D = temp` before the last if: 1070. Still open: a formulation
+     * that binds the shared symbol AND emits the destructive-load/store-late
+     * shape. Do NOT promote until `make` says OK. */
     static s32 D_800DA914 = { 0 };
 
     D_800DA914 = (D_800DA914 % 32) + 1;
