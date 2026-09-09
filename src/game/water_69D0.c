@@ -1232,38 +1232,67 @@ void* D_80164420[2];
 #endif
 
 void func_80050B78(void*, f32*, f32*);
+void func_8004EFB4(f32, f32, s32);
+void func_80050F8C(s32, f32, f32);
+extern s32 D_80227D8C;
 
+/* Imported from decomp.me K6Xw9 (LLONSIT, remote score 0); replaces an
+ * earlier draft whose call skeleton did not match the stub. Standalone
+ * probe of this body vs the assembled stub: all-`i` rows, zero structural
+ * diffs.
+ * FLOOR: promotion breaks the ROM (measured ~6200-byte scattered ripple):
+ * the four function-statics become TU-local .bss (renamed by asm-processor
+ * convert-statics), shifting every later absolute .bss reference, and the
+ * TU emits only 16 of the stub's 24 late_rodata bytes (dead 0.0 double at
+ * D_800E9328 unreferenced by any stub). Pristine tree is ROM-OK, so the
+ * original TU has no such .bss -- yet shared-binding reformulations were
+ * not found for this one (unlike func_80091DBC's 945 floor). The u32
+ * SysUtils_Rand return is load-bearing (unsigned int->float cvt block);
+ * the (s32,f32,f32) 50F8C prototype with int-reg passing reproduces the
+ * call sites exactly. Do NOT promote until `make` says OK. */
 #ifdef NON_MATCHING
 void func_80051238(void) {
-    if (gCourseID == 7) {
-        if (gRiderGameModes != 0) {
-            if (D_801CE638 == 1) {
-                if (D_801C1FCC == 1) {
-                    if (gWaterLevel >= -99.0f) {
-                        gWaterLevel -= 1.0f;
-                    }
-                } else if (D_801C1FCC == 2) {
-                    if (gWaterLevel >= -149.0f) {
-                        gWaterLevel -= 1.0f;
-                    }
-                }
+    static s32 D_800D47C4;
+    static s32 D_800D47C8;
+    static f32 D_800D47CC;
+    static f32 D_800D47D0;
+    f32 pad;
+    f32 sp20;
+    f32 sp1C;
+
+    if ((gCourseID == GLACIER_COAST) && (gRiderGameModes != GMODE_TIME_TRIALS) && (D_801CE638 == 1)) {
+        if (D_801C1FCC == 1) {
+            if (gWaterLevel >= -0x63) {
+                gWaterLevel -= 1;
             }
+        } else if ((D_801C1FCC == 2) && (gWaterLevel >= -0x95)) {
+            gWaterLevel -= 1;
         }
     }
+    if (D_801CE64C == 1) {
+        if (D_801CE638 != 6) {
+            D_800D47C4 = (D_800D47C4 + D_800D47C8 + 0x1000) & 0xFFF;
+            D_800D47CC += (51.2 * COS(D_800D47C4));
+            D_800D47D0 += (51.2 * SIN(D_800D47C4));
+            if (SQ(D_80192498) < (SQ(D_800D47CC) + SQ(D_800D47D0))) {
+                D_800D47C4 = SysUtils_Rand() & 0xFFF;
+                D_800D47CC = COS(D_800D47C4) * D_80192498;
+                D_800D47D0 = SIN(D_800D47C4) * D_80192498;
+                D_800D47C4 = SysUtils_Rand() & 0xFFF;
 
-    D_801924D8 += D_800D46E4;
-    D_801924D4 += D_800D46E0;
-
-    /* D_80192458/D_8019245C were draft-era aliases into gWaterLevel's 8-byte
-       bss (0x80192458) and D_80192460 (0x80192460): spell the addresses out. */
-    {
-        f32* wl_base = (f32*) &gWaterLevel; /* 0x80192458 */
-        func_80050B78(D_80164420[0], &wl_base[1], &wl_base[0]);
-
-        if (D_801CE64C == 1) {
-            func_80050B78(D_80164420[1], &D_80192460[0], &wl_base[1]);
+                D_800D47C8 = (s32) (((SysUtils_Rand() & 0x3FFF) * 14.0f) / 16383.0) - 7;
+            }
+            func_8004EFB4(D_800D47CC, D_800D47D0, -0x32);
         }
+        func_80050F8C(0, 0, 0);
+        return;
     }
+    if (gPlayers == TWO_PLAYERS) {
+        func_80050B78(&D_80227D8C, &sp20, &sp1C);
+        func_80050F8C(1, sp20, sp1C);
+    }
+    func_80050B78(&gCameraPerspective, &sp20, &sp1C);
+    func_80050F8C(0, sp20, sp1C);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_80051238.s")
