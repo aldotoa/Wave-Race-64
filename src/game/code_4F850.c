@@ -65,6 +65,11 @@ extern u16 D_800DCEC8[];
 
 void func_80095CE8(u8* arg0, s32 arg1);
 void func_800967EC(u32* arg0, s32 arg1);
+u32* func_800961B8(s32 arg0, s32 arg1);
+u32* func_800963CC(s32 arg0, s32 arg1);
+u32* func_800962F0(s32 arg0);
+u32* func_800964CC(s32 arg0);
+u32* func_800965B8(s32 arg0);
 
 extern void game_dma_copy(uintptr_t devAddr, void* vAddr, u32 nbytes);
 
@@ -295,16 +300,124 @@ void func_80095CE8(u8* arg0, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
-void func_80096048(void* data, s32 arg1) {
-    /* Course terrain mesh and collision bounding volume loader */
+/* Master game loop state asset loader and segment relocation: walks the
+   per-course pointer table, relocates each entry via func_800967EC, then
+   dispatches on the course-type word through jtbl_800EB2B4 to one of the
+   five SegmentedToVirtual fixup siblings (961B8/962F0/963CC/965B8/964CC).
+   Diff floor 905 probe-verified (M): loop/dispatch/tail/guard/s-map/frame
+   all exact; remainder is prelude allocation: table address in s3 (with an
+   early s3 save) vs retail v1, and index-zero emitted before the cursor
+   load vs retail load-then-zero. Load-bearing: empty-then loop form (plain
+   if/else-if emits beqz-over-inline-work, not retail bnez-into-out-of-line
+   work); cursor = *(table + discriminant) (address-only walk reads the
+   wrong array); sp40-held discriminant with no temp_t8 auto (a named temp
+   inflates the frame 0x48 -> 0x58); tail order count/index/cursor to land
+   the cursor bump in the bne delay slot. Attractor-proven across ~25 probes
+   (decl/statement/init/chained-zero/scope/pressure/type axes). The (zero,
+   load) order vs cursor/index regs is a coupled tension: statement-zero
+   gives retail emission but swaps the pair, decl-init fixes the pair but
+   swaps emission. Promotion needs a NEEDS_RODATA wrapper (C switch emits
+   the jump table) per the Handling-.rodata rule. */
+void func_80096048(void* arg0, s32 arg1) {
+    s32 sp40;
+    UnkStruct_801CE7D8* temp_v0;
+    s32 var_s2 = 0;
+    s32 temp_s0;
+    s32 temp_s5;
+    u32* var_s3;
+    s32 var_s4;
+    u32* temp_fp;
+
+    temp_v0 = &D_801CE7D8[arg1];
+    sp40 = temp_v0->unk0;
+    var_s3 = (u32*) *(D_800DB484 + sp40);
+    var_s4 = 0;
+    temp_fp = (u32*) (D_801CE780 + arg1 * 0x2C);
+    temp_s5 = temp_v0->unk4 & 0xFFFFFF;
+loop_1:
+    temp_s0 = *var_s3;
+    if (temp_s0 == 0) {
+    } else {
+        func_800967EC((u32*) ((temp_s0 & 0xFFFFFF) + (s32) arg0), temp_s5);
+        ((u32*) ((u8*) temp_fp + var_s2))[2] = temp_s0 + temp_s5;
+        var_s4 += 1;
+        var_s2 += 4;
+        var_s3++;
+        goto loop_1;
+    }
+    temp_fp[0] = var_s4;
+    switch (sp40) {
+    case 3:
+    case 6:
+        temp_fp[1] = (u32) func_800961B8(sp40, temp_s5);
+        break;
+    case 1:
+        temp_fp[1] = (u32) func_800962F0(temp_s5);
+        break;
+    case 2:
+    case 4:
+        temp_fp[1] = (u32) func_800963CC(sp40, temp_s5);
+        break;
+    case 0:
+        temp_fp[1] = (u32) func_800965B8(temp_s5);
+        break;
+    case 8:
+        temp_fp[1] = (u32) func_800964CC(temp_s5);
+        break;
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096048.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_800961B8(s32 arg0, s32 arg1) {
-    /* Water craft hull suspension spring stiffness and damping matrix setup */
+/* Twin of func_800963CC: same dispatch/base/guard/return idiom, 9 pointers
+   per iteration. Diff floor 505 probe-verified: everything exact except the
+   shared t8 wall (base in v1 + loop-temp cascade + tail i++ scheduling).
+   See func_800963CC floor note for the full sweep record (attractor-proven
+   across ~40 probes in both functions); the t8 lever is still unknown. */
+u32* func_800961B8(s32 arg0, s32 arg1) {
+    s32 pad_a;
+    s32 var_s4;
+    s32 pad_b;
+    u32* sp38;
+    u32* sp34;
+    u32* var_s2;
+    u32* temp_s0;
+    s32 var_s3;
+    u32* temp_t8;
+
+    switch (arg0) {
+    case 3:
+        sp34 = (u32*) &D_8002FA8;
+        var_s4 = 1;
+        break;
+    case 6:
+        sp34 = (u32*) &D_8002C00;
+        var_s4 = 1;
+        break;
+    }
+    temp_t8 = (u32*) (SegmentedToVirtual((u32) sp34) + arg1);
+    sp38 = temp_t8;
+    var_s3 = 0;
+    if (var_s4 > 0) {
+        var_s2 = temp_t8;
+        do {
+            temp_s0 = (u32*) (SegmentedToVirtual(*var_s2) + arg1);
+            *var_s2 = temp_s0;
+            temp_s0[1] = (u32) (SegmentedToVirtual(temp_s0[1]) + arg1);
+            temp_s0[2] = (u32) (SegmentedToVirtual(temp_s0[2]) + arg1);
+            temp_s0[3] = (u32) (SegmentedToVirtual(temp_s0[3]) + arg1);
+            temp_s0[4] = (u32) (SegmentedToVirtual(temp_s0[4]) + arg1);
+            temp_s0[5] = (u32) (SegmentedToVirtual(temp_s0[5]) + arg1);
+            temp_s0[6] = (u32) (SegmentedToVirtual(temp_s0[6]) + arg1);
+            temp_s0[7] = (u32) (SegmentedToVirtual(temp_s0[7]) + arg1);
+            temp_s0[8] = (u32) (SegmentedToVirtual(temp_s0[8]) + arg1);
+            var_s3 += 1;
+            var_s2 += 1;
+        } while (var_s3 != var_s4);
+    }
+    return sp38;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_800961B8.s")
