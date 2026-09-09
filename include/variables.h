@@ -321,6 +321,8 @@ extern UnkStruct_func_i8_802C6E00 D_801CB298[];
 extern f32 D_801C39B4;
 extern u8 D_80030EC;
 extern s32 D_8001C58;
+extern u8 D_8000D9C;
+extern u8 D_8003578;
 extern u32 D_800DA920[];
 extern u8 D_165C00[];
 extern u8 D_801CE9B8[];
