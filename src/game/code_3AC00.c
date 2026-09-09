@@ -1289,6 +1289,20 @@ void func_80085408(void) {
  */
 // Regalloc :(
 #ifdef NON_MATCHING
+/* Rider steering vector calculation and limit check.
+   Diff floor 95 probe-verified (R2): everything exact except a pure
+   three-way float rotation (values in $f12/$f16/$f0 vs retail $f0/$f12/
+   $f16). Reloc rows already exact via named extern rodata constants
+   (D_800EA9E8/D_800EA9F0 are true externs, not literal pools). The R2
+   structure (mul order temp-first, div carried by temp, (u8) byte cast)
+   came from a decomp.me scratch and fixed the div/store rows.
+   Load-bearing: dead f32 autos var_f2/temp_f0 (removal breaks homes);
+   literal-ordered decls; temp split/inline/position and copy/store orders
+   all inert (attractor-proven); int-side pressure, intermediate-naming,
+   and var_f0/var_f12 role swaps inert. Micro-bisected ($f2/$f18/$f16
+   across contexts, never $f12/$f0); range bisection moves the wrong way.
+   The rotation lever is unknown; ~25 probes + 13 micros.
+   Promoting this completes code_3AC00 100% (per its TDE test). */
 void func_80085510(void) {
     f32 sp4C;
     f32 sp48;
@@ -1321,7 +1335,7 @@ void func_80085510(void) {
     Math_Normalize_VectorComponents(&sp44, &sp40);
 
     var_f0 = (sp4C * sp44) + (sp48 * sp40);
-    if (var_f0 < 0.15) {
+    if (var_f0 < D_800EA9E8) {
         D_801C3C58->unk8C = 0;
         var_f0 = (sp4C * sp44) + (sp48 * sp40);
     }
@@ -1333,7 +1347,7 @@ void func_80085510(void) {
 
     temp = ((D_801C3C58->unkD4 * sp4C) - (sp48 * D_801C3C58->unkD0));
 
-    if ((var_f12 * temp) < 0.0f) {
+    if ((temp * var_f12) < 0.0f) {
 
         sp4C = 0.0f;
         D_801C3C50->unkB53 = 0;
@@ -1349,15 +1363,15 @@ void func_80085510(void) {
             }
         } else {
             temp = ABS(var_f12);
-            if (temp > 0.05f) {
+            if (temp > D_800EA9F0) {
                 if (var_f12 < 0) {
                     var_f0 = (-1.0f * var_f12) / 0.5f;
                     sp4C = (s32) (var_f0 * temp_f18);
                     D_801C3C50->unkB53 = (s32) (var_f0 * -35.0f);
                 } else {
-                    var_f0 = var_f12 / 0.5f;
-                    sp4C = (s32) (-temp_f18 * var_f0);
-                    D_801C3C50->unkB53 = (s8) (s32) (var_f0 * -35.0f);
+                    temp = var_f12 / 0.5f;
+                    sp4C = (s32) (-temp_f18 * temp);
+                    D_801C3C50->unkB53 = (u8) (s32) (temp * -35.0f);
                 }
             } else {
                 sp4C = 0.0f;
