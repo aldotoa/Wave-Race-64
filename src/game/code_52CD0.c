@@ -1682,7 +1682,7 @@ u8 func_8009CD50(UnkStruct_func_8009CCE8* arg0) {
     arg0->unk84 += D_801CEBE0[D_800E5138].unk0.z;
 
     if (gCurrentPauseMenuOption == -1) {
-        temp_s1->unk1C = func_8009CB70(temp_s1, arg0);
+        temp_s1->unk1C = func_8009CB70((UnkStruct_801CF060*) temp_s1, arg0);
         if (temp_s1->unk1C) {
             temp_s1->unkC.x = arg0->unk4C;
             temp_s1->unkC.y = arg0->unk50;
@@ -1690,7 +1690,7 @@ u8 func_8009CD50(UnkStruct_func_8009CCE8* arg0) {
             temp_s1->unk_0 = arg0->unk7C;
             temp_s1->unk4 = arg0->unk80;
             temp_s1->unk8 = arg0->unk84;
-            func_8009C2CC(temp_s1);
+            func_8009C2CC((UnkStruct_801CEBE0*) temp_s1);
             func_80098FF8(&temp_s1->unkC, (Vec3f*) temp_s1, &sp5C, &sp64, &sp60);
             if ((sp64 >= 80.0f) && (sp64 < 180.0f)) {
                 sp64 = 80.0f;

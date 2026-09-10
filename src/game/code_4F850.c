@@ -42,6 +42,7 @@ extern UnkStruct_800DB4A8 D_800DB538[];
 extern UnkStruct_800DB4A8 D_800DB558;
 extern s32 D_800DCE18[];
 extern s16 D_801CE768[];
+extern u8 D_801CE780[];
 extern UnkStruct_801CE7D8 D_801CE7D8[];
 extern s32 D_800DAB90[];
 extern s32 D_800DABA0[];
@@ -347,23 +348,23 @@ loop_1:
     }
     temp_fp[0] = var_s4;
     switch (sp40) {
-    case 3:
-    case 6:
-        temp_fp[1] = (u32) func_800961B8(sp40, temp_s5);
-        break;
-    case 1:
-        temp_fp[1] = (u32) func_800962F0(temp_s5);
-        break;
-    case 2:
-    case 4:
-        temp_fp[1] = (u32) func_800963CC(sp40, temp_s5);
-        break;
-    case 0:
-        temp_fp[1] = (u32) func_800965B8(temp_s5);
-        break;
-    case 8:
-        temp_fp[1] = (u32) func_800964CC(temp_s5);
-        break;
+        case 3:
+        case 6:
+            temp_fp[1] = (u32) func_800961B8(sp40, temp_s5);
+            break;
+        case 1:
+            temp_fp[1] = (u32) func_800962F0(temp_s5);
+            break;
+        case 2:
+        case 4:
+            temp_fp[1] = (u32) func_800963CC(sp40, temp_s5);
+            break;
+        case 0:
+            temp_fp[1] = (u32) func_800965B8(temp_s5);
+            break;
+        case 8:
+            temp_fp[1] = (u32) func_800964CC(temp_s5);
+            break;
     }
 }
 #else
@@ -388,14 +389,14 @@ u32* func_800961B8(s32 arg0, s32 arg1) {
     u32* temp_t8;
 
     switch (arg0) {
-    case 3:
-        sp34 = (u32*) &D_8002FA8;
-        var_s4 = 1;
-        break;
-    case 6:
-        sp34 = (u32*) &D_8002C00;
-        var_s4 = 1;
-        break;
+        case 3:
+            sp34 = (u32*) &D_8002FA8;
+            var_s4 = 1;
+            break;
+        case 6:
+            sp34 = (u32*) &D_8002C00;
+            var_s4 = 1;
+            break;
     }
     temp_t8 = (u32*) (SegmentedToVirtual((u32) sp34) + arg1);
     sp38 = temp_t8;
@@ -472,14 +473,14 @@ u32* func_800963CC(s32 arg0, s32 arg1) {
     u32* temp_t8;
 
     switch (arg0) {
-    case 2:
-        sp34 = (u32*) &D_8003578;
-        var_s4 = 2;
-        break;
-    case 4:
-        sp34 = (u32*) &D_8000D9C;
-        var_s4 = 1;
-        break;
+        case 2:
+            sp34 = (u32*) &D_8003578;
+            var_s4 = 2;
+            break;
+        case 4:
+            sp34 = (u32*) &D_8000D9C;
+            var_s4 = 1;
+            break;
     }
     temp_t8 = (u32*) (SegmentedToVirtual((u32) sp34) + arg1);
     sp38 = temp_t8;
