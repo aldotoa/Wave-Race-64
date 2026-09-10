@@ -42,6 +42,7 @@ extern UnkStruct_800DB4A8 D_800DB538[];
 extern UnkStruct_800DB4A8 D_800DB558;
 extern s32 D_800DCE18[];
 extern s16 D_801CE768[];
+extern u8 D_801CE780[];
 extern UnkStruct_801CE7D8 D_801CE7D8[];
 extern s32 D_800DAB90[];
 extern s32 D_800DABA0[];
