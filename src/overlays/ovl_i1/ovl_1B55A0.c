@@ -143,14 +143,15 @@ extern s32 D_800D817C;
 extern s32 D_802C96A0;
 extern s32 D_802C96A4;
 
-#ifdef NON_MATCHING
 /* Race-timer tick for game states 0x29/0x2A: passes arg0 through while
  * advancing the D_802C96A4 frame counter (0..61) and latching D_802C96A0.
  * D_800D817C is flagged while the counter is below 30 frames. The
  * duplicated store below is load-bearing: it keeps the compiler's
  * branch skeleton (bne + delay-slot store) intact. Both empty elses are
- * likewise required for byte-match. Diff: 60 (single li/lui fill-order
- * row remains vs. the retail stub). */
+ * likewise required for byte-match. The single-line store/if below is
+ * load-bearing too: split across lines, as1 sees distinct .loc directives
+ * as scheduling boundaries and emits lui/li in the wrong fill order
+ * (probe-verified CURRENT 60 -> 0). */
 s32 func_i1_802C6B38(s32 arg0) {
     if (gGameState == GAME_STATE_2A) {
         if (D_801CE6F0 == 1) {
@@ -158,13 +159,10 @@ s32 func_i1_802C6B38(s32 arg0) {
             goto end;
         }
     } else if (gGameState == GAME_STATE_29) {
-        if (D_802C96A4 < 0x1E) {
-            D_800D817C = 1;
-            if (D_801CE6F0 == 1) {
-                D_800D817C = 1;
-            }
-        } else {
+        /* clang-format off */
+        if (D_802C96A4 < 0x1E) { D_800D817C = 1; if (D_801CE6F0 == 1) { D_800D817C = 1; } } else {
         }
+        /* clang-format on */
         D_802C96A4++;
         if (D_802C96A4 < 0x3D) {
             goto end;
@@ -177,9 +175,6 @@ s32 func_i1_802C6B38(s32 arg0) {
 end:
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6B38.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i1_802C6BD8(void) {
