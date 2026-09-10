@@ -24,6 +24,17 @@ m2c integration fixes (mechanical — verify each against the stub):
   needs a prototype copied verbatim from the definition signature (implicit
   decl conflicts with the later definition). Never modernize `()` vs
   `(void)`.
+- Target is always `mips-ido-c` (the default; `--help` lists other
+  platform/compiler pairs but this repo never uses them).
+- `m2ctx` always writes repo-root `ctx.c` (+ `ctx.c.m2c` cache, auto-
+  regenerated per `--help`) with pinned defines (`-DVERSION_US -DTARGET_N64
+  -D_LANGUAGE_C -DF3D_OLD -D_MIPS_SZLONG=32` — see `CPP_FLAGS` in
+  `tools/m2ctx`).
+- Multi-function stub files: add `-f <func>` to decompile one function.
+- Wrong stack var types/names: re-run with `--stack-structs`, edit the
+  template, feed back via `--context`. Loop shapes are weak upstream
+  (m2c README: "suboptimal code (especially for loops)") — prefer sibling
+  loop spellings in `ido-codegen.md` over m2c's output.
 
 ## Diffing
 
