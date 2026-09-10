@@ -703,7 +703,7 @@ void func_801DF668(void* workBuf, f32* copySrc, f32* lookupSrcDst, f32* singleA,
            so trip counts must stay literal 3s. The `lookupSrcDst =
                workBuf + 4` assign sits in the singleA - guard delay slot(both paths);
        spelled here as straight - line code before the if.Revisit with whole - file context or
-           a matched cursor - in - temp idiom.* / s32 loopCount;
+           a matched cursor - in - temp idiom.*/ s32 loopCount;
        f32* copySrcPos;
        f32* copyDstPos;
        f32* streamPos;
