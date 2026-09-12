@@ -105,3 +105,24 @@ init a sub-struct pointer at declaration and use it across branch blocks.
 Same-`%hi` sharing across consecutive stores wants array/struct symbols,
 not separate globals. Unrolled vector stores (`swc1 $f4, -4($t0)`) want a
 local sub-struct cast, not flat float indexing.
+
+## Build flags (verified: Makefile + yaml)
+
+- IDO driver is `tools/ido-static-recomp/build/5.3/out/cc`
+  (Makefile:222); phases on disk under `tools/ido5.3_compiler/`: `cfe`
+  (front end — owns the frame-slot reservation above), `uopt` (Chow-Hennessy
+  + copy propagation + redundant-store removal — pass names visible in root
+  `uoptlist`), `as1` (assembler — treats `.loc` as a scheduling boundary,
+  cf. Loops above).
+- Matching flags are `-G 0 -non_shared -Xcpluscomm -nostdinc
+  -Wab,-r4300_mul` with `-mips2 -32 -EB` (Makefile:105-106), NOT `-mips3`:
+  despite R4300i being MIPS III, the matching build targets MIPS II 32-bit
+  big-endian. `-mips3` at Makefile:102 is the experimental GCC path only.
+- Per-file `-O` overrides (Makefile:344-354): `src/libultra/os|io|libc`
+  build at `-O1`, `src/libultra/gu|audio` at `-O3` (plus two `-O2` pins).
+  Never assume `-O2` for libultra targets — read the stanza first.
+- `asm-processor` flags (Makefile:228,241): `--input-enc=utf-8
+  --output-enc=euc-jp --convert-statics=global-with-filename`. This grounds
+  the ASCII-only comment rule (euc-jp output path) and means file-statics
+  are renamed with the filename — objdump names won't match source statics
+  verbatim.
