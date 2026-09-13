@@ -9,13 +9,46 @@ Gfx* func_i9_802C5800(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i9/ovl_1C66D0/func_i9_802C5800.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i9_802C5D24(void) {
-    /* Sunset Bay dynamic tide level drain and shoreline waves */
+void func_i9_802C5E5C(void);
+Gfx* func_i9_802C6750(Gfx*);
+void func_801EC830(void);
+extern s32 D_i9_802C80DC;
+
+Gfx* func_i9_802C5D24(Gfx* dList) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+        if (gGameState == 0x42) {
+            return Gfx_ClearFrameBuffers(dList);
+        }
+    }
+
+    D_800DAB2C = 0;
+
+    gDPPipeSync(dList++);
+    gDPSetScissor(dList++, G_SC_NON_INTERLACE, 8, 20, 311, 219);
+
+    dList = func_i9_802C6750(dList);
+
+    if (gGameState == 0x42) {
+        if (D_i9_802C80DC == 0) {
+            func_i9_802C5E5C();
+        }
+    } else if (D_80228A16 == 1) {
+        switch (D_801CE630) {
+            case 0x3C:
+                func_801EC304();
+                break;
+            case 2:
+                func_801EB180();
+                break;
+            case 0x50:
+                func_801EC830();
+                break;
+        }
+    }
+
+    return dList;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i9/ovl_1C66D0/func_i9_802C5D24.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i9_802C5E5C(void) {
@@ -26,8 +59,9 @@ void func_i9_802C5E5C(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_i9_802C6750(void) {
+Gfx* func_i9_802C6750(Gfx* arg0) {
     /* Sunset Bay sunset sky color palette interpolation */
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i9/ovl_1C66D0/func_i9_802C6750.s")

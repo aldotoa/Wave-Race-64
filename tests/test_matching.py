@@ -778,10 +778,10 @@ class TestCodesegUI(unittest.TestCase):
 
     def test_func_801EF3C4_matched(self):
         """TDE test for func_801EF3C4 in B97B0 (Credits roll sequence and text scroller)."""
-        if self.is_function_decompiled("func_801EF3C4"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801EF3C4 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_801EF3C4"), "func_801EF3C4 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "B97B0", "func_801EF3C4.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801EF504_matched(self):
         """TDE test for func_801EF504 in B97B0 (Staff credits layout and display list builder)."""
@@ -1697,10 +1697,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i9_802C5D24_matched(self):
         """TDE test for func_i9_802C5D24 in ovl_1C66D0 (Sunset Bay dynamic tide level drain and shoreline waves)."""
-        if self.is_function_decompiled("func_i9_802C5D24"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i9_802C5D24 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i9_802C5D24"), "func_i9_802C5D24 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i9", "ovl_1C66D0", "func_i9_802C5D24.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i9_802C5E5C_matched(self):
         """TDE test for func_i9_802C5E5C in ovl_1C66D0 (Sunset Bay beach breaker wave height calculation)."""
@@ -1802,11 +1802,11 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i5_802C7090 is currently non-matching (in progress)")
 
     def test_func_i5_802C7484_matched(self):
-        """TDE test for func_i5_802C7484 in ovl_1C17E0 (Floating buoy wave bobbing oscillation)."""
-        if self.is_function_decompiled("func_i5_802C7484"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i5_802C7484 is currently non-matching (in progress)")
+        """TDE test for func_i5_802C7484 in ovl_1C17E0 (Course floating buoys and navigation display list dispatcher)."""
+        self.assertTrue(self.is_function_decompiled("func_i5_802C7484"), "func_i5_802C7484 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i5", "ovl_1C17E0", "func_i5_802C7484.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i5_802C7594_matched(self):
         """TDE test for func_i5_802C7594 in ovl_1C17E0 (Buoy proximity trigger and direction arrow animator)."""
