@@ -1634,10 +1634,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i5_802C6F84_matched(self):
         """TDE test for func_i5_802C6F84 in ovl_1BFF50 (Port Blue finish line gantry and buoy beacon renderer)."""
-        if self.is_function_decompiled("func_i5_802C6F84"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i5_802C6F84 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i5_802C6F84"), "func_i5_802C6F84 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i5", "ovl_1BFF50", "func_i5_802C6F84.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i4_802C58F8_matched(self):
         """TDE test for func_i4_802C58F8 in ovl_1BE0B0 (Sunny Beach shallow reef water surface state reset)."""
@@ -2014,10 +2014,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i13_802C5F6C_matched(self):
         """TDE test for func_i13_802C5F6C in ovl_1CBAF0 (Breakwater and jetty surface deflection)."""
-        if self.is_function_decompiled("func_i13_802C5F6C"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i13_802C5F6C is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i13_802C5F6C"), "func_i13_802C5F6C should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i13", "ovl_1CBAF0", "func_i13_802C5F6C.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i13_802C6068_matched(self):
         """TDE test for func_i13_802C6068 in ovl_1CBAF0 (Rock barrier rebound impulse calculation)."""
