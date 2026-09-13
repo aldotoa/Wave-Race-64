@@ -5,6 +5,25 @@ void* func_80091DBC(Gfx* gdl);
 Gfx* func_i15_802C602C(Gfx* arg0);
 void func_i15_802C6C1C(void);
 
+/* TU-local externs for the 5CE8 draft. Prototypes/externs emit no code.
+   NOTE: D_801C2C70 is canonically RiderStruct[] (0x378 stride, cf.
+   code_52CD0.c) and D_801CB350 is s32[][4] (cf. ovl_i0, code_4C750.c),
+   D_800EABB0 is const s16[] (cf. code_4C750.c:118); they are kept here in
+   the probe-exact scalar/u8 spelling because the floor below was measured
+   with it -- retyping re-rolls codegen. */
+extern s32 D_800DAA08;
+extern s16 D_800EABB0;
+extern u8 D_801C2C70;
+extern s32 D_801CB350;
+extern s32 D_802C6E7C;
+extern s32 D_802C6F20;
+extern s32 D_802C6F44;
+extern s32 D_i15_802C6D54[];
+extern s32 D_i15_802C6D68;
+extern s32 D_i15_802C6D6C;
+extern s32 D_i15_802C6D70[];
+extern UnkStruct_D_802C6E80 D_i15_802C6D8C;
+
 #ifdef NON_MATCHING
 Gfx* func_i15_802C5800(Gfx* arg0) {
     /* Glacier Coast floating iceberg and mist particle display list renderer */
@@ -15,8 +34,84 @@ Gfx* func_i15_802C5800(Gfx* arg0) {
 #endif
 
 #ifdef NON_MATCHING
+/* Course-setup initializer: bulk-copies the default effect slot over the
+   D_802C6E80 table (pre-increment do-while, (u32) bound), picks the rider
+   count from 6D54[gDifficulty], derives the mode index 6F44 from the
+   rider lap state with the expert/non-expert if-chain, latches
+   6D6C = 6D70[6F44] and the normal-difficulty flag 6D68, then scans the
+   6D70 table against EABB0 entries into 6F20.. (goto inner scan, single
+   exit). Diff floor 183 probe-verified (128 vs 127 insn, 5 probes A-E):
+   branch skeleton incl. beql inner scan and bnel non-expert path exact,
+   insn-class multiset identical except one extra hoist `move` (draft
+   hoists the table base to a reg + per-iter copy; retail recomputes
+   lui+addiu in-loop). Proven no-ops: decl-order perm, array vs
+   struct-member vs word-cursor source forms. Blocker: loop-1 wants
+   (dst,src,end) in (v1,v0,a0); an explicit src local folds to per-use
+   luis (worse). No sibling analog (other overlays' same-named fns are
+   different functions). Parked. */
 void func_i15_802C5CE8(void) {
-    /* Glacier Coast ice floe bobbing physics */
+    s32* var_a2;
+    UnkStruct_D_802C6E80* var_v1;
+    s16* var_v1_2;
+    s32* var_a0;
+    s32 temp_v1;
+    s32 temp_v1_2;
+    s32 var_v0;
+
+    var_v1 = D_802C6E80;
+    do {
+        var_v1++;
+        var_v1[-1].unk0 = D_i15_802C6D8C.unk0;
+        var_v1[-1].unk4 = D_i15_802C6D8C.unk4;
+        var_v1[-1].unk8 = D_i15_802C6D8C.unk8;
+        var_v1[-1].unkC = D_i15_802C6D8C.unkC;
+    } while ((u32) var_v1 < (u32) &D_802C6F20);
+    D_802C6E7C = D_i15_802C6D54[gDifficulty];
+    temp_v1 = *(s32*) (&D_801C2C70 + D_800D48DC * 0x378);
+    if (temp_v1 == 3) {
+        D_802C6F44 = 6;
+    } else if (gDifficulty == DIFFICULTY_EXPERT) {
+        if (temp_v1 == 0) {
+            D_802C6F44 = 3;
+        } else if (temp_v1 == 1) {
+            D_802C6F44 = 4;
+        } else {
+            D_802C6F44 = 5;
+        }
+    } else if (temp_v1 == 0) {
+        D_802C6F44 = 0;
+    } else if (temp_v1 == 1) {
+        D_802C6F44 = 1;
+    } else {
+        D_802C6F44 = 2;
+    }
+    D_i15_802C6D6C = D_i15_802C6D70[D_802C6F44];
+    if (gDifficulty == DIFFICULTY_NORMAL) {
+        D_i15_802C6D68 = 1;
+    } else {
+        D_i15_802C6D68 = 0;
+    }
+    temp_v1_2 = D_802C6E7C + 1;
+    if (temp_v1_2 > 0) {
+        var_a2 = &D_802C6F20;
+        var_a0 = &D_801CB350;
+        do {
+            var_v1_2 = &D_800EABB0;
+            var_v0 = 0;
+        loop_22:
+            if (*var_v1_2 != *var_a0) {
+                var_v0 += 1;
+                var_v1_2 += 1;
+                if (var_v0 != 4) {
+                    goto loop_22;
+                }
+            }
+            var_a2 += 1;
+            var_a0 += 4;
+            var_a2[-1] = var_v0;
+        } while ((u32) var_a2 < (u32) (&D_802C6F20 + temp_v1_2));
+    }
+    D_800DAA08 = 1;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i15/ovl_1CFB60/func_i15_802C5CE8.s")
