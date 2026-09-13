@@ -63,6 +63,9 @@ extern s32 D_801CE730;
 extern s32 D_801CE734;
 extern s32 D_801CE738;
 extern u16 D_800DCEC8[];
+extern s32 D_800DB760;
+extern u8 D_800DB778;
+extern u8 D_801CE7E8;
 
 void func_80095CE8(u8* arg0, s32 arg1);
 void func_800967EC(u32* arg0, s32 arg1);
@@ -558,8 +561,76 @@ u32* func_800965B8(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
+/* Per-course pointer-table relocation: selects the course index (gCourseID in
+   course-overview state, else arg2), walks 6 entries mapping pointer table
+   D_800DB760 through the s16 enable mask D_800DB778 into bss pair
+   D_801CE7E8, relocating live entries via the matched func_800967EC.
+   Diff floor 840 raw-CURRENT probe-verified (P): insn count 86/86, branch
+   skeleton, loop/tail/epilogue, saves, both jals + delay fills all exact.
+   Remainder is one coupled coloring pick: counter in s5 + s16 cursor in s4
+   vs retail s4/s5, prelude index/base temp numbering + sw/ori cluster order,
+   frame 0x60 vs 0x58 on identical home sets. Load-bearing: do-while;
+   straight-line temp before the if (beqz-delay addu runs on both paths);
+   s1-last tail increments (bne delay slot); named temp + named course
+   (inlining either explodes, IDO does no cross-statement CSE here);
+   48-stride addr before 12-stride addr; counter init after the addresses.
+   Swept 43 probes across decl/statement/type/tail/init-style/scope/inline/
+   inc-position/dup-structure/register/branch-form axes; two strict-optimum plateaus (970x7 identical rows,
+   840x5 identical rows). Key win:
+   two-statement temp (load, then byte-add) fixed the s0 load target plus
+   the whole loop t-cascade, 970 -> 840. Closed axes since: split-address
+ defs (inert), u8 counter (+2 truncation insns, counter is s32),
+ counter-inc at loop top (tail-delay churn, swap persists),
+ increment-duplication matrix 4/4 (join/join=s5/s4; counter-dup=s2/s5;
+ cursor-dup=s5/s2; both-dup=s3/s2 - the (s4,s5) cell never appears),
+ `register` hints (IDO ignores, inert), micro-bisection (minimal repro
+ picks cursor->s4/counter->s2 under different pressure - pick is
+ whole-function-pressure-sensitive, micro does not transfer),
+ statement-order closure (AF table-late/AI table-between explode,
+ AG table-first inert, AJ counter-second bad like K2 - P order unique,
+ AK sp40-fourth inert, AL ternary-select inert proving branch formation,
+ AM index-temps-declared-last inert rows with frame -104,
+ AN if-else-to-two-ifs explodes (reload+bnez churn, pair unchanged -
+ the join skeleton is load-bearing, no empty-else insertion point). The s-pair lever is unknown;
+   same-TU siblings (96048/961B8/963CC) document this allocator-wall class. */
 void func_80096694(void* data, s32 offset, s32 arg2) {
-    /* Jet ski texture and rider livery palette decompression dispatcher */
+    s32 sp40;
+    s32 var_v0;
+    s16* var_s5;
+    s32* var_s3;
+    s32 var_s4;
+    u32* temp_s0;
+    u32* var_s1;
+
+    if (gGameState == GAME_SATE_COURSE_OVERVIEW) {
+        var_v0 = gCourseID;
+    } else {
+        var_v0 = arg2;
+    }
+    sp40 = var_v0 * 8;
+    var_s3 = &D_800DB760;
+    var_s1 = (u32*) ((var_v0 * 0x30) + (s32) &D_801CE7E8);
+    var_s5 = (s16*) ((var_v0 * 0xC) + (s32) &D_800DB778);
+    var_s4 = 0;
+    do {
+        /* Two statements: lets the allocator home the loaded pointer
+           straight into s0 (fused form spills it through a t-reg). */
+        temp_s0 = (u32*) *var_s3;
+        temp_s0 = (u32*) ((u8*) temp_s0 + sp40);
+        if (*var_s5 != 0) {
+            var_s1[0] = (u32) ((temp_s0[0] & 0xFFFFFF) + 0x08000000);
+            var_s1[6] = (u32) ((temp_s0[1] & 0xFFFFFF) + 0x08000000);
+            func_800967EC((u32*) ((temp_s0[0] & 0xFFFFFF) + (s32) data), offset);
+            func_800967EC((u32*) ((temp_s0[1] & 0xFFFFFF) + (s32) data), offset);
+        } else {
+            var_s1[0] = 0;
+            var_s1[6] = 0;
+        }
+        var_s4 += 2;
+        var_s3 += 1;
+        var_s5 += 1;
+        var_s1 += 1;
+    } while (var_s4 != 0xC);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096694.s")

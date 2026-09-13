@@ -1078,7 +1078,9 @@ void func_800C1B98(void) {
    case-0 test to beqz (S5), so the lever is the beql context, but no
    byte-preserving spelling of the switch (~20 variants: case order, default,
    if/else, nesting, load order/split, decl order, u32/u8/register) changes
-   the fills. Scheduler-opaque. */
+   the fills. Scheduler-opaque.
+   Empty-else probe (Q): explicit `else {}` on the bare D_801D7DE8 guard is
+   fully inert (identical rows, 605) - sole bare if in the function. */
 void func_800C1BD8(f32 arg0, f32 arg1) {
     f32 var_fv0;
     s32 temp_v0;
