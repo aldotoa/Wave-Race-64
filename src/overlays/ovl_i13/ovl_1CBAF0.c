@@ -6,13 +6,23 @@
 void func_i13_802C82A4(s32 arg0);
 void func_i13_802C8CBC(void);
 void func_800C3E6C(s32);
+s32 func_8007BDB8(void);
+void func_800C3010(u32 arg0);
+s32 Save_PfsDeleteFile(void);
+s32 func_8007D2D4(s32 arg0);
+s32 func_8007D614(s32 arg0);
+Gfx* func_801E7E74(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
+Gfx* func_801E7FD8(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4);
+Gfx* func_i13_802C8484(Gfx* arg0, s32 arg1);
 extern s32 D_i13_802C8D50;
 extern s32 D_i13_802C8D54;
 extern s32 D_i13_802C8D58;
 extern s32 D_i13_802C8D5C;
+extern s32 D_i13_802C8D60[];
 extern s32 D_i13_802C8D70;
 extern s32 D_i13_802C8D74;
 extern s32 D_i13_802C8D78;
+extern s32 D_i13_802C8D7C;
 extern s32 D_i13_802C8D80;
 extern s32 D_i13_802C8D84;
 extern s32 D_i13_802C8D98;
@@ -22,6 +32,7 @@ extern s32 D_i13_802C8DC8;
 extern s32 D_i13_802C8DCC;
 extern s32 D_i13_802C8DD0;
 extern s32 D_i13_802C8DD4;
+extern s32 D_i13_802C8DE0[];
 
 #ifdef NON_MATCHING
 Gfx* func_i13_802C5800(Gfx* arg0) {
@@ -373,7 +384,59 @@ s32 func_i13_802C6BC4(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_i13_802C6CE4(void) {
+/* Twin of 6F0C entry/flag shape (8D80 gate, 8D80/8D84 clear, 8D54 split,
+   800C3E6C tail cue, returns 0) selecting a course index out of the
+   8D60 table via 8DE0[8D5C], probing it with 8007D2D4 (8D54 == 0 arm,
+   +0x80 when 8DC4 set) or 8007D614, and latching 8D74/CE640/8D7C.
+   SIGNATURE WORKAROUND: the stub is arg-less (a1 is zeroed in the first
+   branch's delay slot, so no incoming value survives) and returns 0, but
+   the flag local homes in a1 in retail (beql a1 tail, a1 spills) -- the
+   same allocator wall as parked 69CC/6ABC. Reusing dead incoming regs as
+   the flag (`s32 f(s32 var_a0, s32 arg1)` + `arg1 = 0`) reproduces the
+   a1-homing exactly, and assignment-in-condition (`if ((D_8D74 =
+   f(...)) == 0)`) fixes store order and the whole t-rotation (57 -> 5).
+   No callers exist anywhere in tree, so the invented params break
+   nothing; true prototype is almost certainly s32 (void). Revisit with
+   the 69CC-family a1-homing lever if it is ever found.
+   Diff floor 5 probe-verified (3 ordered rows, 90 vs 89 insn, 5 variants):
+   only deltas are frame 0x18 vs 0x20 and one dead `sw a0,24(sp)`
+   prologue row. */
+s32 func_i13_802C6CE4(s32 var_a0, s32 arg1) {
+    arg1 = 0;
+
+    if (D_i13_802C8D80 == 0) {
+        return 0;
+    }
+    D_i13_802C8D80 = 0;
+    D_i13_802C8D84 = 0;
+    if (D_i13_802C8D54 == 0) {
+        var_a0 = D_i13_802C8D60[D_i13_802C8DE0[D_i13_802C8D5C]];
+        if (D_i13_802C8DC4 != 0) {
+            var_a0 += 0x80;
+        }
+        if ((D_i13_802C8D74 = func_8007D2D4(var_a0)) == 0) {
+            D_801CE640 = 0;
+            D_i13_802C8D7C = 3;
+            arg1 = 1;
+        } else {
+            D_801CE640 = 4;
+        }
+        D_i13_802C8DC8 = 0;
+        D_i13_802C8DD4 = 0;
+        D_i13_802C8DD0 = 0;
+    } else {
+        if ((D_i13_802C8D74 = func_8007D614(D_i13_802C8D60[D_i13_802C8DE0[D_i13_802C8D5C]])) == 0) {
+            D_801CE640 = 0;
+            D_i13_802C8D7C = 3;
+            arg1 = 1;
+        } else {
+            D_801CE640 = 4;
+        }
+    }
+    if (arg1 != 0) {
+        func_800C3E6C(1);
+    }
+    return 0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6CE4.s")
@@ -422,7 +485,62 @@ s32 func_i13_802C6E48(void) {
 }
 
 #ifdef NON_MATCHING
-void func_i13_802C6F0C(void) {
+/* Save-slot menu handler: early-returns 0 while 8D80 is clear (branch-delay
+   stack flag store); else zeroes 8D80/8D84 and either rebuilds the mode
+   defaults (8D54 == 0 arm: BDB8 + D_801CB280 mask bits select 800C3010 cue
+   3/1/0 and 3034/3044 for bit 0x20) or records Save_PfsDeleteFile status.
+   Tail cues 800C3E6C(2) unless both arms left the flag clear; returns 0.
+   Diff floor 26 probe-verified (16 ordered rows, 84 vs 85 insn): frame
+   0x20 + ra/home slots exact, all 8 jals with correct args, branch layout
+   exact. Remainder is pure t-register rotation + one lui-v1/addiu vs
+   lui-at row. Dead axes (13 variants, all neutral): decl order (6 orders),
+   init-vs-assign, block scope, volatile, extra temp, operand commutation,
+   array-homed flag. Load-bearing: early-return entry shape, s8 masked
+   temp (sll/sra sign-extend shape from the stub's lb load). */
+s32 func_i13_802C6F0C(void) {
+    s32 sp1C = 0;
+    s32 temp_v0;
+    s8 temp;
+
+    if (D_i13_802C8D80 == 0) {
+        return 0;
+    }
+    D_i13_802C8D80 = 0;
+    D_i13_802C8D84 = 0;
+    if (D_i13_802C8D54 == 0) {
+        func_8007BDB8();
+        temp = D_801CB280 & 0xC0;
+        sp1C = 1;
+        D_801CE640 = 0;
+        if (temp & 0x40) {
+            D_800DA9EC[0] = 1;
+            func_800C3010(3);
+        } else if (temp & 0x80) {
+            D_800DA9EC[0] = 2;
+            func_800C3010(1);
+        } else {
+            D_800DA9EC[0] = 0;
+            func_800C3010(0);
+        }
+        if (D_801CB280 & 0x20) {
+            D_800DA9EC[1] = 0;
+            func_800C3044();
+        } else {
+            D_800DA9EC[1] = 1;
+            func_800C3034();
+        }
+    } else {
+        temp_v0 = Save_PfsDeleteFile();
+        D_i13_802C8D74 = temp_v0;
+        if (temp_v0 == 0) {
+            sp1C = 1;
+        }
+        D_801CE640 = 0;
+    }
+    if (sp1C != 0) {
+        func_800C3E6C(2);
+    }
+    return 0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6F0C.s")
@@ -495,14 +613,57 @@ void func_i13_802C82A4(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
-void func_i13_802C832C(void) {
+/* Course-select panel renderer: switch on 8D78. Case 1 advances the 8E98
+   counter, derives the panel height as (t*0x14)/5, resets 8E90/8E94 at
+   t >= 5, and chains 7E74 + 7FD8 with the sliding rect; cases 2/3/5 draw
+   the static rect and chain 8484. Returns the Gfx cursor.
+   Diff floor 73 probe-verified (82 vs 86 insn, 4 variants): switch header,
+   call skeleton (7E74/7FD8/8484), and return sequence exact. Remainder is
+   div-before-compare scheduling in the case-1 body plus 8E90/94 homing
+   (retail: t-regs+v1; draft: direct to a1/a2) and frame 0x30 vs 0x28.
+   Dead axes: nested vs sequential calls, decl order, block scope.
+   Load-bearing: `case 2/3/5` shared arm, `(t*0x14)/5` div shape,
+   `>= 5` compare direction. */
+Gfx* func_i13_802C832C(Gfx* arg0) {
+
+    switch (D_i13_802C8D78) {
+        case 1: {
+            s32 temp_t7;
+            s32 temp_lo;
+
+            temp_t7 = D_802C8E98 + 1;
+            temp_lo = (temp_t7 * 0x14) / 5;
+            D_802C8E98 = temp_t7;
+            if (temp_t7 >= 5) {
+                D_802C8E90 = 0x1C;
+                D_802C8E94 = 0x44;
+            }
+            D_802C8E94 = 0x58 - temp_lo;
+            arg0 = func_801E7E74(arg0, 0, 0, 0, 0xFF);
+            arg0 = func_801E7FD8(arg0, D_802C8E90, D_802C8E94, D_802C8E90 + 0x108, (temp_lo * 2) + D_802C8E94);
+            break;
+        }
+        case 2:
+        case 3:
+        case 5:
+            arg0 = func_801E7E74(arg0, 0, 0, 0, 0xFF);
+            arg0 = func_801E7FD8(arg0, D_802C8E90, D_802C8E94, D_802C8E90 + 0x108, D_802C8E94 + 0x28);
+            arg0 = func_i13_802C8484(arg0, 0);
+            break;
+    }
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C832C.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_i13_802C8484(void) {
+/* Placeholder signature follows the 832C call-site evidence
+   (Gfx cursor in a0, 0 in a1); body still to be decompiled (jump-table
+   switch: parked until whole-file table migration). */
+Gfx* func_i13_802C8484(Gfx* arg0, s32 arg1) {
+    ((void) arg1);
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C8484.s")
