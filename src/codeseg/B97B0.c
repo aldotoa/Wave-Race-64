@@ -1174,12 +1174,20 @@ void func_801EED70(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EED70.s")
 #endif
 
-#ifdef NON_MATCHING
+extern u16 D_80228D24;
+extern f32 D_80227A24;
+void func_800481E0(Mtx*, u16*, f32, f32, f32, f32, f32, f32);
+void func_800484C8(Mtx*, MtxF*, f32, f32, f32, f32, f32, f32, f32, f32, f32);
+
 void func_801EF3C4(void) {
+    MtxF sp40;
+
+    func_800481E0((Mtx*) ((u8*) D_801AE948 + 0x4080), &D_80228D24, 24.0f, 4.0f / 3.0f, 16.0f, 4096.0f, 0.0f, 0.0f);
+    func_800484C8((Mtx*) ((u8*) D_801AE948 + 0x40C0), &sp40, 0.0f, 512.0f, D_80227A24, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                  0.0f);
+    guOrtho((Mtx*) ((u8*) D_801AE948 + 0x4000), -160.0f, 160.0f, -120.0f, 120.0f, -1024.0f, 1024.0f, 1.0f);
+    guOrtho((Mtx*) ((u8*) D_801AE948 + 0x4040), 0.0f, 320.0f, 240.0f, 0.0f, -1024.0f, 1024.0f, 1.0f);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EF3C4.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801EF504(void) {

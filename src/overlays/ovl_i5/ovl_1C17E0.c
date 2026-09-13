@@ -9,13 +9,43 @@ Gfx* func_i5_802C7090(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7090.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i5_802C7484(void) {
-    /* Floating buoy wave bobbing oscillation */
+Gfx* func_i5_802C7594(Gfx*);
+Gfx* func_i5_802C7698(Gfx*);
+void func_i5_802C781C(void);
+Gfx* Gfx_DrawCoursePanel(Gfx*, s32);
+extern s32 D_i5_802C7AC8;
+extern Mtx D_8011F820;
+
+Gfx* func_i5_802C7484(Gfx* glistp) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+    }
+
+    glistp = Gfx_ClearCurrentBuffer(glistp);
+
+    D_800DAB2C = 0;
+
+    glistp = Gfx_FillCourseColor(glistp, gCourseID);
+    glistp = func_8008FB74(glistp);
+
+    if (D_i5_802C7AC8 == 2 || D_i5_802C7AC8 == 3 || D_i5_802C7AC8 == 4) {
+        glistp = func_i5_802C7594(glistp);
+    }
+
+    gSPMatrix(glistp++, &D_8011F820, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+    glistp = Gfx_DrawCoursePanel(glistp, gCourseID);
+    glistp = Draw_WaterEffects(glistp);
+    glistp = func_i5_802C7698(glistp);
+
+    if (gGameState == GAME_STATE_5A) {
+        func_i5_802C781C();
+    } else if (D_80228A16 == 1) {
+        func_801EB180();
+    }
+
+    return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7484.s")
-#endif
 
 extern u32 D_106F6C0;
 extern u32 D_i5_802C7AA8[];
@@ -95,8 +125,9 @@ Gfx* func_i5_802C7594(Gfx* arg0) {
 #endif
 
 #ifdef NON_MATCHING
-void func_i5_802C7698(void) {
+Gfx* func_i5_802C7698(Gfx* arg0) {
     /* Buoy pass angle verification */
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7698.s")
