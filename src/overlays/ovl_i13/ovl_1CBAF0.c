@@ -89,64 +89,39 @@ void func_i13_802C6068(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6068.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Flag chain over D_801CE65A; 0xB000 arm compares the loaded 8D50 word
-   (==0 / !=1 / ==1 three-way) and always returns 1 there.
-   Diff floor 305 probe-verified: branch layout exact ONLY via explicit
-   goto (if/else reorders blocks: beqz/beq vs retail bnez/bne); remainder
-   is the family allocator wall (loaded var_v1 homes a0, never v1).
-   Tried: inner-block swap (correct semantics, +525 before goto), goto pins.
-   Next: v1-homing lever unknown. */
 s32 func_i13_802C61E0(void) {
     s32 var_v1 = 0;
-    s32 temp1;
-    s32 temp2;
 
     if (D_801CE65A->unk0 & 0xB000) {
         var_v1 = D_i13_802C8D50;
-        if (var_v1 != 0) {
-            goto inner;
+        if (var_v1 == 0) {
+            D_801CE640 = 1;
+            D_i13_802C8D54 = 0;
+        } else if (var_v1 == 1) {
+            D_801CE640 = 2;
+            D_i13_802C8D54 = 0;
+        } else {
+            func_i13_802C8CBC();
         }
-        D_801CE640 = 1;
-        D_i13_802C8D54 = 0;
         var_v1 = 1;
-        goto func_end;
-    inner:
-        if (var_v1 != 1) {
-            goto docall;
-        }
-        D_801CE640 = 2;
-        D_i13_802C8D54 = 0;
-        var_v1 = 1;
-        goto func_end;
-    docall:
-        func_i13_802C8CBC();
-        var_v1 = 1;
-        goto func_end;
     } else if (D_801CE65A->unk0 & 0x4000) {
         var_v1 = 2;
         func_i13_802C8CBC();
     } else if (D_801CE65A->unk0 & 0x200) {
         var_v1 = 3;
-        temp1 = D_i13_802C8D50 - 1;
-        D_i13_802C8D50 = temp1;
-        if (temp1 < 0) {
+        D_i13_802C8D50--;
+        if (D_i13_802C8D50 < 0) {
             D_i13_802C8D50 = 2;
         }
     } else if (D_801CE65A->unk0 & 0x100) {
         var_v1 = 4;
-        temp2 = D_i13_802C8D50 + 1;
-        D_i13_802C8D50 = temp2;
-        if (temp2 >= 3) {
+        D_i13_802C8D50++;
+        if (D_i13_802C8D50 >= 3) {
             D_i13_802C8D50 = 0;
         }
     }
-func_end:;
     return var_v1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C61E0.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i13_802C62EC(void) {
