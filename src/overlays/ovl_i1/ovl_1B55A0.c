@@ -288,17 +288,55 @@ void func_i1_802C7608(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7608.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i1_802C7D00(void) {
-    /* Primary course buoy pass checker */
+extern s32 D_801C2650;
+extern s32 D_801C2654;
+Gfx* Gfx_ClearWorkImages(Gfx*);
+Gfx* func_i1_802C7E48(Gfx*);
+void func_i1_802C8E70(void);
+void func_8007C494(void);
+void func_8007BEA4(s32);
+void func_8007C204(s32);
+void func_801ECB98(void);
+
+Gfx* func_i1_802C7D00(Gfx* glistp) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+    }
+
+    glistp = Game_BuildRaceScene(glistp);
+    glistp = Gfx_ClearWorkImages(glistp);
+
+    gDPPipeSync(glistp++);
+    gDPSetColorImage(glistp++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, OS_K0_TO_PHYSICAL(gFrameBuffers[gFramebuffersIdx]));
+    gDPSetScissor(glistp++, G_SC_NON_INTERLACE, 8, 20, 311, 219);
+
+    glistp = func_i1_802C7E48(glistp);
+
+    if (gPlayers == 1) {
+        gSPDisplayList(glistp++, D_106F168);
+    }
+
+    func_i1_802C8E70();
+
+    if (D_80228A16 == 1) {
+        func_8007C494();
+        if (D_801C2650 != 0 || D_801C2654 != 0) {
+            if (D_800DAB68 != 0) {
+                func_8007C204(gCourseID);
+            } else {
+                func_8007BEA4(gCourseID);
+            }
+        }
+        func_801ECB98();
+    }
+
+    return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7D00.s")
-#endif
 
 #ifdef NON_MATCHING
-void func_i1_802C7E48(void) {
+Gfx* func_i1_802C7E48(Gfx* glistp) {
     /* Primary course rider rank tracker */
+    return glistp;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C7E48.s")

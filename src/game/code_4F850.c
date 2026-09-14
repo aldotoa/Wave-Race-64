@@ -374,41 +374,33 @@ loop_1:
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096048.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Twin of func_800963CC: same dispatch/base/guard/return idiom, 9 pointers
-   per iteration. Diff floor 505 probe-verified: everything exact except the
-   shared t8 wall (base in v1 + loop-temp cascade + tail i++ scheduling).
-   See func_800963CC floor note for the full sweep record (attractor-proven
-   across ~40 probes in both functions); the t8 lever is still unknown. */
 u32* func_800961B8(s32 arg0, s32 arg1) {
     s32 pad_a;
     s32 var_s4;
     s32 pad_b;
-    u32* sp38;
-    u32* sp34;
+    u32* sp[2];
     u32* var_s2;
     u32* temp_s0;
     s32 var_s3;
-    u32* temp_t8;
+    u32 temp;
 
     switch (arg0) {
         case 3:
-            sp34 = (u32*) &D_8002FA8;
+            sp[0] = (u32*) &D_8002FA8;
             var_s4 = 1;
             break;
         case 6:
-            sp34 = (u32*) &D_8002C00;
+            sp[0] = (u32*) &D_8002C00;
             var_s4 = 1;
             break;
     }
-    temp_t8 = (u32*) (SegmentedToVirtual((u32) sp34) + arg1);
-    sp38 = temp_t8;
+    sp[1] = (u32*) (SegmentedToVirtual((u32) sp[0]) + arg1);
     var_s3 = 0;
     if (var_s4 > 0) {
-        var_s2 = temp_t8;
+        var_s2 = sp[1];
         do {
             temp_s0 = (u32*) (SegmentedToVirtual(*var_s2) + arg1);
-            *var_s2 = temp_s0;
+            *var_s2 = (u32) temp_s0;
             temp_s0[1] = (u32) (SegmentedToVirtual(temp_s0[1]) + arg1);
             temp_s0[2] = (u32) (SegmentedToVirtual(temp_s0[2]) + arg1);
             temp_s0[3] = (u32) (SegmentedToVirtual(temp_s0[3]) + arg1);
@@ -416,16 +408,14 @@ u32* func_800961B8(s32 arg0, s32 arg1) {
             temp_s0[5] = (u32) (SegmentedToVirtual(temp_s0[5]) + arg1);
             temp_s0[6] = (u32) (SegmentedToVirtual(temp_s0[6]) + arg1);
             temp_s0[7] = (u32) (SegmentedToVirtual(temp_s0[7]) + arg1);
-            temp_s0[8] = (u32) (SegmentedToVirtual(temp_s0[8]) + arg1);
+            temp = (u32) (SegmentedToVirtual(temp_s0[8]) + arg1);
             var_s3 += 1;
             var_s2 += 1;
+            temp_s0[8] = temp;
         } while (var_s3 != var_s4);
     }
-    return sp38;
+    return sp[1];
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_800961B8.s")
-#endif
 
 u32* func_800962F0(s32 arg0) {
     s32 pad[2];
