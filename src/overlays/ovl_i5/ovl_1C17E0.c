@@ -14,6 +14,11 @@ Gfx* func_i5_802C7698(Gfx*);
 void func_i5_802C781C(void);
 Gfx* Gfx_DrawCoursePanel(Gfx*, s32);
 extern s32 D_i5_802C7AC8;
+extern s32 D_i5_802C7ACC;
+extern s32 D_i5_802C7AD0;
+extern s32 D_802C7B30;
+extern s32 D_802C7B34;
+Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
 extern Mtx D_8011F820;
 
 Gfx* func_i5_802C7484(Gfx* glistp) {
@@ -124,14 +129,16 @@ Gfx* func_i5_802C7594(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7594.s")
 #endif
 
-#ifdef NON_MATCHING
-Gfx* func_i5_802C7698(Gfx* arg0) {
-    /* Buoy pass angle verification */
-    return arg0;
+Gfx* func_i5_802C7698(Gfx* glistp) {
+    gSPDisplayList(glistp++, D_106F628);
+    glistp = Menu_DrawFrame(glistp, 0, D_i5_802C7ACC, 0x91, 0xD0, 0xF);
+    glistp = Menu_DrawFrame(glistp, 0, D_i5_802C7AD0, 0xA6, 0xD0, 0xF);
+    glistp = func_801E946C(glistp, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    glistp = func_801E3EE0(glistp, 1, 6, D_i5_802C7ACC + 10, 0x93, 0);
+    glistp = func_801E3EE0(glistp, 1, 7, D_i5_802C7AD0 + 10, 0xA8, 0);
+    glistp = func_801EB00C(glistp, 2, D_802C7B34, D_i5_802C7ACC + 0xBA, 0x93);
+    return func_801EB00C(glistp, 2, D_802C7B30, D_i5_802C7AD0 + 0xBA, 0xA8);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7698.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i5_802C781C(void) {
