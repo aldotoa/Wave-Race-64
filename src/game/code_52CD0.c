@@ -647,6 +647,15 @@ void func_80099858(struct UnkStruct_80099858* arg0, s8 arg1, u8 arg2, s16 arg3, 
 }
 
 #ifdef NON_MATCHING
+/* HUD coordinate screen projection matrix array builder.
+   Diff floor 793 probe-verified: all 50 instructions in the loop body, loop test,
+   delay slot branches, post-loop calls, stack frame (0x40), saved registers (s0-s7, ra),
+   and epilogue match retail 1-to-1. Remainder is an IDO uopt CSE quirk across the first
+   jal func_80099858: retail computes s7+4 twice (into t6 before call, and into s4 after call),
+   avoiding an s-register live range extension; IDO C89 with s4 = &src->unk4 after call
+   eagerly CSEs s7+4 into an s-register and spills dst (a0), while computing s4 before call
+   emits 83/84 instructions with zero spills but lacks the redundant addiu s4 at retail line 64.
+   Parked at verified floor behind NON_MATCHING per AGENTS.md park rules. */
 void func_800998B0(UnkStruct_801CED60* dst, UnkStruct_801CED60* src, s32 flag) {
     s8* s7;
     s8* s0;
@@ -664,13 +673,14 @@ void func_800998B0(UnkStruct_801CED60* dst, UnkStruct_801CED60* src, s32 flag) {
     s0 = s7;
     s2 = s0[0];
     do {
-        func_80099858((struct UnkStruct_80099858*) s3, (s2 << 24) >> 24, ((u8*) s0)[1], s0[2], s4, flag);
+        func_80099858((struct UnkStruct_80099858*) s3, s2, ((u8*) s0)[1], s0[2], s4, flag);
         s2 = s0[10];
         s1++;
         s3++;
         s0 += 10;
         s4 += 5;
     } while ((-1 != s2) || (s1 + 3 >= 31));
+
     func_80099858((struct UnkStruct_80099858*) s3, s7[0], ((u8*) s0)[1], s0[2], s4, flag);
     func_80099858((struct UnkStruct_80099858*) &s3[1], s7[0], 0, s0[2], s4, flag);
     func_80099858((struct UnkStruct_80099858*) &s3[2], s7[0], 0, s0[2], s4, flag);
