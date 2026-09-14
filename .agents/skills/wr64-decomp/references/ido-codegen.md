@@ -28,6 +28,12 @@ In leaf functions, `register` or declaration order can guide selection.
 - Selection diagnostic: leading `b` down to bottom `blt`/`bne` → `for`;
   immediate top test → `while`; body-first with bottom branch only →
   `do-while` (also in `AGENTS.md`: tail branches favor `do-while`).
+  EXCEPTION (proven on `func_i5_802C7594`): multi-cursor address-walk
+  loops with extern bounds unroll+frame under `do-while` (subu/andi/beqz
+  prelude, s-reg spills) while the stub keeps a plain walk. `goto loop`
+  and `while (1)` + `break` both inhibit the unroll and converge to
+  identical rows — micro-bisect loop skeletons (do/while-break/goto)
+  before sweeping coloring, and distrust a `do-while`-only floor.
 - Small counted loops: `uopt` hoists bounds (`li $a2, 2` + `bne`) where the
   target uses `slti` + `bnez` (`blt`). Reusing the counter in a following
   loop keeps it live and suppresses hoisting.
