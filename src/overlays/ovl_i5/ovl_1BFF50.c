@@ -109,9 +109,12 @@ void func_i5_802C6CC4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1BFF50/func_i5_802C6CC4.s")
 #endif
 
-void func_i5_802C6F84(s32 arg0) {
+/* Enters the Port Blue post-race state: latches subState, raises the frame
+ * flag, then picks the fade and the follow-up audio cue for the 0x66
+ * (champion) and 0x1E (runner-up) endings. */
+void func_i5_802C6F84(s32 subState) {
     gPrevGameState = gGameState;
-    D_801CE630 = arg0;
+    D_801CE630 = subState;
     gGameState = 0x35;
     D_801CE638 = 9;
     D_801CE63C = 1;

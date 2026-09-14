@@ -674,38 +674,43 @@ s32 func_8007C204(s32 arg0) {
     return 0;
 }
 
+/* Writes the 4 player-initial slots plus their championship record rows to
+ * EEPROM: copies initials via Libc_strncpy, mirrors the record grid, then
+ * checksums the header and writes the 16-byte header plus the 64-byte
+ * initials block. Returns 1 when no EEPROM, 3 on write failure, else 0. */
 s32 func_8007C31C(void) {
-    s32 i;
-    s32 j;
-    s32 k;
-    u8* s0;
-    OSMesgQueue* s1;
+    s32 playerSlot;
+    s32 charPos;
+    s32 recordRow;
+    u8* saveBase;
+    OSMesgQueue* eepromQueue;
 
     if (D_800D8260 == 0) {
         return 1;
     }
 
-    for (i = 0; i < 4; i++) {
-        Libc_strncpy(D_801AEA28[i], D_801CB298[i].unk_0, 10);
+    for (playerSlot = 0; playerSlot < 4; playerSlot++) {
+        Libc_strncpy(D_801AEA28[playerSlot], D_801CB298[playerSlot].unk_0, 10);
 
-        k = 0;
+        recordRow = 0;
         do {
-            for (j = 0; j < 3; j++) {
-                D_801AEA18[0].unk38[k][i][j] = D_801CB298[k * 4 + i].unk_B[j];
+            for (charPos = 0; charPos < 3; charPos++) {
+                D_801AEA18[0].unk38[recordRow][playerSlot][charPos] =
+                    D_801CB298[recordRow * 4 + playerSlot].unk_B[charPos];
             }
-            k++;
-        } while ((u32) &D_801CB298[k * 4] < (u32) D_801CB308);
+            recordRow++;
+        } while ((u32) &D_801CB298[recordRow * 4] < (u32) D_801CB308);
     }
 
     func_8007B31C();
-    s0 = (u8*) D_801AEA18;
-    D_801AEA18[0].unk2 = Save_GenCheckSum(s0);
-    s1 = &D_801540D0;
-    if (osEepromLongWrite(s1, 0, s0, 16) != 0) {
+    saveBase = (u8*) D_801AEA18;
+    D_801AEA18[0].unk2 = Save_GenCheckSum(saveBase);
+    eepromQueue = &D_801540D0;
+    if (osEepromLongWrite(eepromQueue, 0, saveBase, 16) != 0) {
         return 3;
     }
 
-    if (osEepromLongWrite(s1, ((u32) ((u8*) D_801AEA28 - s0)) >> 3, (u8*) D_801AEA28, 64) != 0) {
+    if (osEepromLongWrite(eepromQueue, ((u32) ((u8*) D_801AEA28 - saveBase)) >> 3, (u8*) D_801AEA28, 64) != 0) {
         return 3;
     }
 

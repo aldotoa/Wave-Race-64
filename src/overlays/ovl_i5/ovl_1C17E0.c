@@ -22,6 +22,9 @@ Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
 extern Mtx D_8011F820;
 
 Gfx* func_i5_802C7484(Gfx* glistp) {
+    /* Port Blue race frame: clears the buffer, fills the course color, draws
+     * buoys when the tide state calls for them, then appends the course
+     * panel, water effects, and results panels before the attract tail. */
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
     }
@@ -130,6 +133,8 @@ Gfx* func_i5_802C7594(Gfx* arg0) {
 #endif
 
 Gfx* func_i5_802C7698(Gfx* glistp) {
+    /* Draws the two Port Blue leaderboard panels: frames, full-bright text
+     * rows, position numbers, and the two course-record lines. */
     gSPDisplayList(glistp++, D_106F628);
     glistp = Menu_DrawFrame(glistp, 0, D_i5_802C7ACC, 0x91, 0xD0, 0xF);
     glistp = Menu_DrawFrame(glistp, 0, D_i5_802C7AD0, 0xA6, 0xD0, 0xF);

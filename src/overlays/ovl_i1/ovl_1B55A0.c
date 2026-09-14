@@ -143,7 +143,7 @@ extern s32 D_800D817C;
 extern s32 D_802C96A0;
 extern s32 D_802C96A4;
 
-/* Race-timer tick for game states 0x29/0x2A: passes arg0 through while
+/* Race-timer tick for game states 0x29/0x2A: passes passThrough through while
  * advancing the D_802C96A4 frame counter (0..61) and latching D_802C96A0.
  * D_800D817C is flagged while the counter is below 30 frames. The
  * duplicated store below is load-bearing: it keeps the compiler's
@@ -152,7 +152,7 @@ extern s32 D_802C96A4;
  * load-bearing too: split across lines, as1 sees distinct .loc directives
  * as scheduling boundaries and emits lui/li in the wrong fill order
  * (probe-verified CURRENT 60 -> 0). */
-s32 func_i1_802C6B38(s32 arg0) {
+s32 func_i1_802C6B38(s32 passThrough) {
     if (gGameState == GAME_STATE_2A) {
         if (D_801CE6F0 == 1) {
         } else {
@@ -173,7 +173,7 @@ s32 func_i1_802C6B38(s32 arg0) {
         D_802C96A0 = 1;
     }
 end:
-    return arg0;
+    return passThrough;
 }
 
 #ifdef NON_MATCHING
@@ -299,6 +299,9 @@ void func_8007C204(s32);
 void func_801ECB98(void);
 
 Gfx* func_i1_802C7D00(Gfx* glistp) {
+    /* Dolphin Park race frame: builds the 3D scene, clears work images, sets
+     * the 320x200 viewport scissor, draws rider ranks, ticks the intro state
+     * machine, then runs the attract-mode save/menu tail when enabled. */
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
     }
