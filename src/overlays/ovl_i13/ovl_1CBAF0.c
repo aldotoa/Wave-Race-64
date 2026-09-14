@@ -48,6 +48,9 @@ Gfx* func_i13_802C5800(Gfx* arg0) {
 #endif
 
 Gfx* func_i13_802C5F6C(Gfx* dList) {
+    /* Twilight City race frame: clears the frame on reset, builds the course
+     * scene, flushes the pending 8D74 command, appends the water surface,
+     * then runs either the 0x40 results branch or the attract tail. */
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == 0x40) {

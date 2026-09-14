@@ -69,8 +69,8 @@ extern u8 D_801CE7E8;
 
 void func_80095CE8(u8* arg0, s32 arg1);
 void func_800967EC(u32* arg0, s32 arg1);
-u32* func_800961B8(s32 arg0, s32 arg1);
-u32* func_800963CC(s32 arg0, s32 arg1);
+u32* func_800961B8(s32 courseKind, s32 segOffset);
+u32* func_800963CC(s32 courseKind, s32 segOffset);
 u32* func_800962F0(s32 arg0);
 u32* func_800964CC(s32 arg0);
 u32* func_800965B8(s32 arg0);
@@ -374,47 +374,51 @@ loop_1:
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096048.s")
 #endif
 
-u32* func_800961B8(s32 arg0, s32 arg1) {
-    s32 pad_a;
-    s32 var_s4;
-    s32 pad_b;
-    u32* sp[2];
-    u32* var_s2;
-    u32* temp_s0;
-    s32 var_s3;
-    u32 temp;
+/* Relocates segmented pointers for asset kinds 3 and 6: one table entry,
+ * nine pointers per record (entry link plus fields 1-8). segOffset is the
+ * segment bias added after each SegmentedToVirtual. stagedTail is
+ * load-bearing: storing field 8 last preserves the trailing-jal schedule. */
+u32* func_800961B8(s32 courseKind, s32 segOffset) {
+    s32 framePadTop;
+    s32 entryCount;
+    s32 framePadBottom;
+    u32* addrSlots[2];
+    u32* cursor;
+    u32* record;
+    s32 index;
+    u32 stagedTail;
 
-    switch (arg0) {
+    switch (courseKind) {
         case 3:
-            sp[0] = (u32*) &D_8002FA8;
-            var_s4 = 1;
+            addrSlots[0] = (u32*) &D_8002FA8;
+            entryCount = 1;
             break;
         case 6:
-            sp[0] = (u32*) &D_8002C00;
-            var_s4 = 1;
+            addrSlots[0] = (u32*) &D_8002C00;
+            entryCount = 1;
             break;
     }
-    sp[1] = (u32*) (SegmentedToVirtual((u32) sp[0]) + arg1);
-    var_s3 = 0;
-    if (var_s4 > 0) {
-        var_s2 = sp[1];
+    addrSlots[1] = (u32*) (SegmentedToVirtual((u32) addrSlots[0]) + segOffset);
+    index = 0;
+    if (entryCount > 0) {
+        cursor = addrSlots[1];
         do {
-            temp_s0 = (u32*) (SegmentedToVirtual(*var_s2) + arg1);
-            *var_s2 = (u32) temp_s0;
-            temp_s0[1] = (u32) (SegmentedToVirtual(temp_s0[1]) + arg1);
-            temp_s0[2] = (u32) (SegmentedToVirtual(temp_s0[2]) + arg1);
-            temp_s0[3] = (u32) (SegmentedToVirtual(temp_s0[3]) + arg1);
-            temp_s0[4] = (u32) (SegmentedToVirtual(temp_s0[4]) + arg1);
-            temp_s0[5] = (u32) (SegmentedToVirtual(temp_s0[5]) + arg1);
-            temp_s0[6] = (u32) (SegmentedToVirtual(temp_s0[6]) + arg1);
-            temp_s0[7] = (u32) (SegmentedToVirtual(temp_s0[7]) + arg1);
-            temp = (u32) (SegmentedToVirtual(temp_s0[8]) + arg1);
-            var_s3 += 1;
-            var_s2 += 1;
-            temp_s0[8] = temp;
-        } while (var_s3 != var_s4);
+            record = (u32*) (SegmentedToVirtual(*cursor) + segOffset);
+            *cursor = (u32) record;
+            record[1] = (u32) (SegmentedToVirtual(record[1]) + segOffset);
+            record[2] = (u32) (SegmentedToVirtual(record[2]) + segOffset);
+            record[3] = (u32) (SegmentedToVirtual(record[3]) + segOffset);
+            record[4] = (u32) (SegmentedToVirtual(record[4]) + segOffset);
+            record[5] = (u32) (SegmentedToVirtual(record[5]) + segOffset);
+            record[6] = (u32) (SegmentedToVirtual(record[6]) + segOffset);
+            record[7] = (u32) (SegmentedToVirtual(record[7]) + segOffset);
+            stagedTail = (u32) (SegmentedToVirtual(record[8]) + segOffset);
+            index += 1;
+            cursor += 1;
+            record[8] = stagedTail;
+        } while (index != entryCount);
     }
-    return sp[1];
+    return addrSlots[1];
 }
 
 u32* func_800962F0(s32 arg0) {
@@ -440,43 +444,48 @@ u32* func_800962F0(s32 arg0) {
     return sp34;
 }
 
-u32* func_800963CC(s32 arg0, s32 arg1) {
-    s32 pad_a;
-    s32 var_s4;
-    s32 pad_b;
-    u32* sp[2];
-    u32* var_s1;
-    u32* temp_s0;
-    s32 var_s2;
-    u32 temp;
+/* Relocates segmented pointers for asset kinds 2 and 4: two entries for
+ * kind 2, one for kind 4; five pointers per record (entry link plus fields
+ * 1-4). segOffset is the segment bias added after each SegmentedToVirtual.
+ * stagedTail is load-bearing: storing field 4 last preserves the
+ * trailing-jal schedule. */
+u32* func_800963CC(s32 courseKind, s32 segOffset) {
+    s32 framePadTop;
+    s32 entryCount;
+    s32 framePadBottom;
+    u32* addrSlots[2];
+    u32* cursor;
+    u32* record;
+    s32 index;
+    u32 stagedTail;
 
-    switch (arg0) {
+    switch (courseKind) {
         case 2:
-            sp[0] = (u32*) &D_8003578;
-            var_s4 = 2;
+            addrSlots[0] = (u32*) &D_8003578;
+            entryCount = 2;
             break;
         case 4:
-            sp[0] = (u32*) &D_8000D9C;
-            var_s4 = 1;
+            addrSlots[0] = (u32*) &D_8000D9C;
+            entryCount = 1;
             break;
     }
-    sp[1] = (u32*) (SegmentedToVirtual((u32) sp[0]) + arg1);
-    var_s2 = 0;
-    if (var_s4 > 0) {
-        var_s1 = sp[1];
+    addrSlots[1] = (u32*) (SegmentedToVirtual((u32) addrSlots[0]) + segOffset);
+    index = 0;
+    if (entryCount > 0) {
+        cursor = addrSlots[1];
         do {
-            temp_s0 = (u32*) (SegmentedToVirtual(*var_s1) + arg1);
-            *var_s1 = (u32) temp_s0;
-            temp_s0[1] = (u32) (SegmentedToVirtual(temp_s0[1]) + arg1);
-            temp_s0[2] = (u32) (SegmentedToVirtual(temp_s0[2]) + arg1);
-            temp_s0[3] = (u32) (SegmentedToVirtual(temp_s0[3]) + arg1);
-            temp = (u32) (SegmentedToVirtual(temp_s0[4]) + arg1);
-            var_s2 += 1;
-            var_s1 += 1;
-            temp_s0[4] = temp;
-        } while (var_s2 != var_s4);
+            record = (u32*) (SegmentedToVirtual(*cursor) + segOffset);
+            *cursor = (u32) record;
+            record[1] = (u32) (SegmentedToVirtual(record[1]) + segOffset);
+            record[2] = (u32) (SegmentedToVirtual(record[2]) + segOffset);
+            record[3] = (u32) (SegmentedToVirtual(record[3]) + segOffset);
+            stagedTail = (u32) (SegmentedToVirtual(record[4]) + segOffset);
+            index += 1;
+            cursor += 1;
+            record[4] = stagedTail;
+        } while (index != entryCount);
     }
-    return sp[1];
+    return addrSlots[1];
 }
 
 void func_800964C4(void) {

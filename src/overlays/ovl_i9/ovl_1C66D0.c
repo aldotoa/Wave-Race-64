@@ -15,6 +15,9 @@ void func_801EC830(void);
 extern s32 D_i9_802C80DC;
 
 Gfx* func_i9_802C5D24(Gfx* dList) {
+    /* Sunset Bay race frame: pipe-syncs, sets the viewport scissor, builds
+     * the sky/water scene, then runs either the 0x42 results branch or the
+     * attract-mode submenu dispatch. */
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
         if (gGameState == 0x42) {
