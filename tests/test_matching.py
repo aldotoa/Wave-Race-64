@@ -2846,10 +2846,10 @@ class TestCourseLoading(unittest.TestCase):
 
     def test_func_800961B8_matched(self):
         """TDE test for func_800961B8 in code_4F850 (Water craft hull suspension spring stiffness and damping matrix setup)."""
-        if self.is_function_decompiled("func_800961B8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_800961B8 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_800961B8"), "func_800961B8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "code_4F850", "func_800961B8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_800963CC_matched(self):
         """TDE test for func_800963CC in code_4F850 (Course-specific water texture palette and animated surface frame loader)."""
