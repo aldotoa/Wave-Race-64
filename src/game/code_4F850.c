@@ -450,62 +450,44 @@ u32* func_800962F0(s32 arg0) {
     return sp34;
 }
 
-#ifdef NON_MATCHING
-/* Course-specific water texture palette and animated surface frame loader.
-   Diff floor 465 probe-verified (W1): dispatch/branches/frame/homes/saves/
-   loop skeleton all exact; remainder is one allocator pick + cascade:
-   base value in v1 (addu v1, move s1,v1, loop temps t8-led) vs retail t8
-   (addu t8, move s1,t8, loop temps t9-led), plus tail i++ scheduling.
-   Load-bearing: switch (if/else-if emits bne-over, not retail beq-into);
-   store-last loop tail (increments-then-store puts the 5th jal after them);
-   pad_a/pad_b split around count (contiguous pad[2] homes count at 0x3C,
-   retail dead-load reads 0x40); named temp_t8 (chained/hoisted copies
-   coalesce to s1, return-temp keeps v1). Attractor-proven: 10 variants
-   across dispatch/guard/loop/decl/scope/storage/order axes share the
-   identical normalized row set. Next: the t8 lever is unknown; twin
-   func_800961B8 shares the idiom and may reveal it. */
 u32* func_800963CC(s32 arg0, s32 arg1) {
     s32 pad_a;
     s32 var_s4;
     s32 pad_b;
-    u32* sp38;
-    u32* sp34;
+    u32* sp[2];
     u32* var_s1;
     u32* temp_s0;
     s32 var_s2;
-    u32* temp_t8;
+    u32 temp;
 
     switch (arg0) {
         case 2:
-            sp34 = (u32*) &D_8003578;
+            sp[0] = (u32*) &D_8003578;
             var_s4 = 2;
             break;
         case 4:
-            sp34 = (u32*) &D_8000D9C;
+            sp[0] = (u32*) &D_8000D9C;
             var_s4 = 1;
             break;
     }
-    temp_t8 = (u32*) (SegmentedToVirtual((u32) sp34) + arg1);
-    sp38 = temp_t8;
+    sp[1] = (u32*) (SegmentedToVirtual((u32) sp[0]) + arg1);
     var_s2 = 0;
     if (var_s4 > 0) {
-        var_s1 = temp_t8;
+        var_s1 = sp[1];
         do {
             temp_s0 = (u32*) (SegmentedToVirtual(*var_s1) + arg1);
-            *var_s1 = temp_s0;
+            *var_s1 = (u32) temp_s0;
             temp_s0[1] = (u32) (SegmentedToVirtual(temp_s0[1]) + arg1);
             temp_s0[2] = (u32) (SegmentedToVirtual(temp_s0[2]) + arg1);
             temp_s0[3] = (u32) (SegmentedToVirtual(temp_s0[3]) + arg1);
-            temp_s0[4] = (u32) (SegmentedToVirtual(temp_s0[4]) + arg1);
+            temp = (u32) (SegmentedToVirtual(temp_s0[4]) + arg1);
             var_s2 += 1;
             var_s1 += 1;
+            temp_s0[4] = temp;
         } while (var_s2 != var_s4);
     }
-    return sp38;
+    return sp[1];
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_800963CC.s")
-#endif
 
 void func_800964C4(void) {
 }
