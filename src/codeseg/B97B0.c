@@ -1297,110 +1297,68 @@ void func_801FA3C0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FA3C0.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Bresenham line enumerator: fills xs/ys point arrays plus count.
-   Diff floor 2097 probe-verified (TU has 16 pre-existing NON_MATCHING
-   errors in unrelated drafts, so TU-wide build is impossible; probe only).
-   Tried: decl computation-order (neutral), sign if/else (+210, bgtz wrong),
-   sign goto (X-sign exact incl. delay-filled li's, Y lateral at bgtz).
-   Remaining: dx/dy home rotation, ys-ptr s1 vs temp, sll+addu vs folded
-   addiu for arg5/6+s0 (micro-proven fold; non-const s0 needs zero-cost
-   mechanism), Y-sign bgtz. */
 void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32* arg4, s32* arg5, s32* arg6) {
-    s32 var_v1;
-    s32 var_t1;
-    s32 var_v0;
-    s32 var_t0;
-    s32 var_t2;
-    s32 sign;
-    s32 var_t4;
-    s32 err;
-    s32 var_s0;
-    s32* var_a1;
-    s32* var_s1;
+    s32 dx, dy, abs_dx, abs_dy, sx, sy, err, count;
 
-    var_v1 = arg2 - arg0;
-    var_t1 = arg3 - arg1;
-    var_v0 = var_v1;
-    var_t0 = var_t1;
-    if (var_v1 == 0) {
-        var_t2 = 0;
+    abs_dx = arg2 - arg0;
+    abs_dy = arg3 - arg1;
+    dx = abs_dx;
+    dy = abs_dy;
+
+    if (dx == 0) {
+        sx = 0;
     } else {
-        if (var_v1 <= 0) {
-            goto sign_neg_x;
-        }
-        sign = 1;
-        goto sign_join_x;
-    sign_neg_x:;
-        sign = -1;
-    sign_join_x:;
-        var_t2 = sign;
+        if (dx > 0) err = 1; else err = -1;
+        sx = err;
     }
-    if (var_t1 == 0) {
-        var_t4 = 0;
+
+    if (dy == 0) {
+        sy = 0;
     } else {
-        if (var_t1 <= 0) {
-            goto sign_neg_y;
-        }
-        sign = 1;
-        goto sign_join_y;
-    sign_neg_y:;
-        sign = -1;
-    sign_join_y:;
-        var_t4 = sign;
+        if (dy > 0) err = 1; else err = -1;
+        sy = err;
     }
+
     err = 0;
-    if (var_v1 < 0) {
-        var_v0 = -var_v1;
-    }
-    var_v1 = arg0;
-    if (var_t1 < 0) {
-        var_t0 = -var_t1;
-    }
+    if (dx < 0) abs_dx = -dx;
+    dx = arg0;
+    if (dy < 0) abs_dy = -dy;
     *arg5 = arg0;
-    var_t1 = arg1;
-    var_s0 = 1;
+    dy = arg1;
+    count = 1;
     *arg6 = arg1;
-    if (var_v0 >= var_t0) {
+
+    if (abs_dx >= abs_dy) {
         if (arg0 != arg2) {
-            var_a1 = arg5 + var_s0;
-            var_s1 = arg6 + var_s0;
             do {
-                err += var_t0;
-                var_v1 += var_t2;
-                if ((err * 2) >= var_v0) {
-                    err -= var_v0;
-                    var_t1 += var_t4;
+                err += abs_dy;
+                dx += sx;
+                if ((err * 2) >= abs_dx) {
+                    err -= abs_dx;
+                    dy += sy;
                 }
-                *var_a1 = var_v1;
-                *var_s1 = var_t1;
-                var_s0 += 1;
-                var_a1 += 1;
-                var_s1 += 1;
-            } while (var_v1 != arg2);
+                arg5[count] = dx;
+                arg6[count] = dy;
+                count++;
+            } while (dx != arg2);
         }
-    } else if (arg1 != arg3) {
-        var_a1 = arg5 + var_s0;
-        var_s1 = arg6 + var_s0;
-        do {
-            err += var_v0;
-            var_t1 += var_t4;
-            if ((err * 2) >= var_t0) {
-                err -= var_t0;
-                var_v1 += var_t2;
-            }
-            *var_a1 = var_v1;
-            *var_s1 = var_t1;
-            var_s0 += 1;
-            var_a1 += 1;
-            var_s1 += 1;
-        } while (var_t1 != arg3);
+    } else {
+        if (arg1 != arg3) {
+            do {
+                err += abs_dx;
+                dy += sy;
+                if ((err * 2) >= abs_dy) {
+                    err -= abs_dy;
+                    dx += sx;
+                }
+                arg5[count] = dx;
+                arg6[count] = dy;
+                count++;
+            } while (dy != arg3);
+        }
     }
-    *arg4 = var_s0;
+    *arg4 = count;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801FAD68.s")
-#endif
 
 void func_801FAEA8(void) {
 }

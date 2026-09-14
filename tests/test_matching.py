@@ -890,10 +890,7 @@ class TestCodesegUI(unittest.TestCase):
 
     def test_func_801FAD68_matched(self):
         """TDE test for func_801FAD68 in B97B0 (Eeprom save verification and error alert)."""
-        if self.is_function_decompiled("func_801FAD68"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801FAD68 is currently non-matching (in progress)")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
 
     def test_func_801DB8F0_matched(self):
@@ -2028,10 +2025,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i13_802C61E0_matched(self):
         """TDE test for func_i13_802C61E0 in ovl_1CBAF0 (Wooden ramp friction and launch trajectory)."""
-        if self.is_function_decompiled("func_i13_802C61E0"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i13_802C61E0 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i13_802C61E0"), "func_i13_802C61E0 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i13", "ovl_1CBAF0", "func_i13_802C61E0.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i13_802C62EC_matched(self):
         """TDE test for func_i13_802C62EC in ovl_1CBAF0 (Floating barrel collision trigger)."""
