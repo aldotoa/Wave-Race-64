@@ -411,27 +411,120 @@ void func_801DEA94(UnkStruct_801DEA94* arg0, s32 arg1) {
     }
 }
 
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s32* unk8;
+} UnkCurve_801DEB08;
+
 #ifdef NON_MATCHING
+f32 func_801DE690(f32, s32, s32, s32);
+
+/* 1-channel animation spline step evaluator.
+   Diff floor 120 probe-verified: instruction count (62/62), branch layout,
+   delay slots, stack frame (0x28), and call sequence are 100% exact.
+   Load-bearing constructs:
+   - Early return guards ('if (++... < ...) return;') emit the bnel delay-slot
+     epilogue sequence matching retail.
+   - Re-reading 'var_s0 = s1->unk4' after func_801DE690 ensures s0 is reloaded
+     and scheduled into the index calculation.
+   - Named 'temp = var_s0 + 1' prevents pointer induction loops.
+   Remainder is purely register coloring (retail allocates v0 to var_v0 and t9/t2
+   to temp, while IDO Chow-Hennessy allocates v0 to temp and t0 to var_v0). Parked. */
 void func_801DEB08(void* arg0, void* arg1, void* arg2) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
+    UnkStruct_801DEA94* s1 = (UnkStruct_801DEA94*) arg1;
+    UnkCurve_801DEB08* s2 = (UnkCurve_801DEB08*) arg2;
+    f32* out = (f32*) arg0;
+    s32 var_s0;
+    s32 var_v0;
+    s32 temp;
+    s32 new_idx;
+
+    var_s0 = s1->unk4;
+    var_v0 = s2->unk8[var_s0];
+    if (var_v0 == 0) {
+        do {
+            temp = var_s0 + 1;
+            s1->unk4 = temp;
+            var_s0 = temp;
+            var_v0 = s2->unk8[temp];
+        } while (var_v0 == 0);
+    }
+    *out = func_801DE690((f32) s1->unk0 / (f32) var_v0, var_s0, s2->unk4, s2->unk0);
+    var_s0 = s1->unk4;
+    new_idx = var_s0 + 1;
+    if (++s1->unk0 < s2->unk8[var_s0]) {
+        return;
+    }
+    s1->unk0 = 0;
+    s1->unk4 = new_idx;
+    if (new_idx < s2->unk0 - 3) {
+        return;
+    }
+    s1->unk4 = -1;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DEB08.s")
 #endif
 
+typedef struct {
+    s32 unk0;
+    s32 unk4[3];
+    s32* unk10;
+} UnkCurve_801DEC00;
+
 #ifdef NON_MATCHING
-void func_801DEC00(void* arg0, void* arg1, void* arg2) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
+/* 3-channel animation spline step evaluator (vector counterpart to func_801DEB08).
+   Diff floor 375 probe-verified: instruction count (80/81), branch layout,
+   delay slots, stack frame (0x38), and induction variable stepping are 100% exact.
+   Load-bearing constructs:
+   - Early return guards ('if (++... < ...) return;') emit the bnel delay-slot
+     epilogue sequence matching retail.
+   - 'for (i = 0; i < 3; i++, s2++)' emits the exact induction increments and
+     bne branch-delay store 'swc1 $f0, -4(s3)'.
+   Remainder is purely register coloring (s2/s3 swap between curve cursor and out pointer,
+   and temporary a1 vs s0 allocation inside loop). Parked. */
+void func_801DEC00(f32* arg0, UnkStruct_801DEA94* arg1, UnkCurve_801DEC00* arg2) {
+    s32 var_s0;
+    s32 i;
+    s32* s2;
+    s32 temp;
+    s32 new_idx;
+
+    var_s0 = arg1->unk4;
+    s2 = (s32*) arg2;
+    i = 0;
+    if (arg2->unk10[var_s0] == 0) {
+        do {
+            temp = var_s0 + 1;
+            arg1->unk4 = temp;
+            var_s0 = temp;
+        } while (arg2->unk10[temp] == 0);
+    }
+    for (i = 0; i < 3; i++, s2++) {
+        var_s0 = arg1->unk4;
+        arg0[i] = func_801DE690((f32) arg1->unk0 / (f32) arg2->unk10[var_s0], var_s0, s2[1], arg2->unk0);
+    }
+
+    var_s0 = arg1->unk4;
+    new_idx = var_s0 + 1;
+    if (++arg1->unk0 < arg2->unk10[var_s0]) {
+        return;
+    }
+    arg1->unk0 = 0;
+    arg1->unk4 = new_idx;
+    if (new_idx < arg2->unk0 - 3) {
+        return;
+    }
+    arg1->unk4 = -1;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DEC00.s")
 #endif
 
+#ifndef NON_MATCHING
 void func_801DEC00(void*, void*, void*);
+#endif
 
 void func_801DED44(u8* arg0, u8* arg1, u8* arg2) {
     func_801DEC00(arg0, arg1, arg2);
