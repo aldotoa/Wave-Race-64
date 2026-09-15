@@ -1,7 +1,7 @@
 #include "global.h"
 #include "PR/ucode.h"
 
-extern void game_dma_copy(uintptr_t devAddr, void* vAddr, u32 nbytes);
+extern void game_dma_copy(void* devAddr, void* vAddr, u32 nbytes);
 
 void func_80046850(void) {
     s32 prevValue = D_8015194C;
@@ -102,21 +102,25 @@ void SysMain_GfxInitBuffers(void) {
 // These need to be separate symbols for this function to compile
 // D_801DAFA0 & D_801DAFA0_2
 // D_1008290 & D_1008290_2
-#ifndef NON_MATCHING
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_main/SysMain_Thread.s")
-#else
-/* Linker-script absolute symbols (undefined_syms_auto.ld); externs only. */
+void unk_game_load(void);
+void GameLoad_LoadOverlay(void);
+void func_80097E68(void);
+void GameLoad_LoadCodeseg(void);
 extern Mtx D_8011F820;
 extern u8 D_80228E10[];
 extern u8 D_802A0000[];
 extern u8 D_8038F800[];
 extern u8 D_80400000[];
 extern u8 D_1008290[];
+extern u8 D_1008290_2[];
 extern u8 D_106FB70[];
 extern u8 D_FE320[];
+extern u8 D_FE320_2[];
 /* Bare addresses only (functions/data defined in other TUs or asm). */
 extern u8 func_801DAFA0[];
+extern u8 D_801DAFA0_2[];
 extern u8 func_i3_802C5800[];
+extern u8 gAudioHeap[];
 extern u8 gAudioGlobalsEndMarker[];
 extern s32 D_80151958;
 extern s32 D_8015195C;
@@ -128,6 +132,7 @@ extern s32 D_80151974;
 extern s32 D_80151978;
 extern s32 D_8015197C;
 extern s32 D_80151980;
+extern s32 D_80151984;
 extern s32 D_80151988;
 extern s32 D_8015198C;
 extern s32 D_80151990;
@@ -156,9 +161,10 @@ extern OSViMode D_800E89A0;
 extern OSViMode D_800E8E00;
 extern OSViMode D_800E8770;
 extern OSViMode D_800E8BD0;
+
 void SysMain_Thread(void* entry) {
     s32 pad;
-    MtxF mtx; // Guess
+    MtxF mtx;
     u32* temp_v1;
     u32* temp_v0;
 
@@ -166,20 +172,20 @@ void SysMain_Thread(void* entry) {
     D_80151968 = osVirtualToPhysical(func_801DAFA0);
 
     D_8015196C = D_80151968;
-    D_80151970 = D_8015196C + (D_80228E10 - func_801DAFA0);
+    D_80151970 = D_8015196C + (D_80228E10 - D_801DAFA0_2);
 
     D_80151974 = osVirtualToPhysical(D_802A0000);
     D_80151978 = osVirtualToPhysical(func_i3_802C5800);
     D_8015197C = osVirtualToPhysical(D_8038F800);
     D_80151980 = osVirtualToPhysical(D_80400000);
-    D_801519A4 = osVirtualToPhysical(gAudioGlobalsEndMarker + 0x18);
-    D_801519A8 = osVirtualToPhysical(func_801DAFA0);
+    D_801519A4 = osVirtualToPhysical(gAudioHeap);
+    D_801519A8 = osVirtualToPhysical(gAudioGlobalsEndMarker + 0x18);
 
     D_80151984 = ALIGN16(D_80151970);
-    D_80151988 = D_80151984 + ALIGN16((u32) D_1008290 - (u32) D_1000000);
+    D_80151988 = D_80151984 + ALIGN16(D_1008290 - (u8*) D_1000000);
 
     D_8015198C = D_80151988;
-    D_80151990 = D_8015198C + ALIGN16((u32) D_106FB70 - (u32) D_1008290);
+    D_80151990 = D_8015198C + ALIGN16(D_106FB70 - D_1008290_2);
 
     D_801519CC = osVirtualToPhysical((u8*) 0x802C5800);
     D_801519D0 = D_801519CC + 0x11000;
@@ -193,23 +199,21 @@ void SysMain_Thread(void* entry) {
     D_801519B4 = osVirtualToPhysical((u8*) 0x80316800);
     D_801519B8 = D_801519B4 + 0x79000;
 
-    D_80151994 = osVirtualToPhysical(D_8011EDE0);
-    D_80151998 = osVirtualToPhysical(D_8011F8E0);
+    D_80151994 = osVirtualToPhysical(&D_8011EDE0);
+    D_80151998 = osVirtualToPhysical(&D_8011F8E0);
 
     D_8015199C = osVirtualToPhysical(D_8011F8E8);
-    D_801519A0 = osVirtualToPhysical(D_8011F8E8 + 2);
+    D_801519A0 = osVirtualToPhysical(&gGfxPool);
 
     D_801519AC = D_8015197C;
     D_801519B0 = D_80151980;
 
-    D_801519D4 =
-        (u32) (osVirtualToPhysical((void*) 0x8029A200) -
-               (D_80151970 + ALIGN16((u32) D_1008290 - (u32) D_1000000) + ALIGN16((u32) D_106FB70 - (u32) D_1008290)));
+    D_801519D4 = osVirtualToPhysical((void*) 0x8029A200) - D_80151970 - ALIGN16(D_1008290 - (u8*) D_1000000) - ALIGN16(D_106FB70 - D_1008290_2);
 
     GameLoad_LoadCodeseg();
 
     game_dma_copy(codeseg_ROM_END, (void*) D_80151984, ALIGN16(D_FE320 - codeseg_ROM_END));
-    game_dma_copy(D_FE320, D_8015198C, ALIGN16(D_165C00 - D_FE320));
+    game_dma_copy(D_FE320_2, (void*) D_8015198C, ALIGN16(D_165C00 - D_FE320_2));
 
     D_8011F8E0 = 0;
 
@@ -241,7 +245,7 @@ void SysMain_Thread(void* entry) {
 
     for (gFrameCounter = 0; /* Empty? */; gFrameCounter++) {
         osContStartReadData(&D_801540D0);
-        osRecvMesg(&D_80154100, D_80151958, OS_MESG_BLOCK);
+        osRecvMesg(&D_80154100, (OSMesg*) &D_80151958, OS_MESG_BLOCK);
         Main_UpdateAudio();
         SysMain_GfxInitBuffers();
         Game_UpdateFrame();
@@ -252,12 +256,12 @@ void SysMain_Thread(void* entry) {
 
         SysMain_GfxFullSync();
 
-        osRecvMesg(&D_80154118, D_8015195C, OS_MESG_BLOCK);
+        osRecvMesg(&D_80154118, (OSMesg*) &D_8015195C, OS_MESG_BLOCK);
 
         while (osDpGetStatus() & 0x170) {}
 
         if ((gPrevGameState == 6) && (D_801CE63C != 0)) {
-            game_dma_copy((u8*) D_FE320, (u8*) D_8015198C, ALIGN16(D_165C00 - D_FE320));
+            game_dma_copy(D_FE320, (void*) D_8015198C, ALIGN16(D_165C00 - D_FE320_2));
         }
 
         if (D_801CE63C != 0) {
@@ -280,10 +284,6 @@ void SysMain_Thread(void* entry) {
         }
 
         SysMain_SendGfxTaskSetMesg(sGfxTask);
-
-        //! osViSetMode arrays are likely just one array, so this is likely fake.
-        //! osViSetMode arrays are likely just one array, so this is likely fake.
-        //! osViSetMode arrays are likely just one array, so this is likely fake.
 
         if (D_800DAB1C == 3) {
             if ((gGameState == GAME_STATE_BOOT_UP) && (D_801CE63C != 0)) {
@@ -310,4 +310,3 @@ void SysMain_Thread(void* entry) {
         }
     }
 }
-#endif
