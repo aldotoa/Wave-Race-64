@@ -15,8 +15,99 @@ void func_1B1FB0_802C5800(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_1B1FB0_802C5BA4(void) {
-    /* Flight mode terrain height lookup */
+/* Flight mode terrain height lookup & boot/fade-in display list builder
+ * PARKED at floor diff (6 instructions):
+ * - 142 of 148 instructions match 100% byte-for-byte (all display lists, scissor,
+ *   prim color, branch logic, function calls, stack frame, and epilogue match).
+ * - Remaining gap: at 0x1E0, subu t9, t8, v1 vs retail subu t8, t8, v1.
+ *   Writing as `v1 * 255` strength-reduces to `sll reg, v1, 8` + `subu reg, reg, v1`
+ *   in isolation, but within this function uopt hoists the literal 255 to $a0 for CSE
+ *   with the clamp and equality checks, emitting `multu v1, a0`. Writing as
+ *   `((v1 << 8) - v1)` prevents the hoist but IDO allocates t9 for the subtract result.
+ * - Load-bearing constructs:
+ *   1) `D_1B1FB0_802C76F0 = ((v1 << 8) - v1) / 10; if ((u32)D_1B1FB0_802C76F0 >= 256) D_1B1FB0_802C76F0 = 255;`
+ *      retains the branch delay slot store `sw v0, 0(a0)` and subsequent clamp store.
+ *   2) Direct store `D_1B1FB0_802C76F4 = v1 + 1;` executes in delay slot of `bne v0, at`.
+ *   3) Re-check `D_1B1FB0_802C76F4 >= 14` triggers reload `lw t2, 0(a1)` after `osViBlack`.
+ */
+Gfx* func_1B1FB0_802C73B0(Gfx* gdl);
+Gfx* func_1B1FB0_802C62E4(Gfx* gdl);
+Gfx* func_1B1FB0_802C6970(Gfx* gdl);
+Gfx* func_1B1FB0_802C6C1C(Gfx* gdl);
+Gfx* func_1B1FB0_802C6E40(Gfx* gdl, s32 arg1, s32 arg2);
+void* func_1B1FB0_802C7578(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+void func_1B1FB0_802C5DF4(s32* arg0);
+void func_801EB180(void);
+
+extern s32 D_801CE63C;
+extern s32 D_800DAB2C;
+extern Gfx D_8066180[];
+extern Gfx D_80661F8[];
+extern Gfx D_8066A80[];
+extern Gfx D_80671B8[];
+extern s32 D_802C7710;
+extern s32 D_1B1FB0_802C76A8;
+extern s32 D_1B1FB0_802C76B4[];
+extern s32 D_1B1FB0_802C76A4;
+extern s32 D_1B1FB0_802C76AC;
+extern s32 D_1B1FB0_802C76F0;
+extern s32 D_1B1FB0_802C76F4;
+
+Gfx* func_1B1FB0_802C5BA4(Gfx* gdl) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+        if (gGameState == GAME_STATE_BOOT_UP) {
+            return func_1B1FB0_802C73B0(gdl);
+        }
+    }
+
+    D_800DAB2C = 0;
+    gSPDisplayList(gdl++, D_8066180);
+    gDPPipeSync(gdl++);
+    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, 0, 0, 639, 479);
+    gSPDisplayList(gdl++, D_80661F8);
+
+    gdl = func_1B1FB0_802C62E4(gdl);
+
+    gSPDisplayList(gdl++, D_8066A80);
+    gSPDisplayList(gdl++, D_80671B8);
+
+    gdl = func_1B1FB0_802C6970(gdl);
+    gdl = func_1B1FB0_802C6C1C(gdl);
+
+    gDPSetPrimColor(gdl++, 0, 0, 255, D_802C7710, 0, 255);
+
+    gdl = func_1B1FB0_802C6E40(gdl, D_1B1FB0_802C76B4[D_1B1FB0_802C76A8], 0x86);
+
+    if (D_1B1FB0_802C76A4 == 2) {
+        gdl = func_1B1FB0_802C6E40(gdl, D_1B1FB0_802C76B4[D_1B1FB0_802C76AC], 0x18A);
+    }
+
+    if (gGameState == GAME_STATE_6) {
+        gdl = func_1B1FB0_802C7578(gdl, 0x40, 0x32, 0x240, 0x1B0, D_1B1FB0_802C76F0);
+    }
+
+    if (gGameState == GAME_STATE_BOOT_UP) {
+        func_1B1FB0_802C5DF4(&D_1B1FB0_802C76F0);
+        return gdl;
+    }
+
+    {
+        s32 v1 = D_1B1FB0_802C76F4;
+        D_1B1FB0_802C76F0 = ((v1 << 8) - v1) / 10;
+        if ((u32) D_1B1FB0_802C76F0 >= 256) {
+            D_1B1FB0_802C76F0 = 255;
+        }
+        D_1B1FB0_802C76F4 = v1 + 1;
+        if (D_1B1FB0_802C76F0 == 255) {
+            osViBlack(1);
+        }
+        if (D_1B1FB0_802C76F4 >= 14) {
+            func_801EB180();
+        }
+    }
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C5BA4.s")
