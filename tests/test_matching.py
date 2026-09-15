@@ -2164,10 +2164,10 @@ class TestSysLayer(unittest.TestCase):
 
     def test_SysMain_Thread_matched(self):
         """TDE test for SysMain_Thread in sys_main (Master game thread, RCP display list dispatch & VI mode setup)."""
-        if self.is_function_decompiled("SysMain_Thread"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("SysMain_Thread is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("SysMain_Thread"), "SysMain_Thread should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "sys", "sys_main", "SysMain_Thread.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_800498A4_matched(self):
         """TDE test for func_800498A4 in sys_utils (3D rotation matrix generation about arbitrary axis with sin/cos lookup)."""
