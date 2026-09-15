@@ -131,134 +131,130 @@ void stub_func_i0_802C5800() {
 }
 
 #ifdef NON_MATCHING
+/* Overlay 0 Display list and training mode state machine builder
+ * PARKED at floor diff (score 1580):
+ * - 370 of 370 instructions structurally match (prologue, delay slots, Game_BuildRaceScene,
+ *   both func_801E946C calls, switch jump tables, Case 1 gDPFillRectangle loop,
+ *   D_i0_802C6BE4 delay-slot store, D_i0_802C6BC8 mode switch, beqzl branch-likely
+ *   and audio trigger, and function epilogue match byte-for-byte).
+ * - Remaining gap: DAG scheduler instruction ordering for Case 0 Gfx packet stores.
+ * - Load-bearing constructs:
+ *   1) Declaration order `Gfx* temp_v0; s32 base; s32 x; s32 a1; s32 t3; s32 t7;` forces `base`
+ *      to spill to 72($sp) / 0x48($sp) in the jal delay slot.
+ *   2) Case 1 loop uses `gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231, (x + D_i0_802C6BD0 + 14) & 0x3FF);`
+ *      with `do { ... } while (a1 < D_802C6F0C);`.
+ *   3) `if (++D_i0_802C6BE4 >= 30) D_i0_802C6BE4 = 0;` retains non-likely delay slot store.
+ *   4) Tail logic uses `if (++D_802C6F14 >= 600) func_i0_802C6A1C(7);` to emit `beqzl`.
+ */
 Gfx* func_i0_802C5A7C(Gfx* arg0) {
-    Gfx* s0 = arg0;
-    Gfx* g;
+    Gfx* temp_v0;
     s32 base;
-    s32 a1;
     s32 x;
-    s32 cue;
+    s32 a1;
     s32 t3;
-    s32 f14;
+    s32 t7;
 
-    if (D_801CE63C != 0) {
+    if (D_801CE63C) {
         D_801CE63C = 0;
         D_802C6F08 = 1;
         if (D_801CB280 & 1) {
-            D_802C6F08 = 2;
+            D_802C6F08++;
             D_i0_802C6BD8 = 1;
         }
         if (D_801CB280 & 2) {
-            D_802C6F08 += 1;
+            D_802C6F08++;
             D_i0_802C6BDC = 1;
         }
         if (D_801CB280 & 8) {
             D_i0_802C6BC0 = 1;
         }
     }
-    s0 = func_8009328C(s0);
+
+    arg0 = Game_BuildRaceScene(arg0);
+
     switch (D_i0_802C6BE0) {
         case 0:
-            g = s0;
-            g->words.w0 = 0x06000000;
-            g->words.w1 = (u32) (uintptr_t) D_805A6F8;
-            g = func_801E946C(s0 + 1, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-            g = func_801E946C(g, 0, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            gSPDisplayList(arg0++, D_805A6F8);
+            arg0 = func_801E946C(arg0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            arg0 = func_801E946C(arg0, 0, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
             if (D_i0_802C6BEC == 0) {
                 base = 0xA6;
             } else {
                 base = 0x8C;
             }
-            g = func_801E3EE0(g, 1, 0x58, 0x5F, base + 0x14, 2);
-            ((DLChunk*) g)->unkC = 0x07080200;
-            ((DLChunk*) g)->unk10 = 0xE6000000;
-            ((DLChunk*) g)->unk0 = 0xFD700000;
-            ((DLChunk*) g)->unk20 = 0xE7000000;
-            ((DLChunk*) g)->unk18 = 0xF3000000;
-            ((DLChunk*) g)->unk8 = 0xF5700000;
-            ((DLChunk*) g)->unk4 = (s32) (uintptr_t) &D_803D610;
-            ((DLChunk*) g)->unk1C = 0x072FF040;
-            ((DLChunk*) g)->unk28 = 0xF5684000;
-            ((DLChunk*) g)->unk2C = 0x80200;
-            ((DLChunk*) g)->unk30 = 0xF2000000;
-            ((DLChunk*) g)->unk34 = 0x3FC014;
-            ((DLChunk*) g)->unk24 = 0;
-            ((DLChunk*) g)->unk14 = 0;
-            ((DLChunk*) g)->unk48 = 0xB2000000;
-            ((DLChunk*) g)->unk40 = 0xB3000000;
-            ((DLChunk*) g)->unk3C = (s32) ((((base + 0x2C) * 4) & 0xFFF) | 0x80000);
-            ((DLChunk*) g)->unk4C = 0x04000400;
-            ((DLChunk*) g)->unk38 = (s32) ((((base + 0x32) * 4) & 0xFFF) | 0xE4480000);
-            ((DLChunk*) g)->unk44 = 0;
-            s0 = (Gfx*) ((DLChunk*) g + 1);
+            temp_v0 = func_801E3EE0(arg0, 1, 0x58, 0x5F, base + 0x14, 2);
+            {
+                Gfx* gdl = temp_v0;
+                { Gfx* _g = gdl++; _g->words.w0 = 0xFD700000; _g->words.w1 = (u32) (uintptr_t) &D_803D610; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xE6000000; _g->words.w1 = 0; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xF3000000; _g->words.w1 = 0x072FF040; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xE7000000; _g->words.w1 = 0; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xF5684000; _g->words.w1 = 0x80200; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xF2000000; _g->words.w1 = 0x3FC014; }
+                { Gfx* _g = gdl++; _g->words.w0 = ((((base + 0x32) << 2) & 0xFFF) | 0xE4480000); _g->words.w1 = ((((base + 0x2C) << 2) & 0xFFF) | 0x80000); }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xB3000000; _g->words.w1 = 0; }
+                { Gfx* _g = gdl++; _g->words.w0 = 0xB2000000; _g->words.w1 = 0x04000400; }
+            }
+            arg0 = (Gfx*) ((DLChunk*) temp_v0 + 1);
             if ((D_i0_802C6BEC == 0) && (D_i0_802C6BE8 == 0x14)) {
                 if ((D_i0_802C6BE4 % 30) < 0x14) {
-                    s0 = func_801E3EE0(
-                        func_801E946C(s0, 7, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), 1,
+                    arg0 = func_801E3EE0(
+                        func_801E946C(arg0, 7, 0xFF, 0xFF, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), 1,
                         0x56, 0x5E, 0xA6, 2);
                 }
-                t3 = D_i0_802C6BE4 + 1;
-                D_i0_802C6BE4 = t3;
-                if (t3 >= 0x1E) {
+                if (++D_i0_802C6BE4 >= 30) {
                     D_i0_802C6BE4 = 0;
                 }
             }
-            s0->words.w0 = 0x06000000;
-            s0->words.w1 = (u32) (uintptr_t) D_106F168;
-            s0 = s0 + 1;
+            gSPDisplayList(arg0++, D_106F168);
             break;
         case 1:
-            s0 = func_i0_802C6044(s0);
-            s0->words.w0 = 0x06000000;
-            s0->words.w1 = (u32) (uintptr_t) D_106F168;
-            s0 = s0 + 1;
+            arg0 = func_i0_802C6044(arg0);
+            gSPDisplayList(arg0++, D_106F168);
             a1 = 0;
             x = 0;
             if (D_802C6F0C > 0) {
                 do {
-                    g = s0;
-                    a1 += 1;
-                    g->words.w0 = (s32) (((u32) (((x + D_i0_802C6BD0 + 0xE) & 0x3FF) * 4)) | 0xF639C000);
-                    s0 = s0 + 1;
-                    g->words.w1 = (s32) (((u32) ((((x + D_i0_802C6BD0) - 3) & 0x3FF) * 4)) | 0x164000);
+                    gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231, (x + D_i0_802C6BD0 + 14) & 0x3FF);
                     x += 0x14;
+                    a1 += 1;
                 } while (a1 < D_802C6F0C);
             }
             break;
     }
+
     if (D_i0_802C6BEC != 0) {
-        s0 = func_i0_802C6AE4(
-            func_801E946C(s0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF));
+        arg0 = func_i0_802C6AE4(
+            func_801E946C(arg0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF));
     }
-    cue = D_i0_802C6BC8 + 1;
+
     if (D_i0_802C6BC8 < 0x14) {
-        D_i0_802C6BC8 = cue;
-        if (cue == 0x14) {
-            gRiderGameModes = AI_MODE;
+        t7 = D_i0_802C6BC8 + 1;
+        D_i0_802C6BC8 = t7;
+        if (t7 == 0x14) {
+            gRiderGameModes = 2;
         }
     }
+
     switch (D_i0_802C6BE0) {
         case 0:
             if (D_i0_802C6BE8 < 0x14) {
-                D_i0_802C6BE8 += 1;
+                D_i0_802C6BE8++;
             }
             if ((D_801CE65A->unk0 & 0xB000) && (D_i0_802C6BE8 == 0x14)) {
                 D_i0_802C6BE0 = 1;
                 D_802C6F14 = 0;
                 AudioGeneral_PlaySound(0x11, 0);
-            } else {
-                f14 = D_802C6F14 + 1;
-                D_802C6F14 = f14;
-                if (f14 >= 0x258) {
-                    func_i0_802C6A1C(7);
-                }
+            } else if (++D_802C6F14 >= 600) {
+                func_i0_802C6A1C(7);
             }
             break;
         case 1:
             func_i0_802C63AC();
             break;
     }
-    return s0;
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C5A7C.s")
