@@ -492,22 +492,8 @@ s32 func_i13_802C6E48(void) {
     return 0;
 }
 
-#ifdef NON_MATCHING
-/* Save-slot menu handler: early-returns 0 while 8D80 is clear (branch-delay
-   stack flag store); else zeroes 8D80/8D84 and either rebuilds the mode
-   defaults (8D54 == 0 arm: BDB8 + D_801CB280 mask bits select 800C3010 cue
-   3/1/0 and 3034/3044 for bit 0x20) or records Save_PfsDeleteFile status.
-   Tail cues 800C3E6C(2) unless both arms left the flag clear; returns 0.
-   Diff floor 26 probe-verified (16 ordered rows, 84 vs 85 insn): frame
-   0x20 + ra/home slots exact, all 8 jals with correct args, branch layout
-   exact. Remainder is pure t-register rotation + one lui-v1/addiu vs
-   lui-at row. Dead axes (13 variants, all neutral): decl order (6 orders),
-   init-vs-assign, block scope, volatile, extra temp, operand commutation,
-   array-homed flag. Load-bearing: early-return entry shape, s8 masked
-   temp (sll/sra sign-extend shape from the stub's lb load). */
 s32 func_i13_802C6F0C(void) {
     s32 sp1C = 0;
-    s32 temp_v0;
     s8 temp;
 
     if (D_i13_802C8D80 == 0) {
@@ -517,8 +503,8 @@ s32 func_i13_802C6F0C(void) {
     D_i13_802C8D84 = 0;
     if (D_i13_802C8D54 == 0) {
         func_8007BDB8();
-        temp = D_801CB280 & 0xC0;
         sp1C = 1;
+        temp = D_801CB280 & 0xC0;
         D_801CE640 = 0;
         if (temp & 0x40) {
             D_800DA9EC[0] = 1;
@@ -538,9 +524,7 @@ s32 func_i13_802C6F0C(void) {
             func_800C3034();
         }
     } else {
-        temp_v0 = Save_PfsDeleteFile();
-        D_i13_802C8D74 = temp_v0;
-        if (temp_v0 == 0) {
+        if ((D_i13_802C8D74 = Save_PfsDeleteFile()) == 0) {
             sp1C = 1;
         }
         D_801CE640 = 0;
@@ -550,9 +534,6 @@ s32 func_i13_802C6F0C(void) {
     }
     return 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6F0C.s")
-#endif
 
 void func_i13_802C7060(void) {
     switch (D_i13_802C8D78) {
