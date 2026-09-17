@@ -9,13 +9,51 @@ Gfx* func_i8_802C5800(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C5800.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i8_802C5D3C(void) {
-    /* Stunt jump ramp trajectory and height evaluator */
+extern s16 D_80228A16;
+extern s32 D_800DAB2C;
+extern s32 D_7000000;
+extern s32 D_2000A40;
+extern s32 D_106F550;
+extern s32 D_8062290;
+Gfx* Game_BuildRaceScene(Gfx*);
+Gfx* func_i8_802C63E4(Gfx*);
+void func_i8_802C5EB8(Gfx*);
+void func_8007C31C(void);
+void func_801EC304(void);
+
+Gfx* func_i8_802C5D3C(Gfx* glistp) {
+    if (D_801CE63C != 0) {
+        D_801CE63C = 0;
+        if (gGameState == 0x3E) {
+            return Gfx_ClearFrameBuffers(glistp);
+        }
+    }
+
+    D_800DAB2C = 0;
+    gDPPipeSync(glistp++);
+    gDPSetScissorFrac(glistp++, G_SC_NON_INTERLACE, 0x20, 0x50, 0x4DC, 0x36C);
+    gSPMatrix(glistp++, &D_7000000, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPMatrix(glistp++, &D_2000A40, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, &D_106F550);
+
+    glistp = Game_BuildRaceScene(glistp);
+
+    gDPPipeSync(glistp++);
+    gDPSetScissorFrac(glistp++, G_SC_NON_INTERLACE, 0x20, 0x50, 0x4DC, 0x36C);
+
+    glistp = func_i8_802C63E4(glistp);
+
+    gSPDisplayList(glistp++, &D_8062290);
+
+    if (gGameState == 0x3E) {
+        func_i8_802C5EB8(glistp);
+    } else if (D_80228A16 == 1) {
+        func_8007C31C();
+        func_801EC304();
+    }
+
+    return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C5D3C.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i8_802C5EB8(void) {

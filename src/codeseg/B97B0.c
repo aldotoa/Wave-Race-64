@@ -9,36 +9,19 @@ extern s32 D_800DA9F8;
 extern s32 D_800DA9FC;
 extern s32 D_800DAA08;
 extern s32 D_801CB334;
-extern s16 D_800EAC44[];
+extern s16 D_800EAC44[][4];
 extern s16 D_800DA9AC;
 extern s32 D_801C293C;
 extern s32 D_801C2C70;
 s32 func_8009684C(s32, s16, s16);
 void func_8004A208(void);
 
-#ifdef NON_MATCHING
 void func_801EB180(void) {
-    /* No-Controller-Pak boot transition to TITLE_SCREEN. Retail stub is
-       0x374 bytes; the previous empty draft left pak-less boots stuck in
-       state 0 (black screen) forever. The D_800DAB60 store sits in a
-       non-likely branch delay slot in the stub (executes on both paths);
-       spelled here as straight-line code before the if. */
-    s32 unusedFrameKeeper; /* frame-keeping: unused in C, but each named auto reserves a stack home */
+    s32 pad[2];
     s32 playerStartParam;
     s16 rivalStartParam;
-    s32 coursePairIdx;
-    s32 attractIdx;
-    s32 clampedCourse;
-    s32 riderCount;
-    s32* attractIdxPtr;
-    s32* pairIdxPtr;
-    s32* riderCountPtr;
-    u8* pairRowBytes;
-    UnkStruct_800D96A4* rivalSpawn;
-    UnkStruct_800D96A4* playerSpawn;
-    UnkStruct_80192690* riderCursor;
-    UnkStruct_80192690* ridersEnd;
-    UnkStruct_800DB568* courseInfo;
+    s32 i;
+    s32 course;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -50,9 +33,8 @@ void func_801EB180(void) {
     D_800DAB1C = 0;
     D_800D461C = 3;
     gGameModes = GMODE_TIME_TRIALS;
-    riderCountPtr = &gRiders;
     gPlayers = ONE_PLAYER;
-    *riderCountPtr = 2;
+    gRiders = 2;
     D_800D49B0 = 0x14;
     gBuoyMisses = 5;
     D_801CE728[0] = 3;
@@ -72,57 +54,39 @@ void func_801EB180(void) {
         D_800DAB60 = 0;
     }
     D_800DAB64 = 0;
-    attractIdxPtr = &D_800DA9F8;
     D_800DAA08 = 0;
-    attractIdx = *attractIdxPtr + 1;
-    *attractIdxPtr = attractIdx;
-    if (attractIdx >= 3) {
-        *attractIdxPtr = 0;
+    if (++D_800DA9F8 >= 3) {
+        D_800DA9F8 = 0;
     }
-    pairIdxPtr = &D_800DA9FC;
-    coursePairIdx = *pairIdxPtr + 1;
-    *pairIdxPtr = coursePairIdx;
-    if (coursePairIdx >= 4) {
-        *pairIdxPtr = 0;
-        coursePairIdx = 0;
+    if (++D_800DA9FC >= 4) {
+        D_800DA9FC = 0;
     }
-    riderCount = *riderCountPtr;
-    pairRowBytes = (u8*) D_800EAC44 + coursePairIdx * 8;
-    rivalStartParam = *(s16*) (pairRowBytes + 2);
-    playerStartParam = *(s16*) pairRowBytes;
-    if (riderCount > 0) {
-        rivalSpawn = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + rivalStartParam * 0xC);
-        riderCursor = D_80192690;
-        ridersEnd = &D_80192690[riderCount];
-        do {
-            riderCursor = (UnkStruct_80192690*) ((u8*) riderCursor + 0x1718);
-            riderCursor[-1].unkB68 = rivalStartParam;
-            riderCursor[-1].unkB6C = rivalSpawn->unk0;
-            riderCursor[-1].unkB70 = rivalSpawn->unk4;
-            riderCursor[-1].unkB74 = rivalSpawn->unk8;
-        } while ((u32) riderCursor < (u32) ridersEnd);
+    playerStartParam = D_800EAC44[D_800DA9FC][0];
+    rivalStartParam = D_800EAC44[D_800DA9FC][1];
+    for (i = 0; i < gRiders; i++) {
+        D_80192690[i].unkB68 = rivalStartParam;
+        D_80192690[i].unkB6C = D_800D96A4[gCourseID][rivalStartParam].unk0;
+        D_80192690[i].unkB70 = D_800D96A4[gCourseID][rivalStartParam].unk4;
+        D_80192690[i].unkB74 = D_800D96A4[gCourseID][rivalStartParam].unk8;
     }
-    riderCursor = &D_80192690[D_800D48DC];
-    riderCursor->unkB68 = playerStartParam;
-    playerSpawn = (UnkStruct_800D96A4*) ((u8*) D_800D96A4 + gCourseID * 0x30 + playerStartParam * 0xC);
+    D_80192690[D_800D48DC].unkB68 = playerStartParam;
+    D_80192690[D_800D48DC].unkB6C = D_800D96A4[gCourseID][playerStartParam].unk0;
     D_801CE6F4[1] = 0;
-    riderCursor->unkB6C = playerSpawn->unk0;
-    riderCursor->unkB70 = playerSpawn->unk4;
-    riderCursor->unkB74 = playerSpawn->unk8;
+    D_80192690[D_800D48DC].unkB70 = D_800D96A4[gCourseID][playerStartParam].unk4;
+    D_80192690[D_800D48DC].unkB74 = D_800D96A4[gCourseID][playerStartParam].unk8;
     D_801CE6F4[0] = D_801CE6F4[1];
-    gRiderGameModes = UNACTIVE_MODE;
+    gRiderGameModes = 1;
     D_801CE64C = 0;
-    gGameModeState = GMODE_STATE_STARTED;
+    gGameModeState = 3;
     func_80096960(1, playerStartParam, rivalStartParam, 0, 0);
-    clampedCourse = gCourseID;
-    if (clampedCourse < DOLPHIN_PARK) {
-        clampedCourse = DOLPHIN_PARK;
+    course = gCourseID;
+    if (course < 0) {
+        course = 0;
     }
-    if (clampedCourse >= RIDER_SELECTION) {
-        clampedCourse = SOUTHERN_ISLAND;
+    if (course >= 9) {
+        course = 8;
     }
-    courseInfo = &D_800DB568[clampedCourse];
-    func_8009684C(0x08060000, courseInfo->unk0, courseInfo->unk2);
+    func_8009684C(0x08060000, D_800DB568[course].unk0, D_800DB568[course].unk2);
     func_8004A208();
     FadeTransition_SetProps(0, 0, 0);
     func_801E6A4C(0, 0);
@@ -130,9 +94,6 @@ void func_801EB180(void) {
     D_800DA9AC = 1;
     func_800C21F4(0, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB180.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801EB4F4(void) {

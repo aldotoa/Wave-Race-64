@@ -173,85 +173,62 @@ void func_1B1FB0_802C6FF8(void) {
 /* Debug text character renderer: emits one glyph's RDP packets at arg0,
    returns the advanced cursor. Values below 0x10 emit nothing; values at
    or above 0x42 use glyph 0x3B.
- * PARKED at floor 5735 (probe D, per-pair scoped-temp blocks on a gdl
-   cursor, same idiom as matched sibling func_1B1FB0_802C7578 -- that idiom
-   is what keeps IDO's pointer walk; plain chains and single-cursor walks
-   fold to base+offset, ~7300; const-table loop keeps its branch, dead).
- * Load-bearing: `char` arg1 (free dead spill `sw a1,4(sp)` via IDO arg
-   homing, micro-proven); two C returns (stub has two `jr ra`); per-pair
-   `{ Gfx* _g = gdl++; ... }` blocks (the walk collapses without them).
- * Remaining gap, all in the head rows: retail fills the first branch delay
-   slot with the spill (`beqz` + `sw`) and needs no index save; every probe
-   instead spills before the branch and spends the delay slot on
-   `move tX,v0`, stealing t0 and cascading one register off through the
-   body (pair-5/6 cursors v0/v1 already match). Tried, all 5735 unless
-   noted: decl reorder, lazy gdl init, cursor threaded through s32 arg0
-   (worse, 6335), empty-else clamp, test-original/write-copy, named index
-   temp, doubled dummy store (byte-identical to D -- dummy eliminated),
-   ternary clamp (identical), `char` homing micro-proven as the free spill
-   source (s32 arg: no spill), volatile (builds a frame, dead end).
- * Next: find the no-split head form -- likely the clamp/index variable
-   split (PHI in one reg, no save) -- then re-diff; the body walk is done. */
+ * PARKED behind NON_MATCHING: multi-return head block has register allocation
+   differences in the main body walk. */
 s32 func_1B1FB0_802C71B8(s32 arg0, char arg1, s32 arg2, s32 arg3) {
-    s32 v0 = arg1 & 0xFF;
-    Gfx* gdl = (Gfx*) arg0;
+    Gfx* gdl;
+    u8* img;
 
-    if (v0 < 0x10) {
+    if (arg1 < 0x10) {
         return arg0;
     }
-    if (v0 >= 0x42) {
-        v0 = 0x3B;
+    gdl = (Gfx*) arg0;
+    if (arg1 >= 0x42) {
+        arg1 = 0x3B;
     }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xFD700000;
-        _g->words.w1 = (u32) &D_8000008[((v0 - 0x10) & 0xFF) << 8];
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xF5700000;
-        _g->words.w1 = 0x07080200;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xE6000000;
-        _g->words.w1 = 0;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xF3000000;
-        _g->words.w1 = 0x0707F400;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xE7000000;
-        _g->words.w1 = 0;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xF5680400;
-        _g->words.w1 = 0x00080200;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xF2000000;
-        _g->words.w1 = 0x0003C03C;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = ((((arg2 + 0x10) * 4) & 0xFFF) << 0xC) | 0xE4000000 | (((arg3 + 0x10) * 4) & 0xFFF);
-        _g->words.w1 = (((arg2 * 4) & 0xFFF) << 0xC) | ((arg3 * 4) & 0xFFF);
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xB3000000;
-        _g->words.w1 = 0;
-    }
-    {
-        Gfx* _g = gdl++;
-        _g->words.w0 = 0xB2000000;
-        _g->words.w1 = 0x04000400;
-    }
+
+    img = &D_8000008[(arg1 - 0x10) << 8];
+
+    gdl->words.w0 = 0xFD700000;
+    gdl->words.w1 = (u32) img;
+    gdl++;
+
+    gdl->words.w0 = 0xF5700000;
+    gdl->words.w1 = 0x07080200;
+    gdl++;
+
+    gdl->words.w0 = 0xE6000000;
+    gdl->words.w1 = 0;
+    gdl++;
+
+    gdl->words.w0 = 0xF3000000;
+    gdl->words.w1 = 0x0707F400;
+    gdl++;
+
+    gdl->words.w0 = 0xE7000000;
+    gdl->words.w1 = 0;
+    gdl++;
+
+    gdl->words.w0 = 0xF5680400;
+    gdl->words.w1 = 0x00080200;
+    gdl++;
+
+    gdl->words.w0 = 0xF2000000;
+    gdl->words.w1 = 0x0003C03C;
+    gdl++;
+
+    gdl->words.w0 = ((((arg2 + 0x10) * 4) & 0xFFF) << 0xC) | 0xE4000000 | (((arg3 + 0x10) * 4) & 0xFFF);
+    gdl->words.w1 = (((arg2 * 4) & 0xFFF) << 0xC) | ((arg3 * 4) & 0xFFF);
+    gdl++;
+
+    gdl->words.w0 = 0xB3000000;
+    gdl->words.w1 = 0;
+    gdl++;
+
+    gdl->words.w0 = 0xB2000000;
+    gdl->words.w1 = 0x04000400;
+    gdl++;
+
     return (s32) gdl;
 }
 #else
