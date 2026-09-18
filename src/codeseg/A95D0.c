@@ -269,13 +269,6 @@ void func_801DC274(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC274.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801DC404(void) {
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC404.s")
-#endif
-
 typedef struct {
     s32 unk0;
     void* unk4;
@@ -283,12 +276,38 @@ typedef struct {
 } UnkStruct_80223F7C;
 
 extern UnkStruct_80223F7C D_80223F7C[];
+extern UnkStruct_80223F7C D_80224B14[];
+extern UnkStruct_801DB0E4_arg1 D_80225E34;
+extern f32 D_80228120[][2];
 
 typedef struct {
     s32 unk0;
     UnkStruct_80223F7C* unk4;
     s32 unk8;
 } UnkStruct_801DC5A8;
+
+void func_801DC404(UnkStruct_801DC5A8* arg0) {
+    f32 temp;
+    s32 val;
+    UnkStruct_801DB0E4_arg1 sp54 = D_80225E34;
+    UnkStruct_801DB0E4_arg1 sp20 = sp54;
+
+    val = arg0->unk4 - D_80224B14;
+    if (val != 2) {
+        return;
+    }
+
+    D_802287A8 = 8;
+    if (arg0->unk8 == 1) {
+        func_800AB92C();
+        func_801DB284(&D_80228190, &sp20, D_80228120, 8);
+    }
+    temp = (f32) (arg0->unk8 / arg0->unk4->unk0);
+    sp20.unk0[0] += 300.0f * temp;
+    sp20.unk0[1] += -200.0f * temp;
+    sp20.unk0[2] += -200.0f * temp;
+    func_801DB430(&D_80228190, &sp20, D_80228120, 8);
+}
 
 void func_801DC5A8(UnkStruct_801DC5A8* arg0) {
     s32 val;
@@ -329,13 +348,6 @@ void func_801DD6B4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DD6B4.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801DD85C(void) {
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DD85C.s")
-#endif
-
 typedef struct {
     u8 pad[0xE0];
 } Struct_80227E98;
@@ -344,8 +356,36 @@ typedef struct {
     u8 pad[0x38];
 } Struct_80228058;
 
+typedef struct {
+    u8 pad[0x20];
+} Struct_802280C8;
+
 extern Struct_80227E98 D_80227E98[];
 extern Struct_80228058 D_80228058[];
+extern Struct_802280C8 D_802280C8[];
+extern s32 D_80228108;
+
+void func_801DFD8C();
+void func_801DFDA0();
+void func_801DFDA8();
+
+void func_801DD85C(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        gCameraPerspective[i].unkE8 = i;
+        gCameraPerspective[i].unkEC = 1;
+        gCameraPerspective[i].unkF8 = 0;
+        gCameraPerspective[i].camViewY = 0.0f;
+        func_801DFD8C(&D_80228058[i], &D_80227E98[i]);
+        func_801DFDA0(&D_80228058[i], &D_802280C8[i]);
+        func_801DFDA8(&D_80228058[i],
+            &gCameraPerspective[i].unk4, &gCameraPerspective[i].unk8, &gCameraPerspective[i].unkC,
+            &gCameraPerspective[i].unk1C, &gCameraPerspective[i].unk20, &gCameraPerspective[i].unk24,
+            &gCameraPerspective[i].unk10, &gCameraPerspective[i].unk14, &gCameraPerspective[i].unk18,
+            &D_80228108);
+    }
+}
 
 void func_801DDA24(void) {
     s32 i;
