@@ -124,7 +124,61 @@ s32 func_i13_802C61E0(void) {
 }
 
 #ifdef NON_MATCHING
-void func_i13_802C62EC(void) {
+/* Controller-flag state machine for file search & validation:
+   returns 1/2/3/4 by flag priority, else 0.
+   Exact control flow, calls, stores, and stack frame (-0x20) verified.
+   Parked behind NON_MATCHING due to family register wall (ret homed in a1 vs v1). */
+s32 func_i13_802C62EC(void) {
+    s32 var_a1 = 0;
+    s32 var_v1;
+
+    if (D_801CE65A->unk0 & 0xB000) {
+        var_a1 = 1;
+        if (D_801CE640 == 1) {
+            if (D_i13_802C8D54 == 0) {
+                var_v1 = Save_PfsFindFile();
+                D_i13_802C8D74 = var_v1;
+            } else {
+                var_v1 = Save_PfsFindFile();
+                D_i13_802C8D74 = var_v1;
+                if (var_v1 == 4) {
+                    var_v1 = Save_PfsCheckFree();
+                    D_i13_802C8D74 = var_v1;
+                }
+            }
+            if (var_v1 == 0) {
+                D_801CE640 = 3;
+                D_i13_802C8D58 = 0;
+            }
+        } else {
+            if (D_i13_802C8D54 == 1) {
+                D_i13_802C8D74 = Save_PfsFindFile();
+                var_v1 = 1;
+            }
+            if (D_i13_802C8D74 == 0) {
+                D_801CE640 = 5;
+                D_i13_802C8D70 = var_v1;
+                func_800C3E6C(3);
+            }
+        }
+    } else if (D_801CE65A->unk0 & 0x4000) {
+        D_801CE640 = 0;
+        var_a1 = 2;
+        D_i13_802C8D54 = 0;
+    } else if (D_801CE65A->unk0 & 0x200) {
+        var_a1 = 3;
+        var_v1 = 1;
+        if (--D_i13_802C8D54 < 0) {
+            D_i13_802C8D54 = var_v1;
+        }
+    } else if (D_801CE65A->unk0 & 0x100) {
+        var_a1 = 4;
+        if (++D_i13_802C8D54 >= 2) {
+            D_i13_802C8D54 = 0;
+        }
+    }
+
+    return var_a1;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C62EC.s")

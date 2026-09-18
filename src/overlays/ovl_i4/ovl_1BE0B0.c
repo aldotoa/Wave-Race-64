@@ -75,20 +75,107 @@ Gfx* func_i4_802C5CDC(Gfx* dList) {
 #endif
 
 #ifdef NON_MATCHING
-void func_i4_802C6778(void) {
-    /* Sunny Beach shallow sandbar grounding depth check */
+/* Sunny Beach backdrop and scenery GBI display list emitter
+ * Floor score: ~10050 (instruction schedule differences within straight-line GBI macro emissions)
+ * Load-bearing structures:
+ * - course branch: if (D_i4_802C7534 == 0) var_a3 = &D_800DB5F8[course * 2]; else var_a3 = &D_800DB6D0[course * 2];
+ * - temp_v1: (course << 15) + 0x10000
+ * - temp_t1: &D_800DB5B0[course * 2]
+ */
+extern u16 D_802C76AC;
+extern s32 D_i4_802C7534;
+extern uintptr_t D_800DB5F8[];
+extern uintptr_t D_800DB6D0[];
+extern uintptr_t D_800DB5B0[];
+extern Gfx D_80A6E00;
+extern Mtx D_7000A40;
+extern Vp D_106F738;
+extern Gfx D_106F748;
+
+Gfx* func_i4_802C6778(Gfx* gdl) {
+    s32 course;
+    uintptr_t* var_a3;
+    uintptr_t* temp_t1;
+    u32 temp_v1;
+
+    course = D_800DAAD8[D_800DA9D0];
+    if (D_i4_802C7534 == 0) {
+        var_a3 = &D_800DB5F8[course * 2];
+    } else {
+        var_a3 = &D_800DB6D0[course * 2];
+    }
+
+    gSPDisplayList(gdl++, &D_80A6E00);
+    gDPPipeSync(gdl++);
+    gDPSetColorImage(gdl++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, OS_PHYSICAL_TO_K0(gFrameBuffers[gFramebuffersIdx]));
+
+    gdl->words.w0 = 0xB4000000;
+    gdl->words.w1 = D_802C76AC;
+    gdl++;
+
+    gSPMatrix(gdl++, &D_7000A40, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(gdl++, D_801CE5F8->unkA80, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPViewport(gdl++, &D_106F738);
+    gSPDisplayList(gdl++, &D_106F748);
+    gDPSetEnvColor(gdl++, 255, 255, 255, 255);
+
+    gdl->words.w0 = 0xED2580D4;
+    gdl->words.w1 = 0x0049027C;
+    gdl++;
+
+    temp_t1 = &D_800DB5B0[course * 2];
+    temp_v1 = (course << 15) + 0x10000;
+
+    gSPDisplayList(gdl++, (Gfx*)(temp_t1[0] + temp_v1));
+    gSPClearGeometryMode(gdl++, G_CULL_BACK);
+    gSPDisplayList(gdl++, (Gfx*)(var_a3[0] + temp_v1));
+    gSPSetGeometryMode(gdl++, G_CULL_BACK);
+    gDPPipeSync(gdl++);
+
+    gdl->words.w0 = 0xB900031D;
+    gdl->words.w1 = 0x005049D8;
+    gdl++;
+
+    gSPDisplayList(gdl++, (Gfx*)(temp_t1[1] + temp_v1));
+    gSPClearGeometryMode(gdl++, G_CULL_BACK);
+    gSPDisplayList(gdl++, (Gfx*)(var_a3[1] + temp_v1));
+    gDPPipeSync(gdl++);
+
+    gdl->words.w0 = 0xED000000;
+    gdl->words.w1 = 0x004FC3BC;
+    gdl++;
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6778.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_i4_802C69C4(void) {
-    /* Sunny Beach umbrella and palm tree prop animations */
+extern u16 D_80A0008[];
+
+Gfx* func_i4_802C69C4(Gfx* gdl, s32 arg1, s32 arg2) {
+    s32 outer;
+    s32 cur_y;
+    s32 tex_offset;
+    s32 height;
+
+    for (tex_offset = 0, outer = 0, cur_y = arg2; outer != 0x50; outer += 0x10, cur_y += 0x10, tex_offset += 0x760) {
+        if (outer != 0x40) {
+            height = 0x10;
+        } else {
+            height = 3;
+        }
+
+        gDPLoadTextureTile(gdl++, D_80A0008 + tex_offset, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, height,
+                           0, 0, 117, height - 1, 0,
+                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+        gSPTextureRectangle(gdl++, arg1 << 2, cur_y << 2, (arg1 + 0x76) << 2, (cur_y + height) << 2,
+                            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
+
+    return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C69C4.s")
-#endif
 
 void func_i4_802C6BAC(void) {
     switch (D_i4_802C7538) {

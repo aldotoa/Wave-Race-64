@@ -130,8 +130,66 @@ void func_1B1FB0_802C62E4(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_1B1FB0_802C67BC(void* arg0, s32 arg1) {
-    /* Debug flight collision boundary detector */
+/* Debug flight mode texture quad rasterizer (109 instructions).
+ * Emits 5 iterations of 8-byte RDP commands for texture rectangle display lists.
+ * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
+ * scheduling across the 10 RDP word stores per iteration. */
+Gfx* func_1B1FB0_802C67BC(Gfx* gdl, s32 arg1, s32 arg2) {
+    u32 w0_e4 = ((((arg1 + 0x1FF) * 4) & 0xFFF) << 12) | 0xE4000000;
+    u32 w1_e4_base = (((arg1 * 4) & 0xFFF) << 12);
+    u8* tex = D_804A460;
+    s32 i = 0;
+    s32 a3 = arg2;
+    s32 t2 = arg2 + 3;
+
+    do {
+        gdl->words.w0 = 0xFD100000;
+        gdl->words.w1 = (u32) tex;
+        gdl++;
+
+        gdl->words.w0 = 0xF5100000;
+        gdl->words.w1 = 0x07080200;
+        gdl++;
+
+        gdl->words.w0 = 0xE6000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF3000000;
+        gdl->words.w1 = 0x077FF010;
+        gdl++;
+
+        gdl->words.w0 = 0xE7000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF5110000;
+        gdl->words.w1 = 0x00080200;
+        gdl++;
+
+        gdl->words.w0 = 0xF2000000;
+        gdl->words.w1 = 0x007FC00C;
+        gdl++;
+
+        gdl->words.w0 = w0_e4 | ((t2 * 4) & 0xFFF);
+        gdl->words.w1 = w1_e4_base | ((a3 * 4) & 0xFFF);
+        gdl++;
+
+        gdl->words.w0 = 0xB3000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xB2000000;
+        gdl->words.w1 = 0x10000400;
+        gdl++;
+
+        i += 4;
+        a3 += 4;
+        t2 += 4;
+        tex += 0x1000;
+    } while (i != 0x14);
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C67BC.s")
@@ -146,24 +204,207 @@ void func_1B1FB0_802C6970(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_1B1FB0_802C6C1C(void) {
-    /* Debug flight HUD coordinates */
+/* Debug flight HUD coordinates (137 instructions).
+ * Emits variable iterations (1 to 3) of 10 8-byte RDP commands for HUD digit rendering.
+ * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
+ * scheduling across the 10 RDP word stores per iteration. */
+Gfx* func_1B1FB0_802C6C1C(Gfx* gdl) {
+    s32 count;
+    s32 i;
+    s32 t1;
+    s32 t2;
+    s32 val;
+    s32 ten;
+
+    val = D_801CB410;
+    if (val < 10) {
+        count = 1;
+    } else if (val < 100) {
+        count = 2;
+    } else {
+        count = 3;
+    }
+
+    i = 0;
+    t1 = 0x230;
+    t2 = 0x220;
+    ten = 10;
+    if (count > 0) {
+        do {
+            gdl->words.w0 = 0xFD700000;
+            gdl->words.w1 = (u32) D_1B1FB0_802C767C[val % ten];
+            gdl++;
+
+            gdl->words.w0 = 0xF5700000;
+            gdl->words.w1 = 0x07080200;
+            gdl++;
+
+            gdl->words.w0 = 0xE6000000;
+            gdl->words.w1 = 0;
+            gdl++;
+
+            gdl->words.w0 = 0xF3000000;
+            gdl->words.w1 = 0x0708F400;
+            gdl++;
+
+            gdl->words.w0 = 0xE7000000;
+            gdl->words.w1 = 0;
+            gdl++;
+
+            gdl->words.w0 = 0xF5680400;
+            gdl->words.w1 = 0x00080200;
+            gdl++;
+
+            gdl->words.w0 = 0xF2000000;
+            gdl->words.w1 = 0x0003C044;
+            gdl++;
+
+            gdl->words.w0 = 0xE4000608 | (((t1 * 4) & 0xFFF) << 12);
+            gdl->words.w1 = (((t2 * 4) & 0xFFF) << 12) | 0x5C0;
+            gdl++;
+
+            gdl->words.w0 = 0xB3000000;
+            gdl->words.w1 = 0;
+            gdl++;
+
+            gdl->words.w0 = 0xB2000000;
+            gdl->words.w1 = 0x04000400;
+            gdl++;
+
+            i++;
+            val /= ten;
+            t2 -= 18;
+            t1 -= 18;
+        } while (i != count);
+    }
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6C1C.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_1B1FB0_802C6E40(void* arg0, s32 arg1) {
-    /* Flight telemetry state update */
+/* Debug flight telemetry display list builder (110 instructions).
+ * Emits 4 iterations (0xB stride, total 0x2C) of 8-byte RDP commands.
+ * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
+ * scheduling across the 10 RDP word stores per iteration. */
+Gfx* func_1B1FB0_802C6E40(Gfx* gdl, s32 arg1, s32 arg2) {
+    u32 w0_e4 = ((((arg1 + 0xC0) * 4) & 0xFFF) << 12) | 0xE4000000;
+    u32 w1_e4_base = (((arg1 * 4) & 0xFFF) << 12);
+    u8* tex = (u8*) &D_8008510;
+    s32 i = 0;
+    s32 a3 = arg2;
+    s32 t2 = arg2 + 0xB;
+
+    do {
+        gdl->words.w0 = 0xFD6800BF;
+        gdl->words.w1 = (u32) tex;
+        gdl++;
+
+        gdl->words.w0 = 0xF5683000;
+        gdl->words.w1 = 0x07080200;
+        gdl++;
+
+        gdl->words.w0 = 0xE6000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF4000000;
+        gdl->words.w1 = 0x072FC028;
+        gdl++;
+
+        gdl->words.w0 = 0xE7000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF5683000;
+        gdl->words.w1 = 0x00080200;
+        gdl++;
+
+        gdl->words.w0 = 0xF2000000;
+        gdl->words.w1 = 0x002FC028;
+        gdl++;
+
+        gdl->words.w0 = w0_e4 | ((t2 * 4) & 0xFFF);
+        gdl->words.w1 = w1_e4_base | ((a3 * 4) & 0xFFF);
+        gdl++;
+
+        gdl->words.w0 = 0xB3000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xB2000000;
+        gdl->words.w1 = 0x04000400;
+        gdl++;
+
+        i += 0xB;
+        a3 += 0xB;
+        t2 += 0xB;
+        tex += 0x840;
+    } while (i != 0x2C);
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6E40.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_1B1FB0_802C6FF8(void) {
-    /* Onscreen debug font glyph index lookup */
+/* Onscreen debug font glyph display list builder (112 instructions).
+ * Emits 4 iterations (0x5 stride, total 0x14) of 8-byte RDP commands.
+ * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
+ * scheduling across the 10 RDP word stores per iteration. */
+Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
+    u8* tex = (u8*) &D_800A618;
+    s32 a3 = 0;
+
+    do {
+        gdl->words.w0 = 0xFD6801EF;
+        gdl->words.w1 = (u32) tex;
+        gdl++;
+
+        gdl->words.w0 = 0xF5687C00;
+        gdl->words.w1 = 0x07080200;
+        gdl++;
+
+        gdl->words.w0 = 0xE6000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF4000000;
+        gdl->words.w1 = 0x077BC010;
+        gdl++;
+
+        gdl->words.w0 = 0xE7000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xF5687C00;
+        gdl->words.w1 = 0x00080200;
+        gdl++;
+
+        gdl->words.w0 = 0xF2000000;
+        gdl->words.w1 = 0x007BC010;
+        gdl++;
+
+        gdl->words.w0 = ((((D_1B1FB0_802C76B0 * 0x14) + a3 + 0xFD) * 4) & 0xFFF) | 0xE48E0000;
+        gdl->words.w1 = ((((D_1B1FB0_802C76B0 * 0x14) + a3 + 0xF8) * 4) & 0xFFF) | 0x00120000;
+        gdl++;
+
+        gdl->words.w0 = 0xB3000000;
+        gdl->words.w1 = 0;
+        gdl++;
+
+        gdl->words.w0 = 0xB2000000;
+        gdl->words.w1 = 0x04000400;
+        gdl++;
+
+        tex += 0x9B0;
+        a3 += 5;
+    } while (a3 != 0x14);
+
+    return gdl;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6FF8.s")
