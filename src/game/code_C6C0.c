@@ -2304,13 +2304,37 @@ Gfx* func_80067BFC(Gfx* glistp, s32 arg1, s32 arg2) {
     return glistp;
 }
 
-#ifdef NON_MATCHING
 void func_80067C6C(void) {
-    /* Replay camera speed multiplier calculator */
+    Gfx* var_a0;
+    s32 var_s0;
+    s32 var_s1;
+
+    var_a0 = (Gfx*) &D_8011EDE0;
+    if ((D_801CE638 == 0) || ((D_801CE638 == 8) && (gCourseID != 1))) {
+        func_80067BFC(func_80067BFC((Gfx*) &D_8011EDE0, 0, D_800D48DC), 1, D_800D48E0);
+        return;
+    }
+
+    if (D_801CE64C != 2) {
+        if ((gPlayers == 1) || ((D_801CE638 == 8) && (gCourseID == 1))) {
+            var_s1 = 1;
+            var_s0 = 0;
+            if (gRiders > 0) {
+                do {
+                    if (var_s0 == D_800D48DC) {
+                        var_a0 = func_80067BFC(func_80067BFC(var_a0, 0, var_s0), 0, var_s0);
+                    } else {
+                        var_a0 = func_80067BFC(func_80067BFC(var_a0, var_s1, var_s0), var_s1 + 1, var_s0);
+                        var_s1 += 2;
+                    }
+                    var_s0++;
+                } while (var_s0 < gRiders);
+            }
+        } else {
+            func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC((Gfx*) &D_8011EDE0, 0, D_800D48DC), 1, D_800D48E0), 2, D_800D48DC), 3, D_800D48E0), 4, D_800D48DC), 5, D_800D48E0);
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067C6C.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_80067E40(void) {

@@ -970,7 +970,9 @@ void func_801DFE58(s32* arg0, s32 arg1) {
 
 typedef struct SubStruct_801DFE80 {
     f32 unk0[3];
-    char padC[0xC];
+    f32 unkC;
+    f32 unk10;
+    f32 unk14;
     f32 unk18[2];
     char pad20[0x54];
     s32 unk74[2];
@@ -983,7 +985,8 @@ typedef struct UnkCmd_801DFE80_Obj {
 
 typedef struct UnkCmd_801DFE80 {
     UnkCmd_801DFE80_Obj* obj;
-    char pad4[0xC];
+    char pad4[8];
+    void* unkC;
     f32* unk10[3];
     f32* unk1C[3];
 } UnkCmd_801DFE80;
@@ -1111,29 +1114,161 @@ void func_801E02B4(s32* arg0, s32 arg1) {
     func_801DF2F8(arg0[0], sp2C, sp20, sp38, &sp44);
 }
 
+f32 func_801ED154(f32, f32);
+
 #ifdef NON_MATCHING
-void func_801E0304(void) {
+/*
+ * Parked Floor Draft: func_801E0304 (Score: ~2580, 84 instructions)
+ * Dynamic rotation and spline transform evaluation (calls func_801DED44 and func_801DF2F8).
+ * Load-bearing constructs:
+ *  - Stack frame: 0x68 with arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44), sp3C[2] (0x3C padding).
+ *  - Spilled sub pointer at 0x38($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
+ *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
+ *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
+ */
+void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
+    f32 sp5C[3];
+    f32 sp50[3];
+    f32 sp44[3];
+    f32 sp3C[2];
+    SubStruct_801DFE80* sub;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    s32 temp_v0;
+    s32 temp_v1;
+
+    func_801DED44((u8*) sp50, (u8*) arg0->unkC, (u8*) arg1);
+    sub = &arg0->obj->sub;
+    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    sub->unkC = temp_fv0;
+    sub->unk10 = 0.0f;
+    temp_v0 = (s32) (((sp50[1] + temp_fv0) * 4096.0f) / 360.0f);
+    temp_v1 = (s32) ((sp50[2] * 4096.0f) / 360.0f);
+    temp_fv1 = sp50[0] * COS(temp_v1);
+    sp44[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
+    sp44[1] = (SIN(temp_v1) * sp50[0]) + *arg0->unk10[1];
+    sp44[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    func_801DF2F8(arg0->obj, sp44, sp5C, NULL, NULL);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0304.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801E0454(void) {
+/*
+ * Parked Floor Draft: func_801E0454 (Score: ~2596, 84 instructions)
+ * Dynamic rotation and spline transform evaluation (calls func_801DED88 and func_801DF2F8).
+ * Load-bearing constructs:
+ *  - Stack frame: 0x70 with arrays sp64[3] (0x64), sp58[3] (0x58), sp4C[3] (0x4C), sp40[3] (0x40).
+ *  - Spilled sub pointer at 0x34($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
+ *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
+ *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
+ */
+void func_801E0454(UnkCmd_801DFE80* arg0, void* arg1) {
+    f32 sp64[3];
+    f32 sp58[3];
+    f32 sp4C[3];
+    f32 sp40[3];
+    SubStruct_801DFE80* sub;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    s32 temp_v0;
+    s32 temp_v1;
+
+    func_801DED88((u8*) sp4C, (u8*) arg0->unkC, (u8*) arg1);
+    sub = &arg0->obj->sub;
+    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    sub->unkC = temp_fv0;
+    sub->unk10 = 0.0f;
+    temp_v0 = (s32) (((sp4C[1] + temp_fv0) * 4096.0f) / 360.0f);
+    temp_v1 = (s32) ((sp4C[2] * 4096.0f) / 360.0f);
+    temp_fv1 = sp4C[0] * COS(temp_v1);
+    sp40[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
+    sp40[1] = (SIN(temp_v1) * sp4C[0]) + *arg0->unk10[1];
+    sp40[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    func_801DF2F8(arg0->obj, sp40, sp58, sp64, NULL);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0454.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801E05A4(void) {
+/*
+ * Parked Floor Draft: func_801E05A4 (Score: ~2601, 85 instructions)
+ * Dynamic rotation and spline transform evaluation (calls func_801DEDE8 and func_801DF2F8).
+ * Load-bearing constructs:
+ *  - Stack frame: 0x68 with sp64 scalar (0x64), sp58[3] (0x58), sp4C[3] (0x4C), sp40[3] (0x40).
+ *  - Spilled sub pointer at 0x34($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
+ *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
+ *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
+ */
+void func_801E05A4(UnkCmd_801DFE80* arg0, void* arg1) {
+    f32 sp64;
+    f32 sp58[3];
+    f32 sp4C[3];
+    f32 sp40[3];
+    SubStruct_801DFE80* sub;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    s32 temp_v0;
+    s32 temp_v1;
+
+    func_801DEDE8((u8*) sp4C, (u8*) arg0->unkC, (u8*) arg1);
+    sub = &arg0->obj->sub;
+    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    sub->unkC = temp_fv0;
+    sub->unk10 = 0.0f;
+    temp_v0 = (s32) (((sp4C[1] + temp_fv0) * 4096.0f) / 360.0f);
+    temp_v1 = (s32) ((sp4C[2] * 4096.0f) / 360.0f);
+    temp_fv1 = sp4C[0] * COS(temp_v1);
+    sp40[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
+    sp40[1] = (SIN(temp_v1) * sp4C[0]) + *arg0->unk10[1];
+    sp40[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    func_801DF2F8(arg0->obj, sp40, sp58, NULL, &sp64);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E05A4.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801E06F8(void) {
+/*
+ * Parked Floor Draft: func_801E06F8 (Score: ~3440, 85 instructions)
+ * Dynamic rotation and spline transform evaluation (calls func_801DEE48 and func_801DF2F8).
+ * Load-bearing constructs:
+ *  - Stack frame: 0x78 with sp74 scalar (0x74), sp68[3] (0x68), sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44), sp3C[2] (0x3C padding).
+ *  - Spilled sub pointer at 0x38($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
+ *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
+ *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
+ */
+void func_801E06F8(UnkCmd_801DFE80* arg0, void* arg1) {
+    f32 sp74;
+    f32 sp68[3];
+    f32 sp5C[3];
+    f32 sp50[3];
+    f32 sp44[3];
+    f32 sp3C[2];
+    SubStruct_801DFE80* sub;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    s32 temp_v0;
+    s32 temp_v1;
+
+    func_801DEE48((u8*) sp50, (u8*) arg0->unkC, (u8*) arg1);
+    sub = &arg0->obj->sub;
+    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    sub->unkC = temp_fv0;
+    sub->unk10 = 0.0f;
+    temp_v0 = (s32) (((sp50[1] + temp_fv0) * 4096.0f) / 360.0f);
+    temp_v1 = (s32) ((sp50[2] * 4096.0f) / 360.0f);
+    temp_fv1 = sp50[0] * COS(temp_v1);
+    sp44[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
+    sp44[1] = (SIN(temp_v1) * sp50[0]) + *arg0->unk10[1];
+    sp44[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    func_801DF2F8(arg0->obj, sp44, sp5C, sp68, &sp74);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E06F8.s")

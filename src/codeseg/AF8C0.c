@@ -9,7 +9,11 @@ extern s32 D_801CE63C;
 extern s32 D_801CE640;
 extern s32 D_801CE644;
 
-extern Gfx D_8011F820[];
+extern Mtx D_8011F820;
+extern s32 D_801CB334;
+extern s16 D_800EAC14[][8];
+extern s32 D_801C2660[];
+extern s32 D_801C2690[];
 
 Gfx* Gfx_ClearCurrentBuffer(Gfx* glistp);
 Gfx* func_8008FB74(Gfx* glistp);
@@ -18,6 +22,9 @@ Gfx* Draw_WaterEffects(Gfx* glistp);
 void func_801E2530(void);
 Gfx* func_801E2058(Gfx* glistp);
 Gfx* func_801E229C(Gfx* glistp);
+void func_8007C204(s16 arg0);
+void func_8007BEA4(s16 arg0);
+void func_801EC500(void);
 
 #ifdef NON_MATCHING
 void func_801E1290(void) {
@@ -35,8 +42,11 @@ void func_801E1BA8(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E1BA8.s")
 #endif
 
-#ifdef NON_MATCHING
 Gfx* func_801E1E8C(Gfx* glistp) {
+    s32 s0;
+    s32 s1;
+    s16 a0;
+
     if (D_801CE63C != 0) {
         D_801CE63C = 0;
     }
@@ -44,22 +54,101 @@ Gfx* func_801E1E8C(Gfx* glistp) {
     glistp = Gfx_ClearCurrentBuffer(glistp);
     glistp = func_8008FB74(glistp);
     glistp = func_801E2058(glistp);
-    gSPDisplayList(glistp++, D_8011F820);
+    gSPMatrix(glistp++, &D_8011F820, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     glistp = Gfx_DrawCoursePanel(glistp, gCourseID);
     glistp = Draw_WaterEffects(glistp);
     glistp = func_801E229C(glistp);
-    if (gGameState == 0x64) {
+
+    if (gGameState == 100) {
         func_801E2530();
+    } else if (D_80228A16 == 1) {
+        if (D_801CE608.gameMode == 4) {
+            for (s0 = 0, s1 = 0; s0 < D_801CB334 + 1; s0++, s1++) {
+                a0 = D_800EAC14[gDifficulty][s1];
+                if ((D_801C2660[a0] != 0) || (D_801C2690[a0] != 0)) {
+                    if (D_800DAB68 != 0) {
+                        func_8007C204(a0);
+                    } else {
+                        func_8007BEA4(a0);
+                    }
+                }
+            }
+        }
+        func_801EC500();
     }
+
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E1E8C.s")
-#endif
 
 #ifdef NON_MATCHING
+/* Slider cursor movement & audio feedback (Machine tuning slider track renderer)
+ * Floor score: 848 (compiler caches constant 16 in s1 register across loop iterations)
+ * Load-bearing structures:
+ * - isWrap = (D_802287E0 < D_802287E4) ? 0 : 1;
+ * - do-while loop from i = 0 to 16 with step 2
+ * - conditional matrix push and pop: gSPMatrix(..., G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH); ... gSPPopMatrix(..., G_MTX_MODELVIEW);
+ */
+extern Gfx D_106F6C0;
+extern Gfx* D_80226040[];
+extern s32 D_802261F8;
+extern s32 D_802287E0;
+extern s32 D_802287E4;
+extern s32 D_802287E8[];
+void func_8006DE24(Gfx** glistp);
+
 Gfx* func_801E2058(Gfx* glistp) {
-    /* Slider cursor movement & audio feedback */
+    s32 cond;
+    s32 isWrap;
+    s32 i;
+
+    glistp = Gfx_FillCourseColor(glistp, gCourseID);
+    gSPDisplayList(glistp++, &D_106F6C0);
+
+    if (D_802261F8 != 0) {
+        func_8006DE24(&glistp);
+    }
+
+    if (D_802287E0 < D_802287E4) {
+        isWrap = 0;
+    } else {
+        isWrap = 1;
+    }
+
+    i = 0;
+    do {
+        cond = 0;
+        if (isWrap == 0) {
+            if (i >= D_802287E0 && D_802287E4 >= i) {
+                cond = 1;
+            }
+        } else if (i >= D_802287E0 || D_802287E4 >= i) {
+            cond = 1;
+        }
+
+        if (cond != 0) {
+            gSPMatrix(glistp++, (u8*)D_801CE5F8 + (i << 6) + 0x1380, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+            gSPDisplayList(glistp++, D_80226040[D_802287E8[i]]);
+            gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
+        }
+
+        cond = 0;
+        if (isWrap == 0) {
+            if (i >= D_802287E0 - 1 && D_802287E4 > i) {
+                cond = 1;
+            }
+        } else if (i >= D_802287E0 - 1 || D_802287E4 > i) {
+            cond = 1;
+        }
+
+        if (cond != 0) {
+            gSPMatrix(glistp++, (u8*)D_801CE5F8 + (i << 6) + 0x13C0, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+            gSPDisplayList(glistp++, D_80226040[D_802287E8[i + 1]]);
+            gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
+        }
+
+        i += 2;
+    } while (i != 0x10);
+
     return glistp;
 }
 #else

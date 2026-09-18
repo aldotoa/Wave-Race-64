@@ -116,13 +116,71 @@ void func_i1_802C5DF4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C5DF4.s")
 #endif
 
-#ifdef NON_MATCHING
+extern s32 D_i1_802C9510;
+extern s32 D_i1_802C950C;
+extern s32 D_802C96A0;
+extern s32 D_801CB330;
+extern s32 D_801CB334;
+extern s32 D_801CB350[][4];
+
+void func_i1_802C7570(s32);
+void func_801EB91C(void);
+void func_80077F5C(void);
+void func_801EC0D4(void);
+void func_801EC830(void);
+void func_801EB180(void);
+void func_801ECE50(void);
+
 void func_i1_802C63B4(void) {
-    /* Course buoy distance and penalty evaluator */
+    s32 i;
+
+    if (gPlayers == ONE_PLAYER) {
+        if (D_i1_802C9510 != 0) {
+            if (D_i1_802C950C > 0) {
+                D_i1_802C950C--;
+            }
+            if (D_i1_802C950C == 0) {
+                func_i1_802C7570(0x66);
+            }
+        }
+    } else {
+        if (D_802C96A0 == 1) {
+            D_802C96A0 = 2;
+            FadeTransition_SetProps(1, 4, 0);
+        }
+    }
+
+    if (D_80228A16 == 1) {
+        if (gPlayers == ONE_PLAYER) {
+            switch (D_801CE608.gameMode) {
+                case 4:
+                    if (D_801CB330 == 0) {
+                        D_801CE608.rider = 4;
+                        for (i = 0; i < D_801CE608.rider; i++) {
+                            D_801CB350[D_801CB334][i] = 0;
+                        }
+                        D_801CB334++;
+                        func_801EB91C();
+                    } else {
+                        func_80077F5C();
+                        func_801EC0D4();
+                    }
+                    break;
+                case 0:
+                case 11:
+                    func_801EC830();
+                    break;
+                default:
+                    func_801EB180();
+                    break;
+            }
+        } else {
+            func_801ECE50();
+        }
+        func_800AD3C4();
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C63B4.s")
-#endif
+
 
 #ifdef NON_MATCHING
 void func_i1_802C6550(void) {
@@ -186,7 +244,67 @@ void func_i1_802C6BD8(void) {
 
 #ifdef NON_MATCHING
 void func_i1_802C6DCC(void) {
-    /* Course lap counter increment and split time recorder */
+    s32 temp_v0;
+    u16 var_a1;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 41;
+    D_801CE638 = 1;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    D_802C96A4 = 0;
+    D_802C96A0 = 0;
+    if (D_801CE608.gameMode == 4) {
+        if (*(s32*)((u8*)&D_801CE6FC + 0xC) >= D_801C293C) {
+            D_801CB3F8[0] = 1;
+        } else {
+            D_801CB3F8[0] = 0;
+        }
+        if (*(s32*)((u8*)&D_801CE6FC + 0x10) >= *(s32*)((u8*)D_801C2C70 + 0x44)) {
+            D_801CB3F8[1] = 1;
+        } else {
+            D_801CB3F8[1] = 0;
+        }
+        if (*(s32*)((u8*)&D_801CE6FC + 0x14) >= *(s32*)((u8*)D_801C2C70 + 0x3BC)) {
+            D_801CB3F8[2] = 1;
+        } else {
+            D_801CB3F8[2] = 0;
+        }
+        if (*(s32*)((u8*)&D_801CE6FC + 0x18) >= *(s32*)((u8*)D_801C2C70 + 0x734)) {
+            D_801CB3F8[3] = 1;
+        } else {
+            D_801CB3F8[3] = 0;
+        }
+    }
+    if (gPlayers == ONE_PLAYER) {
+        if (D_i1_802C9510 != 0) {
+            D_i1_802C950C = 0x78;
+        } else {
+            FadeTransition_SetProps(1, 4, 0x78);
+        }
+    }
+    func_801E6A4C(0, 0);
+    if (gPlayers == ONE_PLAYER) {
+        var_a1 = 0;
+        temp_v0 = *(s32*)(D_801C2C24 + D_800D48DC * 0x378);
+        if (temp_v0 == 1) {
+            goto label;
+        }
+        if (temp_v0 == 2) {
+            var_a1 = 1;
+        }
+label:
+        func_801E6A4C(4, var_a1);
+    }
+    D_801CE62A = 0;
+    func_800BFD34();
+    func_800BFD68();
+    func_800C1F60(4);
+    func_800C21F4(4, 0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6DCC.s")
