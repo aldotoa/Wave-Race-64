@@ -56,8 +56,10 @@ typedef struct UnkStruct_801EAF78_s {
     s16 unk2;
     s32 unk4;
     s32 unk8;
-    s32 unkC;
-    s32 unk10;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
 } UnkStruct_801EAF78;
 
 extern UnkStruct_801EAF78 D_80228A78;
@@ -266,13 +268,28 @@ void func_801EAA6C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EAA6C.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EADB0(void) {
-    /* Text blinking and pulsing opacity animator */
+    switch (D_80228A78.unk2) {
+    case 0:
+    case 2: {
+        u32 val = (u32) (((f32) D_80228A78.unk4 * 127.0f) / (f32) D_80228A78.unk8);
+        val += 128;
+        D_80228A78.unkC = val;
+        D_80228A78.unkE = 255;
+        D_80228A78.unk10 = val;
+        break;
+    }
+    case 1:
+    case 3: {
+        u32 val = (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 127.0f) / (f32) D_80228A78.unk8);
+        val += 128;
+        D_80228A78.unkC = val;
+        D_80228A78.unkE = 255;
+        D_80228A78.unk10 = val;
+        break;
+    }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EADB0.s")
-#endif
 
 void func_801EAF78(void) {
     D_80228A78 = *(UnkStruct_801EAF78*) D_80226E30;

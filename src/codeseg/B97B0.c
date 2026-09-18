@@ -1043,19 +1043,38 @@ void func_801EE46C(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
-#ifdef NON_MATCHING
 void func_801EE4D0(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
-    ((void) arg3);
-    ((void) arg4);
-    ((void) arg5);
-    ((void) arg6);
+    f32 s1, s2, s3, c1, c2, c3;
+    f32 temp;
+
+    s1 = gSinTable[(s32) ((arg1 / 360.0f) * 4096.0f) & 0xFFF];
+    s2 = gSinTable[(s32) ((arg2 / 360.0f) * 4096.0f) & 0xFFF];
+    s3 = gSinTable[(s32) ((arg3 / 360.0f) * 4096.0f) & 0xFFF];
+    c1 = gSinTable[((s32) ((arg1 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+    c2 = gSinTable[((s32) ((arg2 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+    c3 = gSinTable[((s32) ((arg3 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+
+    temp = s1 * s2;
+    arg0[0][0] = c2 * c3;
+    arg0[1][0] = (-c1 * s3) + (temp * c3);
+    arg0[2][0] = (s1 * s3) + (c1 * s2 * c3);
+    arg0[3][0] = arg4;
+
+    arg0[0][1] = c2 * s3;
+    arg0[1][1] = (c1 * c3) + (temp * s3);
+    arg0[2][1] = (-s1 * c3) + (c1 * s2 * s3);
+    arg0[3][1] = arg5;
+
+    arg0[0][2] = -s2;
+    arg0[1][2] = s1 * c2;
+    arg0[2][2] = c1 * c2;
+    arg0[3][2] = arg6;
+
+    arg0[0][3] = 0.0f;
+    arg0[1][3] = 0.0f;
+    arg0[2][3] = 0.0f;
+    arg0[3][3] = 1.0f;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE4D0.s")
-#endif
 
 void func_801EE4D0(float (*)[4], f32, f32, f32, f32, f32, f32);
 
@@ -1066,19 +1085,38 @@ void func_801EE698(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
     _MtxF_to_Mtx(&mtx, arg0);
 }
 
-#ifdef NON_MATCHING
 void func_801EE6F4(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
-    ((void) arg3);
-    ((void) arg4);
-    ((void) arg5);
-    ((void) arg6);
+    f32 s1, s2, s3, c1, c2, c3;
+    f32 temp;
+
+    s1 = gSinTable[(s32) ((arg1 / 360.0f) * 4096.0f) & 0xFFF];
+    s2 = gSinTable[(s32) ((arg2 / 360.0f) * 4096.0f) & 0xFFF];
+    s3 = gSinTable[(s32) ((arg3 / 360.0f) * 4096.0f) & 0xFFF];
+    c1 = gSinTable[((s32) ((arg1 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+    c2 = gSinTable[((s32) ((arg2 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+    c3 = gSinTable[((s32) ((arg3 / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+
+    temp = s1 * s2;
+    arg0[0][0] = (temp * s3) + (c2 * c3);
+    arg0[1][0] = (temp * c3) - (c2 * s3);
+
+    arg0[2][0] = c1 * s2;
+    temp = s1 * c2;
+    arg0[3][0] = arg4;
+    arg0[0][1] = c1 * s3;
+    arg0[1][1] = c1 * c3;
+    arg0[2][1] = -s1;
+
+    arg0[3][1] = arg5;
+    arg0[0][2] = (temp * s3) - (s2 * c3);
+    arg0[1][2] = (temp * c3) + (s2 * s3);
+    arg0[2][2] = c1 * c2;
+    arg0[3][2] = arg6;
+    arg0[0][3] = 0.0f;
+    arg0[1][3] = 0.0f;
+    arg0[2][3] = 0.0f;
+    arg0[3][3] = 1.0f;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE6F4.s")
-#endif
 
 void func_801EE6F4(float (*)[4], f32, f32, f32, f32, f32, f32);
 
