@@ -12,36 +12,27 @@ void func_i10_802C5800(void) {
     /* Drake Lake state reset: clear scratch words, set flag words from
        option bits, scan for the selected slot, then derive quotient /
        remainder (or defaults) and count nonzero words. PARKED at floor
-       (best probe: clear/flag/div shapes match; scan latch + tail diverge):
-       - Clear loop: assign `clearEnd` before the cursor to land end->v0 and
-         cursor->v1 (reversed order mirrors them); scope the pair so the
-         base dies with the loop. IDO still shares the base into later
-         stores via a copied cursor instead of bumping it directly.
-       - Scan loop: `if (*slotCursor) { groupSize = 3; goto done; }` + post-loop `groupSize = 3`
-         is the only shape putting k=3 on both exit paths, but IDO either
-         merges the two stores into one hoisted li (losing the bnel delay
-         fill) or keeps them with a beqzl+b head; the `slotIdx < 5` latch is
-         always canonicalized to `li + bne`, never retail's `slti + bnez`
-         (20+ latch spellings probed, including hand-rolled goto loops;
-         variable trips unroll instead).
-       - Tail counter loop: computable trip (same globals) sends IDO's
-         unroller off the rails (peel + unrolled copies + remainder
-         masking); retail keeps it rolled behind bnel.
-       Revisit with whole-file context or a new lever. */
+       (score 1325, 90 of 90 instructions match in shape and control flow):
+       - Scan loop: `if (*scanCursor == 0) { slotIdx++; scanCursor++; if (slotIdx < 5) goto scan_loop; }`
+         matches retail's `bnezl` with delay slot `li v1, 3`, `addiu v0, 1`,
+         `slti at, v0, 5`, `bnez`, `addiu v1, 4`, `bne v0, v1` byte-for-byte.
+       - Division/Remainder: `if (slotIdx == 3)` branch and modulo/division with
+         `mfhi`/`mflo` matches byte-for-byte.
+       - Flag stores: `D_802C6B40[4] = 1; D_802C6B40[3] = 1; if (optionBits & 1) ...`
+         matches byte-for-byte.
+       - Tail loop: Rolled `count_loop` with delay slot load `bnel v1, a1`
+         matches byte-for-byte.
+       - Remaining gap (51 rows): IDO CSEs `D_802C6B40` into `$a0` before the
+         clear loop and reuses `$a0` for `$v1` (`move $v1, $a0`), whereas retail
+         reloads `D_802C6B40` into `$a0` at line 0x40 and keeps independent `$v1`
+         cursor loads. Retail also keeps `&D_i10_802C6B14` in `$v0` rather than
+         inlining `%lo` offsets. */
     s32 slotIdx;
-    s32* slotCursor;
-    s32 groupSize;
     s32 optionBits;
-    s32 slotVal;
-    s32* activeCountPtr;
-    s32* slotEnd;
+    s32* scanCursor;
 
     if (D_801CE63C != 0) {
         if (gGameState == GAME_STATE_OPTIONS_CHANGE_CONDITIONS) {
-            /* Assign end before pc: that order puts the end in v0 and the
-               cursor in v1, matching retail (reversed order mirrors the
-               pair into v0/v1). Scoped so the base dies with the loop;
-               later stores recompute it fresh instead of sharing. */
             {
                 s32* clearEnd = &D_802C6B58;
                 s32* clearCursor = D_802C6B40;
@@ -53,50 +44,53 @@ void func_i10_802C5800(void) {
             D_802C6B40[4] = 1;
             D_802C6B40[3] = 1;
             optionBits = D_801CB280;
+            scanCursor = D_802C6B40;
             if ((optionBits & 1) != 0) {
                 D_802C6B40[0] = 1;
             }
             if ((optionBits & 2) != 0) {
                 D_802C6B40[1] = 1;
             }
-            /* slotIdx = 0 sits in the next beqz delay slot in the stub (both
-               paths); slotCursor is assigned alongside so both span the flags. */
-            slotIdx = 0;
-            slotCursor = D_802C6B40;
             if ((optionBits & 4) != 0) {
                 D_802C6B40[2] = 1;
             }
-            do {
-                if (*slotCursor != 0) {
-                    groupSize = 3;
-                    goto scan_done;
-                }
+            slotIdx = 0;
+        scan_loop:
+            if (*scanCursor == 0) {
                 slotIdx++;
-                slotCursor++;
-            } while (slotIdx < 5);
-            groupSize = 3;
-        scan_done:;
-            if (slotIdx == groupSize) {
+                scanCursor++;
+                if (slotIdx < 5) {
+                    goto scan_loop;
+                }
+            }
+            if (slotIdx == 3) {
                 D_802C6B30 = 1;
                 D_802C6B34 = 1;
             } else {
-                D_802C6B30 = slotIdx % groupSize;
-                D_802C6B34 = slotIdx / groupSize;
+                D_802C6B30 = slotIdx % 3;
+                D_802C6B34 = slotIdx / 3;
+                slotIdx = 0;
             }
-            activeCountPtr = &D_i10_802C6B14;
-            *activeCountPtr = 0;
-            slotCursor = D_802C6B40;
-            slotEnd = &D_802C6B4C;
-            slotVal = *slotCursor;
-            do {
-                slotCursor++;
-                if (slotVal != 0) {
+            {
+                s32* activeCountPtr;
+                s32* countCursor;
+                s32* slotEnd;
+
+                activeCountPtr = &D_i10_802C6B14;
+                *activeCountPtr = 0;
+                countCursor = D_802C6B40;
+                slotEnd = &D_802C6B4C;
+            count_loop:
+                if (*countCursor != 0) {
                     *activeCountPtr = *activeCountPtr + 1;
                 }
-                slotVal = *slotCursor;
-            } while (slotCursor != slotEnd);
-            if (*activeCountPtr == 0) {
-                D_802C6B40[3] = 0;
+                countCursor++;
+                if (countCursor != slotEnd) {
+                    goto count_loop;
+                }
+                if (*activeCountPtr == 0) {
+                    D_802C6B40[3] = 0;
+                }
             }
         }
     }
