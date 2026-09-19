@@ -270,24 +270,24 @@ void func_801EAA6C(void) {
 
 void func_801EADB0(void) {
     switch (D_80228A78.unk2) {
-    case 0:
-    case 2: {
-        u32 val = (u32) (((f32) D_80228A78.unk4 * 127.0f) / (f32) D_80228A78.unk8);
-        val += 128;
-        D_80228A78.unkC = val;
-        D_80228A78.unkE = 255;
-        D_80228A78.unk10 = val;
-        break;
-    }
-    case 1:
-    case 3: {
-        u32 val = (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 127.0f) / (f32) D_80228A78.unk8);
-        val += 128;
-        D_80228A78.unkC = val;
-        D_80228A78.unkE = 255;
-        D_80228A78.unk10 = val;
-        break;
-    }
+        case 0:
+        case 2: {
+            u32 val = (u32) (((f32) D_80228A78.unk4 * 127.0f) / (f32) D_80228A78.unk8);
+            val += 128;
+            D_80228A78.unkC = val;
+            D_80228A78.unkE = 255;
+            D_80228A78.unk10 = val;
+            break;
+        }
+        case 1:
+        case 3: {
+            u32 val = (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 127.0f) / (f32) D_80228A78.unk8);
+            val += 128;
+            D_80228A78.unkC = val;
+            D_80228A78.unkE = 255;
+            D_80228A78.unk10 = val;
+            break;
+        }
     }
 }
 

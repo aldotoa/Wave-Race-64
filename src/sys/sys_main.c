@@ -208,7 +208,8 @@ void SysMain_Thread(void* entry) {
     D_801519AC = D_8015197C;
     D_801519B0 = D_80151980;
 
-    D_801519D4 = osVirtualToPhysical((void*) 0x8029A200) - D_80151970 - ALIGN16(D_1008290 - (u8*) D_1000000) - ALIGN16(D_106FB70 - D_1008290_2);
+    D_801519D4 = osVirtualToPhysical((void*) 0x8029A200) - D_80151970 - ALIGN16(D_1008290 - (u8*) D_1000000) -
+                 ALIGN16(D_106FB70 - D_1008290_2);
 
     GameLoad_LoadCodeseg();
 

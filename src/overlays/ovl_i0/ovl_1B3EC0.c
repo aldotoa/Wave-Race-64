@@ -141,10 +141,9 @@ void stub_func_i0_802C5800() {
  * - Load-bearing constructs:
  *   1) Declaration order `Gfx* temp_v0; s32 base; s32 x; s32 a1; s32 t3; s32 t7;` forces `base`
  *      to spill to 72($sp) / 0x48($sp) in the jal delay slot.
- *   2) Case 1 loop uses `gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231, (x + D_i0_802C6BD0 + 14) & 0x3FF);`
- *      with `do { ... } while (a1 < D_802C6F0C);`.
- *   3) `if (++D_i0_802C6BE4 >= 30) D_i0_802C6BE4 = 0;` retains non-likely delay slot store.
- *   4) Tail logic uses `if (++D_802C6F14 >= 600) func_i0_802C6A1C(7);` to emit `beqzl`.
+ *   2) Case 1 loop uses `gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231, (x + D_i0_802C6BD0 + 14) &
+ * 0x3FF);` with `do { ... } while (a1 < D_802C6F0C);`. 3) `if (++D_i0_802C6BE4 >= 30) D_i0_802C6BE4 = 0;` retains
+ * non-likely delay slot store. 4) Tail logic uses `if (++D_802C6F14 >= 600) func_i0_802C6A1C(7);` to emit `beqzl`.
  */
 Gfx* func_i0_802C5A7C(Gfx* arg0) {
     Gfx* temp_v0;
@@ -185,16 +184,56 @@ Gfx* func_i0_802C5A7C(Gfx* arg0) {
             temp_v0 = func_801E3EE0(arg0, 1, 0x58, 0x5F, base + 0x14, 2);
             {
                 Gfx* gdl = temp_v0;
-                { Gfx* _g = gdl++; _g->words.w0 = 0xFD700000; _g->words.w1 = (u32) (uintptr_t) &D_803D610; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xE6000000; _g->words.w1 = 0; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xF3000000; _g->words.w1 = 0x072FF040; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xE7000000; _g->words.w1 = 0; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xF5684000; _g->words.w1 = 0x80200; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xF2000000; _g->words.w1 = 0x3FC014; }
-                { Gfx* _g = gdl++; _g->words.w0 = ((((base + 0x32) << 2) & 0xFFF) | 0xE4480000); _g->words.w1 = ((((base + 0x2C) << 2) & 0xFFF) | 0x80000); }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xB3000000; _g->words.w1 = 0; }
-                { Gfx* _g = gdl++; _g->words.w0 = 0xB2000000; _g->words.w1 = 0x04000400; }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xFD700000;
+                    _g->words.w1 = (u32) (uintptr_t) &D_803D610;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xF5700000;
+                    _g->words.w1 = 0x07080200;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xE6000000;
+                    _g->words.w1 = 0;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xF3000000;
+                    _g->words.w1 = 0x072FF040;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xE7000000;
+                    _g->words.w1 = 0;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xF5684000;
+                    _g->words.w1 = 0x80200;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xF2000000;
+                    _g->words.w1 = 0x3FC014;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = ((((base + 0x32) << 2) & 0xFFF) | 0xE4480000);
+                    _g->words.w1 = ((((base + 0x2C) << 2) & 0xFFF) | 0x80000);
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xB3000000;
+                    _g->words.w1 = 0;
+                }
+                {
+                    Gfx* _g = gdl++;
+                    _g->words.w0 = 0xB2000000;
+                    _g->words.w1 = 0x04000400;
+                }
             }
             arg0 = (Gfx*) ((DLChunk*) temp_v0 + 1);
             if ((D_i0_802C6BEC == 0) && (D_i0_802C6BE8 == 0x14)) {
@@ -216,7 +255,8 @@ Gfx* func_i0_802C5A7C(Gfx* arg0) {
             x = 0;
             if (D_802C6F0C > 0) {
                 do {
-                    gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231, (x + D_i0_802C6BD0 + 14) & 0x3FF);
+                    gDPFillRectangle(arg0++, 89, (x + D_i0_802C6BD0 - 3) & 0x3FF, 231,
+                                     (x + D_i0_802C6BD0 + 14) & 0x3FF);
                     x += 0x14;
                     a1 += 1;
                 } while (a1 < D_802C6F0C);

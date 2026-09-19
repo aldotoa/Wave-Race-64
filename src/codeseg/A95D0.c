@@ -379,11 +379,10 @@ void func_801DD85C(void) {
         gCameraPerspective[i].camViewY = 0.0f;
         func_801DFD8C(&D_80228058[i], &D_80227E98[i]);
         func_801DFDA0(&D_80228058[i], &D_802280C8[i]);
-        func_801DFDA8(&D_80228058[i],
-            &gCameraPerspective[i].unk4, &gCameraPerspective[i].unk8, &gCameraPerspective[i].unkC,
-            &gCameraPerspective[i].unk1C, &gCameraPerspective[i].unk20, &gCameraPerspective[i].unk24,
-            &gCameraPerspective[i].unk10, &gCameraPerspective[i].unk14, &gCameraPerspective[i].unk18,
-            &D_80228108);
+        func_801DFDA8(&D_80228058[i], &gCameraPerspective[i].unk4, &gCameraPerspective[i].unk8,
+                      &gCameraPerspective[i].unkC, &gCameraPerspective[i].unk1C, &gCameraPerspective[i].unk20,
+                      &gCameraPerspective[i].unk24, &gCameraPerspective[i].unk10, &gCameraPerspective[i].unk14,
+                      &gCameraPerspective[i].unk18, &D_80228108);
     }
 }
 
@@ -1278,7 +1277,8 @@ void func_801E05A4(UnkCmd_801DFE80* arg0, void* arg1) {
  * Parked Floor Draft: func_801E06F8 (Score: ~3440, 85 instructions)
  * Dynamic rotation and spline transform evaluation (calls func_801DEE48 and func_801DF2F8).
  * Load-bearing constructs:
- *  - Stack frame: 0x78 with sp74 scalar (0x74), sp68[3] (0x68), sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44), sp3C[2] (0x3C padding).
+ *  - Stack frame: 0x78 with sp74 scalar (0x74), sp68[3] (0x68), sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44), sp3C[2]
+ * (0x3C padding).
  *  - Spilled sub pointer at 0x38($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
  *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
  *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).

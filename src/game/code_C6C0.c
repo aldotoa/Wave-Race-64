@@ -2331,7 +2331,14 @@ void func_80067C6C(void) {
                 } while (var_s0 < gRiders);
             }
         } else {
-            func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC(func_80067BFC((Gfx*) &D_8011EDE0, 0, D_800D48DC), 1, D_800D48E0), 2, D_800D48DC), 3, D_800D48E0), 4, D_800D48DC), 5, D_800D48E0);
+            func_80067BFC(
+                func_80067BFC(
+                    func_80067BFC(
+                        func_80067BFC(func_80067BFC(func_80067BFC((Gfx*) &D_8011EDE0, 0, D_800D48DC), 1, D_800D48E0), 2,
+                                      D_800D48DC),
+                        3, D_800D48E0),
+                    4, D_800D48DC),
+                5, D_800D48E0);
         }
     }
 }

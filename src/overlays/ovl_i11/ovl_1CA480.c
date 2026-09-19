@@ -32,7 +32,7 @@ void func_i11_802C5D48(void) {
     s32 temp_t9;
     Limit_802C618C* temp_a0;
 
-    if (*(u16*)((u8*)&D_801CE658 + 0x3A) & 0xB000) {
+    if (*(u16*) ((u8*) &D_801CE658 + 0x3A) & 0xB000) {
         if (D_i11_802C6150 == 2) {
             sp18 = 1;
             func_800C3050(D_800DA9EC[D_i11_802C6150]);
@@ -44,12 +44,12 @@ void func_i11_802C5D48(void) {
             AudioGeneral_PlaySound(0x11, 0);
         }
     } else {
-        if (*(u16*)((u8*)&D_801CE658 + 0x3A) & 0x4000) {
+        if (*(u16*) ((u8*) &D_801CE658 + 0x3A) & 0x4000) {
             func_i11_802C6098(0x3C);
             AudioGeneral_PlaySound(0x16, 0);
             return;
         }
-        if (*(u16*)((u8*)&D_801CE658 + 2) & 0x800) {
+        if (*(u16*) ((u8*) &D_801CE658 + 2) & 0x800) {
             temp_t4 = D_i11_802C6150 - 1;
             D_i11_802C6150 = temp_t4;
             if (temp_t4 < 0) {
@@ -58,7 +58,7 @@ void func_i11_802C5D48(void) {
             AudioGeneral_PlaySound(0x10, 0);
             return;
         }
-        if (*(u16*)((u8*)&D_801CE658 + 2) & 0x400) {
+        if (*(u16*) ((u8*) &D_801CE658 + 2) & 0x400) {
             temp_t9 = D_i11_802C6150 + 1;
             D_i11_802C6150 = temp_t9;
             if (temp_t9 >= 4) {
@@ -67,7 +67,7 @@ void func_i11_802C5D48(void) {
             AudioGeneral_PlaySound(0x10, 0);
             return;
         }
-        if (*(u16*)((u8*)&D_801CE658 + 2) & 0x200) {
+        if (*(u16*) ((u8*) &D_801CE658 + 2) & 0x200) {
             if (D_i11_802C6150 != 3) {
                 temp_a0 = &D_i11_802C618C[D_i11_802C6150];
                 temp_v0 = &D_800DA9EC[D_i11_802C6150];
@@ -81,7 +81,7 @@ void func_i11_802C5D48(void) {
             AudioGeneral_PlaySound(0x10, 0);
             return;
         }
-        if (*(u16*)((u8*)&D_801CE658 + 2) & 0x100) {
+        if (*(u16*) ((u8*) &D_801CE658 + 2) & 0x100) {
             if (D_i11_802C6150 != 3) {
                 temp_a0 = &D_i11_802C618C[D_i11_802C6150];
                 temp_v0 = &D_800DA9EC[D_i11_802C6150];
