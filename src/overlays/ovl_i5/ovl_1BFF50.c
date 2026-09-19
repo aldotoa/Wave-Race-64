@@ -137,7 +137,6 @@ Gfx* func_i5_802C5C1C(Gfx* glistp) {
     return glistp;
 }
 
-
 #ifdef NON_MATCHING
 void func_i5_802C5DC0(void) {
     /* Port Blue moving container barge kinematic update */

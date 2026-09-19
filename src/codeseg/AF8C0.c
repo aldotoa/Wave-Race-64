@@ -86,7 +86,8 @@ Gfx* func_801E1E8C(Gfx* glistp) {
  * Load-bearing structures:
  * - isWrap = (D_802287E0 < D_802287E4) ? 0 : 1;
  * - do-while loop from i = 0 to 16 with step 2
- * - conditional matrix push and pop: gSPMatrix(..., G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH); ... gSPPopMatrix(..., G_MTX_MODELVIEW);
+ * - conditional matrix push and pop: gSPMatrix(..., G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH); ... gSPPopMatrix(...,
+ * G_MTX_MODELVIEW);
  */
 extern Gfx D_106F6C0;
 extern Gfx* D_80226040[];
@@ -126,7 +127,7 @@ Gfx* func_801E2058(Gfx* glistp) {
         }
 
         if (cond != 0) {
-            gSPMatrix(glistp++, (u8*)D_801CE5F8 + (i << 6) + 0x1380, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+            gSPMatrix(glistp++, (u8*) D_801CE5F8 + (i << 6) + 0x1380, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
             gSPDisplayList(glistp++, D_80226040[D_802287E8[i]]);
             gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
         }
@@ -141,7 +142,7 @@ Gfx* func_801E2058(Gfx* glistp) {
         }
 
         if (cond != 0) {
-            gSPMatrix(glistp++, (u8*)D_801CE5F8 + (i << 6) + 0x13C0, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+            gSPMatrix(glistp++, (u8*) D_801CE5F8 + (i << 6) + 0x13C0, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
             gSPDisplayList(glistp++, D_80226040[D_802287E8[i + 1]]);
             gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
         }

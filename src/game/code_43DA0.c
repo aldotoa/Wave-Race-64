@@ -466,46 +466,31 @@ Gfx* func_80091CD8(Gfx* gdl) {
     return gdl;
 }
 
-#if defined(NEEDS_DATA) || defined(NON_MATCHING)
 void* func_80091DBC(Gfx* gdl) {
-    /* FLOOR (decomp.me S3XKL, LLONSIT, score 0 remotely):
-     * Probe of this exact body: TARGET CURRENT (110), all rows reloc-only,
-     * relocs agree 1:1 at matching offsets -- but the `static` binds a
-     * TU-local (renamed by asm-processor convert-statics) instead of the
-     * shared .data D_800DA914 (12 bytes, see asm/us/rev1/data/8F000.data.s),
-     * so the link resolves different addresses and the ROM breaks (measured
-     * 6171-byte scattered ripple from the .bss shift; pristine tree is OK).
-     * Shared-binding variants (pure extern, tentative def, array-index):
-     * IDO keeps D's address live in a reg (2820). Named-temp local parks the
-     * value in v0 (945: only address materialization + store placement left).
-     * Late `D = temp` before the last if: 1070. Still open: a formulation
-     * that binds the shared symbol AND emits the destructive-load/store-late
-     * shape. Do NOT promote until `make` says OK. */
-    static s32 D_800DA914 = { 0 };
+    s32* p = &D_800DA914;
+    s32 val = (*p % 32) + 1;
 
-    D_800DA914 = (D_800DA914 % 32) + 1;
-    if ((D_800DA914 == 0x1C) || (D_800DA914 == 0x1F)) {
+    if ((val == 0x1C) || (val == 0x1F)) {
         gSPSegment(gdl++, 0x09, D_8035D200);
     } else {
         gSPSegment(gdl++, 0x09, D_8035C800);
     }
-    if ((D_800DA914 == 5) || (D_800DA914 == 9)) {
+    if ((val == 5) || (val == 9)) {
         gSPSegment(gdl++, 0x0B, D_8035E600);
     } else {
         gSPSegment(gdl++, 0x0B, D_8035DC00);
     }
-    if ((D_800DA914 == 0xB) || (D_800DA914 == 0xE)) {
+    if ((val == 0xB) || (val == 0xE)) {
         gSPSegment(gdl++, 0x0C, D_8035FA00);
     } else {
         gSPSegment(gdl++, 0x0C, D_8035F000);
     }
-    if ((D_800DA914 == 0x19) || ((D_800DA914 == 0x1C))) {
+
+    *p = val;
+    if ((val == 0x19) || (*(volatile s32*) p = val, val == 0x1C)) {
         gSPSegment(gdl++, 0x0A, D_80360E00);
     } else {
         gSPSegment(gdl++, 0x0A, D_80360400);
     }
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43DA0/func_80091DBC.s")
-#endif

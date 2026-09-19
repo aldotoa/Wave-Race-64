@@ -1307,21 +1307,29 @@ void func_801FAD68(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32* arg4, s32* arg5,
     if (dx == 0) {
         sx = 0;
     } else {
-        if (dx > 0) err = 1; else err = -1;
+        if (dx > 0)
+            err = 1;
+        else
+            err = -1;
         sx = err;
     }
 
     if (dy == 0) {
         sy = 0;
     } else {
-        if (dy > 0) err = 1; else err = -1;
+        if (dy > 0)
+            err = 1;
+        else
+            err = -1;
         sy = err;
     }
 
     err = 0;
-    if (dx < 0) abs_dx = -dx;
+    if (dx < 0)
+        abs_dx = -dx;
     dx = arg0;
-    if (dy < 0) abs_dy = -dy;
+    if (dy < 0)
+        abs_dy = -dy;
     *arg5 = arg0;
     dy = arg1;
     count = 1;

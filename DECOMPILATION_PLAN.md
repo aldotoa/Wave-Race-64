@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **283 remaining non-matching functions** (18 matched) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **282 remaining non-matching functions** (19 matched) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **283 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,084** | 1,367 | **79.30%** |
-| **Non-Matching Functions** | **283** | 1,367 | **20.70%** |
-| **Matched Code Bytes** | **353,776 B** | 834,128 B | **42.41%** |
+| **Matched Functions** | **1,085** | 1,367 | **79.37%** |
+| **Non-Matching Functions** | **282** | 1,367 | **20.63%** |
+| **Matched Code Bytes** | **354,168 B** | 834,128 B | **42.46%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **416** | 416 | **100% OK** |
 
@@ -22,13 +22,13 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
-| **1** | Immediate Quick Wins | 5 | 6 | 11 | Low | High-velocity leaf & overlay routines |
+| **1** | Immediate Quick Wins | 4 | 7 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 19 | 0 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **283** | **18** | **301** | | |
+| **Total** | | **282** | **19** | **301** | | |
 
 ---
 
@@ -50,7 +50,7 @@ These functions have the highest matching velocity: **fewer than 100 instruction
 | 8 | `func_i13_802C832C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 86 | 7/5  | Integer Clean  | Pending | Routine logic  |
 | 9 | `func_i10_802C5800` | `src/overlays/ovl_i10/ovl_1C9150.c` | 90 | 18/0  | Integer Clean  | Pending | Routine logic  |
 | 10 | `func_i8_802C5D3C` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 95 | 6/6  | Integer Clean  | **MATCHED** | Stunt mode ramp and floating ring display list generator  |
-| 11 | `func_80091DBC` | `src/game/code_43DA0.c` | 98 | 13/0  | Integer Clean  | Pending | Routine logic  |
+| 11 | `func_80091DBC` | `src/game/code_43DA0.c` | 98 | 13/0  | Integer Clean  | **MATCHED** | 3D wake particle buffer cleanup  |
 
 ## Tier 2: Small Refinements & Floor Solvers (< 100 insns, Minimal Allocator Floors)
 

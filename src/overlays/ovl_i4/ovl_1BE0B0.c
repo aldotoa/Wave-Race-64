@@ -126,9 +126,9 @@ Gfx* func_i4_802C6778(Gfx* gdl) {
     temp_t1 = &D_800DB5B0[course * 2];
     temp_v1 = (course << 15) + 0x10000;
 
-    gSPDisplayList(gdl++, (Gfx*)(temp_t1[0] + temp_v1));
+    gSPDisplayList(gdl++, (Gfx*) (temp_t1[0] + temp_v1));
     gSPClearGeometryMode(gdl++, G_CULL_BACK);
-    gSPDisplayList(gdl++, (Gfx*)(var_a3[0] + temp_v1));
+    gSPDisplayList(gdl++, (Gfx*) (var_a3[0] + temp_v1));
     gSPSetGeometryMode(gdl++, G_CULL_BACK);
     gDPPipeSync(gdl++);
 
@@ -136,9 +136,9 @@ Gfx* func_i4_802C6778(Gfx* gdl) {
     gdl->words.w1 = 0x005049D8;
     gdl++;
 
-    gSPDisplayList(gdl++, (Gfx*)(temp_t1[1] + temp_v1));
+    gSPDisplayList(gdl++, (Gfx*) (temp_t1[1] + temp_v1));
     gSPClearGeometryMode(gdl++, G_CULL_BACK);
-    gSPDisplayList(gdl++, (Gfx*)(var_a3[1] + temp_v1));
+    gSPDisplayList(gdl++, (Gfx*) (var_a3[1] + temp_v1));
     gDPPipeSync(gdl++);
 
     gdl->words.w0 = 0xED000000;
@@ -166,12 +166,11 @@ Gfx* func_i4_802C69C4(Gfx* gdl, s32 arg1, s32 arg2) {
             height = 3;
         }
 
-        gDPLoadTextureTile(gdl++, D_80A0008 + tex_offset, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, height,
-                           0, 0, 117, height - 1, 0,
-                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(gdl++, D_80A0008 + tex_offset, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, height, 0, 0, 117,
+                           height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gdl++, arg1 << 2, cur_y << 2, (arg1 + 0x76) << 2, (cur_y + height) << 2,
-                            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gdl++, arg1 << 2, cur_y << 2, (arg1 + 0x76) << 2, (cur_y + height) << 2, G_TX_RENDERTILE, 0,
+                            0, 1 << 10, 1 << 10);
     }
 
     return gdl;
