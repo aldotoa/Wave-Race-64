@@ -1230,14 +1230,26 @@ f32 func_801ED154(f32, f32);
 
 #ifdef NON_MATCHING
 /*
- * Parked Floor Draft: func_801E0304 (Score: ~2580, 84 instructions)
- * Dynamic rotation and spline transform evaluation (calls func_801DED44 and func_801DF2F8).
- * Load-bearing constructs:
- *  - Stack frame: 0x68 with arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44), sp3C[2] (0x3C padding).
- *  - Spilled sub pointer at 0x38($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
- *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
- *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
- *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
+ * Parked Floor Draft: func_801E0304 (Score: 2420 standalone-probe-verified,
+ * 84 instructions). Dynamic rotation and spline transform evaluation (calls
+ * func_801DED44 and func_801DF2F8). Frame (0x68), saves (s0/ra), prologue,
+ * DED44 call, sub-pointer spill/reload at 0x38($sp), and float prologue
+ * through 0x44 all match byte-for-byte. Load-bearing constructs:
+ *  - Stack frame: 0x68 with arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3]
+ *    (0x44), sp3C[2] (0x3C padding). Adding any extra local inflates the
+ *    frame (0x78) and shifts every stack offset, so float temporaries must
+ *    come from statement order, never new variables (verified by probe).
+ *  - `sub->unk10 = 0.0f` sits between the temp_v0 and temp_v1 statements
+ *    (moving it there dropped the floor 2875 -> 2420); placing it right
+ *    after unkC or adding locals regresses.
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC =
+ *    temp_fv0. Rotation angle via func_801ED154(*arg0->unk1C[2],
+ *    *arg0->unk1C[0]). Coordinate mapping: * 4096.0f / 360.0f with COS /
+ *    SIN table lookups.
+ * Remaining gap: float temp ($f) coloring and int temp naming through the
+ * div/trunc/index tail, plus a few scheduler row orders. The sp44 output
+ * formulas still need verification against retail by basic-block
+ * simulation before further sweeps.
  */
 void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     f32 sp5C[3];
@@ -1254,8 +1266,8 @@ void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     sub = &arg0->obj->sub;
     temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
     sub->unkC = temp_fv0;
-    sub->unk10 = 0.0f;
     temp_v0 = (s32) (((sp50[1] + temp_fv0) * 4096.0f) / 360.0f);
+    sub->unk10 = 0.0f;
     temp_v1 = (s32) ((sp50[2] * 4096.0f) / 360.0f);
     temp_fv1 = sp50[0] * COS(temp_v1);
     sp44[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
