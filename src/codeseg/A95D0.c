@@ -820,72 +820,77 @@ void func_801DF5F0(void* dst, void* src) {
 void func_801DF668(void* workBuf, f32* copySrc, f32* lookupSrcDst, f32* singleA, f32* offsetTriplet, f32* streamSrc,
                    f32* singleB) {
     /* Staff credits backdrop texture blender: gather scattered float
-       triplets into the struct at workBuf. PARKED at floor (best probe: all
-       rows match except frame + cursor/trip regs + one li):
-       - IDO coalesces the bumped `copyDstPos = workBuf + 0x5C` cursor into a0 in
-         every probed spelling (~25 variants: decl/init/bump orders, u8*/
-       f32* cursors, block scopes, `register`, no-temp `dst[-1] = src[-1]`
-         form), forcing an s0 frame to home workBuf;
-       retail keeps workBuf pinned in a0 with the cursor in t0 and no frame.Assignment order maps 1st->v0, 2nd->v1,
-           later ones to arg - regs;
-       temps never picked.- Retail materializes `li t1,
-           3` twice(loop1 prologue + lookup - guard delay slot, which executes unconditionally);
-       single - literal probes emit one shared li,
-           while shared - trip - variable probes send the loop optimizer off the rails(peel / unroll + spills + frame),
-           so trip counts must stay literal 3s. The `lookupSrcDst =
-               workBuf + 4` assign sits in the singleA - guard delay slot(both paths);
-       spelled here as straight - line code before the if.Revisit with whole - file context or
-           a matched cursor - in - temp idiom.*/ s32 loopCount;
-       f32* copySrcPos;
-       f32* copyDstPos;
-       f32* streamPos;
-       f32 sample;
-       s32 selIdxA;
-       s32 selIdxB;
+       triplets into the struct at workBuf. PARKED at floor CURRENT (1544),
+       standalone-IDO-probe-verified. Structure (guards, counter loops with
+       delay-slot stores, beql load patterns, straight-line workBuf+4 in the
+       singleA-guard delay slot) matches retail; the gap is register
+       allocation, all of it downstream of one decision:
+       - Retail keeps workBuf pinned in a0 for the whole frameless leaf and
+         materializes `workBuf + 0x5C` fresh per block (t0/v0/v0), with no
+         frame and no s-regs. Every probed spelling (~35 variants: decl and
+         init orders, block scopes, split vs shared counters/samples/selIdx,
+         `register`, u8 cursors, `*4` vs `<< 2`, per-block vs reused cursors)
+         coalesces a cursor into a0 and homes workBuf to s0 (sp+-8 frame);
+         downstream bases then fold to s0+large offsets instead of
+         v0+small. Micro-bisects prove -O2 always folds shared
+         base+const into memory ops (even 4 shared uses, even mixed
+         int/float), so retail's kept bases need workBuf-in-a0 pressure
+         that no probed shape reproduces. Closest structural notes:
+         `<< 2` (not `* 4`) keeps `addiu`+`sll` for the E4-style index
+         math; split counters beat shared (1584 -> 1544); per-block temps
+         beat reused cursors (2549); `lookupSrcDst = workBuf + 4` as a
+         straight-line assign before the singleA guard matches the delay
+         slot. Retail's duplicated `li t1, 3` (loop prologue + lookup-guard
+         delay) never reproduces: single-literal probes share one li. */
+    s32 loopCountA;
+    s32 loopCountB;
 
-       loopCount = 0;
-       if (copySrc != NULL) {
-           copySrcPos = copySrc;
-           copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
-           do {
-               sample = *copySrcPos;
-               loopCount += 1;
-               copySrcPos += 1;
-               copyDstPos += 1;
-               copyDstPos[-1] = sample;
-           } while (loopCount != 3);
-       }
-       if (lookupSrcDst != NULL) {
-           selIdxA = *(s32*) ((u8*) workBuf + 0xD0);
-           selIdxB = *(s32*) ((u8*) workBuf + 0xD4);
-           sample = lookupSrcDst[selIdxA];
-           *(f32*) ((u8*) workBuf + 0x80) = sample;
-           *(f32*) ((u8*) workBuf + 0x84) = lookupSrcDst[selIdxB];
-       }
-       lookupSrcDst = (f32*) ((u8*) workBuf + 4);
-       if (singleA != NULL) {
-           *(f32*) ((u8*) workBuf + 0x90) = *singleA;
-       }
-       if (offsetTriplet != NULL) {
-           copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
-           *(f32*) ((u8*) copyDstPos + 0x4C) = offsetTriplet[0];
-           *(f32*) ((u8*) copyDstPos + 0x58) = offsetTriplet[1];
-           *(f32*) ((u8*) copyDstPos + 0x64) = offsetTriplet[2];
-       }
-       loopCount = 0;
-       streamPos = streamSrc;
-       if (streamSrc != NULL) {
-           do {
-               sample = *streamPos;
-               loopCount += 1;
-               streamPos += 1;
-               lookupSrcDst += 1;
-               lookupSrcDst[8] = sample;
-           } while (loopCount != 3);
-       }
-       if (singleB != NULL) {
-           *(f32*) ((u8*) workBuf + 0x3C) = *singleB;
-       }
+    loopCountA = 0;
+    if (copySrc != NULL) {
+        f32* copySrcPos = copySrc;
+        f32* copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
+        f32 sample;
+        do {
+            sample = *copySrcPos;
+            loopCountA += 1;
+            copySrcPos += 1;
+            copyDstPos += 1;
+            copyDstPos[-1] = sample;
+        } while (loopCountA != 3);
+    }
+    if (lookupSrcDst != NULL) {
+        f32* lookupBase = (f32*) ((u8*) workBuf + 0x5C);
+        s32 selIdxA = *(s32*) ((u8*) lookupBase + 0x74);
+        s32 selIdxB = *(s32*) ((u8*) lookupBase + 0x78);
+        f32 sample = lookupSrcDst[selIdxA];
+        *(f32*) ((u8*) lookupBase + 0x24) = sample;
+        *(f32*) ((u8*) lookupBase + 0x28) = lookupSrcDst[selIdxB];
+    }
+    lookupSrcDst = (f32*) ((u8*) workBuf + 4);
+    if (singleA != NULL) {
+        *(f32*) ((u8*) workBuf + 0x90) = *singleA;
+    }
+    if (offsetTriplet != NULL) {
+        f32* tripleBase = (f32*) ((u8*) workBuf + 0x5C);
+        *(f32*) ((u8*) tripleBase + 0x4C) = offsetTriplet[0];
+        *(f32*) ((u8*) tripleBase + 0x58) = offsetTriplet[1];
+        *(f32*) ((u8*) tripleBase + 0x64) = offsetTriplet[2];
+    }
+    loopCountB = 0;
+    if (streamSrc != NULL) {
+        f32* streamPos = streamSrc;
+        f32 sample;
+        do {
+            sample = *streamPos;
+            loopCountB += 1;
+            streamPos += 1;
+            lookupSrcDst += 1;
+            lookupSrcDst[8] = sample;
+        } while (loopCountB != 3);
+    }
+    if (singleB != NULL) {
+        *(f32*) ((u8*) workBuf + 0x3C) = *singleB;
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF668.s")
