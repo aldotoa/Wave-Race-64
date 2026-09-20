@@ -255,8 +255,76 @@ void func_801DBF68(struct UnkStruct_801DB0E4_arg0* arg0) {
     }
 }
 
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    u8 unk8[0x20];
+} DC0AC_Entry;
+
+typedef struct {
+    DC0AC_Entry e[3];
+} DC0AC_Tbl78;
+
+extern DC0AC_Tbl78 D_80225D94;
+extern DC0AC_Entry D_80225E0C;
+extern struct UnkStruct_801DB0E4_arg0 D_802281C4;
+extern s32 D_80228114;
+
 #ifdef NON_MATCHING
-void func_801DC0AC(void) {
+void func_801DC0AC(struct UnkStruct_801DB0E4_arg0* arg0) {
+    /* Over-water stunt-replay particle dispatcher: stage two const blob
+       copies to the stack, run the ranged table when unk8 is set, then run
+       the tail entry. PARKED at floor CURRENT (2607),
+       standalone-IDO-probe-verified. Control flow, both memcpy loops
+       (3-word post-bump with negative-offset stores + last store in the
+       branch delay slot, via struct assignment like matched func_801DC404),
+       range checks (`>=`/`<` then `<=`/`<`, matching the bnel/beql/bnez
+       skeleton), inner equality + twin DB0E4/DB1DC calls, tail, and epilogue
+       all match in shape. Remainder is pure Chow-Hennessy coloring: retail
+       keeps 7 s-homes (entry s0, entry+8 temp s1, D_80228190 s2,
+       D_80228110 s3, D_802287A8 s4, arg0 s5, end s6, frame 0xE8); every
+       probed spelling (~40 variants: decl/init orders, explicit vs direct
+       globals, e8 temp placements, end-from-entry vs end-from-base,
+       split scopes) lands 6 s-homes (s0-s5, frame 0xE0) with the entry+8
+       temp fused into per-call `addiu a1,s0,8`, shifting all save offsets
+       and downstream temp names. The s1 cell (a per-iteration temp kept
+       across one jal instead of fused) never appears in any probe. Dead
+       axes: struct-assign vs manual copy loops, `<< 2` vs `* 4` index math,
+       counter vs end-pointer loop forms. Next: find a spelling that keeps
+       a per-iteration cross-jal temp instead of fusing it. */
+    DC0AC_Tbl78 t78;
+    DC0AC_Entry e28;
+    DC0AC_Entry* entry;
+    DC0AC_Entry* end;
+
+    t78 = D_80225D94;
+    e28 = D_80225E0C;
+
+    if (arg0->unk8 == 0) {
+        func_800AB92C();
+    }
+
+    entry = t78.e;
+    end = t78.e + 3;
+    do {
+        if ((arg0->unk8 >= entry->unk0) && (arg0->unk8 < entry->unk4)) {
+            D_802287A8 += 1;
+            if (arg0->unk8 == entry->unk0) {
+                func_801DB0E4(&D_80228190, (struct UnkStruct_801DB0E4_arg1*) &entry->unk8,
+                              &D_80228110);
+            }
+            func_801DB1DC(&D_80228190, (struct UnkStruct_801DB0E4_arg1*) &entry->unk8, &D_80228110);
+        }
+        entry += 1;
+    } while (entry != end);
+
+    if ((e28.unk0 <= arg0->unk8) && (arg0->unk8 < e28.unk4)) {
+        D_802287A8 += 1;
+        if (e28.unk0 == arg0->unk8) {
+            func_801DB0E4(&D_802281C4, (struct UnkStruct_801DB0E4_arg1*) &e28.unk8, &D_80228114);
+        }
+        func_801DB1DC(&D_802281C4, (struct UnkStruct_801DB0E4_arg1*) &e28.unk8, &D_80228114);
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC0AC.s")
