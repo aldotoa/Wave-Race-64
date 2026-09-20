@@ -2857,10 +2857,10 @@ class TestCourseLoading(unittest.TestCase):
 
     def test_func_80096694_matched(self):
         """TDE test for func_80096694 in code_4F850 (Jet ski texture and rider livery palette decompression dispatcher)."""
-        if self.is_function_decompiled("func_80096694"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_80096694 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_80096694"), "func_80096694 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "code_4F850", "func_80096694.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_80096960_matched(self):
         """TDE test for func_80096960 in code_4F850 (Multiplayer rider palette index and team color configuration)."""
