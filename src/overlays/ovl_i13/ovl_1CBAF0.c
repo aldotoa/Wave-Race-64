@@ -633,8 +633,8 @@ void func_i13_802C81AC(s32 arg0) {
 
 extern s32 D_i13_802C8D80;
 extern s32 D_i13_802C8D84;
-extern s32 D_802C8E90;
-extern s32 D_802C8E94;
+extern u32 D_802C8E90;
+extern u32 D_802C8E94;
 extern s32 D_802C8E98;
 extern s32 D_802C8E9C;
 
@@ -657,29 +657,14 @@ void func_i13_802C82A4(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-/* Course-select panel renderer: switch on 8D78. Case 1 advances the 8E98
-   counter, derives the panel height as (t*0x14)/5, resets 8E90/8E94 at
-   t >= 5, and chains 7E74 + 7FD8 with the sliding rect; cases 2/3/5 draw
-   the static rect and chain 8484. Returns the Gfx cursor.
-   Diff floor 73 probe-verified (82 vs 86 insn, 4 variants): switch header,
-   call skeleton (7E74/7FD8/8484), and return sequence exact. Remainder is
-   div-before-compare scheduling in the case-1 body plus 8E90/94 homing
-   (retail: t-regs+v1; draft: direct to a1/a2) and frame 0x30 vs 0x28.
-   Dead axes: nested vs sequential calls, decl order, block scope.
-   Load-bearing: `case 2/3/5` shared arm, `(t*0x14)/5` div shape,
-   `>= 5` compare direction. */
 Gfx* func_i13_802C832C(Gfx* arg0) {
-
     switch (D_i13_802C8D78) {
         case 1: {
-            s32 temp_t7;
             s32 temp_lo;
 
-            temp_t7 = D_802C8E98 + 1;
-            temp_lo = (temp_t7 * 0x14) / 5;
-            D_802C8E98 = temp_t7;
-            if (temp_t7 >= 5) {
+            D_802C8E98++;
+            temp_lo = (D_802C8E98 * 0x14) / 5;
+            if (D_802C8E98 >= 5) {
                 D_802C8E90 = 0x1C;
                 D_802C8E94 = 0x44;
             }
@@ -698,9 +683,6 @@ Gfx* func_i13_802C832C(Gfx* arg0) {
     }
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C832C.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Placeholder signature follows the 832C call-site evidence
