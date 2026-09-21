@@ -26,7 +26,33 @@ void func_i10_802C5800(void) {
          clear loop and reuses `$a0` for `$v1` (`move $v1, $a0`), whereas retail
          reloads `D_802C6B40` into `$a0` at line 0x40 and keeps independent `$v1`
          cursor loads. Retail also keeps `&D_i10_802C6B14` in `$v0` rather than
-         inlining `%lo` offsets. */
+         inlining `%lo` offsets.
+       - Root cause of the gap: ANY direct `D_802C6B40[...]` reference in the
+         flag/final stores constant-CSEs with the clear-cursor init, so uopt
+         keeps one address in `$a0` across the loop and copies for the cursor
+         (`move $v1, $a0`). Pointer-variable flag accesses avoid the CSE but make
+         the flags rematerialize per store (also wrong).
+       - Equivalent-address expressions such as `&D_802C6B58 - 6` and
+         `&D_802C6B4C - 3` (both == `&D_802C6B40`) break the CSE while linking
+         to the SAME bytes (`%lo(D_802C6B58-0x18)` resolves to 0x6B40), so they
+         are valid for a byte match but score as reloc differences in the
+         object-level diff gate. Best experimental variant reaches 47 of 90
+         differing instruction words (368 vs 360 bytes); the true metric is a
+         link-level compare (assemble a probe, `ld -T` it at 0x802C5800, diff
+         the raw ROM bytes), not the canonical object text.
+       - Remaining 47-word blockers (all allocator/scheduler, not C shape):
+         (a) entry emits end `$v0` before cursor `$v1` (retail: cursor first);
+         (b) scan cursor la lands in `$a2` plus `move $v1, $a2`, while retail
+         splits it (`lui $v1` early, `addiu $v1` at the loop head);
+         (c) retail has dead copies `move $t8, $a1` and `move $v0, zero` that
+         IDO 5.3 eliminates here, shifting the t-reg cascade;
+         (d) tail keeps the active pointer in `$at`/`$v1` instead of `$v0`
+         (volatile forces a register but swaps cursor/end).
+         Sweeps: ~600 probe variants (expression forms, declaration and
+         statement orders, loop spellings, volatile/register qualifiers,
+         formatting, -g1/-g2/-g3) all plateau at 47 words; a byte-accurate
+         permuter run (decomp-permuter linked-object mode) also stalls well
+         above zero. */
     s32 slotIdx;
     s32 optionBits;
     s32* scanCursor;
