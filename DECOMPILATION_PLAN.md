@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **282 remaining non-matching functions** (19 matched) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **280 remaining non-matching functions** (21 matched) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **282 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,085** | 1,367 | **79.37%** |
-| **Non-Matching Functions** | **282** | 1,367 | **20.63%** |
-| **Matched Code Bytes** | **354,168 B** | 834,128 B | **42.46%** |
+| **Matched Functions** | **1,087** | 1,367 | **79.52%** |
+| **Non-Matching Functions** | **280** | 1,367 | **20.48%** |
+| **Matched Code Bytes** | **354,856 B** | 834,116 B | **42.54%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **416** | 416 | **100% OK** |
 
@@ -22,13 +22,13 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
-| **1** | Immediate Quick Wins | 4 | 7 | 11 | Low | High-velocity leaf & overlay routines |
+| **1** | Immediate Quick Wins | 2 | 9 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 19 | 0 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **282** | **19** | **301** | | |
+| **Total** | | **280** | **21** | **301** | | |
 
 ---
 
@@ -43,12 +43,12 @@ These functions have the highest matching velocity: **fewer than 100 instruction
 | 1 | `func_i5_802C7594` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 65 | 1/0  | Integer Clean  | **MATCHED** | Routine logic  |
 | 2 | `func_i13_802C61E0` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 67 | 13/2  | Integer Clean  | **MATCHED** | Routine logic  |
 | 3 | `func_801FAD68` | `src/codeseg/B97B0.c` | 80 | 18/0  | Integer Clean  | **MATCHED** | Routine logic  |
-| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean  | Pending | Routine logic  |
+| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean, ParkedFloor | Pending (Floor 2035) | Debug text character renderer |
 | 5 | `func_800998B0` | `src/game/code_52CD0.c` | 84 | 2/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 6 | `func_i13_802C6F0C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 85 | 12/8  | Integer Clean  | **MATCHED** | Routine logic  |
-| 7 | `func_80096694` | `src/game/code_4F850.c` | 86 | 5/2  | Integer Clean  | Pending | Two statements: lets the allocator home the loaded pointer  |
-| 8 | `func_i13_802C832C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 86 | 7/5  | Integer Clean  | Pending | Routine logic  |
-| 9 | `func_i10_802C5800` | `src/overlays/ovl_i10/ovl_1C9150.c` | 90 | 18/0  | Integer Clean  | Pending | Routine logic  |
+| 7 | `func_80096694` | `src/game/code_4F850.c` | 86 | 5/2  | Integer Clean  | **MATCHED** | Jet ski texture and rider livery palette decompression dispatcher |
+| 8 | `func_i13_802C832C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 86 | 7/5  | Integer Clean  | **MATCHED** | Course-select panel renderer & sliding window animation dispatcher |
+| 9 | `func_i10_802C5800` | `src/overlays/ovl_i10/ovl_1C9150.c` | 90 | 18/0  | Integer Clean, ParkedFloor | Pending (Floor 1325) | Routine logic  |
 | 10 | `func_i8_802C5D3C` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 95 | 6/6  | Integer Clean  | **MATCHED** | Stunt mode ramp and floating ring display list generator  |
 | 11 | `func_80091DBC` | `src/game/code_43DA0.c` | 98 | 13/0  | Integer Clean  | **MATCHED** | 3D wake particle buffer cleanup  |
 
@@ -60,7 +60,7 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
 | 12 | `func_i0_802C6AE4` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 52 | 4/1  | ParkedFloor  | Pending | Routine logic  |
-| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats  | Pending | Routine logic  |
+| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats, ParkedFloor  | Pending (Floor 1544) | Routine logic  |
 | 14 | `func_800AC098` | `src/game/code_52CD0.c` | 59 | 4/0  | Floats, ParkedFloor  | Pending | Routine logic  |
 | 15 | `func_i13_802C69CC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 60 | 11/1  | ParkedFloor  | Pending | Routine logic  |
 | 16 | `func_801DEB08` | `src/codeseg/A95D0.c` | 62 | 4/1  | Floats, ParkedFloor  | Pending | Routine logic  |
@@ -71,7 +71,7 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | 21 | `func_i13_802C65D4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 75 | 11/1  | ParkedFloor  | Pending | Routine logic  |
 | 22 | `func_801EC0D4` | `src/codeseg/B97B0.c` | 78 | 1/4  | ParkedFloor  | Pending | Routine logic  |
 | 23 | `func_801DEC00` | `src/codeseg/A95D0.c` | 81 | 5/1  | Floats, ParkedFloor  | Pending | Routine logic  |
-| 24 | `func_801E0304` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats  | Pending | Routine logic  |
+| 24 | `func_801E0304` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats, ParkedFloor  | Pending (Floor 2420) | Routine logic  |
 | 25 | `func_801E0454` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats  | Pending | Routine logic  |
 | 26 | `func_801EC3AC` | `src/codeseg/B97B0.c` | 85 | 0/3  | ParkedFloor  | Pending | Routine logic  |
 | 27 | `func_801E06F8` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | Pending | Routine logic  |
@@ -92,7 +92,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 34 | `func_1B1FB0_802C6E40` | `src/unused_code_1B1FB0.c` | 110 | 1/0  | Integer Clean  | Pending | Flight velocity integration and aerodynamic lift  |
 | 35 | `func_1B1FB0_802C6FF8` | `src/unused_code_1B1FB0.c` | 112 | 1/0  | Integer Clean  | Pending | Debug flight matrix transform setup  |
 | 36 | `func_i13_802C62EC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 112 | 17/5  | Integer Clean  | Pending | Routine logic  |
-| 37 | `func_801DC0AC` | `src/codeseg/A95D0.c` | 114 | 10/5  | Integer Clean  | Pending | 3D particle fireworks and water splash simulator  |
+| 37 | `func_801DC0AC` | `src/codeseg/A95D0.c` | 114 | 10/5  | Integer Clean, ParkedFloor | Pending (Floor 2607) | 3D particle fireworks and water splash simulator  |
 | 38 | `func_801E1E8C` | `src/codeseg/AF8C0.c` | 115 | 11/10  | Integer Clean  | **MATCHED** | Machine tuning interaction and controller input loop  |
 | 39 | `func_80067C6C` | `src/game/code_C6C0.c` | 117 | 13/12  | Integer Clean  | **MATCHED** | Course intro cinematic camera path interpolation  |
 | 40 | `func_i4_802C69C4` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 122 | 3/0  | Integer Clean  | **MATCHED** | Sunny Beach shoreline surf swell display list emitter  |
