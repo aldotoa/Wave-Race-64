@@ -414,58 +414,53 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
 /* Debug text character renderer: emits one glyph's RDP packets at arg0,
    returns the advanced cursor. Values below 0x10 emit nothing; values at
    or above 0x42 use glyph 0x3B.
- * PARKED behind NON_MATCHING at floor CURRENT (2035) via standalone IDO
- * probe (macro-temp chain idiom, see below). Load-bearing constructs:
- *  1) `{ Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = ...; _g->words.w1 = ...; }`
- *     per packet forces the retail `addiu t*,prev,8` chain; plain `gdl++`
- *     folds to base+offset under -O2 (proven in scratch micro probes).
- *  2) E4 words use `<< 2` (not `* 4`): `(t << 2)` keeps
- *     `addiu t,a,0x10` + `sll t,t,2`, while `* 4` distributes to
- *     `sll` + `addiu ...,64`.
- *  3) Prototype stays `(s32, char, s32, s32)`: changing to `signed char`
- *     drops the probe to 1645 but breaks the matching ROM (caller
- *     `func_1B1FB0_802C7304` codegen changes), so it was reverted.
- * Remaining gap: head has extra `sw a1,4(sp)` before the first `beqz` plus
- * `move t0,v0` in its delay slot vs retail single `sw` in delay; this
- * shifts downstream temps by one reg (t1 vs t0, etc.) and reorders the
- * first FD70 store before the img computation. Double-mask head
- * (`if ((arg1 & 0xFF) < 0x10)`) fixes the head perfectly but regresses the
- * body to 1780. Next: bisect second-branch delay fill (`addiu t0,a0,8`
- * vs `move`) via v0/arg1 live-range overlap. */
+ * PARKED behind NON_MATCHING at CURRENT (390), improved from the previous
+ * C candidate's CURRENT (2035). The byte cursor advances by 8 after each
+ * Gfx packet, preserving the integer cursor used by existing callers.
+ * Remaining scheduler mismatch: retail puts `addiu t0,a0,8` in the clamp
+ * branch delay slot and computes the glyph address into `t4` before the
+ * first packet stores. IDO assigns those values to different registers and
+ * routes the first packet cursor through `a1`; the register renumbering
+ * continues through the final E4/B3/B2 packets. Local declaration order
+ * and signedness sweeps did not lower this floor. A s32 glyph argument lowers
+ * the numeric score to 345, but changes the opening `andi v0,a1,0xff` to
+ * `andi v1,a1,0xff` and removes the required `sw a1,4(sp)`; it is not a match.
+ * Packet, pointer, image-address, and clamp-expression sweeps did not resolve
+ * the opening register move. Keep this implementation non-matching until the
+ * complete 0x14C-byte function diffs cleanly. */
 s32 func_1B1FB0_802C71B8(s32 arg0, char arg1, s32 arg2, s32 arg3) {
-    s32 v0 = arg1 & 0xFF;
-    Gfx* gdl;
+    s32 v0;
     u8* img;
     s32 t8a;
     s32 t6a;
 
-    if (v0 < 0x10) {
-        return arg0;
+    if ((arg1 & 0xFF) < 0x10) {
+        return (s32)arg0;
     }
-    gdl = (Gfx*) arg0;
+    v0 = arg1 & 0xFF;
     if (v0 >= 0x42) {
         v0 = 0x3B;
     }
     v0 -= 0x10;
     img = &D_8000008[(v0 & 0xFF) << 8];
 
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xFD700000; _g->words.w1 = (u32) img; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xE6000000; _g->words.w1 = 0; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xF3000000; _g->words.w1 = 0x0707F400; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xE7000000; _g->words.w1 = 0; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xF5680400; _g->words.w1 = 0x00080200; }
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xF2000000; _g->words.w1 = 0x0003C03C; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xFD700000; _g->words.w1 = (u32)img; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xE6000000; _g->words.w1 = 0; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF3000000; _g->words.w1 = 0x0707F400; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xE7000000; _g->words.w1 = 0; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF5680400; _g->words.w1 = 0x00080200; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF2000000; _g->words.w1 = 0x0003C03C; }
 
     t8a = arg2 + 0x10;
     t6a = arg3 + 0x10;
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = (((t8a << 2) & 0xFFF) << 0xC) | 0xE4000000 | ((t6a << 2) & 0xFFF); _g->words.w1 = (((arg2 << 2) & 0xFFF) << 0xC) | ((arg3 << 2) & 0xFFF); }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = (((t8a << 2) & 0xFFF) << 0xC) | 0xE4000000 | ((t6a << 2) & 0xFFF); _g->words.w1 = (((arg2 << 2) & 0xFFF) << 0xC) | ((arg3 << 2) & 0xFFF); }
 
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xB3000000; _g->words.w1 = 0; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xB3000000; _g->words.w1 = 0; }
 
-    { Gfx* _g = (Gfx*)(gdl++); _g->words.w0 = 0xB2000000; _g->words.w1 = 0x04000400; }
+    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xB2000000; _g->words.w1 = 0x04000400; }
 
-    return (s32) gdl;
+    return arg0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C71B8.s")
