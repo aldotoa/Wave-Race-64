@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **280 remaining non-matching functions** (21 matched) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **279 remaining non-matching functions** (22 matched) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **280 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,087** | 1,367 | **79.52%** |
-| **Non-Matching Functions** | **280** | 1,367 | **20.48%** |
-| **Matched Code Bytes** | **354,856 B** | 834,116 B | **42.54%** |
+| **Matched Functions** | **1,088** | 1,367 | **79.59%** |
+| **Non-Matching Functions** | **279** | 1,367 | **20.41%** |
+| **Matched Code Bytes** | **355,076 B** | 834,116 B | **42.57%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **416** | 416 | **100% OK** |
+| **Passing Regression Tests** | **417** | 417 | **100% OK** |
 
 ---
 
@@ -23,12 +23,12 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
 | **1** | Immediate Quick Wins | 2 | 9 | 11 | Low | High-velocity leaf & overlay routines |
-| **2** | Small Refinements & Floor Solvers | 19 | 0 | 19 | Low-Medium | Allocator bisecting & float leaf math |
+| **2** | Small Refinements & Floor Solvers | 18 | 1 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **280** | **21** | **301** | | |
+| **Total** | | **279** | **22** | **301** | | |
 
 ---
 
@@ -60,7 +60,7 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
 | 12 | `func_i0_802C6AE4` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 52 | 4/1  | ParkedFloor  | Pending | Routine logic  |
-| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats, ParkedFloor  | Pending (Floor 1544) | Routine logic  |
+| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats  | **MATCHED** | Credits backdrop scattered float data copier  |
 | 14 | `func_800AC098` | `src/game/code_52CD0.c` | 59 | 4/0  | Floats, ParkedFloor  | Pending | Routine logic  |
 | 15 | `func_i13_802C69CC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 60 | 11/1  | ParkedFloor  | Pending | Routine logic  |
 | 16 | `func_801DEB08` | `src/codeseg/A95D0.c` | 62 | 4/1  | Floats, ParkedFloor  | Pending | Routine logic  |
