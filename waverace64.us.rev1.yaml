@@ -420,6 +420,8 @@ segments:
     subsegments:
     - [0x1B3EC0, c, ovl_1B3EC0]
     - [0x1B5280, data, ovl_1B3EC0]
+    - [0x1B52B0, .data, ovl_1B3EC0]
+    - [0x1B5360, data, ovl_1B3EC0_post]
     - [0x1B5560, .rodata, ovl_1B3EC0]
 
     # Loaded when the game enters in a race

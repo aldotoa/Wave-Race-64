@@ -14,10 +14,32 @@ extern s32 D_80154344;
 extern s32 D_i0_802C6BC4;
 extern s32 D_i0_802C6BC8;
 extern s32 D_i0_802C6BEC;
-extern s32 D_i0_802C6BF0[];
-extern s32 D_i0_802C6BFC[];
 extern s32 D_805AF88;
 void func_i0_802C6A1C(s32 arg0);
+
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+} UnkStruct_802C6BF0;
+
+UnkStruct_802C6BF0 D_i0_802C6BF0[2] = {
+    { 0x137, 0x188, 0x1E },
+    { 0x2BF, 0x1A8, 0x1F },
+};
+
+s32 D_i0_802C6C08[] = {
+    0, 0x00020002, 0x00020001, 0x00010001,
+    0x00080008, 0x00080008, 0x00080008, 0x00080000,
+};
+
+s32 D_i0_802C6C28[] = {
+    0x00010000, -1, 0x12, 0xE, 0, 3,
+    0xFFFF0000, 0, 0x13, 0x17, 0x00010001, 0,
+    0xFFFF0000, 0xB, 0x3B, 0x16, 0x00010001, 0x00020000,
+    0xFFFF0000, 1, 0x14, 0x2B, 0x00020002, 0,
+    0xFFFF0000, 5, 0x15, 0x22, 0x00010001, 0,
+};
 
 #ifdef NON_MATCHING
 /* Skeletal stand-in for the playable build. No asm exists in-repo (the
@@ -626,34 +648,24 @@ void func_i0_802C6A1C(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 Gfx* func_i0_802C6AE4(Gfx* arg0) {
-    /* Training text glyph scroller: advances two text rows leftward, draws
-       visible glyphs, resets both when fully scrolled out.
-       Diff floor 220: loop/call/epilogue all match; only the reset block
-       differs (retail groups both constants before both stores under one
-       shared lui, all probed rewrites keep per-store luis). Parked. */
-    s32 count = 0;
-    s32* ptr = D_i0_802C6BF0;
-    s32 i = 0;
+    s32 var_s1;
+    s32 var_s2;
+    UnkStruct_802C6BF0* var_s0;
 
-    do {
-        ptr[0] -= 2;
-        if (ptr[0] >= 8 - ptr[1]) {
-            arg0 = func_801E3EE0(arg0, 3, ptr[2], ptr[0], 0xC4, 6);
+    var_s2 = 0;
+
+    for (var_s0 = D_i0_802C6BF0, var_s1 = 0; var_s1 < 2; var_s1++, var_s0++) {
+        var_s0->unk0 -= 2;
+        if (var_s0->unk0 >= (8 - var_s0->unk4)) {
+            arg0 = func_801E3EE0(arg0, 3, var_s0->unk8, var_s0->unk0, 0xC4, 6);
         } else {
-            count++;
+            var_s2++;
         }
-        i++;
-        ptr += 3;
-    } while (i != 2);
-
-    if (count == 2) {
-        D_i0_802C6BF0[0] = 0x137;
-        D_i0_802C6BFC[0] = 0x2BF;
+    }
+    if (var_s2 == 2) {
+        D_i0_802C6BF0[0].unk0 = 0x137;
+        D_i0_802C6BF0[1].unk0 = 0x2BF;
     }
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i0/ovl_1B3EC0/func_i0_802C6AE4.s")
-#endif
