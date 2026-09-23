@@ -2727,26 +2727,30 @@ Gfx* func_800AB95C(Gfx* arg0, s32 arg1) {
 #ifdef NON_MATCHING
 void func_800AC098(UnkStruct_800AC098_src* src, s32 n) {
     /* Record lap flash alert display list generator.
-       Best probe score: CURRENT (275). The loop shape, memory offsets,
-       branch skeleton, and delay-slot stores match. Remaining differences are
-       register coloring (end/dst/source/cap/input: a1/a2/t0/a3/v1 vs
-       a2/v1/a1/t0/a3) and setup scheduling for the constant 1. Tried
-       declaration and type permutations, register hints, pointer forms,
-       counter roles, loop forms, and setup reordering without improving 275.
-       Keep this draft guarded until the diff reaches zero. */
+       Parked at probe-verified CURRENT (185). The 59-instruction loop shape,
+       memory offsets, branches, delay slots, saved input (a3), source cursor
+       (a1), and cap counter (t0) match. The remaining register rotation is
+       end/main index/destination: target a2/a0/v1, draft v1/a2/a0. The
+       constant-one load is scheduled after destination/source setup instead
+       of before it. Keep the C guarded until the diff reaches zero. */
     s32 i = D_800E62CC;
-    UnkStruct_800AC098_src* hold = src;
+    s32 j;
+    StructVarS0* dst;
+    UnkStruct_800AC098_src* s;
+    UnkStruct_800AC098_src* hold;
+    s32 loop;
 
     if (i < 30) {
-        n = i + n;
+        s32 end;
+        end = i + n;
+        j = i;
 
-        if (i < n) {
-            s32 j = i;
-            StructVarS0* dst = &D_801CF060[i];
-            s32 loop = i;
-            UnkStruct_800AC098_src* s;
-            src = hold;
+        if (i < end) {
+            dst = &D_801CF060[i];
             s = src;
+            hold = src;
+            loop = i;
+            src = hold;
             i = 1;
             do {
                 dst->unk0 = s->unk0;
@@ -2770,9 +2774,9 @@ void func_800AC098(UnkStruct_800AC098_src* src, s32 n) {
                     goto end;
                 }
                 dst++;
-            } while (j < n);
+            } while (j < end);
         }
-        D_800E62CC = n;
+        D_800E62CC = end;
     }
 end:;
 }
