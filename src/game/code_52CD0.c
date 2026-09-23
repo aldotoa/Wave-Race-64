@@ -2727,28 +2727,33 @@ Gfx* func_800AB95C(Gfx* arg0, s32 arg1) {
 #ifdef NON_MATCHING
 void func_800AC098(UnkStruct_800AC098_src* src, s32 n) {
     /* Record lap flash alert display list generator.
-       Diff floor 560 probe-verified: all 56 instructions, opcodes, memory
-       offsets, branches, and delay slots match 1-to-1. Remainder is pure
-       Chow-Hennessy register coloring rotation across leaf temps:
-       (end/dst/s: a2/v1/a1 vs v1/a1/a2, i/j: a0/t0 vs v0/a0, const 1: v0 vs a3).
-       Tried: 30+ register hints, declaration permutations, loop forms (for/while
-       explode 1260-1535; do-while is strictly required). Parked. */
+       Best probe score: CURRENT (275). The loop shape, memory offsets,
+       branch skeleton, and delay-slot stores match. Remaining differences are
+       register coloring (end/dst/source/cap/input: a1/a2/t0/a3/v1 vs
+       a2/v1/a1/t0/a3) and setup scheduling for the constant 1. Tried
+       declaration and type permutations, register hints, pointer forms,
+       counter roles, loop forms, and setup reordering without improving 275.
+       Keep this draft guarded until the diff reaches zero. */
     s32 i = D_800E62CC;
-    s32 end;
+    UnkStruct_800AC098_src* hold = src;
 
     if (i < 30) {
-        end = i + n;
+        n = i + n;
 
-        if (i < end) {
+        if (i < n) {
             s32 j = i;
             StructVarS0* dst = &D_801CF060[i];
-            UnkStruct_800AC098_src* s = src;
+            s32 loop = i;
+            UnkStruct_800AC098_src* s;
+            src = hold;
+            s = src;
+            i = 1;
             do {
                 dst->unk0 = s->unk0;
-                dst->unkB8 = 1;
-                j++;
+                dst->unkB8 = i;
+                loop++;
                 dst->unk74 = s->unk4;
-                i++;
+                j++;
                 dst->unk78 = s->unk8;
                 dst->unkC = s->unkC;
                 dst->unk10 = s->unk10;
@@ -2761,13 +2766,13 @@ void func_800AC098(UnkStruct_800AC098_src* src, s32 n) {
                 dst->unk44 = s->unk2C;
                 *(f32*) &dst->unk48 = s->unk30;
                 s++;
-                if (j >= 30) {
+                if (loop >= 30) {
                     goto end;
                 }
                 dst++;
-            } while (i < end);
+            } while (j < n);
         }
-        D_800E62CC = end;
+        D_800E62CC = n;
     }
 end:;
 }
