@@ -1552,11 +1552,12 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i6_802C6B34 is currently non-matching (in progress)")
 
     def test_func_i10_802C5800_matched(self):
-        """TDE test for func_i10_802C5800 in ovl_1C9150 (Drake Lake fog and floating log state initialization)."""
-        if self.is_function_decompiled("func_i10_802C5800"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i10_802C5800 is currently non-matching (in progress)")
+        """Change-conditions slot initialization remains promoted and ROM-exact."""
+        self.assertTrue(self.is_function_decompiled("func_i10_802C5800"))
+        self.assertFalse(os.path.exists(os.path.join(
+            NONMATCHINGS_DIR, "overlays", "ovl_i10", "ovl_1C9150",
+            "func_i10_802C5800.s")))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i10_802C5A10_matched(self):
         """TDE test for func_i10_802C5A10 in ovl_1C9150 (Drake Lake calm water disturbance and log bobbing physics)."""
