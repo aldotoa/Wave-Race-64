@@ -10,9 +10,9 @@ An exhaustive, prioritized decompilation plan for all **279 remaining non-matchi
 | :--- | :--- | :--- | :--- |
 | **Matched Functions** | **1,088** | 1,367 | **79.59%** |
 | **Non-Matching Functions** | **279** | 1,367 | **20.41%** |
-| **Matched Code Bytes** | **355,064 B** | 834,104 B | **42.57%** |
+| **Matched Code Bytes** | **355,076 B** | 834,116 B | **42.57%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **416** | 416 | **100% OK** |
+| **Passing Regression Tests** | **417** | 417 | **100% OK** |
 
 ---
 
@@ -59,8 +59,8 @@ Small routines (< 100 instructions) that involve either floating-point registers
 
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
+| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats  | **MATCHED** | Credits backdrop scattered float data copier  |
 | 12 | `func_i0_802C6AE4` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 52 | 4/1  | Integer Clean | **MATCHED** | Training text glyph display list generator |
-| 13 | `func_801DF668` | `src/codeseg/A95D0.c` | 55 | 8/0  | Floats, ParkedFloor  | Pending (Floor 1544) | Routine logic  |
 | 14 | `func_800AC098` | `src/game/code_52CD0.c` | 59 | 4/0  | Floats, ParkedFloor  | Pending | Routine logic  |
 | 15 | `func_i13_802C69CC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 60 | 11/1  | ParkedFloor  | Pending | Routine logic  |
 | 16 | `func_801DEB08` | `src/codeseg/A95D0.c` | 62 | 4/1  | Floats, ParkedFloor  | Pending | Routine logic  |

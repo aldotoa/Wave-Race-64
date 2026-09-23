@@ -884,85 +884,63 @@ void func_801DF5F0(void* dst, void* src) {
     d->c = s->c;
 }
 
-#ifdef NON_MATCHING
+typedef struct {
+    f32 unk0[3];
+    f32 padC[6];
+    f32 unk24[2];
+    f32 pad2C[8];
+    f32 unk4C;
+    f32 pad50[2];
+    f32 unk58;
+    f32 pad5C[2];
+    f32 unk64;
+    f32 pad68[3];
+    s32 unk74;
+    s32 unk78;
+} UnkPart_801DF668;
+
 void func_801DF668(void* workBuf, f32* copySrc, f32* lookupSrcDst, f32* singleA, f32* offsetTriplet, f32* streamSrc,
                    f32* singleB) {
-    /* Staff credits backdrop texture blender: gather scattered float
-       triplets into the struct at workBuf. PARKED at floor CURRENT (1544),
-       standalone-IDO-probe-verified. Structure (guards, counter loops with
-       delay-slot stores, beql load patterns, straight-line workBuf+4 in the
-       singleA-guard delay slot) matches retail; the gap is register
-       allocation, all of it downstream of one decision:
-       - Retail keeps workBuf pinned in a0 for the whole frameless leaf and
-         materializes `workBuf + 0x5C` fresh per block (t0/v0/v0), with no
-         frame and no s-regs. Every probed spelling (~35 variants: decl and
-         init orders, block scopes, split vs shared counters/samples/selIdx,
-         `register`, u8 cursors, `*4` vs `<< 2`, per-block vs reused cursors)
-         coalesces a cursor into a0 and homes workBuf to s0 (sp+-8 frame);
-         downstream bases then fold to s0+large offsets instead of
-         v0+small. Micro-bisects prove -O2 always folds shared
-         base+const into memory ops (even 4 shared uses, even mixed
-         int/float), so retail's kept bases need workBuf-in-a0 pressure
-         that no probed shape reproduces. Closest structural notes:
-         `<< 2` (not `* 4`) keeps `addiu`+`sll` for the E4-style index
-         math; split counters beat shared (1584 -> 1544); per-block temps
-         beat reused cursors (2549); `lookupSrcDst = workBuf + 4` as a
-         straight-line assign before the singleA guard matches the delay
-         slot. Retail's duplicated `li t1, 3` (loop prologue + lookup-guard
-         delay) never reproduces: single-literal probes share one li. */
+    UnkPart_801DF668* part = (UnkPart_801DF668*) ((u8*) workBuf + 0x5C);
     s32 loopCountA;
     s32 loopCountB;
 
     loopCountA = 0;
     if (copySrc != NULL) {
         f32* copySrcPos = copySrc;
-        f32* copyDstPos = (f32*) ((u8*) workBuf + 0x5C);
-        f32 sample;
         do {
-            sample = *copySrcPos;
-            loopCountA += 1;
+            part->unk0[loopCountA] = *copySrcPos;
             copySrcPos += 1;
-            copyDstPos += 1;
-            copyDstPos[-1] = sample;
+            loopCountA += 1;
         } while (loopCountA != 3);
     }
     if (lookupSrcDst != NULL) {
-        f32* lookupBase = (f32*) ((u8*) workBuf + 0x5C);
-        s32 selIdxA = *(s32*) ((u8*) lookupBase + 0x74);
-        s32 selIdxB = *(s32*) ((u8*) lookupBase + 0x78);
-        f32 sample = lookupSrcDst[selIdxA];
-        *(f32*) ((u8*) lookupBase + 0x24) = sample;
-        *(f32*) ((u8*) lookupBase + 0x28) = lookupSrcDst[selIdxB];
+        part->unk24[0] = lookupSrcDst[part->unk74];
+        part->unk24[1] = lookupSrcDst[part->unk78];
     }
     lookupSrcDst = (f32*) ((u8*) workBuf + 4);
     if (singleA != NULL) {
         *(f32*) ((u8*) workBuf + 0x90) = *singleA;
     }
     if (offsetTriplet != NULL) {
-        f32* tripleBase = (f32*) ((u8*) workBuf + 0x5C);
-        *(f32*) ((u8*) tripleBase + 0x4C) = offsetTriplet[0];
-        *(f32*) ((u8*) tripleBase + 0x58) = offsetTriplet[1];
-        *(f32*) ((u8*) tripleBase + 0x64) = offsetTriplet[2];
+        part->unk4C = offsetTriplet[0];
+        part->unk58 = offsetTriplet[1];
+        part->unk64 = offsetTriplet[2];
     }
     loopCountB = 0;
     if (streamSrc != NULL) {
         f32* streamPos = streamSrc;
-        f32 sample;
         do {
-            sample = *streamPos;
+            lookupSrcDst[9] = *streamPos;
             loopCountB += 1;
             streamPos += 1;
             lookupSrcDst += 1;
-            lookupSrcDst[8] = sample;
         } while (loopCountB != 3);
     }
     if (singleB != NULL) {
         *(f32*) ((u8*) workBuf + 0x3C) = *singleB;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF668.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801DF744(void* arg0) {

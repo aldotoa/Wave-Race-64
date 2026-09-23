@@ -7,8 +7,8 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ## Current Status
 
 * **N64 ROM Target:** Byte-matching against retail US Rev 1 (`waverace64.us.rev1.z64: OK`).
-* **Progress:** 1,070 / 1,367 matched functions (78.27%) | 347,340 / 834,128 matched bytes (41.64%).
-* **Validation Suite:** 416 passing tests (`make test`) verifying integrity across physics, camera, HUD, and audio subroutines.
+* **Progress:** 1,088 / 1,367 matched functions (79.59%) | 355,076 / 834,116 matched bytes (42.57%).
+* **Validation Suite:** 417 passing tests (`make test`) verifying integrity across physics, camera, HUD, and audio subroutines.
 * **Native macOS Port:** Boots natively on Apple Silicon via Clang (`make mac`), featuring a POSIX Libultra abstraction layer and direct ROM asset streaming.
 
 ---
@@ -55,6 +55,8 @@ make                # build N64 ROM; must end with `waverace64.us.rev1.z64: OK`
 make test           # run validation suite (python3 tests/test_matching.py)
 make progress       # report matched functions / bytes (uses .venv python)
 ```
+
+`make progress` prints aggregate totals only. It counts ELF function symbols that no longer have a corresponding nonmatching assembly stub; it does not list individual functions or update this README or the decompilation plan.
 
 ROM integrity is byte-for-byte: SHA-1 `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a`.
 Never commit unless `make` reports `waverace64.us.rev1.z64: OK`.
