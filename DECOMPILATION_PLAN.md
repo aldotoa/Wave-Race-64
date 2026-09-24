@@ -43,7 +43,7 @@ These functions have the highest matching velocity: **fewer than 100 instruction
 | 1 | `func_i5_802C7594` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 65 | 1/0  | Integer Clean  | **MATCHED** | Routine logic  |
 | 2 | `func_i13_802C61E0` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 67 | 13/2  | Integer Clean  | **MATCHED** | Routine logic  |
 | 3 | `func_801FAD68` | `src/codeseg/B97B0.c` | 80 | 18/0  | Integer Clean  | **MATCHED** | Routine logic  |
-| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean, ParkedFloor | Pending (Floor 2035) | Debug text character renderer |
+| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean, ParkedFloor | Pending (Floor 390) | Debug text character renderer |
 | 5 | `func_800998B0` | `src/game/code_52CD0.c` | 84 | 2/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 6 | `func_i13_802C6F0C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 85 | 12/8  | Integer Clean  | **MATCHED** | Routine logic  |
 | 7 | `func_80096694` | `src/game/code_4F850.c` | 86 | 5/2  | Integer Clean  | **MATCHED** | Jet ski texture and rider livery palette decompression dispatcher |
