@@ -21,7 +21,7 @@ An exhaustive, prioritized decompilation plan for all **277 remaining non-matchi
 The 301 functions are categorized into 6 distinct tiers based on instruction count, control flow complexity, register allocator sensitivity, and `.rodata` / jump table dependencies:
 
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
-| :---: | :--- | :---: | :---: | :---: | :---: | :--- |
+| :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 2 | 9 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 16 | 3 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
