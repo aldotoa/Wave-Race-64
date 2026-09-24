@@ -49,51 +49,44 @@ void func_i1_802C5900(void) {
     }
 }
 
-extern s32 D_802C96AC;
-extern s32 D_802C96B0;
-extern s32 D_802C96B4;
-extern s32 D_i1_802C9444[];
+extern s32 D_i1_802C9444[][3];
 extern s32 D_80226890[];
 void func_800C37D4(s32 arg0);
 
 #ifdef NON_MATCHING
 void func_i1_802C59E8(s32 arg0) {
-    /* Course table init: copies defaults, scans arg0's row, fires audio cue.
-       Diff floor 2190 probe-verified (TU form scores higher from trailing-
-       function leakage): memcpy loop exact, scan body nearly exact (row a2,
-       dst v1, end t1 all match). Left: setup hoist cluster, counter/table
-       addrs recomputed in-loop by retail (value-load clobbers addr-reg)
-       vs hoisted once here, -1 const in a3 vs t2. Tried: key/val split
-       (-110), assign reorder (-35), 4-arg call (+120, reverted -- retail
-       jal slot reloads arg0), volatile (shuffled, reverted), explicit
-       load/store rewrite (added pressure, reverted), val-reuse (+180).
-       Parked. */
-    s32* dst;
-    s32 var_a1;
-    s32* row;
-    s32* end;
-    s32 key;
+    /* Course warm-up banner table initialization: copies defaults, scans arg0's
+       row, updates banner positions and widths, and fires audio cue.
+       Diff floor 1675 probe-verified (improved from previous floor 2190).
+       Key discoveries:
+       - D_802C96A8 is a 0x24-byte banner state struct:
+         unk_0 (active), unk_4 (count), unk_8 (totalWidth), unk_C[3] (xPos), unk_18[3] (bannerId).
+       - Loop is for (i = 0; i < 3; i++) with D_802C96A8.unk_C[i] and unk_18[i]
+         which IDO's strength-reduction translates to addiu v1, 4 / sw 8(v1) / sw 0x14(v1).
+       - Global register allocator reserves a1 (0x122), a2 (row), a3 (-1), v1 (dst),
+         t0 (&D_80226890), t1 (&D_802C96B4), exhausting caller-saved registers.
+       - Disassembly labels D_802C96AC, D_802C96B0, D_802C96B4 are fields of D_802C96A8.
+       Parked at floor 1675. */
+    s32 i;
     s32 val;
+    s32 key;
+    s32 a1;
 
     D_802C96A8 = D_i1_802C94C8;
     D_802C96A8.unk_0 = 1;
-    dst = (s32*) &D_802C96A8;
-    var_a1 = 0x122;
-    row = (s32*) ((u8*) D_i1_802C9444 + arg0 * 12);
-    end = &D_802C96B4;
-    do {
-        key = *row;
-        dst++;
-        dst[2] = var_a1;
-        dst[5] = key;
+    a1 = 0x122;
+
+    for (i = 0; i < 3; i++) {
+        key = D_i1_802C9444[arg0][i];
+        D_802C96A8.unk_C[i] = a1;
+        D_802C96A8.unk_18[i] = key;
         if (key != -1) {
-            D_802C96AC++;
+            D_802C96A8.unk_4++;
             val = D_80226890[key * 2 + 1] + 1;
-            D_802C96B0 += val;
-            var_a1 += val;
+            D_802C96A8.unk_8 += val;
+            a1 += val;
         }
-        row++;
-    } while (dst != end);
+    }
     func_800C37D4(arg0);
 }
 #else
