@@ -301,51 +301,34 @@ extern s32 D_i13_802C8DD4;
 void func_i13_802C82A4(s32 arg0);
 void func_i13_802C8CBC(void);
 
-#ifdef NON_MATCHING
-/* Controller-flag state machine: returns 1/5/2/3/4 by flag priority, else 0.
-   Diff floor 18270 (includes trailing-function leakage in this -o form):
-   structure/branches/stack all exact, remainder is pure register coloring
-   (var_v1 in a1 vs v1, temps/addr shifted one class). Tried: decl order,
-   initializer vs statement init, 1-vs-2 temps, named flags local, arm
-   statement order -- all neutral/negative. The a1-homing trigger is
-   unknown. Parked. */
 s32 func_i13_802C69CC(void) {
-    s32 var_v1 = 0;
-    s32 temp1;
-    s32 temp2;
+    s32 ret = 0;
 
     if (D_801CE65A->unk0 & 0xB000) {
-        var_v1 = 1;
+        ret = 1;
         if (D_i13_802C8D70 == 0) {
-            var_v1 = 5;
+            ret = 5;
             D_801CE640 = 9;
             func_i13_802C82A4(4);
         } else {
             D_801CE640 = 2;
         }
     } else if (D_801CE65A->unk0 & 0x4000) {
-        var_v1 = 2;
+        ret = 2;
         D_801CE640 = 2;
     } else if (D_801CE65A->unk0 & 0x200) {
-        var_v1 = 3;
-        temp1 = D_i13_802C8D70 - 1;
-        D_i13_802C8D70 = temp1;
-        if (temp1 < 0) {
+        ret = 3;
+        if (--D_i13_802C8D70 < 0) {
             D_i13_802C8D70 = 1;
         }
     } else if (D_801CE65A->unk0 & 0x100) {
-        var_v1 = 4;
-        temp2 = D_i13_802C8D70 + 1;
-        D_i13_802C8D70 = temp2;
-        if (temp2 >= 2) {
+        ret = 4;
+        if (++D_i13_802C8D70 >= 2) {
             D_i13_802C8D70 = 0;
         }
     }
-    return var_v1;
+    return ret;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C69CC.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Twin of 69CC flag chain + D_801CE640 mode values; zeroes 8D80 always
