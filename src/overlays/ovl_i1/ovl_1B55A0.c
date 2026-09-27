@@ -50,30 +50,23 @@ void func_i1_802C5900(void) {
 }
 
 extern s32 D_i1_802C9444[][3];
-extern s32 D_80226890[];
+typedef struct {
+    uintptr_t img;
+    s32 width;
+} MenuBannerEntry;
+
+extern MenuBannerEntry D_80226890[];
 void func_800C37D4(s32 arg0);
 
-#ifdef NON_MATCHING
 void func_i1_802C59E8(s32 arg0) {
-    /* Course warm-up banner table initialization: copies defaults, scans arg0's
-       row, updates banner positions and widths, and fires audio cue.
-       Diff floor 1675 probe-verified (improved from previous floor 2190).
-       Key discoveries:
-       - D_802C96A8 is a 0x24-byte banner state struct:
-         unk_0 (active), unk_4 (count), unk_8 (totalWidth), unk_C[3] (xPos), unk_18[3] (bannerId).
-       - Loop is for (i = 0; i < 3; i++) with D_802C96A8.unk_C[i] and unk_18[i]
-         which IDO's strength-reduction translates to addiu v1, 4 / sw 8(v1) / sw 0x14(v1).
-       - Global register allocator reserves a1 (0x122), a2 (row), a3 (-1), v1 (dst),
-         t0 (&D_80226890), t1 (&D_802C96B4), exhausting caller-saved registers.
-       - Disassembly labels D_802C96AC, D_802C96B0, D_802C96B4 are fields of D_802C96A8.
-       Parked at floor 1675. */
     s32 i;
     s32 val;
     s32 key;
     s32 a1;
+    UnkStruct_802C96A8* b = &D_802C96A8;
 
     D_802C96A8 = D_i1_802C94C8;
-    D_802C96A8.unk_0 = 1;
+    b->unk_0 = 1;
     a1 = 0x122;
 
     for (i = 0; i < 3; i++) {
@@ -81,17 +74,15 @@ void func_i1_802C59E8(s32 arg0) {
         D_802C96A8.unk_C[i] = a1;
         D_802C96A8.unk_18[i] = key;
         if (key != -1) {
-            D_802C96A8.unk_4++;
-            val = D_80226890[key * 2 + 1] + 1;
-            D_802C96A8.unk_8 += val;
+            b->unk_4++;
+            val = D_80226890[key].width + 1;
+            b->unk_8 += val;
             a1 += val;
         }
     }
     func_800C37D4(arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C59E8.s")
-#endif
+
 
 #ifdef NON_MATCHING
 void func_i1_802C5AE4(void) {

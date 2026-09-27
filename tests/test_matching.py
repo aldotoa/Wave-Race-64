@@ -1844,10 +1844,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i1_802C59E8_matched(self):
         """TDE test for func_i1_802C59E8 in ovl_1B55A0 (Primary course navigation engine initialization)."""
-        if self.is_function_decompiled("func_i1_802C59E8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i1_802C59E8 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i1_802C59E8"), "func_i1_802C59E8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i1", "ovl_1B55A0", "func_i1_802C59E8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i1_802C5AE4_matched(self):
         """TDE test for func_i1_802C5AE4 in ovl_1B55A0 (Course buoy waypoint sequence update)."""
