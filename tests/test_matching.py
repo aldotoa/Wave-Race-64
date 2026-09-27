@@ -651,11 +651,10 @@ class TestCodesegUI(unittest.TestCase):
             self.skipTest("func_801EBFE4 is currently non-matching (in progress)")
 
     def test_func_801EC0D4_matched(self):
-        """TDE test for func_801EC0D4 in B97B0 (Controller connection check and unplugged alert)."""
-        if self.is_function_decompiled("func_801EC0D4"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801EC0D4 is currently non-matching (in progress)")
+        """TDE test for func_801EC0D4 in B97B0 (Race results mode state initialization)."""
+        stub_path = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "codeseg", "B97B0", "func_801EC0D4.s")
+        self.assertFalse(os.path.exists(stub_path), "func_801EC0D4 must not have a GLOBAL_ASM stub")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801EC20C_matched(self):
         """TDE test for func_801EC20C in B97B0 (Title screen attract demo timer and transition)."""

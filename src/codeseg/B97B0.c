@@ -278,37 +278,27 @@ void func_801EBFE4(void) {
     osViBlack(1);
 }
 
-#ifdef NON_MATCHING
-/* Race-setup init: default game-state globals, conditional counter bump
-   through D_800DA9B0, then the 96960/transition/VI-black call sequence.
-   Diff floor 410 probe-verified: calls/structure/stack exact; remainder is
-   register rotation (h/lh in v0 vs t0, consts in t0/t1 vs a3/v0, chain shift).
-   Tried: one decl-last (+37), drop t3 index temp (-40, kept: fixed one home),
-   early named menuResult (+25), s16 menuResult (neutral). Next: menuResult-to-t0 lever. */
 void func_801EC0D4(void) {
-    s32 one = 1;
+    s32 i;
     s32 packedArgs[4];
-    s32 menuResult;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
     gGameState = GAME_STATE_RACE_RESULTS;
     D_801CE638 = 9;
-    D_801CE63C = one;
+    D_801CE63C = 1;
     D_801CE640 = 0;
     D_801CE644 = 0;
     D_800DAB1C = 0;
     D_800D461C = 2;
     gPlayers = ONE_PLAYER;
     gRiderGameModes = UNACTIVE_MODE;
-    menuResult = D_801CE6F4[0];
-    D_801CE64C = one;
+    D_801CE64C = 1;
     gGameModeState = 0;
-    packedArgs[2] = 2;
-    packedArgs[3] = 3;
-    packedArgs[0] = 0;
-    packedArgs[1] = one;
-    if (menuResult != 0) {
+    for (i = 0; i < 4; i++) {
+        packedArgs[i] = i;
+    }
+    if (D_801CE6F4[0] != 0) {
         packedArgs[D_800DA9B0[D_800D48DC]] += 4;
     }
     func_80096960(2, packedArgs[0], packedArgs[1], packedArgs[2], packedArgs[3]);
@@ -317,9 +307,6 @@ void func_801EC0D4(void) {
     gCameraPerspective[0].viewMode = 1;
     osViBlack(1);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EC0D4.s")
-#endif
 
 void func_801EC20C(void) {
     /* Time-trial results init: default globals, then (unless coming from
