@@ -220,16 +220,8 @@ s32 func_i13_802C64AC(void) {
     return var_v1;
 }
 
-#ifdef NON_MATCHING
-/* Flag chain; 0xB000 arm returns 1 with mode 8/7 and four zeroed words,
-   0x4000 arm returns 2 with mode 3; 0x200/0x100 arms run the 8D5C counter
-   with a 0x200 side-store to 8D98.
-   Diff floor 325 probe-verified: remainder is the family register wall.
-   Tried: 0x4000-arm order swap to var_v1-first (-390, kept). */
 s32 func_i13_802C65D4(void) {
     s32 var_v1 = 0;
-    s32 temp1;
-    s32 temp2;
 
     if (D_801CE65A->unk0 & 0xB000) {
         var_v1 = 1;
@@ -250,25 +242,20 @@ s32 func_i13_802C65D4(void) {
     } else if (D_801CE65A->unk0 & 0x200) {
         var_v1 = 3;
         D_i13_802C8D98 = 0x200;
-        temp1 = D_i13_802C8D5C - 1;
-        D_i13_802C8D5C = temp1;
-        if (temp1 < 0) {
+        D_i13_802C8D5C--;
+        if (D_i13_802C8D5C < 0) {
             D_i13_802C8D5C = 3;
         }
     } else if (D_801CE65A->unk0 & 0x100) {
         var_v1 = 4;
         D_i13_802C8D98 = 0x200;
-        temp2 = D_i13_802C8D5C + 1;
-        D_i13_802C8D5C = temp2;
-        if (temp2 >= 4) {
+        D_i13_802C8D5C++;
+        if (D_i13_802C8D5C >= 4) {
             D_i13_802C8D5C = 0;
         }
     }
     return var_v1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C65D4.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i13_802C6700(void) {
