@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **275 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,094** | 1,367 | **80.03%** |
-| **Non-Matching Functions** | **273** | 1,367 | **19.97%** |
-| **Matched Code Bytes** | **356,648 B** | 834,104 B | **42.76%** |
+| **Matched Functions** | **1,095** | 1,367 | **80.10%** |
+| **Non-Matching Functions** | **272** | 1,367 | **19.90%** |
+| **Matched Code Bytes** | **356,936 B** | 834,104 B | **42.79%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **417** | 417 | **100% OK** |
 
@@ -23,12 +23,12 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 2 | 9 | 11 | Low | High-velocity leaf & overlay routines |
-| **2** | Small Refinements & Floor Solvers | 13 | 6 | 19 | Low-Medium | Allocator bisecting & float leaf math |
+| **2** | Small Refinements & Floor Solvers | 12 | 7 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **275** | **26** | **301** | | |
+| **Total** | | **274** | **27** | **301** | | |
 
 ---
 
@@ -66,7 +66,7 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | 16 | `func_801DEB08` | `src/codeseg/A95D0.c` | 62 | 4/1  | Floats | **MATCHED** | 1-channel animation spline step evaluator |
 | 17 | `func_i1_802C59E8` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 63 | 3/1  | Integer Clean  | **MATCHED** | Course warm-up banner table initialization  |
 | 18 | `func_i13_802C6ABC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 66 | 11/1  | Integer Clean  | **MATCHED** | Jet ski hull surface normal calculator  |
-| 19 | `func_i13_802C6BC4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 72 | 11/1  | ParkedFloor  | Pending | Routine logic  |
+| 19 | `func_i13_802C6BC4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 72 | 11/1  | Integer Clean  | **MATCHED** | Collision penetration depth solver  |
 | 20 | `func_i13_802C64AC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 74 | 12/2  | ParkedFloor  | Pending | Routine logic  |
 | 21 | `func_i13_802C65D4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 75 | 11/1  | ParkedFloor  | Pending | Routine logic  |
 | 22 | `func_801EC0D4` | `src/codeseg/B97B0.c` | 78 | 1/4  | ParkedFloor  | Pending | Routine logic  |
