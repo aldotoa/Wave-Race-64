@@ -67,8 +67,8 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | 17 | `func_i1_802C59E8` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 63 | 3/1  | Integer Clean  | **MATCHED** | Course warm-up banner table initialization  |
 | 18 | `func_i13_802C6ABC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 66 | 11/1  | Integer Clean  | **MATCHED** | Jet ski hull surface normal calculator  |
 | 19 | `func_i13_802C6BC4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 72 | 11/1  | Integer Clean  | **MATCHED** | Collision penetration depth solver  |
-| 20 | `func_i13_802C64AC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 74 | 12/2  | ParkedFloor  | Pending | Routine logic  |
-| 21 | `func_i13_802C65D4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 75 | 11/1  | ParkedFloor  | Pending | Routine logic  |
+| 20 | `func_i13_802C64AC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 74 | 12/2  | Integer Clean  | **MATCHED** | Submerged obstacle buoyancy resistance  |
+| 21 | `func_i13_802C65D4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 75 | 11/1  | Integer Clean  | **MATCHED** | Shallow reef hull scraping drag  |
 | 22 | `func_801EC0D4` | `src/codeseg/B97B0.c` | 78 | 1/4  | ParkedFloor  | Pending | Routine logic  |
 | 23 | `func_801DEC00` | `src/codeseg/A95D0.c` | 81 | 5/1  | Floats, ParkedFloor  | Pending | Routine logic  |
 | 24 | `func_801E0304` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats, ParkedFloor  | Pending (Floor 2420) | Routine logic  |
