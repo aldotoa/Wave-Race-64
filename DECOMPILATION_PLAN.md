@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **275 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,095** | 1,367 | **80.10%** |
-| **Non-Matching Functions** | **272** | 1,367 | **19.90%** |
-| **Matched Code Bytes** | **356,936 B** | 834,104 B | **42.79%** |
+| **Matched Functions** | **1,097** | 1,367 | **80.25%** |
+| **Non-Matching Functions** | **270** | 1,367 | **19.75%** |
+| **Matched Code Bytes** | **357,532 B** | 834,104 B | **42.86%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **417** | 417 | **100% OK** |
 
@@ -48,7 +48,7 @@ These functions have the highest matching velocity: **fewer than 100 instruction
 | 6 | `func_i13_802C6F0C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 85 | 12/8  | Integer Clean  | **MATCHED** | Routine logic  |
 | 7 | `func_80096694` | `src/game/code_4F850.c` | 86 | 5/2  | Integer Clean  | **MATCHED** | Jet ski texture and rider livery palette decompression dispatcher |
 | 8 | `func_i13_802C832C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 86 | 7/5  | Integer Clean  | **MATCHED** | Course-select panel renderer & sliding window animation dispatcher |
-| 9 | `func_i10_802C5800` | `src/overlays/ovl_i10/ovl_1C9150.c` | 90 | 18/0  | Integer Clean, ParkedFloor | Pending (Floor 1325) | Routine logic  |
+| 9 | `func_i10_802C5800` | `src/overlays/ovl_i10/ovl_1C9150.c` | 90 | 18/0  | Integer Clean  | **MATCHED** | Options change-conditions slot selection and counter initialization  |
 | 10 | `func_i8_802C5D3C` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 95 | 6/6  | Integer Clean  | **MATCHED** | Stunt mode ramp and floating ring display list generator  |
 | 11 | `func_80091DBC` | `src/game/code_43DA0.c` | 98 | 13/0  | Integer Clean  | **MATCHED** | 3D wake particle buffer cleanup  |
 
