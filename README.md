@@ -7,7 +7,7 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ## Current Status
 
 * **N64 ROM Target:** Byte-matching against retail US Rev 1 (`waverace64.us.rev1.z64: OK`).
-* **Progress:** 1,093 / 1,367 matched functions (79.96%) | 356,384 / 834,104 matched bytes (42.73%).
+* **Progress:** 1,095 / 1,367 matched functions (80.10%) | 356,936 / 834,104 matched bytes (42.79%).
 * **Validation Suite:** 417 passing tests (`make test`) verifying integrity across physics, camera, HUD, and audio subroutines.
 * **Native macOS Port:** Boots natively on Apple Silicon via Clang (`make mac`), featuring a POSIX Libultra abstraction layer and direct ROM asset streaming.
 

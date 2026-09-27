@@ -364,16 +364,8 @@ s32 func_i13_802C6ABC(void) {
     return var_v1;
 }
 
-#ifdef NON_MATCHING
-/* Flag chain; 0xB000 arm returns 1/5 with mode 0xB/4, zeroes 8DC8/8DD4/8DD0
-   in the nonzero and 0x4000 paths; cue arg 3.
-   Diff floor 330 probe-verified: structure/branches/stack exact; remainder
-   is the family register wall (var_v1 a1 vs v1 + cascade), same as parked
-   69CC/6ABC/61E0. */
 s32 func_i13_802C6BC4(void) {
     s32 var_v1 = 0;
-    s32 temp1;
-    s32 temp2;
 
     if (D_801CE65A->unk0 & 0xB000) {
         var_v1 = 1;
@@ -395,24 +387,19 @@ s32 func_i13_802C6BC4(void) {
         D_i13_802C8DD0 = 0;
     } else if (D_801CE65A->unk0 & 0x200) {
         var_v1 = 3;
-        temp1 = D_i13_802C8D70 - 1;
-        D_i13_802C8D70 = temp1;
-        if (temp1 < 0) {
+        D_i13_802C8D70--;
+        if (D_i13_802C8D70 < 0) {
             D_i13_802C8D70 = 1;
         }
     } else if (D_801CE65A->unk0 & 0x100) {
         var_v1 = 4;
-        temp2 = D_i13_802C8D70 + 1;
-        D_i13_802C8D70 = temp2;
-        if (temp2 >= 2) {
+        D_i13_802C8D70++;
+        if (D_i13_802C8D70 >= 2) {
             D_i13_802C8D70 = 0;
         }
     }
     return var_v1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6BC4.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Twin of 6F0C entry/flag shape (8D80 gate, 8D80/8D84 clear, 8D54 split,
