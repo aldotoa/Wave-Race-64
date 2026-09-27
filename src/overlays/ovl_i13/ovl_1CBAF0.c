@@ -184,16 +184,8 @@ s32 func_i13_802C62EC(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C62EC.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Flag chain; 0xB000 arm returns 1 with a nested 82A4(2)/3E6C(3) call join,
-   0x4000 arm returns 2 with mode 1.
-   Diff floor 320 probe-verified: call-join structure exact with plain if;
-   remainder is the family register wall. Tried: 0x4000-arm order swap to
-   var_v1-first (-390, kept). */
 s32 func_i13_802C64AC(void) {
     s32 var_v1 = 0;
-    s32 temp1;
-    s32 temp2;
 
     if (D_801CE65A->unk0 & 0xB000) {
         var_v1 = 1;
@@ -214,24 +206,19 @@ s32 func_i13_802C64AC(void) {
         D_801CE640 = 1;
     } else if (D_801CE65A->unk0 & 0x200) {
         var_v1 = 3;
-        temp1 = D_i13_802C8D58 - 1;
-        D_i13_802C8D58 = temp1;
-        if (temp1 < 0) {
+        D_i13_802C8D58--;
+        if (D_i13_802C8D58 < 0) {
             D_i13_802C8D58 = 1;
         }
     } else if (D_801CE65A->unk0 & 0x100) {
         var_v1 = 4;
-        temp2 = D_i13_802C8D58 + 1;
-        D_i13_802C8D58 = temp2;
-        if (temp2 >= 2) {
+        D_i13_802C8D58++;
+        if (D_i13_802C8D58 >= 2) {
             D_i13_802C8D58 = 0;
         }
     }
     return var_v1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C64AC.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Flag chain; 0xB000 arm returns 1 with mode 8/7 and four zeroed words,
