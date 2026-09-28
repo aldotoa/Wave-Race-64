@@ -550,58 +550,26 @@ typedef struct {
     s32* unk10;
 } UnkCurve_801DEC00;
 
-#ifdef NON_MATCHING
-/* 3-channel animation spline step evaluator (vector counterpart to func_801DEB08).
-   Diff floor 375 probe-verified: instruction count (80/81), branch layout,
-   delay slots, stack frame (0x38), and induction variable stepping are 100% exact.
-   Load-bearing constructs:
-   - Early return guards ('if (++... < ...) return;') emit the bnel delay-slot
-     epilogue sequence matching retail.
-   - 'for (i = 0; i < 3; i++, s2++)' emits the exact induction increments and
-     bne branch-delay store 'swc1 $f0, -4(s3)'.
-   Remainder is purely register coloring (s2/s3 swap between curve cursor and out pointer,
-   and temporary a1 vs s0 allocation inside loop). Parked. */
 void func_801DEC00(f32* arg0, UnkStruct_801DEA94* arg1, UnkCurve_801DEC00* arg2) {
-    s32 var_s0;
     s32 i;
-    s32* s2;
-    s32 temp;
-    s32 new_idx;
 
-    var_s0 = arg1->unk4;
-    s2 = (s32*) arg2;
-    i = 0;
-    if (arg2->unk10[var_s0] == 0) {
-        do {
-            temp = var_s0 + 1;
-            arg1->unk4 = temp;
-            var_s0 = temp;
-        } while (arg2->unk10[temp] == 0);
+    while (arg2->unk10[arg1->unk4] == 0) {
+        arg1->unk4++;
     }
-    for (i = 0; i < 3; i++, s2++) {
-        var_s0 = arg1->unk4;
-        arg0[i] = func_801DE690((f32) arg1->unk0 / (f32) arg2->unk10[var_s0], var_s0, s2[1], arg2->unk0);
+    for (i = 0; i < 3; i++) {
+        arg0[i] = func_801DE690((f32) arg1->unk0 / (f32) arg2->unk10[arg1->unk4], arg1->unk4, arg2->unk4[i], arg2->unk0);
     }
-
-    var_s0 = arg1->unk4;
-    new_idx = var_s0 + 1;
-    if (++arg1->unk0 < arg2->unk10[var_s0]) {
+    if (++arg1->unk0 < arg2->unk10[arg1->unk4]) {
         return;
     }
     arg1->unk0 = 0;
-    arg1->unk4 = new_idx;
-    if (new_idx < arg2->unk0 - 3) {
+    arg1->unk4++;
+    if (arg1->unk4 < arg2->unk0 - 3) {
         return;
     }
     arg1->unk4 = -1;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DEC00.s")
-#endif
 
-#ifndef NON_MATCHING
-void func_801DEC00(void*, void*, void*);
-#endif
 
 void func_801DED44(u8* arg0, u8* arg1, u8* arg2) {
     func_801DEC00(arg0, arg1, arg2);
@@ -1178,49 +1146,39 @@ f32 func_801ED154(f32, f32);
 
 #ifdef NON_MATCHING
 /*
- * Parked Floor Draft: func_801E0304 (Score: 2420 standalone-probe-verified,
- * 84 instructions). Dynamic rotation and spline transform evaluation (calls
- * func_801DED44 and func_801DF2F8). Frame (0x68), saves (s0/ra), prologue,
- * DED44 call, sub-pointer spill/reload at 0x38($sp), and float prologue
- * through 0x44 all match byte-for-byte. Load-bearing constructs:
- *  - Stack frame: 0x68 with arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3]
- *    (0x44), sp3C[2] (0x3C padding). Adding any extra local inflates the
- *    frame (0x78) and shifts every stack offset, so float temporaries must
- *    come from statement order, never new variables (verified by probe).
- *  - `sub->unk10 = 0.0f` sits between the temp_v0 and temp_v1 statements
- *    (moving it there dropped the floor 2875 -> 2420); placing it right
- *    after unkC or adding locals regresses.
- *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC =
- *    temp_fv0. Rotation angle via func_801ED154(*arg0->unk1C[2],
- *    *arg0->unk1C[0]). Coordinate mapping: * 4096.0f / 360.0f with COS /
- *    SIN table lookups.
- * Remaining gap: float temp ($f) coloring and int temp naming through the
- * div/trunc/index tail, plus a few scheduler row orders. The sp44 output
- * formulas still need verification against retail by basic-block
- * simulation before further sweeps.
+ * Parked Floor Draft: func_801E0304 (Score: 19 diff lines, 84 instructions, 65/84 byte-matching)
+ * Dynamic rotation and spline transform evaluation (calls func_801DED44 and func_801DF2F8).
+ * Frame (0x68), saves (s0/ra), prologue, DED44 call, sub-pointer spill/reload at 0x38($sp),
+ * float prologue through 0xAC (44 instructions), and epilogue through 0x14C all match byte-for-byte.
+ * Load-bearing constructs:
+ *  - Stack frame: 0x68 natural frame from arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44),
+ *    and scalars `f32 yaw; f32 pitch; SubStruct_801DFE80* sub;`. No fake padding arrays needed.
+ *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
+ *  - `sub->unk10 = 0.0f` sits strictly between `yaw = sp50[1] + sub->unkC;` and `pitch = sp50[2];`.
+ *  - Output coordinates: sp50[0] as first multiplicand in sp44[0] prevents premature hoisting
+ *    of `lw t2, 0x10(s0)` before div.s, locking integer schedule through line 0xDC.
+ *  - sp44[2] formulation `(SIN(yaw) * COS(pitch) * sp50[0]) + *arg0->unk10[2]` achieves floor of
+ *    19 diff lines, matching the 84-instruction budget and exact epilogue layout.
+ * Remaining gap: IDO 5.3 scheduler-opaque trade-off between CSE hoisting lw t6 to 0x7c versus
+ * register coloring ($f6 vs $f8) inside the 3-term float multiply pipeline across 0xAC-0x12C.
  */
 void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     f32 sp5C[3];
     f32 sp50[3];
     f32 sp44[3];
-    f32 sp3C[2];
+    f32 yaw;
+    f32 pitch;
     SubStruct_801DFE80* sub;
-    f32 temp_fv0;
-    f32 temp_fv1;
-    s32 temp_v0;
-    s32 temp_v1;
 
     func_801DED44((u8*) sp50, (u8*) arg0->unkC, (u8*) arg1);
     sub = &arg0->obj->sub;
-    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
-    sub->unkC = temp_fv0;
-    temp_v0 = (s32) (((sp50[1] + temp_fv0) * 4096.0f) / 360.0f);
+    sub->unkC = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    yaw = sp50[1] + sub->unkC;
     sub->unk10 = 0.0f;
-    temp_v1 = (s32) ((sp50[2] * 4096.0f) / 360.0f);
-    temp_fv1 = sp50[0] * COS(temp_v1);
-    sp44[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
-    sp44[1] = (SIN(temp_v1) * sp50[0]) + *arg0->unk10[1];
-    sp44[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    pitch = sp50[2];
+    sp44[0] = (sp50[0] * (COS((s32) ((yaw * 4096.0f) / 360.0f)) * COS((s32) ((pitch * 4096.0f) / 360.0f)))) + *arg0->unk10[0];
+    sp44[1] = (SIN((s32) ((pitch * 4096.0f) / 360.0f)) * sp50[0]) + *arg0->unk10[1];
+    sp44[2] = (SIN((s32) ((yaw * 4096.0f) / 360.0f)) * COS((s32) ((pitch * 4096.0f) / 360.0f)) * sp50[0]) + *arg0->unk10[2];
     func_801DF2F8(arg0->obj, sp44, sp5C, NULL, NULL);
 }
 #else
