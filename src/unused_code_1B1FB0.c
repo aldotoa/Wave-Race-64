@@ -414,7 +414,7 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
 /* Debug text character renderer: emits one glyph's RDP packets at arg0,
    returns the advanced cursor. Values below 0x10 emit nothing; values at
    or above 0x42 use glyph 0x3B.
- * PARKED behind NON_MATCHING at CURRENT (390), improved from the previous
+ * PARKED behind NON_MATCHING at CURRENT (370), improved from the previous
  * C candidate's CURRENT (2035). The byte cursor advances by 8 after each
  * Gfx packet, preserving the integer cursor used by existing callers.
  * Remaining scheduler mismatch: retail puts `addiu t0,a0,8` in the clamp
@@ -425,9 +425,13 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
  * and signedness sweeps did not lower this floor. A s32 glyph argument lowers
  * the numeric score to 345, but changes the opening `andi v0,a1,0xff` to
  * `andi v1,a1,0xff` and removes the required `sw a1,4(sp)`; it is not a match.
- * Packet, pointer, image-address, and clamp-expression sweeps did not resolve
- * the opening register move. Keep this implementation non-matching until the
- * complete 0x14C-byte function diffs cleanly. */
+ * Masking the subtracted glyph index before shifting reduced the standalone
+ * probe score from 390 to 370. The first eight opcodes match retail; IDO then
+ * emits `move v1,v0` where retail fills the clamp branch delay slot with
+ * `addiu t0,a0,8`. Split-branch index calculations, an explicit packet
+ * cursor, and register declarations did not resolve that divergence. Keep
+ * this implementation non-matching until the complete 0x14C-byte function
+ * diffs cleanly. */
 s32 func_1B1FB0_802C71B8(s32 arg0, char arg1, s32 arg2, s32 arg3) {
     s32 v0;
     u8* img;
@@ -442,7 +446,8 @@ s32 func_1B1FB0_802C71B8(s32 arg0, char arg1, s32 arg2, s32 arg3) {
         v0 = 0x3B;
     }
     v0 -= 0x10;
-    img = &D_8000008[(v0 & 0xFF) << 8];
+    v0 &= 0xFF;
+    img = &D_8000008[v0 << 8];
 
     { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xFD700000; _g->words.w1 = (u32)img; }
     { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
