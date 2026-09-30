@@ -414,9 +414,9 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
 /* Debug text character renderer: emits one glyph's RDP packets at arg0,
    returns the advanced cursor. Values below 0x10 emit nothing; values at
    or above 0x42 use glyph 0x3B.
- * PARKED behind NON_MATCHING at CURRENT (370), improved from the previous
- * C candidate's CURRENT (2035). The byte cursor advances by 8 after each
- * Gfx packet, preserving the integer cursor used by existing callers.
+ * PARKED behind NON_MATCHING at standalone CURRENT (370). The byte cursor
+ * advances by 8 after each Gfx packet, preserving the integer cursor used
+ * by existing callers.
  * Remaining scheduler mismatch: retail puts `addiu t0,a0,8` in the clamp
  * branch delay slot and computes the glyph address into `t4` before the
  * first packet stores. IDO assigns those values to different registers and
