@@ -1628,10 +1628,10 @@ class TestCourseOverlays(unittest.TestCase):
 
     def test_func_i5_802C5A98_matched(self):
         """TDE test for func_i5_802C5A98 in ovl_1BFF50 (Port Blue harbor waterway current state reset)."""
-        if self.is_function_decompiled("func_i5_802C5A98"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i5_802C5A98 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_i5_802C5A98"), "func_i5_802C5A98 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i5", "ovl_1BFF50", "func_i5_802C5A98.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i5_802C5C1C_matched(self):
         """TDE test for func_i5_802C5C1C in ovl_1BFF50 (Port Blue harbor crane and dock surface display list)."""
