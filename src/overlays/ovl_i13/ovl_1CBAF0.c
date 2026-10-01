@@ -375,26 +375,9 @@ s32 func_i13_802C6BC4(void) {
     return var_v1;
 }
 
-#ifdef NON_MATCHING
-/* Twin of 6F0C entry/flag shape (8D80 gate, 8D80/8D84 clear, 8D54 split,
-   800C3E6C tail cue, returns 0) selecting a course index out of the
-   8D60 table via 8DE0[8D5C], probing it with 8007D2D4 (8D54 == 0 arm,
-   +0x80 when 8DC4 set) or 8007D614, and latching 8D74/CE640/8D7C.
-   SIGNATURE WORKAROUND: the stub is arg-less (a1 is zeroed in the first
-   branch's delay slot, so no incoming value survives) and returns 0, but
-   the flag local homes in a1 in retail (beql a1 tail, a1 spills) -- the
-   same allocator wall as parked 69CC/6ABC. Reusing dead incoming regs as
-   the flag (`s32 f(s32 var_a0, s32 arg1)` + `arg1 = 0`) reproduces the
-   a1-homing exactly, and assignment-in-condition (`if ((D_8D74 =
-   f(...)) == 0)`) fixes store order and the whole t-rotation (57 -> 5).
-   No callers exist anywhere in tree, so the invented params break
-   nothing; true prototype is almost certainly s32 (void). Revisit with
-   the 69CC-family a1-homing lever if it is ever found.
-   Diff floor 5 probe-verified (3 ordered rows, 90 vs 89 insn, 5 variants):
-   only deltas are frame 0x18 vs 0x20 and one dead `sw a0,24(sp)`
-   prologue row. */
-s32 func_i13_802C6CE4(s32 var_a0, s32 arg1) {
-    arg1 = 0;
+s32 func_i13_802C6CE4(void) {
+    s32 sp1C = 0;
+    s32 course;
 
     if (D_i13_802C8D80 == 0) {
         return 0;
@@ -402,14 +385,14 @@ s32 func_i13_802C6CE4(s32 var_a0, s32 arg1) {
     D_i13_802C8D80 = 0;
     D_i13_802C8D84 = 0;
     if (D_i13_802C8D54 == 0) {
-        var_a0 = D_i13_802C8D60[D_i13_802C8DE0[D_i13_802C8D5C]];
+        course = D_i13_802C8D60[D_i13_802C8DE0[D_i13_802C8D5C]];
         if (D_i13_802C8DC4 != 0) {
-            var_a0 += 0x80;
+            course += 0x80;
         }
-        if ((D_i13_802C8D74 = func_8007D2D4(var_a0)) == 0) {
+        if ((D_i13_802C8D74 = func_8007D2D4(course)) == 0) {
             D_801CE640 = 0;
             D_i13_802C8D7C = 3;
-            arg1 = 1;
+            sp1C = 1;
         } else {
             D_801CE640 = 4;
         }
@@ -420,19 +403,16 @@ s32 func_i13_802C6CE4(s32 var_a0, s32 arg1) {
         if ((D_i13_802C8D74 = func_8007D614(D_i13_802C8D60[D_i13_802C8DE0[D_i13_802C8D5C]])) == 0) {
             D_801CE640 = 0;
             D_i13_802C8D7C = 3;
-            arg1 = 1;
+            sp1C = 1;
         } else {
             D_801CE640 = 4;
         }
     }
-    if (arg1 != 0) {
+    if (sp1C != 0) {
         func_800C3E6C(1);
     }
     return 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6CE4.s")
-#endif
 
 extern s32 D_i13_802C8D50;
 extern s32 D_i13_802C8D54;
