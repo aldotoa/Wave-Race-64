@@ -74,7 +74,7 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | 24 | `func_801E0304` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats, ParkedFloor  | Pending (Floor 19 diff lines) | Dynamic rotation & spline transform evaluator  |
 | 25 | `func_801E0454` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats  | Pending | Routine logic  |
 | 26 | `func_801EC3AC` | `src/codeseg/B97B0.c` | 85 | 0/3  | ParkedFloor  | Pending | Routine logic  |
-| 27 | `func_801E06F8` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | Pending | Routine logic  |
+| 27 | `func_801E06F8` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | **MATCHED** | Dynamic rotation & spline transform evaluator  |
 | 28 | `func_801E05A4` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | **MATCHED** | Dynamic rotation & spline transform evaluator  |
 | 29 | `func_i13_802C6CE4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 89 | 10/3  | Integer Clean  | **MATCHED** | Routine logic  |
 | 30 | `func_i5_802C5A98` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 97 | 12/1  | ParkedFloor  | Pending | Routine logic  |
