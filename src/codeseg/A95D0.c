@@ -1224,44 +1224,26 @@ void func_801E0454(UnkCmd_801DFE80* arg0, void* arg1) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0454.s")
 #endif
 
-#ifdef NON_MATCHING
-/*
- * Parked Floor Draft: func_801E05A4 (Score: ~2601, 85 instructions)
- * Dynamic rotation and spline transform evaluation (calls func_801DEDE8 and func_801DF2F8).
- * Load-bearing constructs:
- *  - Stack frame: 0x68 with sp64 scalar (0x64), sp58[3] (0x58), sp4C[3] (0x4C), sp40[3] (0x40).
- *  - Spilled sub pointer at 0x34($sp); saved regs $s0 at 0x20($sp), $ra at 0x24($sp).
- *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = temp_fv0; sub->unk10 = 0.0f.
- *  - Rotation angle computed via func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
- *  - Coordinate mapping: * 4096.0f / 360.0f and COS() / SIN() table lookups with *arg0->unk10 offsets.
- */
 void func_801E05A4(UnkCmd_801DFE80* arg0, void* arg1) {
     f32 sp64;
     f32 sp58[3];
     f32 sp4C[3];
     f32 sp40[3];
+    f32 yaw;
+    f32 pitch;
     SubStruct_801DFE80* sub;
-    f32 temp_fv0;
-    f32 temp_fv1;
-    s32 temp_v0;
-    s32 temp_v1;
 
     func_801DEDE8((u8*) sp4C, (u8*) arg0->unkC, (u8*) arg1);
     sub = &arg0->obj->sub;
-    temp_fv0 = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
-    sub->unkC = temp_fv0;
+    sub->unkC = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]);
+    yaw = sp4C[1] + sub->unkC;
     sub->unk10 = 0.0f;
-    temp_v0 = (s32) (((sp4C[1] + temp_fv0) * 4096.0f) / 360.0f);
-    temp_v1 = (s32) ((sp4C[2] * 4096.0f) / 360.0f);
-    temp_fv1 = sp4C[0] * COS(temp_v1);
-    sp40[0] = (COS(temp_v0) * temp_fv1) + *arg0->unk10[0];
-    sp40[1] = (SIN(temp_v1) * sp4C[0]) + *arg0->unk10[1];
-    sp40[2] = (SIN(temp_v0) * temp_fv1) + *arg0->unk10[2];
+    pitch = sp4C[2];
+    sp40[0] = *arg0->unk10[0] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp40[1] = *arg0->unk10[1] + (sp4C[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
+    sp40[2] = *arg0->unk10[2] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp40, sp58, NULL, &sp64);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E05A4.s")
-#endif
 
 #ifdef NON_MATCHING
 /*
