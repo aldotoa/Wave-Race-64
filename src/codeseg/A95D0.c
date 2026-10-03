@@ -1340,7 +1340,10 @@ typedef struct UnkDst_801E0F8C {
     f32 unk4C;
     f32 unk50;
     f32 unk54;
-    char pad58[0x18];
+    char pad58[0xC];
+    f32 unk64;
+    f32 unk68;
+    f32 unk6C;
     f32 unk70;
     f32 unk74;
     f32 unk78;
@@ -1348,7 +1351,8 @@ typedef struct UnkDst_801E0F8C {
     f32 unk80;
     f32 unk84;
     f32 unk88;
-    char pad8C[8];
+    f32 unk8C;
+    f32 unk90;
     f32 unk94;
     f32 unk98;
     f32 unk9C;
@@ -1357,6 +1361,9 @@ typedef struct UnkDst_801E0F8C {
     u16 unkE4;
     char padE6[2];
     s32 unkE8;
+    char padEC[4];
+    f32 unkF0;
+    f32 unkF4;
 } UnkDst_801E0F8C;
 
 typedef struct {
@@ -1392,12 +1399,39 @@ void func_801E0F8C(UnkDst_801E0F8C* dst, UnkSrc_801E0F8C* src) {
     dst->unk98 = src->unk48;
 }
 
-#ifdef NON_MATCHING
-void func_801E0FF0(void) {
+void func_801E0FF0(UnkDst_801E0F8C* arg0) {
+    f32 temp;
+    f32 temp2;
+
+    arg0->unk64 = arg0->unk7C - arg0->unk4C;
+    arg0->unk68 = arg0->unk80 - arg0->unk50;
+    arg0->unk6C = arg0->unk84 - arg0->unk54;
+
+    temp = sqrtf(SQ(arg0->unk64) + SQ(arg0->unk68) + SQ(arg0->unk6C));
+    arg0->unk64 /= temp;
+    arg0->unk68 /= temp;
+    arg0->unk6C /= temp;
+
+    temp = sqrtf(SQ(arg0->unk64) + SQ(arg0->unk6C));
+
+    arg0->unkF0 = arg0->unk64 / temp;
+    arg0->unkF4 = arg0->unk6C / temp;
+
+    temp2 = (SQ(arg0->unk64) + SQ(arg0->unk68)) + SQ(arg0->unk6C);
+    temp2 = -(((arg0->unk64 * arg0->unk70) + (arg0->unk68 * arg0->unk74)) + (arg0->unk6C * arg0->unk78)) / temp2;
+
+    arg0->unk70 += arg0->unk64 * temp2;
+    arg0->unk74 += arg0->unk68 * temp2;
+    arg0->unk78 += arg0->unk6C * temp2;
+
+    temp = sqrtf(SQ(arg0->unk70) + SQ(arg0->unk74) + SQ(arg0->unk78));
+    arg0->unk70 /= temp;
+    arg0->unk74 /= temp;
+    arg0->unk78 /= temp;
+
+    arg0->unk8C = sqrtf(SQ(arg0->unk4C - arg0->unk7C) + SQ(arg0->unk54 - arg0->unk84));
+    arg0->unk90 = arg0->unk50 - arg0->unk80;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0FF0.s")
-#endif
 
 void func_801E11B4(u8* arg0, UnkDst_801E0F8C* arg1) {
     func_800481E0((Mtx*) (arg0 + 0xE008 + (arg1->unkE8 << 6)), &arg1->unkE4, arg1->unk88, 4.0f / 3.0f, arg1->unk9C,
