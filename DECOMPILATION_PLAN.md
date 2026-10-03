@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **268 remaining non-matching functions** (33 matched) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **263 remaining non-matching functions** (36 matched in prioritized matrix, 1,104 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **268 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,099** | 1,367 | **80.40%** |
-| **Non-Matching Functions** | **268** | 1,367 | **19.60%** |
-| **Matched Code Bytes** | **358,168 B** | 834,104 B | **42.94%** |
+| **Matched Functions** | **1,104** | 1,367 | **80.76%** |
+| **Non-Matching Functions** | **263** | 1,367 | **19.24%** |
+| **Matched Code Bytes** | **359,928 B** | 834,104 B | **43.15%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -23,12 +23,12 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
-| **2** | Small Refinements & Floor Solvers | 8 | 11 | 19 | Low-Medium | Allocator bisecting & float leaf math |
+| **2** | Small Refinements & Floor Solvers | 5 | 14 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 26 | 5 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **268** | **33** | **301** | | |
+| **Total** | | **265** | **36** | **301** | | |
 
 ---
 
@@ -72,12 +72,12 @@ Small routines (< 100 instructions) that involve either floating-point registers
 | 22 | `func_801EC0D4` | `src/codeseg/B97B0.c` | 78 | 1/4  | Integer Clean  | **MATCHED** | Race results mode state initialization  |
 | 23 | `func_801DEC00` | `src/codeseg/A95D0.c` | 81 | 5/1  | Floats  | **MATCHED** | 3-channel animation spline step evaluator  |
 | 24 | `func_801E0304` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats, ParkedFloor  | Pending (Floor 19 diff lines) | Dynamic rotation & spline transform evaluator  |
-| 25 | `func_801E0454` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats  | Pending | Routine logic  |
+| 25 | `func_801E0454` | `src/codeseg/A95D0.c` | 84 | 0/3  | Floats  | **MATCHED** | Dynamic rotation & spline transform evaluator  |
 | 26 | `func_801EC3AC` | `src/codeseg/B97B0.c` | 85 | 0/3  | ParkedFloor  | Pending | Routine logic  |
 | 27 | `func_801E06F8` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | **MATCHED** | Dynamic rotation & spline transform evaluator  |
 | 28 | `func_801E05A4` | `src/codeseg/A95D0.c` | 85 | 0/3  | Floats  | **MATCHED** | Dynamic rotation & spline transform evaluator  |
 | 29 | `func_i13_802C6CE4` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 89 | 10/3  | Integer Clean  | **MATCHED** | Routine logic  |
-| 30 | `func_i5_802C5A98` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 97 | 12/1  | ParkedFloor  | Pending | Routine logic  |
+| 30 | `func_i5_802C5A98` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 97 | 12/1  | Integer Clean  | **MATCHED** | Port Blue collision & wave surface displacement calculation |
 
 ## Tier 3: Medium Integer & Overlay Logic (100 – 180 insns, No Rodata)
 
