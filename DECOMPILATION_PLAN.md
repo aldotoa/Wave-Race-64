@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **259 remaining non-matching functions** (40 matched in prioritized matrix, 1,108 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **258 remaining non-matching functions** (41 matched in prioritized matrix, 1,109 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **259 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,108** | 1,367 | **81.05%** |
-| **Non-Matching Functions** | **259** | 1,367 | **18.95%** |
-| **Matched Code Bytes** | **361,652 B** | 834,104 B | **43.36%** |
+| **Matched Functions** | **1,109** | 1,367 | **81.13%** |
+| **Non-Matching Functions** | **258** | 1,367 | **18.87%** |
+| **Matched Code Bytes** | **362,120 B** | 834,104 B | **43.41%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 4 | 15 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 23 | 8 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 22 | 9 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 18 | 5 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **261** | **40** | **301** | | |
+| **Total** | | **260** | **41** | **301** | | |
 
 ---
 
@@ -135,7 +135,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 69 | `func_801E084C` | `src/codeseg/A95D0.c` | 115 | 0/4  | Floats  | **MATCHED** | Replay slow motion speed indicator / object trajectory evaluator  |
 | 70 | `func_801E0A18` | `src/codeseg/A95D0.c` | 116 | 0/4  | Floats  | **MATCHED** | Post-race results total time rank calculator / 3-triplet spline evaluator  |
 | 71 | `func_801E0BE8` | `src/codeseg/A95D0.c` | 116 | 0/4  | Floats  | **MATCHED** | Stage clear victory jingle sequencer / 3-triplet with single scale evaluator  |
-| 72 | `func_801E0DB8` | `src/codeseg/A95D0.c` | 117 | 0/4  | Floats  | Pending | Routine logic  |
+| 72 | `func_801E0DB8` | `src/codeseg/A95D0.c` | 117 | 0/4  | Floats  | **MATCHED** | Championship cup award presentation animation / 4-triplet with single scale evaluator  |
 | 73 | `func_801EE040` | `src/codeseg/B97B0.c` | 122 | 1/1  | Floats  | Pending | Routine logic  |
 | 74 | `func_801DF38C` | `src/codeseg/A95D0.c` | 123 | 6/1  | Floats  | Pending | Routine logic  |
 | 75 | `func_80061708` | `src/game/code_C6C0.c` | 123 | 11/5  | Floats  | Pending | Reverse-view (rear mirror) camera orientation  |

@@ -1309,12 +1309,31 @@ void func_801E0BE8(UnkCmd_801DFE80* arg0, void* arg1) {
     func_801DF668(arg0->obj, sp50, NULL, NULL, sp68, NULL, &sp74);
 }
 
-#ifdef NON_MATCHING
-void func_801E0DB8(void) {
+void func_801E0DB8(UnkCmd_801DFE80* arg0, void* arg1) {
+    f32 sp7C;
+    f32 sp70[3];
+    f32 sp64[3];
+    f32 sp58[3];
+    f32 sp4C[3];
+    f32 yaw;
+    f32 pitch;
+    SubStruct_801DFE80* sub;
+
+    func_801DEE48((u8*) sp58, (u8*) arg0->unkC, (u8*) arg1);
+    sub = &arg0->obj->sub;
+    yaw = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]) + sp58[1];
+    pitch = sp58[2];
+    sp4C[0] = *arg0->unk10[0] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp4C[1] = *arg0->unk10[1] + (sp58[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
+    sp4C[2] = *arg0->unk10[2] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+
+    sub->unkC = *arg0->unk34;
+    sub->unk24 = *arg0->unk1C[sub->unk74[0]];
+    sub->unk28 = *arg0->unk1C[sub->unk74[1]];
+    sub->unk34 = sqrtf(SQ(*arg0->unk28[sub->unk74[0]]) + SQ(*arg0->unk28[sub->unk74[1]]));
+
+    func_801DF668(arg0->obj, sp4C, NULL, NULL, sp64, sp70, &sp7C);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0DB8.s")
-#endif
 
 typedef struct UnkDst_801E0F8C {
     char pad0[0x4C];
