@@ -1144,24 +1144,6 @@ void func_801E02B4(s32* arg0, s32 arg1) {
 
 f32 func_801ED154(f32, f32);
 
-#ifdef NON_MATCHING
-/*
- * Parked Floor Draft: func_801E0304 (Score: 19 diff lines, 84 instructions, 65/84 byte-matching)
- * Dynamic rotation and spline transform evaluation (calls func_801DED44 and func_801DF2F8).
- * Frame (0x68), saves (s0/ra), prologue, DED44 call, sub-pointer spill/reload at 0x38($sp),
- * float prologue through 0xAC (44 instructions), and epilogue through 0x14C all match byte-for-byte.
- * Load-bearing constructs:
- *  - Stack frame: 0x68 natural frame from arrays sp5C[3] (0x5C), sp50[3] (0x50), sp44[3] (0x44),
- *    and scalars `f32 yaw; f32 pitch; SubStruct_801DFE80* sub;`. No fake padding arrays needed.
- *  - Struct traversal: sub = &arg0->obj->sub (offset 0x5C); sub->unkC = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]).
- *  - `sub->unk10 = 0.0f` sits strictly between `yaw = sp50[1] + sub->unkC;` and `pitch = sp50[2];`.
- *  - Output coordinates: sp50[0] as first multiplicand in sp44[0] prevents premature hoisting
- *    of `lw t2, 0x10(s0)` before div.s, locking integer schedule through line 0xDC.
- *  - sp44[2] formulation `(SIN(yaw) * COS(pitch) * sp50[0]) + *arg0->unk10[2]` achieves floor of
- *    19 diff lines, matching the 84-instruction budget and exact epilogue layout.
- * Remaining gap: IDO 5.3 scheduler-opaque trade-off between CSE hoisting lw t6 to 0x7c versus
- * register coloring ($f6 vs $f8) inside the 3-term float multiply pipeline across 0xAC-0x12C.
- */
 void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     f32 sp5C[3];
     f32 sp50[3];
@@ -1176,14 +1158,11 @@ void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     yaw = sp50[1] + sub->unkC;
     sub->unk10 = 0.0f;
     pitch = sp50[2];
-    sp44[0] = (sp50[0] * (COS((s32) ((yaw * 4096.0f) / 360.0f)) * COS((s32) ((pitch * 4096.0f) / 360.0f)))) + *arg0->unk10[0];
-    sp44[1] = (SIN((s32) ((pitch * 4096.0f) / 360.0f)) * sp50[0]) + *arg0->unk10[1];
-    sp44[2] = (SIN((s32) ((yaw * 4096.0f) / 360.0f)) * COS((s32) ((pitch * 4096.0f) / 360.0f)) * sp50[0]) + *arg0->unk10[2];
+    sp44[0] = *arg0->unk10[0] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp44[1] = *arg0->unk10[1] + (sp50[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
+    sp44[2] = *arg0->unk10[2] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp44, sp5C, NULL, NULL);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801E0304.s")
-#endif
 
 void func_801E0454(UnkCmd_801DFE80* arg0, void* arg1) {
     f32 sp64[3];
