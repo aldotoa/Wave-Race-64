@@ -1367,10 +1367,10 @@ class TestCodesegUI(unittest.TestCase):
 
     def test_func_801E0A18_matched(self):
         """TDE test for func_801E0A18 in A95D0 (Post-race results total time rank calculator)."""
-        if self.is_function_decompiled("func_801E0A18"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801E0A18 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_801E0A18"), "func_801E0A18 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "A95D0", "func_801E0A18.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801E0BE8_matched(self):
         """TDE test for func_801E0BE8 in A95D0 (Stage clear victory jingle sequencer)."""
