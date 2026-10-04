@@ -41,43 +41,134 @@ extern struct UnkStruct_801CB058 D_801CB058;
 void func_80088EA0(void) {
 }
 
-#ifdef NON_MATCHING
 void func_80088EA8(void) {
-    s32 var_s4;
-    s32 var_s6;
-    s32 rand_seed;
+    /* Rider grid shuffle: index riders, reset their slot fields, then give
+       each of the first gRiders - 1 riders a random free grid slot that is
+       not the player's. The random pick needs several compiler-steering
+       constructs (all no-ops): `raw` starts at 0 and is read by an empty
+       `if` at the top of each pass, which keeps the raw Rand() value live
+       across the loop (retail's dead `move a1,v0`); the empty `if (pick)`
+       and keeping the last three statements on one line fix the v0/a0
+       copy order (IDO schedules by source line). */
+    s32 i;
+    s32 slot;
+    s32 raw = 0;
+    s32 pick;
+    s32 idx;
 
-    for (var_s4 = 0; var_s4 < gRiders; var_s4++) {
-        D_801C4100[D_801C26C0[var_s4]] = var_s4;
+    for (i = 0; i < gRiders; i++) {
+        D_801C4100[D_801C26C0[i]] = i;
     }
-    for (var_s4 = 0; var_s4 < gRiders; var_s4++) {
+    for (i = 0; i < gRiders; i++) {
         D_801C3C58->unk60 = 1.0f;
     }
-    for (var_s4 = 0; var_s4 < gRiders; var_s4++) {
-        D_801C3C58 = (struct_801C3C58*) &D_801C3C60[var_s4];
+    for (i = 0; i < gRiders; i++) {
+        D_801C3C58 = (struct_801C3C58*) &D_801C3C60[i];
         D_801C3C58->unk5C = -1;
     }
-    for (var_s6 = var_s4 = 0; var_s4 < (gRiders - 1); var_s6++, var_s4++) {
+    for (slot = i = 0; i < (gRiders - 1); slot++, i++) {
+        if (raw) {}
         SysUtils_Rand();
-        rand_seed = (SysUtils_Rand() >> 8) & 3;
-
-        D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[rand_seed];
-        if (D_801C3C58->unk5C != -1 || rand_seed == D_800D48DC) {
-            do {
-                rand_seed = (rand_seed % gRiders) + 1;
-                D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[rand_seed];
-            } while (D_801C3C58->unk5C != -1 || rand_seed == D_800D48DC);
+        raw = SysUtils_Rand();
+        pick = (u32) raw >> 8;
+        pick = pick & 3;
+        D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[pick]; if (pick) {} idx = pick;
+        while (D_801C3C58->unk5C != -1 || idx == D_800D48DC) {
+            idx = (idx % gRiders) + 1;
+            D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[idx];
         }
-        D_801C3C58->unk5C = var_s6;
+        D_801C3C58->unk5C = slot;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43A60/func_80088EA8.s")
-#endif
+
+extern UnkStruct_801BC940 D_801BC940[];
+extern s32 D_801BFA40;
+extern s32 D_801C4110;
+extern s32 D_801C4118[];
 
 #ifdef NON_MATCHING
 void func_800890B4(void) {
-    /* Rider starting grid positions and launch physics setup */
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 m;
+    Vtx* vtxA;
+    Vtx* vtxB;
+
+    /* `(i ^ 0)` keeps IDO from rewriting this bound as `bne` against a
+       held 4 (retail keeps `slti`); `j` doubling as the switch value and
+       the unk80 row counter fixes the v0/v1 coloring of this loop. */
+    for (i = 0; (i ^ 0) < 4; i++) {
+        D_801C3C50 = (struct UnkStruct_801C3C50*) &D_80192690[i];
+        D_801C3C58 = (struct_801C3C58*) &D_801C3C60[i];
+        D_801C3C58->unk0 = i;
+        D_801C3C58->currentRider = D_801C3C50->unkB68;
+        D_801C3C58->unk74 = 1;
+        D_801C3C58->unk8C = 0;
+        D_801C3C58->unkAC = 0;
+        D_801C3C58->unkB0 = 0;
+        D_801C3C58->unkB4 = 1;
+        D_801C3C58->pad58 = 0;
+        D_801C3C58->unkA0 = 0;
+        D_801C3C58->unkD8 = 0;
+        D_801C3C58->unkDC[0] = 0;
+        j = D_801C3C50->unkB64;
+        switch (j) {
+            case 0:
+            case 1:
+            case 2:
+                D_801C3C58->unk64 = 32.0f;
+                break;
+            case 3:
+                D_801C3C58->unk64 = 24.0f;
+                break;
+        }
+    }
+
+    func_80088EA8();
+
+    for (j = 0; j < 4; j++) {
+        D_801C3C58 = (struct_801C3C58*) &D_801C3C60[j];
+        for (k = 0; k < 3; k++) {
+            D_801C3C58->unk80[k] = 0;
+        }
+    }
+
+    for (i = 0; i < 3; i++) {
+        SysUtils_Rand();
+        if (((SysUtils_Rand() >> 8) & 3) == 0) {
+            SysUtils_Rand();
+            D_801C3C58 = (struct_801C3C58*) &D_801C3C60[(SysUtils_Rand() >> 8) & 3];
+            D_801C3C58->unk80[i] = 1;
+        }
+    }
+
+    for (i = 0; i < 3; i++) {
+        D_801C3C58 = (struct_801C3C58*) &D_801C3C60[3];
+    }
+
+    for (j = 0; j < 2; j++) {
+        vtxA = D_801C43F8[j].unk2A0;
+        vtxB = D_801C43F8[j].unk2D0;
+        for (i = 0; i < 3; i++) {
+            (vtxA + i)->v.cn[0] = 0xFF;
+            (vtxA + i)->v.cn[1] = 0;
+            (vtxA + i)->v.cn[2] = 0;
+            (vtxA + i)->v.cn[3] = 0xFF;
+        }
+        for (i = 0; i < 4; i++) {
+            (vtxB + i)->v.ob[1] = 0;
+            (vtxB + i)->v.cn[0] = 0xFF;
+            (vtxB + i)->v.cn[1] = 0xFF;
+            (vtxB + i)->v.cn[2] = 0xFF;
+        }
+        D_801C4110 = 0;
+        for (i = 0; i < D_801BFA40; i++) {
+            if (D_801BC940[i].unk4C == 1) {
+                D_801C4118[D_801C4110++] = i;
+            }
+        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43A60/func_800890B4.s")
