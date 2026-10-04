@@ -43,14 +43,13 @@ extern s32 D_801CB3F0[];
 Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
 Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
 
-#ifdef NON_MATCHING
-/* Scratch BSS for the playable build (no retail home; draft-only name). */
-s32 D_801CB3F0[2];
-#endif
-
-#ifdef NON_MATCHING
 Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
-    Struct_1C3D00_802C5EB0* ptr;
+    /* Menu renderer: frame boxes, a 1P/2P header with two counters, then
+       the 4 option labels with the selected one drawn last. Same shape as
+       func_i7_802C5A18: one s32 var serves as the frame-row counter (keeps
+       loop 1's signed slti), the label-table cursor and the selected-label
+       pointer, which puts it in s0 ahead of i. */
+    s32 var;
     s32 i;
     char sp60[0x20];
 
@@ -59,8 +58,8 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
     gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, 0x49, 0xAE, 0x10);
     gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, 0x5A, 0xAE, 0x19);
 
-    for (i = 0x8C; i < 0xD4; i += 0x12) {
-        gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, i, 0xAE, 0x10);
+    for (var = 0x8C; var < 0xD4; var += 0x12) {
+        gDisplayListHead = Menu_DrawFrame(gDisplayListHead, 0, 0x49, var, 0xAE, 0x10);
     }
 
     gDisplayListHead =
@@ -76,20 +75,17 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
 
     gDisplayListHead = func_801E9858(gDisplayListHead, 0, sp60, 0xC1, 0x5C);
 
-    for (ptr = D_1C3D00_802C5EB0, i = 0; i < 4; i++, ptr++) {
+    for (var = (s32) D_1C3D00_802C5EB0, i = 0; i < 4; i++, var += sizeof(Struct_1C3D00_802C5EB0)) {
         if (i != D_802C5EF0) {
-            gDisplayListHead = func_801E3EE0(gDisplayListHead, 1, ptr->unk4, ptr->unk0 + 0x8A, i * 0x12 + 0x8F, 0);
+            gDisplayListHead = func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4, ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, i * 0x12 + 0x8F, 0);
         }
     }
 
     gDisplayListHead =
         func_801E946C(gDisplayListHead, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-    ptr = &D_1C3D00_802C5EB0[D_802C5EF0];
-    return func_801E3EE0(gDisplayListHead, 1, ptr->unk4, ptr->unk0 + 0x8A, D_802C5EF0 * 0x12 + 0x8F, 0);
+    var = (s32) &D_1C3D00_802C5EB0[D_802C5EF0];
+    return func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4, ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, D_802C5EF0 * 0x12 + 0x8F, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/seg_1C3D00/func_1C3D00_802C58DC.s")
-#endif
 
 void func_1C3D00_802C5C4C(s32 arg0) {
     gPrevGameState = gGameState;
