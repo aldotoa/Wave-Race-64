@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **254 remaining non-matching functions** (45 matched in prioritized matrix, 1,113 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **253 remaining non-matching functions** (46 matched in prioritized matrix, 1,114 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **254 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,113** | 1,367 | **81.42%** |
-| **Non-Matching Functions** | **254** | 1,367 | **18.58%** |
-| **Matched Code Bytes** | **363,784 B** | 834,104 B | **43.61%** |
+| **Matched Functions** | **1,114** | 1,367 | **81.49%** |
+| **Non-Matching Functions** | **253** | 1,367 | **18.51%** |
+| **Matched Code Bytes** | **364,664 B** | 834,104 B | **43.72%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 17 | 6 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 184 | 2 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **256** | **45** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 183 | 3 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **255** | **46** | **301** | | |
 
 ---
 
@@ -219,7 +219,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 137 | `func_801E7908` | `src/codeseg/wr64_fade.c` | 212 | 14/4  | JumpTable, Rodata  | Pending | Routine logic  |
 | 138 | `func_801F1CFC` | `src/codeseg/B97B0.c` | 217 | 47/4  | Floats  | Pending | Routine logic  |
 | 139 | `func_i0_802C6044` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 218 | 9/7  | Integer Clean  | Pending | Routine logic  |
-| 140 | `func_1C3D00_802C58DC` | `src/seg_1C3D00.c` | 220 | 3/16  | Rodata  | Pending | Routine logic  |
+| 140 | `func_1C3D00_802C58DC` | `src/seg_1C3D00.c` | 220 | 3/16  | Rodata  | **MATCHED** | 1P/2P menu frame, header and label renderer (completes seg_1C3D00)  |
 | 141 | `func_801EB180` | `src/codeseg/B97B0.c` | 221 | 9/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 142 | `func_i6_802C5800` | `src/overlays/ovl_i6/ovl_1C2250.c` | 221 | 10/8  | Floats, Rodata  | Pending | Twilight City neon lighting and city canal display list renderer  |
 | 143 | `func_8006390C` | `src/game/code_C6C0.c` | 223 | 11/5  | Floats  | Pending | Camera roll leveling filter relative to horizon  |
