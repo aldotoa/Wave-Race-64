@@ -311,15 +311,25 @@ extern Gfx D_106F5B0[];
 
 Gfx* func_801E7C58(Gfx* dList, u32 ulx, u32 uly, u32 lrx, u32 lry, u32 r, u32 g, u32 b, u32 a);
 
-#ifdef NON_MATCHING
 Gfx* func_801E7908(Gfx* glistp) {
-    Gfx* temp_a2;
+    /* Fade overlay renderer: full-screen color fill for the fade-in/out
+       states, or the textured wipe display list for states 4-6.
+       Load-bearing: state read once directly and once through `fade`
+       (forces the reload before the switch), the split early-out (an
+       `||` pair then a separate test), and the wipe list's two words
+       copied into locals before any stores. */
+    FadeTransition* fade = &sCurrentFadeTransitionProps;
+    Gfx* temp;
+    u32 dl0;
+    u32 dl1;
 
-    if (sCurrentFadeTransitionProps.state == 0 || D_80228A14 == 0 || D_80228A36 != D_80228A30) {
+    if (sCurrentFadeTransitionProps.state == 0 || D_80228A14 == 0) {
         return glistp;
     }
-
-    switch (sCurrentFadeTransitionProps.state) {
+    if (D_80228A30 != D_80228A36) {
+        return glistp;
+    }
+    switch (fade->state) {
         case 1:
         case 2:
             if (gPlayers == ONE_PLAYER) {
@@ -339,59 +349,27 @@ Gfx* func_801E7908(Gfx* glistp) {
         case 4:
         case 5:
         case 6:
-            glistp->words.w0 = 0xB4000000;
-            glistp->words.w1 = D_80228A34;
-            glistp++;
-
-            glistp->words.w0 = 0x01030040;
-            glistp->words.w1 = (uintptr_t) D_7001300;
-            glistp++;
-
-            glistp->words.w0 = 0x01020040;
-            glistp->words.w1 = (uintptr_t) D_7001340;
-            glistp++;
-
-            glistp->words.w0 = 0x06000000;
-            glistp->words.w1 = (uintptr_t) &D_106F5B0;
-            glistp++;
-
+            gSPPerspNormalize(glistp++, D_80228A34);
+            gSPMatrix(glistp++, D_7001300, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(glistp++, D_7001340, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(glistp++, D_106F5B0);
             if (D_80228A1C == 0) {
-                temp_a2 = &D_80226CE4[D_80228A18 & 1];
+                temp = &D_80226CE4[D_80228A18 & 1];
             } else {
-                temp_a2 = &D_80226CF4[D_80228A18 & 1];
+                temp = &D_80226CF4[D_80228A18 & 1];
             }
-
-            glistp->words.w0 = 0xE7000000;
-            glistp->words.w1 = 0;
-            glistp++;
-
-            glistp->words.w0 = 0x06000000;
-            glistp->words.w1 = temp_a2->words.w0;
-            glistp++;
-
-            glistp->words.w0 = 0xE7000000;
-            glistp->words.w1 = 0;
-            glistp++;
-
-            glistp->words.w0 = 0xB900031D;
-            glistp->words.w1 = 0x0C184240;
-            glistp++;
-
-            glistp->words.w0 = 0xED000000;
-            glistp->words.w1 = 0x004FC3BC;
-            glistp++;
-
-            glistp->words.w0 = 0x06000000;
-            glistp->words.w1 = temp_a2->words.w1;
-            glistp++;
+            dl0 = temp->words.w0;
+            dl1 = temp->words.w1;
+            gDPPipeSync(glistp++);
+            gSPDisplayList(glistp++, dl0);
+            gDPPipeSync(glistp++);
+            gDPSetRenderMode(glistp++, G_RM_PASS, G_RM_XLU_SURF2);
+            gDPSetScissor(glistp++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+            gSPDisplayList(glistp++, dl1);
             break;
     }
-
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/wr64_fade/func_801E7908.s")
-#endif
 
 Gfx* func_801E7C58(Gfx* dList, u32 ulx, u32 uly, u32 lrx, u32 lry, u32 r, u32 g, u32 b, u32 a) {
     if (r > 255) {
