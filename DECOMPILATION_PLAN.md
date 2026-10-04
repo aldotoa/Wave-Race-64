@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **253 remaining non-matching functions** (46 matched in prioritized matrix, 1,114 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **252 remaining non-matching functions** (47 matched in prioritized matrix, 1,115 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **253 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,114** | 1,367 | **81.49%** |
-| **Non-Matching Functions** | **253** | 1,367 | **18.51%** |
-| **Matched Code Bytes** | **364,664 B** | 834,104 B | **43.72%** |
+| **Matched Functions** | **1,115** | 1,367 | **81.57%** |
+| **Non-Matching Functions** | **252** | 1,367 | **18.43%** |
+| **Matched Code Bytes** | **365,512 B** | 834,104 B | **43.82%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 17 | 6 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 183 | 3 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **255** | **46** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 182 | 4 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **254** | **47** | **301** | | |
 
 ---
 
@@ -216,7 +216,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 134 | `func_801EAA6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
 | 135 | `func_801EA3EC` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
 | 136 | `func_801E9D6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
-| 137 | `func_801E7908` | `src/codeseg/wr64_fade.c` | 212 | 14/4  | JumpTable, Rodata  | Pending | Routine logic  |
+| 137 | `func_801E7908` | `src/codeseg/wr64_fade.c` | 212 | 14/4  | JumpTable, Rodata  | **MATCHED** | Fade overlay fill and wipe display list (completes wr64_fade)  |
 | 138 | `func_801F1CFC` | `src/codeseg/B97B0.c` | 217 | 47/4  | Floats  | Pending | Routine logic  |
 | 139 | `func_i0_802C6044` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 218 | 9/7  | Integer Clean  | Pending | Routine logic  |
 | 140 | `func_1C3D00_802C58DC` | `src/seg_1C3D00.c` | 220 | 3/16  | Rodata  | **MATCHED** | 1P/2P menu frame, header and label renderer (completes seg_1C3D00)  |
