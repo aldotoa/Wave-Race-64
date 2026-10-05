@@ -41,7 +41,10 @@ extern struct UnkStruct_801CB058 D_801CB058;
 void func_80088EA0(void) {
 }
 
-void func_80088EA8(void) {
+/* Returns int (no return statement): the original was evidently defined with
+   an int return type. As a void function, func_800890B4's register
+   coloring changes even though this function's own code is identical. */
+s32 func_80088EA8(void) {
     /* Rider grid shuffle: index riders, reset their slot fields, then give
        each of the first gRiders - 1 riders a random free grid slot that is
        not the player's. The random pick needs several compiler-steering
@@ -86,7 +89,6 @@ extern s32 D_801BFA40;
 extern s32 D_801C4110;
 extern s32 D_801C4118[];
 
-#ifdef NON_MATCHING
 void func_800890B4(void) {
     s32 i;
     s32 j;
@@ -170,9 +172,6 @@ void func_800890B4(void) {
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_43A60/func_800890B4.s")
-#endif
 
 void func_800893A8(void) {
     func_800890B4();

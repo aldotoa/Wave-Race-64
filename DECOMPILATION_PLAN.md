@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **252 remaining non-matching functions** (47 matched in prioritized matrix, 1,115 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **250 remaining non-matching functions** (49 matched in prioritized matrix, 1,117 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **252 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,115** | 1,367 | **81.57%** |
-| **Non-Matching Functions** | **252** | 1,367 | **18.43%** |
-| **Matched Code Bytes** | **365,512 B** | 834,104 B | **43.82%** |
+| **Matched Functions** | **1,117** | 1,367 | **81.71%** |
+| **Non-Matching Functions** | **250** | 1,367 | **18.29%** |
+| **Matched Code Bytes** | **366,792 B** | 834,104 B | **43.97%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 17 | 6 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **4** | Medium Floating-Point & Physics | 16 | 7 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 182 | 4 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **254** | **47** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 181 | 5 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **252** | **49** | **301** | | |
 
 ---
 
@@ -141,7 +141,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 75 | `func_80061708` | `src/game/code_C6C0.c` | 123 | 11/5  | Floats  | Pending | Reverse-view (rear mirror) camera orientation  |
 | 76 | `func_i4_802C6ED0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 124 | 4/0  | Floats  | Pending | Sunny Beach shallow sandbar grounding depth check  |
 | 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats  | Pending | Routine logic  |
-| 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | Pending | Routine logic  |
+| 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
 | 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats  | Pending | Axis-angle vector rotation matrix and coordinate transformation  |
 | 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | Pending | Particle spray emitter coordinator  |
 | 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | Pending | Routine logic  |
@@ -202,7 +202,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 120 | `func_i3_802C5800` | `src/overlays/ovl_i3/ovl_1BC890.c` | 186 | 22/4  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
 | 121 | `func_i14_802C5B70` | `src/overlays/ovl_i14/ovl_1CF180.c` | 187 | 15/5  | Integer Clean  | Pending | Checkpoint sequence order and course progression evaluator  |
 | 122 | `func_80051238` | `src/game/water_69D0.c` | 188 | 14/9  | Floats, Rodata  | Pending | Routine logic  |
-| 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | Pending | Rider starting grid positions and launch physics setup  |
+| 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | **MATCHED** | Rider and player state init (completes code_43A60)  |
 | 124 | `func_8004D018` | `src/game/water_69D0.c` | 189 | 40/0  | Floats, Rodata  | Pending | Routine logic  |
 | 125 | `func_8007B630` | `src/game/core/wr64_save.c` | 192 | 12/6  | Integer Clean  | Pending | Default championship records and high scores table restore  |
 | 126 | `func_80077F5C` | `src/game/code_2FB10.c` | 194 | 27/0  | Floats, Rodata  | Pending | Jet ski throttle response and water drag velocity damping  |
