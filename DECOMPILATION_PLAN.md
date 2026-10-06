@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **250 remaining non-matching functions** (49 matched in prioritized matrix, 1,117 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **248 remaining non-matching functions** (51 matched in prioritized matrix, 1,119 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **250 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,117** | 1,367 | **81.71%** |
-| **Non-Matching Functions** | **250** | 1,367 | **18.29%** |
-| **Matched Code Bytes** | **366,792 B** | 834,104 B | **43.97%** |
+| **Matched Functions** | **1,119** | 1,367 | **81.86%** |
+| **Non-Matching Functions** | **248** | 1,367 | **18.14%** |
+| **Matched Code Bytes** | **368,128 B** | 834,104 B | **44.13%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -26,9 +26,9 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 16 | 7 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
-| **5** | Rodata & Jump Table Blocked | 31 | 0 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 181 | 5 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **252** | **49** | **301** | | |
+| **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
+| **6** | Monolithic Routines & Core Engines | 180 | 6 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **250** | **51** | **301** | | |
 
 ---
 
@@ -174,7 +174,7 @@ Functions containing `switch` statements with compiler-generated jump tables (`j
 | 100 | `func_8009D96C` | `src/game/code_52CD0.c` | 137 | 4/5  | Floats, JumpTable  | Pending | Buoy miss warning flash animator  |
 | 101 | `func_8004EFB4` | `src/game/water_69D0.c` | 142 | 32/0  | Floats, Rodata  | Pending | Routine logic  |
 | 102 | `func_i5_802C5850` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 146 | 3/6  | Floats, Rodata, ParkedFloor  | Pending | Port Blue container ship wake disturbance simulation  |
-| 103 | `func_i14_802C5924` | `src/overlays/ovl_i14/ovl_1CF180.c` | 147 | 27/15  | JumpTable, Rodata  | Pending | Checkpoint sequence order and course progression evaluator  |
+| 103 | `func_i14_802C5924` | `src/overlays/ovl_i14/ovl_1CF180.c` | 147 | 27/15  | JumpTable, Rodata  | **MATCHED** | Results menu frame/draw and post-race state dispatcher  |
 | 104 | `func_8004F790` | `src/game/water_69D0.c` | 148 | 10/6  | Floats, Rodata  | Pending | Routine logic  |
 | 105 | `func_8004F520` | `src/game/water_69D0.c` | 156 | 34/0  | Floats, Rodata  | Pending | Routine logic  |
 | 106 | `func_800ADF90` | `src/game/code_52CD0.c` | 158 | 22/16  | JumpTable  | Pending | Routine logic  |
@@ -200,7 +200,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 118 | `func_8008E4B0` | `src/game/code_43DA0.c` | 185 | 6/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 119 | `func_801E1BA8` | `src/codeseg/AF8C0.c` | 185 | 26/0  | Floats, Rodata  | Pending | Machine tuning interaction and controller input loop  |
 | 120 | `func_i3_802C5800` | `src/overlays/ovl_i3/ovl_1BC890.c` | 186 | 22/4  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
-| 121 | `func_i14_802C5B70` | `src/overlays/ovl_i14/ovl_1CF180.c` | 187 | 15/5  | Integer Clean  | Pending | Checkpoint sequence order and course progression evaluator  |
+| 121 | `func_i14_802C5B70` | `src/overlays/ovl_i14/ovl_1CF180.c` | 187 | 15/5  | Integer Clean  | **MATCHED** | Results menu option list renderer (completes ovl_1CF180)  |
 | 122 | `func_80051238` | `src/game/water_69D0.c` | 188 | 14/9  | Floats, Rodata  | Pending | Routine logic  |
 | 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | **MATCHED** | Rider and player state init (completes code_43A60)  |
 | 124 | `func_8004D018` | `src/game/water_69D0.c` | 189 | 40/0  | Floats, Rodata  | Pending | Routine logic  |
