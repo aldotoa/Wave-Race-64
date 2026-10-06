@@ -427,7 +427,9 @@ typedef struct GfxPool_s {
     /* 0x13D68 */ Vtx *unk13D68;
     /* 0x13D6C */ char pad13D6C[0x336C];
     /* 0x170D8 */ Vtx *unk170D8;
-    /* 0x170DC */ char pad170DC[0x1F0C];
+    /* 0x170DC */ char pad170DC[0x150C];
+    /* 0x185E8 */ Vtx sprayVtx[16 * 8];
+    /* 0x18DE8 */ char pad18DE8[0x200];
 } GfxPool; /* size = 0x18FE8 */
 
 

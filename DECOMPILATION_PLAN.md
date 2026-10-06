@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **248 remaining non-matching functions** (51 matched in prioritized matrix, 1,119 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **246 remaining non-matching functions** (53 matched in prioritized matrix, 1,121 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **248 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,119** | 1,367 | **81.86%** |
-| **Non-Matching Functions** | **248** | 1,367 | **18.14%** |
-| **Matched Code Bytes** | **368,128 B** | 834,104 B | **44.13%** |
+| **Matched Functions** | **1,121** | 1,367 | **82.00%** |
+| **Non-Matching Functions** | **246** | 1,367 | **18.00%** |
+| **Matched Code Bytes** | **369,780 B** | 834,092 B | **44.33%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 16 | 7 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 180 | 6 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **250** | **51** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 179 | 7 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **248** | **53** | **301** | | |
 
 ---
 
@@ -143,7 +143,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats  | Pending | Routine logic  |
 | 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
 | 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats  | Pending | Axis-angle vector rotation matrix and coordinate transformation  |
-| 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | Pending | Particle spray emitter coordinator  |
+| 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | **MATCHED** | Spray emitter seeding and quad texcoord init  |
 | 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | Pending | Routine logic  |
 | 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | Pending | Routine logic  |
 | 83 | `func_801E8800` | `src/codeseg/B66E0.c` | 161 | 16/0  | Floats  | Pending | Font glyph metrics table and character bounds initializer  |
@@ -243,7 +243,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 161 | `func_8007F030` | `src/game/code_383C0.c` | 262 | 20/0  | Floats  | Pending | Rider kinematic state and skeletal position evaluator  |
 | 162 | `func_801EB4F4` | `src/codeseg/B97B0.c` | 266 | 10/9  | Integer Clean  | Pending | Routine logic  |
 | 163 | `func_800624CC` | `src/game/code_C6C0.c` | 275 | 2/4  | Floats  | Pending | Dynamic field-of-view adjustment based on speed boost  |
-| 164 | `func_8007FFA8` | `src/game/code_3A580.c` | 275 | 4/8  | Floats, Rodata  | Pending | Particle spray emitter coordinator  |
+| 164 | `func_8007FFA8` | `src/game/code_3A580.c` | 275 | 4/8  | Floats, Rodata  | **MATCHED** | Port Blue spray quad display list builder (completes code_3A580)  |
 | 165 | `func_801E62A8` | `src/codeseg/B3AA0.c` | 275 | 30/2  | Floats  | Pending | Routine logic  |
 | 166 | `func_80061FEC` | `src/game/code_C6C0.c` | 276 | 13/3  | Floats, Rodata  | Pending | Camera look-at matrix builder for single player  |
 | 167 | `func_80085510` | `src/game/code_3AC00.c` | 277 | 27/7  | Floats, Rodata  | Pending | Routine logic  |
