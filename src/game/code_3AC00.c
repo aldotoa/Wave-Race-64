@@ -1283,33 +1283,13 @@ void func_80085408(void) {
     }
 }
 
-/*
- * Scratch: https://decomp.me/scratch/c7EJc
- * Score: 105 (99.62&)
- */
-// Regalloc :(
-#ifdef NON_MATCHING
-/* Rider steering vector calculation and limit check.
-   Diff floor 95 probe-verified (R2): everything exact except a pure
-   three-way float rotation (values in $f12/$f16/$f0 vs retail $f0/$f12/
-   $f16). Reloc rows already exact via named extern rodata constants
-   (D_800EA9E8/D_800EA9F0 are true externs, not literal pools). The R2
-   structure (mul order temp-first, div carried by temp, (u8) byte cast)
-   came from a decomp.me scratch and fixed the div/store rows.
-   Load-bearing: dead f32 autos var_f2/temp_f0 (removal breaks homes);
-   literal-ordered decls; temp split/inline/position and copy/store orders
-   all inert (attractor-proven); int-side pressure, intermediate-naming,
-   and var_f0/var_f12 role swaps inert. Micro-bisected ($f2/$f18/$f16
-   across contexts, never $f12/$f0); range bisection moves the wrong way.
-   The rotation lever is unknown; ~25 probes + 13 micros.
-   Promoting this completes code_3AC00 100% (per its TDE test). */
+/* Rider steering vector calculation and limit check. */
 void func_80085510(void) {
     f32 sp4C;
     f32 sp48;
     f32 sp44;
     f32 sp40;
-    f32 var_f2;
-    f32 temp_f0;
+    f32 temp_f0; // unused, but load-bearing for regalloc
     f32 temp_f18;
     f32 var_f0;
     f32 var_f12;
@@ -1335,7 +1315,8 @@ void func_80085510(void) {
     Math_Normalize_VectorComponents(&sp44, &sp40);
 
     var_f0 = (sp4C * sp44) + (sp48 * sp40);
-    if (var_f0 < D_800EA9E8) {
+    if (var_f0) {} // FAKE
+    if (var_f0 < 0.15) {
         D_801C3C58->unk8C = 0;
         var_f0 = (sp4C * sp44) + (sp48 * sp40);
     }
@@ -1343,16 +1324,15 @@ void func_80085510(void) {
     temp_f18 = (D_801C3C58->unk64 * 70.0f) / D_801C3C50->unkBB8;
 
     var_f12 = var_f0;
-    D_801C3C58->unk68 = var_f0;
+    D_801C3C58->unk68 = var_f12;
 
     temp = ((D_801C3C58->unkD4 * sp4C) - (sp48 * D_801C3C58->unkD0));
 
-    if ((temp * var_f12) < 0.0f) {
-
+    if ((var_f0 * temp) < 0.0f) {
         sp4C = 0.0f;
         D_801C3C50->unkB53 = 0;
-
     } else {
+        var_f0 = var_f12; // FAKE: blocks copy propagation into the ABS test
         if (ABS(var_f12) > 0.5f) {
             if (var_f12 < 0) {
                 sp4C = (s32) temp_f18;
@@ -1362,16 +1342,16 @@ void func_80085510(void) {
                 D_801C3C50->unkB53 = -0x2A;
             }
         } else {
-            temp = ABS(var_f12);
-            if (temp > D_800EA9F0) {
+            if (ABS(var_f12) > 0.05f) {
                 if (var_f12 < 0) {
                     var_f0 = (-1.0f * var_f12) / 0.5f;
                     sp4C = (s32) (var_f0 * temp_f18);
                     D_801C3C50->unkB53 = (s32) (var_f0 * -35.0f);
                 } else {
-                    temp = var_f12 / 0.5f;
-                    sp4C = (s32) (-temp_f18 * temp);
-                    D_801C3C50->unkB53 = (u8) (s32) (temp * -35.0f);
+                    var_f0 = var_f12 / 0.5f;
+                    if (temp) {} // FAKE
+                    sp4C = (s32) (-temp_f18 * var_f0);
+                    D_801C3C50->unkB53 = (u8) (s32) (var_f0 * -35.0f);
                 }
             } else {
                 sp4C = 0.0f;
@@ -1380,7 +1360,7 @@ void func_80085510(void) {
         }
     }
     if (D_801C3C58->unk40 != 0) {
-        if (var_f0 < 0) {
+        if (var_f12 < 0) {
             sp4C = 70.0f;
         } else {
             sp4C = -70.0f;
@@ -1405,18 +1385,15 @@ void func_80085510(void) {
         var_f12 = sp4C - D_801C3C50->unkB52;
     }
 
-    var_f0 = D_801C3C50->unkB52;
+    temp = D_801C3C50->unkB52;
 
-    if ((var_f0 <= sp4C ? var_f12 : -var_f12) <= 35.0f) {
+    if ((temp <= sp4C ? var_f12 : -var_f12) <= 35.0f) {
         D_801C3C50->unkB52 = (s8) (s32) sp4C;
     }
 
     func_80085964();
     D_801C3C58->unkA8 = (s32) D_801C3C50->unkB52;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_3AC00/func_80085510.s")
-#endif
 
 void func_80085964(void) {
     if ((D_801C3C58->unk90 >= 0x32) &&

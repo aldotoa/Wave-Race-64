@@ -98,11 +98,14 @@ class TestGameEngineCore(unittest.TestCase):
         TDE test for func_80085510 in code_3AC00 (rider steering vector calculation & limit check).
         Once decompiled and matched, code_3AC00 is 100% matched.
         """
-        is_matched = self.is_function_decompiled("game/code_3AC00", "func_80085510")
-        if is_matched:
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_80085510 is currently non-matching (in progress)")
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "game", "code_3AC00", "func_80085510.s")
+        self.assertFalse(os.path.exists(stub), "func_80085510 asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "game", "code_3AC00.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "code_3AC00.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "code_3AC00.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("game/code_3AC00", "func_80085510"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_8007BEA4_matched(self):
         """
