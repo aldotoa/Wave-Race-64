@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **243 remaining non-matching functions** (56 matched in prioritized matrix, 1,124 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **241 remaining non-matching functions** (58 matched in prioritized matrix, 1,126 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **243 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,124** | 1,367 | **82.22%** |
-| **Non-Matching Functions** | **243** | 1,367 | **17.78%** |
-| **Matched Code Bytes** | **386,580 B** | 834,076 B | **46.35%** |
+| **Matched Functions** | **1,126** | 1,367 | **82.37%** |
+| **Non-Matching Functions** | **241** | 1,367 | **17.63%** |
+| **Matched Code Bytes** | **388,496 B** | 834,076 B | **46.58%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 176 | 10 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **245** | **56** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 175 | 11 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **243** | **58** | **301** | | |
 
 ---
 
@@ -101,7 +101,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 43 | `func_i1_802C6DCC` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 133 | 15/7  | Integer Clean  | Pending | clang-format off  |
 | 44 | `func_i3_802C5B40` | `src/overlays/ovl_i3/ovl_1BC890.c` | 133 | 22/11  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
 | 45 | `func_1B1FB0_802C6C1C` | `src/unused_code_1B1FB0.c` | 137 | 11/0  | Integer Clean  | Pending | Flight mode terrain height lookup  |
-| 46 | `func_i11_802C5D48` | `src/overlays/ovl_i11/ovl_1CA480.c` | 141 | 21/11  | Integer Clean  | Pending | Warmup course ramp and obstacle display list renderer  |
+| 46 | `func_i11_802C5D48` | `src/overlays/ovl_i11/ovl_1CA480.c` | 141 | 21/11  | Integer Clean  | **MATCHED** | Warmup options menu controller input handler |
 | 47 | `func_801E2058` | `src/codeseg/AF8C0.c` | 145 | 18/2  | Integer Clean  | Pending | Machine tuning interaction and controller input loop  |
 | 48 | `func_i4_802C6778` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 147 | 2/0  | Integer Clean  | Pending | Sunny Beach shoreline surf swell display list emitter  |
 | 49 | `func_1B1FB0_802C5BA4` | `src/unused_code_1B1FB0.c` | 148 | 10/10  | Integer Clean  | Pending | Flight mode debug camera controller  |
@@ -274,7 +274,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 192 | `func_i8_802C5EB8` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 331 | 58/12  | Integer Clean  | Pending | Stunt mode ramp and floating ring display list generator  |
 | 193 | `func_i8_802C5800` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 335 | 26/8  | Floats  | Pending | Stunt mode ramp and floating ring display list generator  |
 | 194 | `func_8009C2CC` | `src/game/code_52CD0.c` | 338 | 23/19  | Floats, JumpTable  | Pending | Routine logic  |
-| 195 | `func_i11_802C5800` | `src/overlays/ovl_i11/ovl_1CA480.c` | 338 | 24/18  | Rodata  | Pending | Warmup course ramp and obstacle display list renderer  |
+| 195 | `func_i11_802C5800` | `src/overlays/ovl_i11/ovl_1CA480.c` | 338 | 24/18  | Rodata  | **MATCHED** | Warmup options menu display list renderer (completes ovl_1CA480) |
 | 196 | `func_801E3EE0` | `src/codeseg/B2510.c` | 343 | 33/0  | JumpTable, Rodata  | **MATCHED** | Menu text banner renderer: IA8 block/tile strips + scissored texrects (completes B2510)  |
 | 197 | `func_80067E40` | `src/game/code_C6C0.c` | 344 | 23/3  | Floats  | Pending | Finish line celebration orbital pan camera  |
 | 198 | `func_i9_802C6750` | `src/overlays/ovl_i9/ovl_1C66D0.c` | 350 | 31/6  | JumpTable, Rodata  | Pending | Sunset Bay beach breaker wave height calculation  |
