@@ -44,7 +44,8 @@ typedef struct UnkStruct_801C0C80_s {
     f32 unkAC;
     f32 unkB0;
     f32 unkB4;
-} UnkStruct_801C0C80;
+    char padB8[0x58];
+} UnkStruct_801C0C80; /* size = 0x110 */
 
 typedef struct UnkStruct_800D5330_s {
     f32 unk0;
@@ -152,7 +153,7 @@ typedef struct chkcrs_entry_s {
 } chkcrs_entry_t;
 extern s32 D_801C2944; /* bss base of the logical chkcrs array */
 #define chkcrs ((chkcrs_entry_t*) &D_801C2944)
-extern UnkStruct_801C0C80 D_801CB058[]; /* NOTE: stub indexes with 0x110 stride, bss labels 0xAC: unresolved */
+extern UnkStruct_801C0C80 D_801CB058[];
 extern s32 D_800D4B04;
 extern s32 D_800D5440;
 extern s32 D_800D5444;
@@ -1319,30 +1320,10 @@ void func_8006E3A8(void) {
     }
 }
 
-#ifdef NON_MATCHING
-/* Floor note (2026-09-09): body imported from an external scratch pasted by the
- * collaborator (unscored remote m2c-shaped output, NOT a verified 0).
- * Import adaptations: param keeps repo TU name `gdl`; the scratch's
- * `func_800B4ABC(&gdlh)` is `Spray_Draw` (retail map: Spray_Draw == 0x800B4ABC),
- * so the stub's `jal Spray_Draw` and the draft's call set agree 1:1
- * (sqrtf×6, MatrixLookAt×4, SegmentedToVirtual×3, 801ED090, 6E01C, 6D494,
- * 6D034, 6CDE8, 6CB98, _MtxF_to_Mtx, Spray_Draw).
- * Verified-against-stub structural risks (see diff score below):
- *  - `chkcrs` is the scratch's name for a logical 888-byte-entry array based at
- *    bss D_801C2944 (stub: i = *(D_801C2944 + idx*888), ibnext @+0). Imported
- *    via #define; the linker symbol wants a proper rename + size later.
- *  - D_801CB058 is indexed with 0x110 stride (idx*17*16) but the bss label
- *    claims 0xAC total: unresolved, the natural decl below will mis-stride.
- *  - hov branch asymmetry: D_800D48DC path scales ~7960 (0x1F18) vs D_800D48E0
- *    path 5912 (0x1718 = sizeof UnkStruct_80192690): one branch cannot be
- *    `&D_80192690[idx]` as written.
- *  - Dozens of empty `if (!*(s32*) &X) {}` phantoms are m2c skeleton branches;
- *    each needs placement against the stub during real matching work.
- * Diff floor 410 (TU-object `-o` form vs matching object, no `-s`; was 3345
- * with s32 D_801C0B40/D_801C0B80, u8 per stub sb/lbu + collaborator ctx fixed
- * ~2900 rows. Prologue and both hov/camera index blocks match row-for-row,
- * first divergence is the D_801CB058 store: stub `sll,addu,sll` = idx*0x110
- * vs draft idx*0xB8). */
+/* Course display list renderer (LookAt/matrix setup, fog, Spray_Draw).
+ * Matched from an imported m2c-shaped scratch; the empty `if (...) {}`
+ * statements and unused `pad*` locals are load-bearing for IDO's block layout
+ * and stack frame. D_801CB058 entries are 0x110 bytes (UnkStruct_801C0C80). */
 void func_8006E674(Gfx** gdl) {
     UnkStruct_801BC940* obj;
     s32 padR597;
@@ -2042,6 +2023,3 @@ void func_8006E674(Gfx** gdl) {
     }
     *gdl = gdlh;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_24B00/func_8006E674.s")
-#endif

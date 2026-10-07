@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **245 remaining non-matching functions** (54 matched in prioritized matrix, 1,122 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **244 remaining non-matching functions** (55 matched in prioritized matrix, 1,123 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **245 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,122** | 1,367 | **82.08%** |
-| **Non-Matching Functions** | **245** | 1,367 | **17.92%** |
-| **Matched Code Bytes** | **371,152 B** | 834,088 B | **44.50%** |
+| **Matched Functions** | **1,123** | 1,367 | **82.15%** |
+| **Non-Matching Functions** | **244** | 1,367 | **17.85%** |
+| **Matched Code Bytes** | **385,472 B** | 834,076 B | **46.22%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 21 | 10 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 178 | 8 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **247** | **54** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 177 | 9 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **246** | **55** | **301** | | |
 
 ---
 
@@ -379,7 +379,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 297 | `func_800A2B24` | `src/game/code_52CD0.c` | 2541 | 233/106  | Floats, JumpTable  | Pending | Course mini-map track contour display list builder  |
 | 298 | `func_800A68A4` | `src/game/code_52CD0.c` | 2595 | 171/118  | Floats  | Pending | Wrong way warning banner animator  |
 | 299 | `func_8005DE24` | `src/game/code_C6C0.c` | 2802 | 317/36  | Floats, JumpTable, Rodata  | Pending | Reverse-view (rear mirror) camera orientation  |
-| 300 | `func_8006E674` | `src/game/code_24B00.c` | 3580 | 206/21  | Floats  | Pending | Routine logic  |
+| 300 | `func_8006E674` | `src/game/code_24B00.c` | 3580 | 206/21  | Floats  | **MATCHED** | Course display list renderer: LookAt/matrix setup, fog, spray (completes code_24B00)  |
 | 301 | `func_801F4120` | `src/codeseg/B97B0.c` | 4908 | 273/13  | Floats  | Pending | Routine logic  |
 
 ---
