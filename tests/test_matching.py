@@ -366,11 +366,15 @@ class TestCodesegUI(unittest.TestCase):
             self.skipTest("func_801E7908 is currently non-matching (in progress)")
 
     def test_func_801E3698_matched(self):
-        """TDE test for func_801E3698 in B17D0 (character select 3D jet ski model preview renderer)."""
-        if self.is_function_decompiled("func_801E3698"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801E3698 is currently non-matching (in progress)")
+        """TDE test for func_801E3698 in B17D0 (course records screen display list renderer). Completes B17D0."""
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "codeseg", "B17D0", "func_801E3698.s")
+        self.assertFalse(os.path.exists(stub), "func_801E3698 asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "codeseg", "B17D0.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "B17D0.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "B17D0.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("func_801E3698"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801E3EE0_matched(self):
         """TDE test for func_801E3EE0 in B2510 (menu text banner layout & texture rectangle renderer)."""

@@ -1091,7 +1091,9 @@ typedef struct UnkStruct_801CE5F8_s {
     char pad[0xA40];
     Mtx unkA40[1];
     Mtx unkA80[1];
-    char padA80[0x7C0-0x40];
+    char padAC0[0x1C0];
+    Vtx unkC80[4][12];
+    char padF80[0x2C0];
     char pad2[0x40];
     Vp unk1280[3];
     char pad12B0[0x50];

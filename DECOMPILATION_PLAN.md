@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **241 remaining non-matching functions** (58 matched in prioritized matrix, 1,126 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **240 remaining non-matching functions** (59 matched in prioritized matrix, 1,127 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **241 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,126** | 1,367 | **82.37%** |
-| **Non-Matching Functions** | **241** | 1,367 | **17.63%** |
-| **Matched Code Bytes** | **388,496 B** | 834,076 B | **46.58%** |
+| **Matched Functions** | **1,127** | 1,367 | **82.44%** |
+| **Non-Matching Functions** | **240** | 1,367 | **17.56%** |
+| **Matched Code Bytes** | **390,604 B** | 834,064 B | **46.83%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **418** | 418 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 175 | 11 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **243** | **58** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 174 | 12 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **242** | **59** | **301** | | |
 
 ---
 
@@ -320,7 +320,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 238 | `func_i10_802C6200` | `src/overlays/ovl_i10/ovl_1C9150.c` | 512 | 51/22  | Rodata  | Pending | Drake Lake calm water disturbance and log bobbing physics  |
 | 239 | `func_8004F9E0` | `src/game/water_69D0.c` | 521 | 17/5  | Floats, Rodata  | Pending | Routine logic  |
 | 240 | `func_i13_802C8484` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 526 | 16/6  | JumpTable, Rodata, ParkedFloor  | Pending | Placeholder signature follows the 832C call-site evidence  |
-| 241 | `func_801E3698` | `src/codeseg/B17D0.c` | 527 | 27/29  | Rodata  | Pending | Routine logic  |
+| 241 | `func_801E3698` | `src/codeseg/B17D0.c` | 527 | 27/29  | Rodata  | **MATCHED** | Course records screen display list renderer (completes B17D0) |
 | 242 | `func_801F14B4` | `src/codeseg/B97B0.c` | 530 | 37/2  | Floats  | Pending | Routine logic  |
 | 243 | `func_800AD418` | `src/game/code_52CD0.c` | 541 | 60/19  | Floats, JumpTable  | Pending | New record congratulatory fanfare banner  |
 | 244 | `func_800735EC` | `src/game/code_2C670.c` | 544 | 81/4  | Floats  | Pending | Jet ski hull displacement and water elevation offset calculator  |
