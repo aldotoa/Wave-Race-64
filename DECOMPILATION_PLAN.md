@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **240 remaining non-matching functions** (59 matched in prioritized matrix, 1,127 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **238 remaining non-matching functions** (61 matched in prioritized matrix, 1,129 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **240 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,127** | 1,367 | **82.44%** |
-| **Non-Matching Functions** | **240** | 1,367 | **17.56%** |
-| **Matched Code Bytes** | **390,604 B** | 834,064 B | **46.83%** |
+| **Matched Functions** | **1,129** | 1,367 | **82.59%** |
+| **Non-Matching Functions** | **238** | 1,367 | **17.41%** |
+| **Matched Code Bytes** | **392,656 B** | 834,052 B | **47.08%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **418** | 418 | **100% OK** |
+| **Passing Regression Tests** | **419** | 419 | **100% OK** |
 
 ---
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 174 | 12 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **242** | **59** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 172 | 14 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **240** | **61** | **301** | | |
 
 ---
 
@@ -223,7 +223,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 141 | `func_801EB180` | `src/codeseg/B97B0.c` | 221 | 9/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 142 | `func_i6_802C5800` | `src/overlays/ovl_i6/ovl_1C2250.c` | 221 | 10/8  | Floats, Rodata  | Pending | Twilight City neon lighting and city canal display list renderer  |
 | 143 | `func_8006390C` | `src/game/code_C6C0.c` | 223 | 11/5  | Floats  | Pending | Camera roll leveling filter relative to horizon  |
-| 144 | `func_801E4C60` | `src/codeseg/B3290.c` | 226 | 1/2  | Floats, Rodata  | Pending | Routine logic  |
+| 144 | `func_801E4C60` | `src/codeseg/B3290.c` | 226 | 1/2  | Floats, Rodata  | **MATCHED** | Fixed-point align matrix from fwd/up s8 vectors + translation; recomputed `s` sets the mask regalloc  |
 | 145 | `func_801DDAB8` | `src/codeseg/A95D0.c` | 228 | 27/8  | Floats, JumpTable, Rodata  | Pending | Routine logic  |
 | 146 | `func_8004CC7C` | `src/game/water_69D0.c` | 231 | 41/0  | Floats, Rodata  | Pending | Routine logic  |
 | 147 | `func_1B1FB0_802C5800` | `src/unused_code_1B1FB0.c` | 233 | 39/0  | Floats, Rodata  | Pending | Flight mode debug camera controller  |
@@ -247,7 +247,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 165 | `func_801E62A8` | `src/codeseg/B3AA0.c` | 275 | 30/2  | Floats  | Pending | Routine logic  |
 | 166 | `func_80061FEC` | `src/game/code_C6C0.c` | 276 | 13/3  | Floats, Rodata  | Pending | Camera look-at matrix builder for single player  |
 | 167 | `func_80085510` | `src/game/code_3AC00.c` | 277 | 27/7  | Floats, Rodata  | **MATCHED** | Rider steering vector calculation and limit check (completes code_3AC00) |
-| 168 | `func_801E4FE8` | `src/codeseg/B3290.c` | 287 | 3/3  | Floats  | Pending | Routine logic  |
+| 168 | `func_801E4FE8` | `src/codeseg/B3290.c` | 287 | 3/3  | Floats  | **MATCHED** | Three-node model DL emitter (push matrix, DL, pop); `D_80228920_2` alias stops address CSE. Completes B3290  |
 | 169 | `func_8004E614` | `src/game/water_69D0.c` | 292 | 39/5  | Floats  | Pending | Routine logic  |
 | 170 | `func_8004E0A4` | `src/game/water_69D0.c` | 297 | 42/2  | Floats, Rodata  | Pending | Routine logic  |
 | 171 | `func_800629A8` | `src/game/code_C6C0.c` | 298 | 9/1  | Floats, Rodata  | Pending | Submerged camera water ripple distortion filter  |

@@ -376,6 +376,18 @@ class TestCodesegUI(unittest.TestCase):
         self.assertTrue(self.is_function_decompiled("func_801E3698"))
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
+    def test_B3290_complete(self):
+        """TDE test for func_801E4C60 (fixed-point align matrix builder) and func_801E4FE8 (3-node model DL emitter). Completes B3290."""
+        for func in ("func_801E4C60", "func_801E4FE8"):
+            stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "codeseg", "B3290", func + ".s")
+            self.assertFalse(os.path.exists(stub), func + " asm stub should be deleted once matched")
+            self.assertTrue(self.is_function_decompiled(func))
+        with open(os.path.join(PROJECT_ROOT, "src", "codeseg", "B3290.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "B3290.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "B3290.c should have no in-progress drafts")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
     def test_func_801E3EE0_matched(self):
         """TDE test for func_801E3EE0 in B2510 (menu text banner layout & texture rectangle renderer)."""
         if self.is_function_decompiled("func_801E3EE0"):
