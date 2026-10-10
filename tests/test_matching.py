@@ -1548,7 +1548,7 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i3_802C5800 is currently non-matching (in progress)")
 
     def test_func_i3_802C5B40_matched(self):
-        """TDE test for func_i3_802C5B40 in ovl_1BC890 (Marine Fortress breakwater surge heightfield updater)."""
+        """TDE test for func_i3_802C5B40 in ovl_1BC890 (course-overview frame: race scene, demo panel dispatch, skip/advance input)."""
         if self.is_function_decompiled("func_i3_802C5B40"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
