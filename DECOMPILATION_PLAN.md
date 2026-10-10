@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **236 remaining non-matching functions** (63 matched in prioritized matrix, 1,131 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **234 remaining non-matching functions** (65 matched in prioritized matrix, 1,133 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **236 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,131** | 1,367 | **82.74%** |
-| **Non-Matching Functions** | **236** | 1,367 | **17.26%** |
-| **Matched Code Bytes** | **395,528 B** | 834,052 B | **47.42%** |
+| **Matched Functions** | **1,133** | 1,367 | **82.88%** |
+| **Non-Matching Functions** | **234** | 1,367 | **17.12%** |
+| **Matched Code Bytes** | **399,608 B** | 834,052 B | **47.91%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **419** | 419 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 170 | 16 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **238** | **63** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 168 | 18 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **236** | **65** | **301** | | |
 
 ---
 
@@ -316,8 +316,8 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 234 | `func_8004C1D0` | `src/game/water_69D0.c` | 498 | 23/14  | Floats, Rodata  | Pending | Routine logic  |
 | 235 | `func_801E8B24` | `src/codeseg/B66E0.c` | 502 | 46/8  | Floats, JumpTable, Rodata  | Pending | Font glyph metrics table and character bounds initializer  |
 | 236 | `func_801F06A0` | `src/codeseg/B97B0.c` | 503 | 20/4  | Floats  | Pending | Routine logic  |
-| 237 | `func_i10_802C5A10` | `src/overlays/ovl_i10/ovl_1C9150.c` | 508 | 105/8  | Integer Clean  | Pending | Drake Lake calm water disturbance and log bobbing physics  |
-| 238 | `func_i10_802C6200` | `src/overlays/ovl_i10/ovl_1C9150.c` | 512 | 51/22  | Rodata  | Pending | Drake Lake calm water disturbance and log bobbing physics  |
+| 237 | `func_i10_802C5A10` | `src/overlays/ovl_i10/ovl_1C9150.c` | 508 | 105/8  | Integer Clean  | **MATCHED** | Options change-conditions menu input handler (cursor, toggles, value edit with min/max wrap)  |
+| 238 | `func_i10_802C6200` | `src/overlays/ovl_i10/ovl_1C9150.c` | 512 | 51/22  | Rodata  | **MATCHED** | Options change-conditions menu display list (toggles, per-setting values, changed-from-default notice)  |
 | 239 | `func_8004F9E0` | `src/game/water_69D0.c` | 521 | 17/5  | Floats, Rodata  | Pending | Routine logic  |
 | 240 | `func_i13_802C8484` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 526 | 16/6  | JumpTable, Rodata, ParkedFloor  | Pending | Placeholder signature follows the 832C call-site evidence  |
 | 241 | `func_801E3698` | `src/codeseg/B17D0.c` | 527 | 27/29  | Rodata  | **MATCHED** | Course records screen display list renderer (completes B17D0) |

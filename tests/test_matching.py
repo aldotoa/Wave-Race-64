@@ -1605,18 +1605,26 @@ class TestCourseOverlays(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i10_802C5A10_matched(self):
-        """TDE test for func_i10_802C5A10 in ovl_1C9150 (Drake Lake calm water disturbance and log bobbing physics)."""
-        if self.is_function_decompiled("func_i10_802C5A10"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i10_802C5A10 is currently non-matching (in progress)")
+        """TDE test for func_i10_802C5A10 in ovl_1C9150 (options change-conditions menu input handler: cursor, toggles, value edit with min/max wrap). Completes ovl_1C9150."""
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "overlays", "ovl_i10", "ovl_1C9150", "func_i10_802C5A10.s")
+        self.assertFalse(os.path.exists(stub), "func_i10_802C5A10 asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "overlays", "ovl_i10", "ovl_1C9150.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "ovl_1C9150.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "ovl_1C9150.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("func_i10_802C5A10"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i10_802C6200_matched(self):
-        """TDE test for func_i10_802C6200 in ovl_1C9150 (Drake Lake distance fog display list and wooden logs)."""
-        if self.is_function_decompiled("func_i10_802C6200"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i10_802C6200 is currently non-matching (in progress)")
+        """TDE test for func_i10_802C6200 in ovl_1C9150 (options change-conditions menu display list: toggles, per-setting values, changed-from-default notice). Completes ovl_1C9150."""
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "overlays", "ovl_i10", "ovl_1C9150", "func_i10_802C6200.s")
+        self.assertFalse(os.path.exists(stub), "func_i10_802C6200 asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "overlays", "ovl_i10", "ovl_1C9150.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "ovl_1C9150.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "ovl_1C9150.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("func_i10_802C6200"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i10_802C6A00_matched(self):
         """TDE test for func_i10_802C6A00 in ovl_1C9150 (Drake Lake transition to results screen)."""
