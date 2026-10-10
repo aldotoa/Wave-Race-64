@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **238 remaining non-matching functions** (61 matched in prioritized matrix, 1,129 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **236 remaining non-matching functions** (63 matched in prioritized matrix, 1,131 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **238 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,129** | 1,367 | **82.59%** |
-| **Non-Matching Functions** | **238** | 1,367 | **17.41%** |
-| **Matched Code Bytes** | **392,656 B** | 834,052 B | **47.08%** |
+| **Matched Functions** | **1,131** | 1,367 | **82.74%** |
+| **Non-Matching Functions** | **236** | 1,367 | **17.26%** |
+| **Matched Code Bytes** | **395,528 B** | 834,052 B | **47.42%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **419** | 419 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 172 | 14 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **240** | **61** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 170 | 16 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **238** | **63** | **301** | | |
 
 ---
 
@@ -262,7 +262,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 180 | `func_8004A3C0` | `src/sys/sys_utils.c` | 316 | 10/8  | Floats, Rodata  | Pending | View frustum and camera perspective projection matrix generator  |
 | 181 | `func_801DDEDC` | `src/codeseg/A95D0.c` | 316 | 25/14  | Floats, JumpTable, Rodata  | Pending | Routine logic  |
 | 182 | `func_1B1FB0_802C5DF4` | `src/unused_code_1B1FB0.c` | 316 | 55/12  | Integer Clean  | Pending | Flight mode debug camera controller  |
-| 183 | `func_i12_802C5F6C` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 317 | 72/12  | Integer Clean  | Pending | Course boundary trigger volumes and out-of-bounds display list  |
+| 183 | `func_i12_802C5F6C` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 317 | 72/12  | Integer Clean  | **MATCHED** | Course data menu input handler (cursor, course selection, save/erase dispatch)  |
 | 184 | `func_8008D454` | `src/game/code_43DA0.c` | 318 | 34/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 185 | `func_801DF744` | `src/codeseg/A95D0.c` | 321 | 9/4  | Floats  | Pending | Routine logic  |
 | 186 | `func_80076378` | `src/game/code_2FB10.c` | 321 | 38/4  | Floats, Rodata  | Pending | Rider lean angle calculation relative to velocity vector and turning radius  |
@@ -296,7 +296,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 214 | `func_800916B4` | `src/game/code_43DA0.c` | 393 | 14/2  | Floats  | Pending | irregular  |
 | 215 | `func_800AB25C` | `src/game/code_52CD0.c` | 397 | 27/12  | Floats  | Pending | Finish line final lap banner renderer  |
 | 216 | `func_801F0E7C` | `src/codeseg/B97B0.c` | 398 | 53/1  | Floats  | Pending | Routine logic  |
-| 217 | `func_i12_802C58A0` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 401 | 45/14  | Integer Clean  | Pending | Course boundary trigger volumes and out-of-bounds display list  |
+| 217 | `func_i12_802C58A0` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 401 | 45/14  | Integer Clean  | **MATCHED** | Course data menu display list (mode tabs, 9-course grid, confirm buttons)  |
 | 218 | `func_801EED70` | `src/codeseg/B97B0.c` | 405 | 40/1  | Floats  | Pending | Routine logic  |
 | 219 | `func_801E2530` | `src/codeseg/AF8C0.c` | 407 | 65/15  | Floats, JumpTable, Rodata  | Pending | Character select and machine tuning cursor display list renderer  |
 | 220 | `func_8006719C` | `src/game/code_C6C0.c` | 413 | 2/1  | Floats  | Pending | Camera target lock-on interpolation filter  |

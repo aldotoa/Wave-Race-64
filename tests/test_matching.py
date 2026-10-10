@@ -1476,18 +1476,26 @@ class TestCourseOverlays(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i12_802C58A0_matched(self):
-        """TDE test for func_i12_802C58A0 in ovl_1CAE40 (course boundary trigger volume display list)."""
-        if self.is_function_decompiled("func_i12_802C58A0"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i12_802C58A0 is currently non-matching (in progress)")
+        """TDE test for func_i12_802C58A0 in ovl_1CAE40 (course data menu display list: mode tabs, 9-course grid, confirm buttons). Completes ovl_1CAE40."""
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "overlays", "ovl_i12", "ovl_1CAE40", "func_i12_802C58A0.s")
+        self.assertFalse(os.path.exists(stub), "func_i12_802C58A0 asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "overlays", "ovl_i12", "ovl_1CAE40.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "ovl_1CAE40.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "ovl_1CAE40.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("func_i12_802C58A0"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i12_802C5F6C_matched(self):
-        """TDE test for func_i12_802C5F6C in ovl_1CAE40 (out-of-bounds penalty trigger)."""
-        if self.is_function_decompiled("func_i12_802C5F6C"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i12_802C5F6C is currently non-matching (in progress)")
+        """TDE test for func_i12_802C5F6C in ovl_1CAE40 (course data menu input handler: cursor, course selection, save/erase dispatch). Completes ovl_1CAE40."""
+        stub = os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "overlays", "ovl_i12", "ovl_1CAE40", "func_i12_802C5F6C.s")
+        self.assertFalse(os.path.exists(stub), "func_i12_802C5F6C asm stub should be deleted once matched")
+        with open(os.path.join(PROJECT_ROOT, "src", "overlays", "ovl_i12", "ovl_1CAE40.c"), "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("GLOBAL_ASM", content, "ovl_1CAE40.c should be fully decompiled")
+        self.assertNotIn("NON_MATCHING", content, "ovl_1CAE40.c should have no in-progress drafts")
+        self.assertTrue(self.is_function_decompiled("func_i12_802C5F6C"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i14_802C5924_matched(self):
         """TDE test for func_i14_802C5924 in ovl_1CF180 (checkpoint sequence progression evaluator)."""
