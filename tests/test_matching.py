@@ -1541,7 +1541,7 @@ class TestCourseOverlays(unittest.TestCase):
 
 
     def test_func_i3_802C5800_matched(self):
-        """TDE test for func_i3_802C5800 in ovl_1BC890 (Marine Fortress master overlay display list and water gate coordinator)."""
+        """TDE test for func_i3_802C5800 in ovl_1BC890 (course-overview entry: score-table reset, demo branch, rank thresholds)."""
         if self.is_function_decompiled("func_i3_802C5800"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:

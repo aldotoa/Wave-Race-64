@@ -19,15 +19,7 @@ extern s32 D_801CE704;
 /* Course-overview entry: resets the per-race score tables when re-entering
  * the same rank, picks the demo branch (D_802C7028) and computes the rank
  * thresholds into D_801CE708[], then dispatches to the 5AE8/5AF0 setup.
- * PARKED at 14 rows (scratch/ovl_i3/probe.py, reloc-address normalized).
- * Load-bearing: D_801CE704/D_801CE708[] as separate externs (the header's
- * s16 D_801CE6FC covers +0); `for (i < 4) D_801CE708[i] = 4;` (IDO unrolls it
- * into li-per-store); j-loop clear with D_801CB3D0[i]; tail store duplicated
- * in both arms. Remaining: target materializes &D_801CB340 into a2 (and lui a3
- * for D_801CE708) BEFORE the `bnez D_801CB330`; a hoisted `p = D_801CB340`
- * reproduces that but swaps a2/a3 (26). Unswitched single loop, reversed
- * if/else, decl orders and q-pointers are all worse. */
-#ifdef NON_MATCHING
+ * `need` is reloaded inside the rank loop; hoisting it out swaps a2/a3. */
 extern s32 D_801CE704;
 extern s32 D_801CE708[];
 extern s32 D_801CB334;
@@ -48,7 +40,6 @@ void func_i3_802C5800(void) {
     s32 i;
     s32 j;
     s32 need;
-    s32 diff;
 
     if ((D_801CE63C != 0) && (gGameState == 0x1E)) {
         if (D_801CB334 == D_i3_802C6FE4[gDifficulty]) {
@@ -93,8 +84,8 @@ void func_i3_802C5800(void) {
             }
             D_801CE704 = D_801CE708[D_800D48DC];
         } else {
-            need = D_800EABBC[gDifficulty][D_801CB334];
             for (i = 0; i < 4; i++) {
+                need = D_800EABBC[gDifficulty][D_801CB334];
                 D_802C7020 = need - D_801CB340[i];
                 for (j = 1; j < 5; j++) {
                     if (D_800EABB0[j] < D_802C7020) {
@@ -122,9 +113,6 @@ void func_i3_802C5800(void) {
         break;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i3/ovl_1BC890/func_i3_802C5800.s")
-#endif
 
 void func_i3_802C5AE8(void) {
 }
