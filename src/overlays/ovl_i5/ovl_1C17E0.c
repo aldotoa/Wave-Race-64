@@ -43,7 +43,7 @@ void func_801E4C60(Mtx*, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 /* Loads the two buoy path sets (8 paths each) once per race, then places the
  * 8 buoys of the active set at the current path step and calls func_8004EFB4
  * the first time each one surfaces.
- * Floor: probe score 31; only register naming is left. Load-bearing: the outer
+ * Floor: probe score 4 (rows 93-94: gDifficulty lui t4 vs t5; 215/219 inherent). Load-bearing: the outer
  * loop on a fresh `j` with the inner loop reusing `i` (gives `slti i,8`),
  * `!D_802C7B10[i]` (fresh zero), the switch for `sel`, `k` as the count-loop
  * index, the empty ifs, and the unused locals (regalloc weight). */
@@ -63,6 +63,11 @@ void func_i5_802C7090(void) {
     s16 tmp;
     BuoyPoint** pts;
     s32 k;
+    s32 m;
+    s32 n;
+    s16 h;
+    s32 w;
+    s16* path;
     BuoyPoint* base;
     if (D_801CE63C != 0 && gGameState == GAME_STATE_5A) {
         D_802C7B30 = D_801CB340[D_800D48DC];
@@ -82,7 +87,7 @@ void func_i5_802C7090(void) {
         D_802C7B8C = 0;
         if (D_802C7B90) {}
         for (i = 0; i < D_801CB334 + 1; i++) {
-            k = D_800EAC14[gDifficulty][i];
+            k = ((s16*) D_800EAC14)[(s32) gDifficulty * 8 + i];
             if (D_801C2660[k]) {
                 D_802C7B8C = 1;
             }
@@ -107,9 +112,11 @@ void func_i5_802C7090(void) {
         break;
     }
     for (i = 0; i < 8; i++) {
+        j = D_i5_802C7AA0;
+        path = D_802C7B40[sel][i];
         pt = D_802C7B80[sel];
-        k = D_i5_802C7AA0;
-        idx = D_802C7B40[sel][i][k];
+        path += j;
+        idx = *path;
         pt += idx;
         x = pt->x / 10.0f;
         y = pt->y / 10.0f;
@@ -117,7 +124,6 @@ void func_i5_802C7090(void) {
         if (y >= 0.0f && !D_802C7B10[i] && D_i5_802C7AA0 > 0) {
             D_802C7B10[i] = 1.0f;
             func_8004EFB4(x, z, 0x32);
-        if (k) {}
         }
         func_801E4C60(&D_801CE5F8->unk1380[i], pt->unk6[0], pt->unk6[1], pt->unk6[2], pt->unk6[3],
                       pt->unk6[4], pt->unk6[5], x, y, z, 0.05f);
