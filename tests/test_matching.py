@@ -1541,32 +1541,39 @@ class TestCourseOverlays(unittest.TestCase):
 
 
     def test_func_i3_802C5800_matched(self):
-        """TDE test for func_i3_802C5800 in ovl_1BC890 (Marine Fortress master overlay display list and water gate coordinator)."""
+        """TDE test for func_i3_802C5800 in ovl_1BC890 (course-overview entry: score-table reset, demo branch, rank thresholds)."""
         if self.is_function_decompiled("func_i3_802C5800"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_i3_802C5800 is currently non-matching (in progress)")
 
     def test_func_i3_802C5B40_matched(self):
-        """TDE test for func_i3_802C5B40 in ovl_1BC890 (Marine Fortress breakwater surge heightfield updater)."""
+        """TDE test for func_i3_802C5B40 in ovl_1BC890 (course-overview frame: race scene, demo panel dispatch, skip/advance input)."""
         if self.is_function_decompiled("func_i3_802C5B40"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_i3_802C5B40 is currently non-matching (in progress)")
 
     def test_func_i3_802C5D54_matched(self):
-        """TDE test for func_i3_802C5D54 in ovl_1BC890 (Storm lock gate opening/closing kinematic animator)."""
+        """TDE test for func_i3_802C5D54 in ovl_1BC890 (title-frame fade state machine and difficulty label)."""
         if self.is_function_decompiled("func_i3_802C5D54"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_i3_802C5D54 is currently non-matching (in progress)")
 
     def test_func_i3_802C6344_matched(self):
-        """TDE test for func_i3_802C6344 in ovl_1BC890 (Breakwater splash particle emitter and collision response)."""
+        """TDE test for func_i3_802C6344 in ovl_1BC890 (course-select info panel: frames, labels, preview texture, course model)."""
         if self.is_function_decompiled("func_i3_802C6344"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_i3_802C6344 is currently non-matching (in progress)")
+
+    def test_func_i3_802C6E94_matched(self):
+        """TDE test for func_i3_802C6E94 in ovl_1BC890 (empty function after the info panel)."""
+        if self.is_function_decompiled("func_i3_802C6E94"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C6E94 is currently non-matching (in progress)")
 
     def test_func_i6_802C5800_matched(self):
         """TDE test for func_i6_802C5800 in ovl_1C2250 (Twilight City neon lighting and city canal display list renderer)."""
