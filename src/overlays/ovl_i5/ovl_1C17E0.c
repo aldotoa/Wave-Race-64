@@ -41,8 +41,8 @@ void func_801E4C60(Mtx*, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 
 #ifdef NON_MATCHING
 /* Loads the two buoy path sets (8 paths each) once per race, then places the
- * 8 buoys of the active set at the current path step and pops a splash the
- * first time each one surfaces.
+ * 8 buoys of the active set at the current path step and calls func_8004EFB4
+ * the first time each one surfaces.
  * Floor: probe score 31; only register naming is left. Load-bearing: the outer
  * loop on a fresh `j` with the inner loop reusing `i` (gives `slti i,8`),
  * `!D_802C7B10[i]` (fresh zero), the switch for `sel`, `k` as the count-loop
