@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **234 remaining non-matching functions** (65 matched in prioritized matrix, 1,133 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **230 remaining non-matching functions** (69 matched in prioritized matrix, 1,138 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **234 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,133** | 1,367 | **82.88%** |
-| **Non-Matching Functions** | **234** | 1,367 | **17.12%** |
-| **Matched Code Bytes** | **399,608 B** | 834,052 B | **47.91%** |
+| **Matched Functions** | **1,138** | 1,368 | **83.19%** |
+| **Non-Matching Functions** | **230** | 1,368 | **16.81%** |
+| **Matched Code Bytes** | **405,308 B** | 834,052 B | **48.60%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **419** | 419 | **100% OK** |
+| **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
 ---
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 20 | 11 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 19 | 12 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 30 | 1 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 168 | 18 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **236** | **65** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 165 | 21 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **232** | **69** | **301** | | |
 
 ---
 
@@ -99,7 +99,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 41 | `func_i1_802C6BD8` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 125 | 6/3  | Integer Clean  | Pending | clang-format off  |
 | 42 | `func_i15_802C5CE8` | `src/overlays/ovl_i15/ovl_1CFB60.c` | 127 | 19/0  | Integer Clean  | Pending | Routine logic  |
 | 43 | `func_i1_802C6DCC` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 133 | 15/7  | Integer Clean  | Pending | clang-format off  |
-| 44 | `func_i3_802C5B40` | `src/overlays/ovl_i3/ovl_1BC890.c` | 133 | 22/11  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
+| 44 | `func_i3_802C5B40` | `src/overlays/ovl_i3/ovl_1BC890.c` | 133 | 22/11  | Integer Clean  | **MATCHED** | Course-overview frame: race scene, demo panel dispatch, skip/advance input  |
 | 45 | `func_1B1FB0_802C6C1C` | `src/unused_code_1B1FB0.c` | 137 | 11/0  | Integer Clean  | Pending | Flight mode terrain height lookup  |
 | 46 | `func_i11_802C5D48` | `src/overlays/ovl_i11/ovl_1CA480.c` | 141 | 21/11  | Integer Clean  | **MATCHED** | Warmup options menu controller input handler |
 | 47 | `func_801E2058` | `src/codeseg/AF8C0.c` | 145 | 18/2  | Integer Clean  | Pending | Machine tuning interaction and controller input loop  |
@@ -199,7 +199,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 117 | `func_8004C998` | `src/game/water_69D0.c` | 185 | 6/2  | Floats  | Pending | Routine logic  |
 | 118 | `func_8008E4B0` | `src/game/code_43DA0.c` | 185 | 6/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 119 | `func_801E1BA8` | `src/codeseg/AF8C0.c` | 185 | 26/0  | Floats, Rodata  | Pending | Machine tuning interaction and controller input loop  |
-| 120 | `func_i3_802C5800` | `src/overlays/ovl_i3/ovl_1BC890.c` | 186 | 22/4  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
+| 120 | `func_i3_802C5800` | `src/overlays/ovl_i3/ovl_1BC890.c` | 186 | 22/4  | Integer Clean  | **MATCHED** | Course-overview entry: score-table reset, demo branch, rank thresholds  |
 | 121 | `func_i14_802C5B70` | `src/overlays/ovl_i14/ovl_1CF180.c` | 187 | 15/5  | Integer Clean  | **MATCHED** | Results menu option list renderer (completes ovl_1CF180)  |
 | 122 | `func_80051238` | `src/game/water_69D0.c` | 188 | 14/9  | Floats, Rodata  | Pending | Routine logic  |
 | 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | **MATCHED** | Rider and player state init (completes code_43A60)  |
@@ -289,7 +289,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 207 | `func_801FAEB8` | `src/codeseg/C94E0.c` | 372 | 29/5  | Floats  | Pending | Routine logic  |
 | 208 | `func_800A2308` | `src/game/code_52CD0.c` | 379 | 11/4  | Floats  | Pending | Routine logic  |
 | 209 | `AudioGeneral_PlaySound` | `src/audio/audio_general.c` | 379 | 72/20  | JumpTable, Rodata  | Pending | switch 2  |
-| 210 | `func_i3_802C5D54` | `src/overlays/ovl_i3/ovl_1BC890.c` | 380 | 51/6  | Integer Clean  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
+| 210 | `func_i3_802C5D54` | `src/overlays/ovl_i3/ovl_1BC890.c` | 380 | 51/6  | Integer Clean  | **MATCHED** | Title-frame fade state machine and difficulty label  |
 | 211 | `func_800A16F0` | `src/game/code_52CD0.c` | 387 | 13/5  | Floats  | Pending | Routine logic  |
 | 212 | `func_800A1CFC` | `src/game/code_52CD0.c` | 387 | 13/5  | Floats  | Pending | Routine logic  |
 | 213 | `func_800A10E4` | `src/game/code_52CD0.c` | 387 | 13/5  | Floats  | Pending | Routine logic  |
@@ -342,7 +342,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 260 | `func_80062E50` | `src/game/code_C6C0.c` | 687 | 27/8  | Floats, Rodata  | Pending | Screen shake impulse generator on hard wipeouts  |
 | 261 | `func_801EF504` | `src/codeseg/B97B0.c` | 693 | 84/14  | Floats  | Pending | Routine logic  |
 | 262 | `func_801E5554` | `src/codeseg/B3AA0.c` | 712 | 44/3  | Floats  | Pending | Routine logic  |
-| 263 | `func_i3_802C6344` | `src/overlays/ovl_i3/ovl_1BC890.c` | 726 | 37/27  | Rodata  | Pending | Marine Fortress master overlay display list and water gate coordinator  |
+| 263 | `func_i3_802C6344` | `src/overlays/ovl_i3/ovl_1BC890.c` | 726 | 37/27  | Rodata  | **MATCHED** | Course-select info panel: frames, labels, preview texture, course model  |
 | 264 | `func_800687A4` | `src/game/code_C6C0.c` | 734 | 48/9  | Floats  | Pending | Replay camera speed multiplier calculator  |
 | 265 | `func_8009DC10` | `src/game/code_52CD0.c` | 737 | 11/8  | Floats  | Pending | Buoy miss warning flash animator  |
 | 266 | `func_800665B0` | `src/game/code_C6C0.c` | 763 | 45/21  | Floats, Rodata  | Pending | Depth of field and distance fog reference point updater  |

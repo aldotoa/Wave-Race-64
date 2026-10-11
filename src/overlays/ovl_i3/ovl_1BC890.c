@@ -291,19 +291,14 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
 
 /* Course-select info panel: fade (D_i3_802C6F64 0..1), frames, course name,
  * difficulty/rank labels, preview texture and the course model.
- * PARKED at 390 rows (scratch/ovl_i3/probe.py; an earlier 325 used a wrong
- * flat D_800EABBC index). Load-bearing: high-level gbi
- * macros (gDPLoadTextureBlock IA/8b 64x22, gSPTextureRectangle) give the 0x68
- * frame; this local declaration order lands var_t4/sp48/sp50 at 0x40/0x48/0x50;
- * D_802C7024 read as u16 (lhu). Open puzzle: the target divides by 20 twice
- * with `li at,20; div` (no zero checks) but IDO always CSEs the 20 into a
- * register here (every spelling tried, incl. labels, casts, -O1). */
-#ifdef NON_MATCHING
+ * The empty `if (x) {}` statements and the unused u0/u1/u2 locals are
+ * load-bearing for IDO's register allocation and the 0x68 frame. */
 extern s32 D_i3_802C6F64;
 extern s32 D_i3_802C6F68;
 extern s32 D_i3_802C6F6C;
 extern s32 D_i3_802C6F70;
 extern s32 D_i3_802C6F80;
+extern s32 D_i3_802C6F84;
 extern s32 D_i3_802C6F8C;
 extern u8 D_i3_802C6F6F;
 extern s32 D_i3_802C6FD4[];
@@ -315,30 +310,32 @@ extern s32 D_800DB640[];
 extern s32 D_800DB688[];
 extern s32 D_800DB718[];
 extern s32 D_801CB340[];
-extern s32 D_801C1FF0[];
-extern s32 D_801C22C0[];
-extern s32 D_801C23B0[];
+extern const s16 D_800EABBC[][8];
+typedef struct { s32 w; s32 pad[14]; } I3Ent60;
+extern I3Ent60 D_801C1FF0[];
+typedef struct { s32 w; s32 pad[4]; } I3Ent20;
+extern I3Ent20 D_801C22C0[];
+extern I3Ent20 D_801C23B0[];
 extern s32 D_804E418[];
 extern s32 D_804E4E0[];
 extern s32 D_106F728[];
 extern s32 D_106F748[];
 extern s32 D_7000A40[];
 extern s32 D_801CB334;
-extern char D_i3_802C6FF0[];
-extern char D_i3_802C6FFC[];
-extern char D_i3_802C7008[];
+
 Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
 Gfx* func_801E8B24(Gfx*, s32, s32, s32, s32);
 Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
 
+
 Gfx* func_i3_802C6344(Gfx* gfx) {
-    s32 courseOff;
     s32 u2;
-    s32 t2;
-    s32 idx;
+    s32 courseOff;
     s32 u0;
-    s32 sp50;
     s32 u1;
+    s32 t2;
+    s32 sp50;
+    s32 idx;
     s32 sp48;
     s32* t5;
     s32* var_t4;
@@ -402,15 +399,17 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gfx = func_801E3EE0(gfx, 0, 0x16, 0xC3, 0x3E, 0);
     gfx = func_801E3EE0(gfx, 0, 0xE, 0xD4, 0x58, 0);
     gfx = func_801E3EE0(gfx, 0, 0xD, 0xD4, 0x88, 0);
+    if (gfx) {}
     gfx = func_801E3EE0(gfx, 1, 6, 0x22, 0xB5, 0);
+    if (D_i3_802C6F8C) {}
     gfx = func_801E3EE0(gfx, 1, 7, 0x22, 0xC2, 0);
 
     if (D_801CB330 == 0) {
-        gfx = func_801E9858(func_801E9858(gfx, 2, D_i3_802C6FF0, 0xCB, 0x69), 2, D_i3_802C6FFC, 0xCB, 0x99);
+        gfx = func_801E9858(func_801E9858(gfx, 2, "-'--@---", 0xCB, 0x69), 2, "-'--@---", 0xCB, 0x99);
     } else if (D_800DAB68 != 0) {
-        gfx = func_801E9858(func_801E8B24(gfx, 2, D_801C23B0[D_801CB330 * 5], 0xCB, 0x69), 2, D_i3_802C7008, 0xCB, 0x99);
+        gfx = func_801E9858(func_801E8B24(gfx, 2, D_801C23B0[D_801CB330].w, 0xCB, 0x69), 2, "-'--@---", 0xCB, 0x99);
     } else {
-        gfx = func_801E8B24(func_801E8B24(gfx, 2, D_801C1FF0[D_801CB330 * 15], 0xCB, 0x69), 2, D_801C22C0[D_801CB330 * 5], 0xCB, 0x99);
+        gfx = func_801E8B24(func_801E8B24(gfx, 2, D_801C1FF0[D_801CB330].w, 0xCB, 0x69), 2, D_801C22C0[D_801CB330].w, 0xCB, 0x99);
     }
     gfx = func_801EB00C(gfx, 2, D_801CB340[D_800D48DC], 0xCA, 0xC2);
     if (D_i3_802C6FE0 != 0) {
@@ -420,12 +419,14 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     }
     gfx = func_801EB00C(gfx, 2, D_800EABBC[gDifficulty][D_801CB334], 0xCA, 0xB5);
 
+    if (sp50) {}
     gDPLoadTextureBlock(gfx++, D_i3_802C6F50[D_801CE704], G_IM_FMT_IA, G_IM_SIZ_8b, 64, 22, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gfx++, 900, 728, 1156, 816, G_TX_RENDERTILE, 0, 0, 1024, 1024);
 
     courseOff = gCourseID * 8;
     t5 = (s32*)((u8*)D_800DB5B0 + courseOff);
+    if (t5) {}
     t2 = 1;
     if (D_i3_802C6F8C == 0) {
         var_t4 = (s32*)((u8*)D_800DB5F8 + courseOff);
@@ -440,6 +441,7 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
         } else if (gCourseID == MARINE_FORTRESS && (gDifficulty == DIFFICULTY_HARD || gDifficulty == DIFFICULTY_EXPERT)) {
             var_t4 = (s32*)((u8*)D_800DB640 + courseOff);
         }
+        if (var_t4) {}
     } else if (D_i3_802C6F8C == 2) {
         var_t4 = (s32*)((u8*)D_800DB718 + courseOff);
         if (gCourseID == DOLPHIN_PARK) {
@@ -447,6 +449,8 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
         }
     }
 
+    if (gDifficulty) {}
+    if (gDifficulty) {}
     gSPDisplayList(gfx++, D_804E418);
     gDPPipeSync(gfx++);
     gDPSetColorImage(gfx++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, OS_PHYSICAL_TO_K0(gFrameBuffers[gFramebuffersIdx]));
@@ -458,7 +462,7 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gDPSetEnvColor(gfx++, 0xFF, 0xFF, 0xFF, D_i3_802C6F6C);
     gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 31, 63, 180, 167);
     if (D_i3_802C6F80 == 0) {
-        gDPSetRenderMode(gfx++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+        gDPSetRenderMode(gfx++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     }
     if (t2 != 0) {
         gSPClearGeometryMode(gfx++, G_LIGHTING);
@@ -468,7 +472,7 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gSPDisplayList(gfx++, t5[0] + 0x50000);
     if (D_i3_802C6F80 != 0) {
         gDPPipeSync(gfx++);
-        gDPSetRenderMode(gfx++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+        gDPSetRenderMode(gfx++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     }
     if (t2 != 0) {
         gSPClearGeometryMode(gfx++, G_LIGHTING);
@@ -480,9 +484,10 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
     return gfx;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i3/ovl_1BC890/func_i3_802C6344.s")
-#endif
+
+/* Empty function after func_i3_802C6344 (bare `jr ra; nop` at 0x802C6E94). */
+void func_i3_802C6E94(void) {
+}
 
 void func_i3_802C6E9C(void) {
     gPrevGameState = gGameState;

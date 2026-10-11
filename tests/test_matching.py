@@ -1562,11 +1562,18 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i3_802C5D54 is currently non-matching (in progress)")
 
     def test_func_i3_802C6344_matched(self):
-        """TDE test for func_i3_802C6344 in ovl_1BC890 (Breakwater splash particle emitter and collision response)."""
+        """TDE test for func_i3_802C6344 in ovl_1BC890 (course-select info panel: frames, labels, preview texture, course model)."""
         if self.is_function_decompiled("func_i3_802C6344"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_i3_802C6344 is currently non-matching (in progress)")
+
+    def test_func_i3_802C6E94_matched(self):
+        """TDE test for func_i3_802C6E94 in ovl_1BC890 (empty function after the info panel)."""
+        if self.is_function_decompiled("func_i3_802C6E94"):
+            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+        else:
+            self.skipTest("func_i3_802C6E94 is currently non-matching (in progress)")
 
     def test_func_i6_802C5800_matched(self):
         """TDE test for func_i6_802C5800 in ovl_1C2250 (Twilight City neon lighting and city canal display list renderer)."""
