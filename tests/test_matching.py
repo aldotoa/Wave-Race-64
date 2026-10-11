@@ -1555,7 +1555,7 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i3_802C5B40 is currently non-matching (in progress)")
 
     def test_func_i3_802C5D54_matched(self):
-        """TDE test for func_i3_802C5D54 in ovl_1BC890 (Storm lock gate opening/closing kinematic animator)."""
+        """TDE test for func_i3_802C5D54 in ovl_1BC890 (title-frame fade state machine and difficulty label)."""
         if self.is_function_decompiled("func_i3_802C5D54"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:

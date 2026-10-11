@@ -184,28 +184,24 @@ Gfx* func_i3_802C5B40(Gfx* arg0) {
 }
 
 /* Fade-in/out state machine for the two title frames (D_i3_802C6F64 0..3),
- * then draws the frames and the difficulty label.
- * PARKED at 242 rows (scratch/ovl_i3/probe.py). Semantics checked against the
- * asm; the remaining rows are IDO global address/constant promotion: target
- * keeps &F64 in t2, &F7C in t0, &F74 in a2, &F70 in t3 and promotes 1/10/255/170
- * into a1/a1/a3/t1 (hence multu + checked div). The byte args are the low
- * bytes of F6C/F78 (lbu D_i3_802C6F6F/7B). A `volatile` param is NOT needed. */
-#ifdef NON_MATCHING
+ * then draws the frames and the difficulty label. The chained stores and the
+ * low-byte reads through &D_i3_802C6F6C/&D_i3_802C6F78 are load-bearing: they
+ * decide which global addresses IDO keeps in registers. */
 extern s32 D_i3_802C6F64;
 extern s32 D_i3_802C6F68;
 extern s32 D_i3_802C6F6C;
-extern u8 D_i3_802C6F6F;
 extern s32 D_i3_802C6F70;
 extern s32 D_i3_802C6F74;
 extern s32 D_i3_802C6F78;
-extern u8 D_i3_802C6F7B;
 extern s32 D_i3_802C6F7C;
 extern s16 D_800DAB68;
+
 typedef struct {
     s16 x;
     s16 pad2;
     s32 id;
 } I3Entry;
+
 extern I3Entry D_i3_802C6FB4[];
 extern I3Entry D_i3_802C6FCC;
 
@@ -218,13 +214,10 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
         case 0:
             if (++D_i3_802C6F68 >= 5) {
                 D_i3_802C6F64 = 1;
-                D_i3_802C6F74 = 0;
-                D_i3_802C6F68 = 0;
+                D_i3_802C6F68 = D_i3_802C6F74 = 0;
             }
-            D_i3_802C6F78 = 0;
-            D_i3_802C6F6C = 0;
-            D_i3_802C6F70 = 0;
-            D_i3_802C6F7C = 0;
+            D_i3_802C6F6C = D_i3_802C6F78 = 0;
+            D_i3_802C6F70 = D_i3_802C6F7C = 0;
             break;
         case 1:
             t = ++D_i3_802C6F68;
@@ -248,24 +241,18 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
             }
             if ((t >= 10) && (u >= 10)) {
                 D_i3_802C6F64 = 2;
-                D_i3_802C6F78 = 255;
-                D_i3_802C6F6C = 255;
-                D_i3_802C6F70 = 170;
-                D_i3_802C6F7C = 170;
-                D_i3_802C6F68 = 0;
-                D_i3_802C6F74 = 0;
+                D_i3_802C6F6C = D_i3_802C6F78 = 255;
+                D_i3_802C6F70 = D_i3_802C6F7C = 170;
+                D_i3_802C6F68 = D_i3_802C6F74 = 0;
             }
             break;
         case 2:
             if (++D_i3_802C6F68 >= 25) {
                 D_i3_802C6F64 = 3;
-                D_i3_802C6F74 = 0;
-                D_i3_802C6F68 = 0;
+                D_i3_802C6F68 = D_i3_802C6F74 = 0;
             }
-            D_i3_802C6F78 = 255;
-            D_i3_802C6F6C = 255;
-            D_i3_802C6F70 = 170;
-            D_i3_802C6F7C = 170;
+            D_i3_802C6F6C = D_i3_802C6F78 = 255;
+            D_i3_802C6F70 = D_i3_802C6F7C = 170;
             break;
         case 3:
             t = ++D_i3_802C6F68;
@@ -290,9 +277,9 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
     gfx = Menu_DrawFrame(gfx, 2, 0x20, 0x4B, 0x100, 0x20);
     gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0xFF, D_i3_802C6F7C);
     gfx = Menu_DrawFrame(gfx, 0, 0x20, 0x85, 0x100, 0x20);
-    gfx = func_801E946C(gfx, 10, D_i3_802C6F6F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gfx = func_801E946C(gfx, 10, *((u8*)&D_i3_802C6F6C + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     gfx = func_801E3EE0(gfx, 2, 0x22, 0x48, 0x51, 0);
-    gfx = func_801E946C(gfx, 10, D_i3_802C6F7B, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gfx = func_801E946C(gfx, 10, *((u8*)&D_i3_802C6F78 + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     if (D_800DAB68 != 0) {
         e = &D_i3_802C6FCC;
     } else {
@@ -301,9 +288,6 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
     gfx = func_801E3EE0(gfx, 2, e->id, e->x + 0x32, 0x8B, 0);
     return gfx;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i3/ovl_1BC890/func_i3_802C5D54.s")
-#endif
 
 /* Course-select info panel: fade (D_i3_802C6F64 0..1), frames, course name,
  * difficulty/rank labels, preview texture and the course model.
