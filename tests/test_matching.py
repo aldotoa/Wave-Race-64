@@ -1895,11 +1895,11 @@ class TestCourseOverlays(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i5_802C781C_matched(self):
-        """TDE test for func_i5_802C781C in ovl_1C17E0 (Buoy miss penalty check)."""
-        if self.is_function_decompiled("func_i5_802C781C"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i5_802C781C is currently non-matching (in progress)")
+        """TDE test for func_i5_802C781C in ovl_1C17E0 (results-panel slide/scroll state machine)."""
+        self.assertTrue(self.is_function_decompiled("func_i5_802C781C"), "func_i5_802C781C should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i5", "ovl_1C17E0", "func_i5_802C781C.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
 
     def test_func_i1_802C59E8_matched(self):
