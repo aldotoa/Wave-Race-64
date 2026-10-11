@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **229 remaining non-matching functions** (70 matched in prioritized matrix, 1,139 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **228 remaining non-matching functions** (71 matched in prioritized matrix, 1,140 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **229 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,139** | 1,368 | **83.26%** |
-| **Non-Matching Functions** | **229** | 1,368 | **16.74%** |
-| **Matched Code Bytes** | **405,780 B** | 834,052 B | **48.65%** |
+| **Matched Functions** | **1,140** | 1,368 | **83.33%** |
+| **Non-Matching Functions** | **228** | 1,368 | **16.67%** |
+| **Matched Code Bytes** | **406,792 B** | 834,052 B | **48.77%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 19 | 12 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 29 | 2 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 165 | 21 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **231** | **70** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 164 | 22 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **230** | **71** | **301** | | |
 
 ---
 
@@ -235,7 +235,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 153 | `func_801FBFB4` | `src/codeseg/C94E0.c` | 250 | 12/0  | Floats  | Pending | Routine logic  |
 | 154 | `func_80067810` | `src/game/code_C6C0.c` | 251 | 1/0  | Integer Clean  | Pending | Replay spectator camera path spline evaluator  |
 | 155 | `func_801E946C` | `src/codeseg/B66E0.c` | 251 | 12/6  | JumpTable, Rodata  | Pending | Routine logic  |
-| 156 | `func_i5_802C7090` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 253 | 18/6  | Floats, Rodata, ParkedFloor  | Pending (Floor 31) | Buoy path loader and placer: loads the two 8-path buoy sets once per race, places the 8 active buoys at the current path step, and calls func_8004EFB4 the first time each one surfaces. Draft left at register-naming floor  |
+| 156 | `func_i5_802C7090` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 253 | 18/6  | Floats, Rodata  | **MATCHED** | Buoy path loader and placer: loads the two 8-path buoy sets once per race, places the 8 active buoys at the current path step, and calls func_8004EFB4 the first time each one surfaces  |
 | 157 | `func_801DE690` | `src/codeseg/A95D0.c` | 257 | 10/0  | Floats, Rodata  | Pending | Routine logic  |
 | 158 | `func_801EFFD8` | `src/codeseg/B97B0.c` | 258 | 17/1  | Floats  | Pending | Routine logic  |
 | 159 | `func_801EB91C` | `src/codeseg/B97B0.c` | 259 | 20/7  | Integer Clean  | Pending | Stunt Mode state initialization  |

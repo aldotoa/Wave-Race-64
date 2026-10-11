@@ -39,14 +39,14 @@ void func_801EC830(void);
 void func_8004EFB4(f32, f32, s32);
 void func_801E4C60(Mtx*, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 
-#ifdef NON_MATCHING
 /* Loads the two buoy path sets (8 paths each) once per race, then places the
  * 8 buoys of the active set at the current path step and calls func_8004EFB4
  * the first time each one surfaces.
- * Floor: probe score 4 (rows 93-94: gDifficulty lui t4 vs t5; 215/219 inherent). Load-bearing: the outer
- * loop on a fresh `j` with the inner loop reusing `i` (gives `slti i,8`),
- * `!D_802C7B10[i]` (fresh zero), the switch for `sel`, `k` as the count-loop
- * index, the empty ifs, and the unused locals (regalloc weight). */
+ * Load-bearing for the match: the chained clear `D_802C7B8C = D_802C7B90 = 0`
+ * (its extra temp rotates ugen's FIFO register queue), the 2D D_800EAC14 index,
+ * the outer loop on `j` with the inner loop reusing `i`, `path += j` with `j`
+ * reused for D_i5_802C7AA0, `!D_802C7B10[i]` (fresh zero), the switch for
+ * `sel`, the while-form clear loop, and the unused hdr/paths/fp locals (frame). */
 void func_i5_802C7090(void) {
     f32 z;
     s32 i;
@@ -59,16 +59,8 @@ void func_i5_802C7090(void) {
     f32 y;
     s32 sel;
     s16 idx;
-    s16** dst;
-    s16 tmp;
-    BuoyPoint** pts;
     s32 k;
-    s32 m;
-    s32 n;
-    s16 h;
-    s32 w;
     s16* path;
-    BuoyPoint* base;
     if (D_801CE63C != 0 && gGameState == GAME_STATE_5A) {
         D_802C7B30 = D_801CB340[D_800D48DC];
         D_802C7B34 = D_800EABBC[gDifficulty][D_801CB334];
@@ -83,11 +75,9 @@ void func_i5_802C7090(void) {
             }
             D_802C7B80[j] = (BuoyPoint*) SegmentedToVirtual(D_802C7B38[j]->points);
         }
-        D_802C7B90 = 0;
-        D_802C7B8C = 0;
-        if (D_802C7B90) {}
+        D_802C7B8C = D_802C7B90 = 0;
         for (i = 0; i < D_801CB334 + 1; i++) {
-            k = ((s16*) D_800EAC14)[(s32) gDifficulty * 8 + i];
+            k = D_800EAC14[gDifficulty][i];
             if (D_801C2660[k]) {
                 D_802C7B8C = 1;
             }
@@ -129,9 +119,6 @@ void func_i5_802C7090(void) {
                       pt->unk6[4], pt->unk6[5], x, y, z, 0.05f);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7090.s")
-#endif
 
 Gfx* func_i5_802C7594(Gfx*);
 Gfx* func_i5_802C7698(Gfx*);
