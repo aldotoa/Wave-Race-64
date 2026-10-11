@@ -40,9 +40,88 @@ void func_8004EFB4(f32, f32, s32);
 void func_801E4C60(Mtx*, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 
 #ifdef NON_MATCHING
-Gfx* func_i5_802C7090(Gfx* arg0) {
-    /* Course floating buoys and navigation arrow display list */
-    return arg0;
+/* Loads the two buoy path sets (8 paths each) once per race, then places the
+ * 8 buoys of the active set at the current path step and pops a splash the
+ * first time each one surfaces.
+ * Floor: probe score 31; only register naming is left. Load-bearing: the outer
+ * loop on a fresh `j` with the inner loop reusing `i` (gives `slti i,8`),
+ * `!D_802C7B10[i]` (fresh zero), the switch for `sel`, `k` as the count-loop
+ * index, the empty ifs, and the unused locals (regalloc weight). */
+void func_i5_802C7090(void) {
+    f32 z;
+    s32 i;
+    BuoyPoint* pt;
+    BuoyPathHeader** hdr;
+    s32 j;
+    f32 x;
+    s16** paths;
+    f32* fp;
+    f32 y;
+    s32 sel;
+    s16 idx;
+    s16** dst;
+    s16 tmp;
+    BuoyPoint** pts;
+    s32 k;
+    BuoyPoint* base;
+    if (D_801CE63C != 0 && gGameState == GAME_STATE_5A) {
+        D_802C7B30 = D_801CB340[D_800D48DC];
+        D_802C7B34 = D_800EABBC[gDifficulty][D_801CB334];
+        for (j = 0; j < 2; j++) {
+            if (j == 0) {
+                D_802C7B38[j] = (BuoyPathHeader*) SegmentedToVirtual((u32) D_80B0E28);
+            } else {
+                D_802C7B38[j] = (BuoyPathHeader*) SegmentedToVirtual((u32) D_80B1550);
+            }
+            for (i = 0; i < 8; i++) {
+                D_802C7B40[j][i] = (s16*) SegmentedToVirtual(D_802C7B38[j]->paths[i]);
+            }
+            D_802C7B80[j] = (BuoyPoint*) SegmentedToVirtual(D_802C7B38[j]->points);
+        }
+        D_802C7B90 = 0;
+        D_802C7B8C = 0;
+        if (D_802C7B90) {}
+        for (i = 0; i < D_801CB334 + 1; i++) {
+            k = D_800EAC14[gDifficulty][i];
+            if (D_801C2660[k]) {
+                D_802C7B8C = 1;
+            }
+            if (D_801C2690[k]) {
+                D_802C7B90 = 1;
+            }
+        }
+        i = 0;
+        while (i < 8) {
+            D_802C7B10[i] = 0.0f;
+            i++;
+        }
+    }
+
+    switch (D_i5_802C7AC8) {
+    case 2:
+    case 3:
+        sel = 0;
+        break;
+    default:
+        sel = 1;
+        break;
+    }
+    for (i = 0; i < 8; i++) {
+        pt = D_802C7B80[sel];
+        k = D_i5_802C7AA0;
+        idx = D_802C7B40[sel][i][k];
+        pt += idx;
+        x = pt->x / 10.0f;
+        y = pt->y / 10.0f;
+        z = pt->z / 10.0f;
+        if (y >= 0.0f && !D_802C7B10[i] && D_i5_802C7AA0 > 0) {
+            D_802C7B10[i] = 1.0f;
+            func_8004EFB4(x, z, 0x32);
+        if (k) {}
+        }
+        func_801E4C60(&D_801CE5F8->unk1380[i], pt->unk6[0], pt->unk6[1], pt->unk6[2], pt->unk6[3],
+                      pt->unk6[4], pt->unk6[5], x, y, z, 0.05f);
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1C17E0/func_i5_802C7090.s")
@@ -222,7 +301,8 @@ void func_i5_802C79F4(void) {
 }
 
 #ifdef NON_MATCHING
-s32 D_i5_802C7AA0[2] = { 0, 0 };
+s32 D_i5_802C7AA0 = 0;
+s32 D_i5_802C7AA4 = 0;
 u32 D_i5_802C7AA8[8] = {
     0x0808EB68, 0x08091C40, 0x080924E0, 0x0808F878, 0x08092D80, 0x080940A0, 0x0808FE58, 0x08091C40
 };
