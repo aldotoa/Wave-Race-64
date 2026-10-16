@@ -253,7 +253,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 171 | `func_800629A8` | `src/game/code_C6C0.c` | 298 | 9/1  | Floats, Rodata  | Pending | Submerged camera water ripple distortion filter  |
 | 172 | `func_80061184` | `src/game/code_C6C0.c` | 304 | 74/1  | Floats, Rodata  | Pending | Reverse-view (rear mirror) camera orientation  |
 | 173 | `func_8004D628` | `src/game/water_69D0.c` | 306 | 42/1  | Floats, Rodata  | Pending | Routine logic  |
-| 174 | `func_8004B1B4` | `src/game/code_5480.c` | 307 | 16/2  | Floats  | Pending | Wave surface ripple generation and heightfield deformer  |
+| 174 | `func_8004B1B4` | `src/game/code_5480.c` | 307 | 16/2  | Floats, ParkedFloor  | Pending (Floor 83) | Wave surface ripple generation and heightfield deformer; draft parked behind NON_MATCHING (chained-assign load share, shared C vars for f-regs, empty-if priority bias)  |
 | 175 | `func_i9_802C6CC8` | `src/overlays/ovl_i9/ovl_1C66D0.c` | 307 | 39/10  | Integer Clean  | Pending | Sunset Bay beach breaker wave height calculation  |
 | 176 | `func_i0_802C63AC` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 307 | 40/8  | JumpTable, Rodata  | Pending | Routine logic  |
 | 177 | `func_1B1FB0_802C62E4` | `src/unused_code_1B1FB0.c` | 310 | 43/11  | Integer Clean  | Pending | Flight mode debug camera controller  |
@@ -269,7 +269,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 187 | `func_8004EAA4` | `src/game/water_69D0.c` | 324 | 10/0  | Integer Clean  | Pending | Routine logic  |
 | 188 | `func_801F9EA0` | `src/codeseg/B97B0.c` | 328 | 27/5  | Floats  | Pending | Routine logic  |
 | 189 | `func_i9_802C5800` | `src/overlays/ovl_i9/ovl_1C66D0.c` | 329 | 23/7  | Floats, Rodata  | Pending | Sunset Bay sunset lighting and water specular display list renderer  |
-| 190 | `func_8004BC98` | `src/game/code_5480.c` | 331 | 15/7  | Floats  | Pending | Dynamic water collision response and splash impulse update  |
+| 190 | `func_8004BC98` | `src/game/code_5480.c` | 331 | 15/7  | Floats, ParkedFloor  | Pending (Floor 71 with ld/st alias symbols) | Dynamic water collision response and splash impulse update; draft parked behind NON_MATCHING, one hidden t-reg queue rotation left at the sin/cos join  |
 | 191 | `func_8007D614` | `src/game/core/wr64_save.c` | 331 | 29/10  | JumpTable, Rodata  | Pending | Controller Pak ghost data file verify, header check, and payload reader  |
 | 192 | `func_i8_802C5EB8` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 331 | 58/12  | Integer Clean  | Pending | Stunt mode ramp and floating ring display list generator  |
 | 193 | `func_i8_802C5800` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 335 | 26/8  | Floats  | Pending | Stunt mode ramp and floating ring display list generator  |
