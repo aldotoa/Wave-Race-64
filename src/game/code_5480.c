@@ -16,6 +16,16 @@ extern UnkStruct_801603E0 D_801603E0[];
 extern UnkStruct_801603E0 D_80158520[];
 
 extern s32 D_1000140;
+extern s32 D_800D4610;
+extern s32 D_800D4654;
+extern s32 D_800D4670;
+extern s32 D_800D4674;
+extern f32 D_800D4678;
+extern u16 D_800D467C;
+extern s32 D_80160420;
+extern Vec3f D_80158450[];
+void func_8004B6E0(void);
+
 extern s32 D_10001E0;
 extern s32 D_800D4650;
 extern s32 D_800D4658[];
@@ -158,9 +168,147 @@ void func_8004B0F8(struct UnkStruct_8004B0F8* arg0) {
     arg0->unk4C = (f32) (var_f0 / var_f14);
 }
 
+/* PARKED DRAFT (probe floor 83 rows of 307). Levers found: chained assign
+ * `s->x = (v->x = s->x) + dt * s->vx` shares the load; one C variable reused
+ * (var_s1 as loop pointer and constraint endpoint, temp_fs5 as dt/inv/new_y)
+ * gives callee-saved f-regs; dead `i` counter forces the `multu 12` form.
+ * Left: float-register priority (d/dz order, sums volatile) and fp temp
+ * queue (f0 vs f2) - empty `if (d) {}` insertions move priority. */
 #ifdef NON_MATCHING
-void func_8004B1B4(void* arg0) {
-    /* Wave surface ripple generation and heightfield deformer */
+void func_8004B1B4(struct UnkStruct_8004B0F8* arg0) {
+    UnkStruct_8004B0F8_1* var_s1;
+    UnkStruct_8004B0F8_unk34* var_s2;
+    UnkStruct_8004B0F8_1* b;
+    s32 pa0;
+    s32 pa1;
+    f32 old_x;
+    f32 old_y;
+    f32 old_z;
+    s32 pb0;
+    s32 pb1;
+    s32 pb2;
+    s32 pb3;
+    s32 pb4;
+    f32 new_z;
+    Vec3f* var_v1;
+    s32 var_s4;
+    f32 temp_fs5;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 d;
+    f32 sx;
+    f32 sy;
+    f32 sz;
+    f32 new_x;
+    f32 new_y;
+    f32 ln;
+    s32 i;
+    f32 cnt;
+
+    i = arg0->unk28;
+    var_s1 = &arg0->unk30[i];
+    var_v1 = &D_80158450[i];
+    temp_fs5 = arg0->unkC;
+    while (var_s1 >= arg0->unk30) {
+        var_s1->unk0 = (var_v1->x = var_s1->unk0) + temp_fs5 * var_s1->unkC;
+        var_s1->unk4 = (var_v1->y = var_s1->unk4) + temp_fs5 * var_s1->unk10;
+        var_s1->unk8 = (var_v1->z = var_s1->unk8) + temp_fs5 * var_s1->unk14;
+        var_s1--;
+        var_v1--;
+        i--;
+    }
+    var_s1 = &arg0->unk30[arg0->unk28];
+
+    temp_fs5 = 0.5f / (arg0->unk20 * (arg0->unk28 - 1) + 1.0f);
+    var_s4 = arg0->unk24;
+    if (var_s4 != 0) {
+        do {
+            while (var_s1 >= arg0->unk30) {
+                var_s1->unkC = var_s1->unk10 = var_s1->unk14 = 0.0f;
+                var_s1--;
+            }
+            var_s2 = &arg0->unk34[arg0->unk2C];
+            while (var_s2 >= arg0->unk34) {
+                var_s1 = var_s2->unk0;
+                b = var_s2->unk4;
+                dx = b->unk0 - var_s1->unk0;
+                dy = b->unk4 - var_s1->unk4;
+                dz = b->unk8 - var_s1->unk8;
+                d = var_s2->unk8 / sqrtf(dx * dx + dy * dy + dz * dz) - temp_fs5;
+                var_s2--;
+                b->unkC = b->unkC + dx * d;
+                b->unk10 = b->unk10 + dy * d;
+                b->unk14 = b->unk14 + dz * d;
+                var_s1->unkC = var_s1->unkC - dx * d;
+                var_s1->unk10 = var_s1->unk10 - dy * d;
+                var_s1->unk14 = var_s1->unk14 - dz * d;
+            }
+            var_s4--;
+            var_s1 = &arg0->unk30[arg0->unk28];
+            while (var_s1 >= arg0->unk30) {
+                var_s1->unk0 = var_s1->unk0 + var_s1->unkC;
+                var_s1->unk4 = var_s1->unk4 + var_s1->unk10;
+                var_s1->unk8 = var_s1->unk8 + var_s1->unk14;
+                var_s1--;
+            }
+            var_s1 = &arg0->unk30[arg0->unk28];
+        } while (var_s4 != 0);
+    }
+
+    sx = sy = sz = 0.0f;
+    i = arg0->unk28;
+    var_v1 = &D_80158450[i];
+    if (cnt) {
+    }
+    while (var_s1 >= arg0->unk30) {
+        sx += var_s1->unk0;
+        dx = var_s1->unk0 - var_v1->x;
+        dy = var_s1->unk4 - var_v1->y;
+        sy += var_s1->unk4;
+        if (sy) {
+        }
+        dz = var_s1->unk8 - var_v1->z;
+        if (new_x) {
+        }
+        sz += var_s1->unk8;
+        d = (1.0f - var_s1->unk18) * (dx * arg0->unk5C + dy * arg0->unk60 + dz * arg0->unk64);
+        if (sz) {
+        }
+        var_s1->unkC = arg0->unk5C * d + var_s1->unk18 * dx;
+        var_s1->unk10 = arg0->unk60 * d + var_s1->unk18 * dy;
+        var_s1->unk14 = arg0->unk64 * d + var_s1->unk18 * dz;
+        var_s1--;
+        var_v1--;
+        i--;
+    }
+
+    cnt = arg0->unk28 + 1;
+    new_x = sx / cnt;
+    old_x = arg0->unk44;
+    old_y = arg0->unk48;
+    new_y = sy / cnt;
+    arg0->unk44 = new_x;
+    dx = new_x - old_x;
+    arg0->unk50 = dx;
+    old_z = arg0->unk4C;
+    new_z = sz / cnt;
+    arg0->unk48 = new_y;
+    dy = new_y - old_y;
+    arg0->unk54 = dy;
+    arg0->unk4C = new_z;
+    dz = new_z - old_z;
+    arg0->unk58 = dz;
+    d = dx * dx + dy * dy + dz * dz;
+    if (d != 0.0f) {
+        ln = sqrtf(d);
+        arg0->unk68 = ln;
+        arg0->unk5C = dx / ln;
+        arg0->unk60 = dy / ln;
+        arg0->unk64 = dz / ln;
+    } else {
+        arg0->unk68 = arg0->unk5C = arg0->unk60 = arg0->unk64 = 0.0f;
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_5480/func_8004B1B4.s")
@@ -293,9 +441,93 @@ Gfx* func_8004BC40(Gfx* gdl) {
     return gdl;
 }
 
+/* PARKED DRAFT (probe floor ~71 rows of 331 with load-bearing alias symbols,
+ * 177 without). The u32 prefix globals (D_800D467C/4674/4610/80160420) are
+ * address-CSE'd into s-regs by IDO when a loop with a call exists; the target
+ * keeps separate lui/lw, which only reproduced by giving ld and st different
+ * symbol names for the same address. `if (fa) {}` in each arm makes the arm
+ * result live in $f0 like the target. Remaining: one hidden t-reg queue
+ * rotation at the sin/cos join (v0 vs t9). */
 #ifdef NON_MATCHING
-void func_8004BC98(void* arg0) {
-    /* Dynamic water collision response and splash impulse update */
+void func_8004BC98(void) {
+    s32 temp_s6;
+    f32 fa;
+    s32 temp_s2;
+    s32 temp_s1;
+    s32 i;
+    s32 prev;
+    s32 tmr;
+    Vtx* vtx;
+    UnkStruct_801603E0* var_s0;
+
+    if (gControllerOne[D_80154330[0]].unk_2 & 0x800) {
+        D_800D467C = D_800D467C ^ 1;
+    }
+    if (gControllerOne[D_80154330[0]].unk_2 & 0x10) {
+        func_8004B6E0();
+        D_800D4670 ^= 1;
+    }
+    if (gControllerOne[D_80154330[0]].unk_0 & 0x10) {
+        D_80160400->unk10 = gControllerOne[D_80154330[0]].unk_8 * 5;
+        D_80160400->unk14 = gControllerOne[D_80154330[0]].unk_9 * -5;
+    } else {
+        prev = D_80160420;
+        D_80160420 = D_800D4610;
+        tmr = D_800D4674 + D_800D4610 - prev;
+        D_800D4674 = tmr;
+        if (tmr >= 0x12D) {
+            if ((D_800D4654 = D_800D4654 + 1) == 7) {
+                D_800D4650 = (u32) ((SysUtils_Rand() & 0xFFFF) * 6) >> 16;
+                D_800D4654 = 0;
+            }
+            D_800D4674 = 0;
+            func_8004B6E0();
+            D_800D4670 ^= 1;
+            if (D_800DAB1C == 1) {
+                fa = (u32) ((SysUtils_Rand() >> 16) * 50) / 65536.0 + 50.0;
+                D_800D4678 = fa;
+            } else {
+                fa = (u32) ((SysUtils_Rand() >> 16) * 5) / 65536.0 + 7.0;
+                D_800D4678 = fa;
+            }
+        }
+        D_80160400->unk10 = COS(D_800D4610 * 8) * D_800D4678;
+        D_80160400->unk14 = SIN(D_800D4610 * 8) * D_800D4678;
+        if (D_800D467C == 0) {
+            D_80160400->unk14 = 0;
+            D_80160400->unk10 = 0;
+        }
+    }
+    D_80160400->unk0 = D_80160400->unk8 + D_80160400->unk10;
+    D_80160400->unk4 = D_80160400->unkC + D_80160400->unk14;
+
+    var_s0 = D_80158520;
+    i = 0;
+    do {
+        vtx = &gGfxPool->unkFE08[i];
+        temp_s1 = D_80160400->unk10;
+        temp_s2 = D_80160400->unk14;
+        temp_s6 = sqrtf(temp_s1 * temp_s1 + temp_s2 * temp_s2) + 0.5;
+        temp_s1 = D_80160400->unk0 - var_s0->unk8;
+        temp_s2 = D_80160400->unk4 - var_s0->unkC;
+        fa = (var_s0->unk1C + var_s0->unk18) * (s32) (sqrtf(temp_s1 * temp_s1 + temp_s2 * temp_s2) + 0.5);
+        if (fa != 0.0f) {
+            fa = (f32) (var_s0->unk18 * temp_s6) / fa;
+            if (D_800D4670 != 0) {
+                var_s0->unk10 = 0.5 - temp_s1 * fa;
+                var_s0->unk14 = 0.5 - temp_s2 * fa;
+            } else {
+                var_s0->unk10 = temp_s1 * fa + 0.5;
+                var_s0->unk14 = temp_s2 * fa + 0.5;
+            }
+        }
+        var_s0->unk0 = var_s0->unk10 + var_s0->unk8;
+        vtx->v.ob[0] = var_s0->unk0;
+        var_s0->unk4 = var_s0->unk14 + var_s0->unkC;
+        vtx->v.ob[1] = var_s0->unk4;
+        i++;
+        var_s0++;
+    } while (var_s0 != D_801603E0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_5480/func_8004BC98.s")
