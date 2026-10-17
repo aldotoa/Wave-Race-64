@@ -653,8 +653,58 @@ void func_80049710(Mtx* arg0, MtxF* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #ifdef NON_MATCHING
-void func_800498A4(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
-    /* 3D rotation matrix generation about arbitrary axis using sin/cos lookup table */
+/*
+ * Euler angles (radians) -> rotation matrix. Floor: 44 diff rows (probe), register/spill-slot only.
+ * Load-bearing: decl order; the third angle's `+ (1.0f / 2.0f)` spelled differently from the other two
+ * `0.5f` sites (stops IDO holding 0.5f in an FPR, so it is rematerialized like the target); routing the
+ * sz load through sysz. Remaining: 4096.0f/2pi get $f12/$f14 instead of $f16/$f18 and sx/sz the reverse;
+ * spill slots of sy/sz/cy/cz/sysz (target 0x30/0x2C/0x24/0x20/0x1C) differ. A search with empty-if
+ * insertions reached 36. The matched sibling func_801EE4D0 (B97B0.c) suggests the original declared
+ * `f32 s1, s2, s3, c1, c2, c3; f32 temp;`, which reproduces the target slot order but scored 56.
+ */
+void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
+    f32 cy;
+    f32 szcy;
+    f32 cycz;
+    f32 sysz;
+    f32 cz;
+    f32 sycz;
+    f32 sz;
+    f32 sy;
+    f32 cx;
+    s32 idx;
+    f32 sx;
+    idx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
+    sx = gSinTable[idx & 0xFFF];
+    arg1->mf[2][1] = -sx;
+    cx = gSinTable[(idx + 0x400) & 0xFFF];
+    idx = ((ry * 4096.0f) / 6.283186f) + 0.5f;
+    sy = gSinTable[idx & 0xFFF];
+    arg1->mf[2][0] = cx * sy;
+    cy = gSinTable[(idx + 0x400) & 0xFFF];
+    arg1->mf[2][2] = cy * cx;
+    idx = ((rz * 4096.0f) / 6.283186f) + (1.0f / 2.0f);
+    sysz = gSinTable[idx & 0xFFF];
+    sz = sysz;
+    arg1->mf[0][1] = sz * cx;
+    cz = gSinTable[(idx + 0x400) & 0xFFF];
+    arg1->mf[1][1] = cz * cx;
+    sysz = sy * sz;
+    cycz = cy * cz;
+    arg1->mf[0][0] = cycz + (sx * sysz);
+    sycz = sy * cz;
+    szcy = sz * cy;
+    arg1->mf[1][0] = (sx * sycz) - (sz * cy);
+    arg1->mf[0][2] = (sx * szcy) - sycz;
+    arg1->mf[3][0] = 0.0f;
+    arg1->mf[3][1] = 0.0f;
+    arg1->mf[3][2] = 0.0f;
+    arg1->mf[0][3] = 0.0f;
+    arg1->mf[1][2] = sx * cycz;
+    arg1->mf[1][2] = arg1->mf[1][2] + sysz;
+    arg1->mf[1][3] = 0.0f;
+    arg1->mf[2][3] = 0.0f;
+    arg1->mf[3][3] = 1.0f;
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #else
@@ -662,8 +712,55 @@ void func_800498A4(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
 #endif
 
 #ifdef NON_MATCHING
-void func_80049A94(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
-    /* Axis-angle vector rotation matrix and coordinate transformation */
+/*
+ * Euler angles (radians) + translation -> matrix. Floor: 64 diff rows (probe), register/schedule only;
+ * instruction count matches. Load-bearing: decl order; routing the sy load through sycz; sysz still
+ * declared but m00 uses the inline (sy * sz). The target has three separate 2pi pool entries
+ * (D_800E9254/58/5C), so the original likely spells the three 2pi literals differently.
+ * Search with empty-if insertions reached 41.
+ */
+void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz) {
+    f32 sy;
+    f32 cz;
+    f32 cy;
+    s32 idx;
+    f32 sx;
+    f32 cycz;
+    f32 sycz;
+    f32 sz;
+    f32 sysz;
+    f32 szcy;
+    f32 cx;
+    idx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
+    sx = gSinTable[idx & 0xFFF];
+    arg1->mf[2][1] = -sx;
+    cx = gSinTable[(idx + 0x400) & 0xFFF];
+    idx = ((ry * 4096.0f) / 6.283186f) + 0.5f;
+    sycz = gSinTable[idx & 0xFFF];
+    sy = sycz;
+    arg1->mf[2][0] = cx * sy;
+    cy = gSinTable[(idx + 0x400) & 0xFFF];
+    arg1->mf[2][2] = cy * cx;
+    idx = ((rz * 4096.0f) / 6.283186f) + 0.5f;
+    sz = gSinTable[idx & 0xFFF];
+    arg1->mf[0][1] = sz * cx;
+    cz = gSinTable[(idx + 0x400) & 0xFFF];
+    arg1->mf[1][1] = cz * cx;
+    sysz = sy * sz;
+    cycz = cy * cz;
+    arg1->mf[0][0] = cycz + (sx * (sy * sz));
+    sycz = sy * cz;
+    szcy = sz * cy;
+    arg1->mf[1][0] = (sx * sycz) - szcy;
+    arg1->mf[0][2] = (sx * szcy) - sycz;
+    arg1->mf[1][2] = (sx * cycz) + sysz;
+    arg1->mf[3][0] = tx;
+    arg1->mf[3][1] = ty;
+    arg1->mf[0][3] = 0.0f;
+    arg1->mf[1][3] = 0.0f;
+    arg1->mf[2][3] = 0.0f;
+    arg1->mf[3][3] = 1.0f;
+    arg1->mf[3][2] = tz;
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #else
@@ -671,9 +768,61 @@ void func_80049A94(Mtx* arg0, MtxF* arg1, f32 angle, f32 x, f32 y, f32 z) {
 #endif
 
 #ifdef NON_MATCHING
-void func_80049C9C(Mtx* arg0, MtxF* arg1, f32 pitch, f32 yaw, f32 roll) {
-    /* Euler angles (pitch/yaw/roll) to affine transformation matrix converter */
-    SysUtils_MtxFToMtx(arg1, arg0);
+/*
+ * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 53 diff rows (probe).
+ * Load-bearing: one idx variable per angle and MtxF declared last (gives the target 0xA0 frame with
+ * mtx at sp+0x2C); target store order with the chained zeros last; routing the sy load through sysz.
+ * Remaining: 4096.0f in $f14 (target $f18) cascading into sin/cos registers. Search reached 45.
+ */
+void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f32 scale) {
+    f32 sx;
+    f32 sy;
+    f32 sz;
+    f32 cx;
+    f32 cy;
+    f32 cz;
+    f32 sysz;
+    f32 cycz;
+    f32 sycz;
+    f32 szcy;
+    s32 idx;
+    s32 idxy;
+    s32 idxz;
+    MtxF mtx;
+
+    idx = (rx * 4096.0f) / 360.0f;
+    sx = gSinTable[idx & 0xFFF];
+    cx = gSinTable[(idx + 0x400) & 0xFFF];
+    mtx.mf[2][1] = -sx * scale;
+
+    idxy = (ry * 4096.0f) / 360.0f;
+    sysz = gSinTable[idxy & 0xFFF];
+    sy = sysz;
+    cy = gSinTable[(idxy + 0x400) & 0xFFF];
+    mtx.mf[2][0] = cx * sy * scale;
+    mtx.mf[2][2] = cy * cx * scale;
+
+    idxz = (rz * 4096.0f) / 360.0f;
+    sz = gSinTable[idxz & 0xFFF];
+    cz = gSinTable[(idxz + 0x400) & 0xFFF];
+    mtx.mf[0][1] = sz * cx * scale;
+    mtx.mf[1][1] = cz * cx * scale;
+
+    sysz = sy * sz;
+    cycz = cy * cz;
+    mtx.mf[0][0] = (cycz + sx * sysz) * scale;
+    sycz = sy * cz;
+    szcy = sz * cy;
+    mtx.mf[1][0] = (sx * sycz - szcy) * scale;
+    mtx.mf[0][2] = (sx * szcy - sycz) * scale;
+    mtx.mf[3][0] = tx;
+    mtx.mf[3][1] = ty;
+    mtx.mf[3][2] = tz;
+    mtx.mf[3][3] = 1.0f;
+    mtx.mf[1][2] = (sx * cycz + sysz) * scale;
+    mtx.mf[0][3] = mtx.mf[1][3] = mtx.mf[2][3] = 0.0f;
+
+    SysUtils_MtxFToMtx(&mtx, arg0);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_80049C9C.s")
@@ -785,8 +934,135 @@ UNUSED void SysUtils_ReadContData(void) {
 }
 
 #ifdef NON_MATCHING
-void func_8004A3C0(Mtx* arg0, MtxF* arg1, f32 fov, f32 aspect, f32 near, f32 far, f32 scale) {
-    /* View frustum and camera perspective projection matrix generator */
+/*
+ * Axis-angle rotation matrix (axis x,y,z; angle). Floor: 145 diff rows (probe); control flow, calls and
+ * frame (0xB0) match. Load-bearing: `* (1.0f / 2.0f)` (target materializes 0.5f twice), decl order,
+ * the two empty ifs. Remaining: x lives in callee-saved $f30; the target keeps it in $f14 and homes it
+ * at its arg slot 0xB8 around each sqrtf call, which cascades through the z==0 and general branches.
+ */
+void func_8004A3C0(Mtx* arg0, MtxF* arg1, f32 x, f32 y, f32 z, f32 angle) {
+    f32 ny;
+    f32 tA;
+    f32 c;
+    f32 s;
+    f32 ux;
+    s32 idx;
+    f32 px;
+    f32 nz;
+    f32 mx;
+    f32 uy;
+    f32 nx;
+    f32 len;
+    f32 tC;
+    f32 tB;
+    f32 my;
+    f32 uz;
+    f32 py;
+
+    idx = (((angle * 4096.0f) / 3.141593f) * (1.0f / 2.0f)) + 0.5f;
+    c = gSinTable[(idx + 0x400) & 0xFFF];
+    s = gSinTable[idx & 0xFFF];
+
+    if (y == 0.0f) {
+        if (x == 0.0f) {
+            if (z < 0.0f) {
+                func_800498A4(arg0, arg1, 0.0f, 0.0f, -angle);
+            } else {
+                func_800498A4(arg0, arg1, 0.0f, 0.0f, angle);
+            }
+            return;
+        }
+        len = sqrtf((x * x) + (z * z));
+        nz = z / len;
+        tA = s * nz;
+        arg1->mf[0][1] = tA;
+        arg1->mf[1][0] = -tA;
+        arg1->mf[1][1] = c;
+        nx = x / len;
+        mx = -nx;
+        tA = s * mx;
+        tB = c * nz;
+        arg1->mf[2][1] = tA;
+        arg1->mf[1][2] = -tA;
+        arg1->mf[0][0] = (tB * nz) + (nx * nx);
+        arg1->mf[2][2] = (c * mx * mx) + (nz * nz);
+        tC = (tB * mx) + (nx * nz);
+        arg1->mf[2][0] = tC;
+        arg1->mf[0][2] = tC;
+    } else if (z == 0.0f) {
+        len = sqrtf((x * x) + (y * y));
+        ny = y / len;
+        my = -ny;
+        tA = s * my;
+        arg1->mf[0][2] = tA;
+        arg1->mf[2][0] = -tA;
+        arg1->mf[2][2] = c;
+        nx = x / len;
+        tA = s * nx;
+        tB = c * my;
+        arg1->mf[1][2] = tA;
+        arg1->mf[2][1] = -tA;
+        arg1->mf[0][0] = (tB * my) + (nx * nx);
+        arg1->mf[1][1] = (c * nx * nx) + (ny * ny);
+        tC = (tB * nx) + (nx * ny);
+        arg1->mf[1][0] = tC;
+        arg1->mf[0][1] = tC;
+    } else if (x == 0.0f) {
+        len = sqrtf((y * y) + (z * z));
+        nz = z / len;
+        arg1->mf[0][0] = c;
+        ny = y / len;
+        mx = -nz;
+        tA = s * mx;
+        arg1->mf[1][0] = tA;
+        tB = s * ny;
+        arg1->mf[0][1] = -tA;
+        tC = c * mx;
+        arg1->mf[2][0] = tB;
+        arg1->mf[0][2] = -tB;
+        arg1->mf[1][1] = (tC * mx) + (ny * ny);
+        arg1->mf[2][2] = (c * ny * ny) + (nz * nz);
+        tA = (tC * ny) + (ny * nz);
+        arg1->mf[2][1] = tA;
+        arg1->mf[1][2] = tA;
+        if (z) {}
+    } else {
+        len = sqrtf((x * x) + (y * y) + (z * z));
+        ny = y / len;
+        nx = x / len;
+        my = -ny;
+        nz = z / len;
+        len = sqrtf((my * my) + (nx * nx));
+        ux = nx / len;
+        uy = my / len;
+        px = ux * nz;
+        uz = ((ny - ux) * uy) - (ux * (nx - uy));
+        py = -uy * nz;
+        arg1->mf[0][0] = (((px * px) + (uy * uy)) * c) + (nx * nx);
+        arg1->mf[1][1] = (((py * py) + (ux * ux)) * c) + (ny * ny);
+        arg1->mf[2][2] = (c * uz * uz) + (nz * nz);
+        tA = (((px * py) + (uy * ux)) * c) + (nx * ny);
+        tB = ((py * uy) - (px * ux)) * s;
+        arg1->mf[1][0] = tA + tB;
+        arg1->mf[0][1] = tA - tB;
+        tC = s * uz;
+        tA = (c * px * uz) + (nx * nz);
+        tB = tC * uy;
+        arg1->mf[2][0] = tA + tB;
+        arg1->mf[0][2] = tA - tB;
+        tA = (c * py * uz) + (ny * nz);
+        tB = tC * ux;
+        arg1->mf[2][1] = tA + tB;
+        arg1->mf[1][2] = tA - tB;
+        if (ny) {}
+    }
+    arg1->mf[2][3] = 0.0f;
+    arg1->mf[1][3] = 0.0f;
+    arg1->mf[0][3] = 0.0f;
+    arg1->mf[3][2] = 0.0f;
+    arg1->mf[3][1] = 0.0f;
+    arg1->mf[3][0] = 0.0f;
+    arg1->mf[3][3] = 1.0f;
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #else
@@ -794,8 +1070,61 @@ void func_8004A3C0(Mtx* arg0, MtxF* arg1, f32 fov, f32 aspect, f32 near, f32 far
 #endif
 
 #ifdef NON_MATCHING
-void func_8004A8B0(s32 arg0) {
-    /* Controller data packing and hardware status processing */
+/*
+ * Framebuffer emboss filter: builds a 125-entry RGBA5551 relief table on first use, then per column of
+ * a 320-wide framebuffer replaces each pixel (rows 20..218) by table[(lum - lum_below + 0x3E80) >> 8].
+ * Floor: 7 diff rows (probe), register naming only; instruction count matches.
+ * Load-bearing: D_800D4644 as a function-local static (it lives in sys_utils' own .data right after
+ * Seed); the (u32) cast in the inner lookup (keeps two table bases, s1 and a0, and the idx+base addu
+ * order); the pix/prev initializers and `i = lum = 0` (give pix/prev v0/v1); `c0 = col` after p.
+ * Remaining: the inner table base gets t2 and the row-218 pointer a0 (target a0 and a3).
+ */
+extern u16 D_80158350[];
+
+void func_8004A8B0(u16* fb) {
+    static s16 D_800D4644 = 1;
+    s32 i;
+    s32 v;
+    u16* base;
+    u16* end;
+    u16* col;
+    u16* p;
+    u16* c0;
+    s32 pix = 0;
+    s32 lum;
+    s32 prev = 0;
+
+    if (D_800D4644 != 0) {
+        for (i = lum = 0; i < 125; i++) {
+            v = i * 2 - 0x6C;
+            if (v >= 0x20) {
+                v = 0x1F;
+            } else if (v < 0) {
+                v = 0;
+            }
+            D_80158350[i] = (v << 11) | ((v / 2) << 6) | ((v / 3) << 1) | 1;
+        }
+        D_800D4644 = 0;
+    }
+    fb += 20 * 320;
+    col = fb + 8;
+    end = fb + 311;
+    do {
+        pix = col[198 * 320];
+        prev = (pix >> 11) * 0x4D + ((pix >> 6) & 0x1F) * 0x97 + ((pix >> 1) & 0x1F) * 0x1C;
+        col[198 * 320] = D_80158350[0x3E];
+        p = &col[197 * 320];
+        c0 = col;
+        col++;
+        do {
+            pix = *p;
+            p -= 320;
+            lum = (pix >> 11) * 0x4D + ((pix >> 6) & 0x1F) * 0x97 + ((pix >> 1) & 0x1F) * 0x1C;
+            pix = (lum - prev) + 0x3E80;
+            p[320] = *(u16*) (((pix >> 8) << 1) + (u32) D_80158350);
+            prev = lum;
+        } while (p >= c0);
+    } while (col < end);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_8004A8B0.s")
