@@ -142,7 +142,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 76 | `func_i4_802C6ED0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 124 | 4/0  | Floats  | Pending | Sunny Beach shallow sandbar grounding depth check  |
 | 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats  | Pending | Routine logic  |
 | 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
-| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats  | Pending | Axis-angle vector rotation matrix and coordinate transformation  |
+| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats, ParkedFloor  | Pending (Floor 53) | Euler angles (degrees) * scale + translation to Mtx via local MtxF; draft parked behind NON_MATCHING (per-angle idx vars + MtxF last fix the 0xA0 frame, sy load routed through sysz)  |
 | 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | **MATCHED** | Spray emitter seeding and quad texcoord init  |
 | 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | Pending | Routine logic  |
 | 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | Pending | Routine logic  |
@@ -168,9 +168,9 @@ Functions containing `switch` statements with compiler-generated jump tables (`j
 | 94 | `func_800C1BD8` | `src/audio/audio_general.c` | 116 | 18/6  | Floats, Rodata  | Pending | irregular  |
 | 95 | `func_i5_802C781C` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 118 | 15/2  | JumpTable, Rodata  | **MATCHED** | Results-panel slide state machine: slides the panel in, steps the buoy path index, waits for A/B/Start, then slides out and hands off to func_801EC9C8 or func_801EC830  |
 | 96 | `func_8004F1EC` | `src/game/water_69D0.c` | 122 | 13/0  | Floats, Rodata  | Pending | Routine logic  |
-| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata  | Pending | Routine logic  |
+| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 44) | Euler angles (radians) to rotation MtxF/Mtx; draft parked behind NON_MATCHING (mixed 0.5f spellings, sz load routed through sysz; FPR choice for 4096/2pi left)  |
 | 98 | `func_801E66F4` | `src/codeseg/B3AA0.c` | 126 | 8/2  | Floats, Rodata  | Pending | Routine logic  |
-| 99 | `func_80049A94` | `src/sys/sys_utils.c` | 130 | 0/1  | Floats, Rodata  | Pending | Axis-angle vector rotation matrix and coordinate transformation  |
+| 99 | `func_80049A94` | `src/sys/sys_utils.c` | 130 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 64) | Euler angles (radians) + translation to MtxF/Mtx; draft parked behind NON_MATCHING (insn count exact; target has 3 distinct 2pi pool entries)  |
 | 100 | `func_8009D96C` | `src/game/code_52CD0.c` | 137 | 4/5  | Floats, JumpTable  | Pending | Buoy miss warning flash animator  |
 | 101 | `func_8004EFB4` | `src/game/water_69D0.c` | 142 | 32/0  | Floats, Rodata  | Pending | Routine logic  |
 | 102 | `func_i5_802C5850` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 146 | 3/6  | Floats, Rodata, ParkedFloor  | Pending | Port Blue container ship wake disturbance simulation  |
@@ -229,7 +229,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 147 | `func_1B1FB0_802C5800` | `src/unused_code_1B1FB0.c` | 233 | 39/0  | Floats, Rodata  | Pending | Flight mode debug camera controller  |
 | 148 | `func_801EE9C0` | `src/codeseg/B97B0.c` | 236 | 4/0  | Floats  | Pending | Routine logic  |
 | 149 | `func_i1_802C6FE0` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 237 | 37/13  | Integer Clean  | Pending | clang-format off  |
-| 150 | `func_8004A8B0` | `src/sys/sys_utils.c` | 242 | 46/0  | Integer Clean  | Pending | View frustum and camera perspective projection matrix generator  |
+| 150 | `func_8004A8B0` | `src/sys/sys_utils.c` | 242 | 46/0  | Integer Clean, ParkedFloor  | Pending (Floor 7) | Framebuffer emboss filter (RGBA5551 relief table + per-column luminance diff); draft parked behind NON_MATCHING, register naming only (inner table base vs row-218 pointer)  |
 | 151 | `func_8007C604` | `src/game/core/wr64_save.c` | 244 | 16/11  | Integer Clean  | Pending | Stunt high score rank slot compaction and displacement updater  |
 | 152 | `func_801DD2D0` | `src/codeseg/A95D0.c` | 249 | 21/5  | Floats, Rodata  | Pending | Routine logic  |
 | 153 | `func_801FBFB4` | `src/codeseg/C94E0.c` | 250 | 12/0  | Floats  | Pending | Routine logic  |
@@ -259,7 +259,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 177 | `func_1B1FB0_802C62E4` | `src/unused_code_1B1FB0.c` | 310 | 43/11  | Integer Clean  | Pending | Flight mode debug camera controller  |
 | 178 | `func_8008DFD0` | `src/game/code_43DA0.c` | 312 | 0/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 179 | `func_i15_802C5800` | `src/overlays/ovl_i15/ovl_1CFB60.c` | 314 | 31/9  | Floats, Rodata, ParkedFloor  | Pending | Glacier Coast floating iceberg and mist particle display list renderer  |
-| 180 | `func_8004A3C0` | `src/sys/sys_utils.c` | 316 | 10/8  | Floats, Rodata  | Pending | View frustum and camera perspective projection matrix generator  |
+| 180 | `func_8004A3C0` | `src/sys/sys_utils.c` | 316 | 10/8  | Floats, Rodata, ParkedFloor  | Pending (Floor 145) | Axis-angle rotation matrix (axis-aligned fast paths delegate to func_800498A4); draft parked behind NON_MATCHING, x homed in $f30 instead of $f14  |
 | 181 | `func_801DDEDC` | `src/codeseg/A95D0.c` | 316 | 25/14  | Floats, JumpTable, Rodata  | Pending | Routine logic  |
 | 182 | `func_1B1FB0_802C5DF4` | `src/unused_code_1B1FB0.c` | 316 | 55/12  | Integer Clean  | Pending | Flight mode debug camera controller  |
 | 183 | `func_i12_802C5F6C` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 317 | 72/12  | Integer Clean  | **MATCHED** | Course data menu input handler (cursor, course selection, save/erase dispatch)  |
