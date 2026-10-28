@@ -11,6 +11,9 @@ extern s32 D_800DAA08;
 extern s32 D_801CB334;
 extern s16 D_800EAC44[][4];
 extern s16 D_800DA9AC;
+extern s16 D_801CE60C;
+extern s32 D_800DA9C8[];
+extern s32 D_80226EF0[];
 extern s32 D_801C293C;
 extern RiderStruct D_801C2C70[];
 s32 func_8009684C(s32, s16, s16);
@@ -241,13 +244,69 @@ void func_801EB91C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB91C.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801EBD28(void) {
-    /* 2-Player Versus mode state initialization */
+    /* 2-Player Versus mode state init (GAME_STATE 10). The chained
+       D_800DA9C8 store and the case-body order 4/0/11/1 are load-bearing. */
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = 10;
+    D_801CE638 = 4;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    gGameModes = 0;
+    if (D_801CE60C == 1) {
+        gPlayers = 1;
+        gRiders = 1;
+    } else {
+        gPlayers = 2;
+        gRiders = 2;
+    }
+    D_800D49B0 = 10;
+    gBuoyMisses = 5;
+    D_801CE728[0] = 3;
+    gCourseID = 9;
+    if (D_800DA9AC != 0) {
+        D_800DA9C0[0] = 0;
+        D_800DA9C0[1] = 3;
+        D_800DA9C8[0] = D_800DA9C8[1] = 0;
+    }
+    D_80192690[D_800D48DC].unkB68 = D_80226EF0[D_800DA9C0[0]];
+    D_80192690[D_800D48DC].unkB6C = D_800DA950[D_80192690[D_800D48DC].unkB68].unk_B[0];
+    D_80192690[D_800D48DC].unkB70 = D_800DA950[D_80192690[D_800D48DC].unkB68].unk_B[1];
+    D_80192690[D_800D48DC].unkB74 = D_800DA950[D_80192690[D_800D48DC].unkB68].unk_B[2];
+    if (gPlayers == 2) {
+        D_80192690[D_800D48E0].unkB68 = D_80226EF0[D_800DA9C0[1]];
+        D_80192690[D_800D48E0].unkB6C = D_800DA950[D_80192690[D_800D48E0].unkB68].unk_B[0];
+        D_80192690[D_800D48E0].unkB70 = D_800DA950[D_80192690[D_800D48E0].unkB68].unk_B[1];
+        D_80192690[D_800D48E0].unkB74 = D_800DA950[D_80192690[D_800D48E0].unkB68].unk_B[2];
+    }
+    gRiderGameModes = 2;
+    D_801CE64C = 2;
+    gGameModeState = 3;
+    D_800DAB64 = 0;
+    func_80096960(3, 0, 1, 2, 3);
+    FadeTransition_SetProps(2, 4, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective[0].viewMode = 2;
+    gCameraPerspective[1].viewMode = 2;
+    switch (D_801CE608.gameMode) {
+        case 4:
+            func_800C21F4(1, 0);
+            break;
+        case 0:
+            func_800C21F4(1, 2);
+            break;
+        case 11:
+            func_800C21F4(1, 3);
+            break;
+        case 1:
+            func_800C21F4(1, 1);
+            break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EBD28.s")
-#endif
 
 void func_801EBFE4(void) {
     /* Course-select state init: default globals, fade transition, then
