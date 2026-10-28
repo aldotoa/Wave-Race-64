@@ -141,11 +141,11 @@ class TestGameEngineCore(unittest.TestCase):
         """
         TDE test for func_8007B930 in wr64_save (active game memory packer to save data).
         """
-        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007B930")
-        if is_matched:
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_8007B930 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("game/core/wr64_save", "func_8007B930"),
+                        "func_8007B930 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "core", "wr64_save", "func_8007B930.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_80088EA8_matched(self):
         """
@@ -2690,11 +2690,11 @@ class TestSaveSystem(unittest.TestCase):
             self.skipTest("func_8007B630 is currently non-matching (in progress)")
 
     def test_func_8007B930_save_matched(self):
-        """TDE test for func_8007B930_save in wr64_save (Stunt mode default high score initials and point tables reset)."""
-        if self.is_function_decompiled("func_8007B930_save"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_8007B930_save is currently non-matching (in progress)")
+        """TDE test for func_8007B930 in wr64_save (pack in-RAM record tables into the EEPROM image)."""
+        self.assertTrue(self.is_function_decompiled("func_8007B930"), "func_8007B930 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "core", "wr64_save", "func_8007B930.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_8007BEA4_matched(self):
         """TDE test for func_8007BEA4 in wr64_save (Course record save slot index boundary verification)."""
