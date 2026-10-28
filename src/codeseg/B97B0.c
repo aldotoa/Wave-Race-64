@@ -12,7 +12,7 @@ extern s32 D_801CB334;
 extern s16 D_800EAC44[][4];
 extern s16 D_800DA9AC;
 extern s32 D_801C293C;
-extern s32 D_801C2C70;
+extern RiderStruct D_801C2C70[];
 s32 func_8009684C(s32, s16, s16);
 void func_8004A208(void);
 
@@ -546,13 +546,50 @@ void func_801ECAF4(void) {
     func_800C21F4(8, 0);
 }
 
-#ifdef NON_MATCHING
 void func_801ECB98(void) {
-    /* Pause menu unpause and game resume sequence */
+    /* Award ceremony init: default globals, four AI riders placed on the
+       Glacier Coast podium grid from their finishing order, then
+       audio/fade/camera setup. The 4-rider loop is fully unrolled by IDO. */
+    s32 i;
+    s32 arg;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_CEREMONY;
+    D_801CE638 = 0x15;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    gGameModes = GMODE_TIME_TRIALS;
+    gPlayers = ONE_PLAYER;
+    gRiders = 4;
+    D_800D49B0 = 0xA;
+    gBuoyMisses = 5;
+    D_801CE728[0] = 3;
+    gCourseID = GLACIER_COAST;
+    D_800D8178 = 1;
+    gRiderGameModes = AI_MODE;
+    D_801CE64C = 0;
+    gGameModeState = GMODE_STATE_STARTED;
+    for (i = 0; i < 4; i++) {
+        D_80192690[i].unkB68 = D_800DA9B0[i];
+        D_80192690[i].unkB6C = D_800D96A4[gCourseID][D_800DA9B0[i]].unk0;
+        D_80192690[i].unkB70 = D_800D96A4[gCourseID][D_800DA9B0[i]].unk4;
+        D_80192690[i].unkB74 = D_800D96A4[gCourseID][D_800DA9B0[i]].unk8;
+    }
+    arg = D_800DA9B0[D_800D48DC];
+    if (D_801CE6F4[0] != 0) {
+        arg += 4;
+    }
+    func_80096960(2, arg, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
+    func_8009684C(0x08060000, 3, -1);
+    FadeTransition_SetProps(7, 10, 0);
+    func_801E6A4C(0, 0);
+    gCameraPerspective[0].viewMode = 8;
+    func_800C21F4(0xB, D_801C2C70[D_800D48DC].lapCount + 1);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801ECB98.s")
-#endif
 
 void func_801ECE50(void) {
     gPrevGameState = gGameState;

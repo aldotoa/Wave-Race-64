@@ -708,11 +708,11 @@ class TestCodesegUI(unittest.TestCase):
             self.skipTest("func_801EC3AC is currently non-matching (in progress)")
 
     def test_func_801ECB98_matched(self):
-        """TDE test for func_801ECB98 in B97B0 (Pause menu unpause and game resume sequence)."""
-        if self.is_function_decompiled("func_801ECB98"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801ECB98 is currently non-matching (in progress)")
+        """TDE test for func_801ECB98 in B97B0 (award ceremony state initialization)."""
+        self.assertTrue(self.is_function_decompiled("func_801ECB98"), "func_801ECB98 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "B97B0", "func_801ECB98.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801ECE50_matched(self):
         """TDE test for func_801ECE50 in B97B0 (Race restart state machine transition)."""
