@@ -145,14 +145,59 @@ Gfx* func_801E2058(Gfx* glistp) {
     return glistp;
 }
 
-#ifdef NON_MATCHING
+extern s32 D_802261E4;
+extern s32 D_802261E8;
+extern Gfx* D_802261EC[];
+extern s8 D_80226130[];
+extern s32 D_80226150[];
+extern s8 D_802288E8[];
+Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
+
+/* Name-entry panel: three option labels (the selected one highlighted) and
+ * the three entered initials, each nudged right by its glyph width offset. */
 Gfx* func_801E229C(Gfx* glistp) {
-    /* Jet ski color customization palette selector */
+    s32 i;
+    s32 j;
+    s32 color;
+    s32 ofs;
+    s8 buf[2];
+
+    if (D_802261E8 == 0) {
+        return glistp;
+    }
+    gSPDisplayList(glistp++, D_106F628);
+    glistp = Menu_DrawFrame(glistp, 0, 0x36, 0x20, 0xD3, 0x18);
+    glistp = Menu_DrawFrame(glistp, 0, 0x65, 0xB1, 0x75, 0x1C);
+
+    for (i = 0; i < 3; i++) {
+        if (i == D_802261E4) {
+            color = 6;
+        } else {
+            color = 0;
+        }
+        glistp = func_801E946C(glistp, color, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+        gSPDisplayList(glistp++, D_802261EC[i]);
+    }
+    glistp = func_801E946C(glistp, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    glistp = func_801E3EE0(glistp, 2, 0x1D, 0x48, 0x23, 0);
+
+    for (i = 0; i < 3; i++) {
+        buf[0] = D_802288E8[i];
+        buf[1] = 0;
+        for (j = 0; j < 29; j++) {
+            if (buf[0] == D_80226130[j]) {
+                break;
+            }
+        }
+        if (j == 29) {
+            ofs = 0;
+        } else {
+            ofs = D_80226150[j];
+        }
+        glistp = func_801E9858(glistp, 0, (char*) buf, i * 26 + ofs + 0x7A, 0xB4);
+    }
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E229C.s")
-#endif
 
 #ifdef NON_MATCHING
 const char D_80226210[] = "A";
