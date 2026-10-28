@@ -78,10 +78,10 @@ typedef struct UnkStruct_8007CB68_1_s {
 } UnkStruct_8007CB68_1;
 
 typedef struct UnkStruct_8007CB68_2_s {
-    u8 unk0[0x10];
+    s8 unk0[0x10];
     u8 unk10[4][10];
-    u8 unk38[2][4][3];
-    u8 unk50[3][3];
+    s8 unk38[2][4][3];
+    s8 unk50[3][3];
     u8 unk59[7];
     u8 unk60[8][4][6];
     u8 unk120[9][3][5];
@@ -438,17 +438,73 @@ void func_8007B370(UnkStruct_8007CB68_2* arg) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_8007B630(void) {
-    /* Default championship records and high scores table restore */
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B630.s")
-#endif
-
 extern UnkStruct_func_8007AF78_1 D_801C1FF0[][3];
 extern s32 D_801C22C0[][5];
 extern s32 D_801C24A0[][9];
+
+/*
+ * Unpacks the EEPROM image D_801AEA18 into the in-RAM record tables, the
+ * inverse of func_8007B930. As there, the dead `n = i + 1` keeps IDO's counter
+ * register (s4) in every loop. The 4-entry copy is written as a pointer walk so
+ * it stays rolled, and pad[3] sizes the 0x88 frame.
+ */
+void func_8007B630(void) {
+    s32 pad[3];
+    s32 i;
+    s32 n;
+    s32 j;
+    s32 k;
+    s8* src;
+    s32* dst;
+
+    for (i = 0; i < 8; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            func_8007AFF4((func_8007AFF4_arg0*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][j],
+                          (func_8007AFF4_arg1*) &D_801C1FF0[n][j]);
+        }
+        func_8007AFF4((func_8007AFF4_arg0*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][j],
+                      (func_8007AFF4_arg1*) &D_801C22C0[n]);
+        for (j = 0; j < 2; j++) {
+            D_801C24A0[n][j] =
+                func_8007B2E4((UnkStruct_8007B2E4*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1A8[i][j]);
+        }
+    }
+    for (i = 0; i < 9; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            func_8007B220((UnkStruct_8007B2BC*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk120[i][j],
+                          (UnkStruct_8007B2BC*) &D_801C26E8[i][j]);
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        n = i + 1;
+        func_8007B110((Unkstruct_8007B1AC_arg1*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1D8[i],
+                      (UnkStruct_8007B110*) &D_801C23B0[n * 0x14]);
+    }
+    for (i = 0; i < 4; i++) {
+        n = i + 1;
+        Libc_strncpy(D_801CB298[i].unk_0, D_801AEA28[i], 10);
+        D_801CB298[i].unk_0[10] = 0;
+        for (k = 0; k < 2; k++) {
+            for (j = 0; j < 3; j++) {
+                D_801CB298[k * 4 + i].unk_B[j] = ((UnkStruct_8007CB68_2*) D_801AEA18)->unk38[k][i][j];
+            }
+        }
+    }
+    D_801CB280 = D_801AEA24;
+    for (i = 0, dst = &D_801CB288, src = ((UnkStruct_8007CB68_2*) D_801AEA18)->unk0;
+         src < ((UnkStruct_8007CB68_2*) D_801AEA18)->unk0 + 4; i++, src++, dst++) {
+        n = i + 1;
+        *dst = src[8];
+    }
+    for (i = 0; i < 3; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            D_801CB308[i][j] = ((UnkStruct_8007CB68_2*) D_801AEA18)->unk50[i][j];
+        }
+    }
+}
 
 /*
  * Packs the in-RAM record tables into the EEPROM image D_801AEA18 (the inverse

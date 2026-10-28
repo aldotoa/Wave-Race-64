@@ -131,11 +131,11 @@ class TestGameEngineCore(unittest.TestCase):
         """
         TDE test for func_8007B630 in wr64_save (save data unpacker to active game memory).
         """
-        is_matched = self.is_function_decompiled("game/core/wr64_save", "func_8007B630")
-        if is_matched:
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_8007B630 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("game/core/wr64_save", "func_8007B630"),
+                        "func_8007B630 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "core", "wr64_save", "func_8007B630.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_8007B930_matched(self):
         """
@@ -2683,11 +2683,11 @@ class TestSaveSystem(unittest.TestCase):
             self.skipTest("func_8007B370 is currently non-matching (in progress)")
 
     def test_func_8007B630_matched(self):
-        """TDE test for func_8007B630 in wr64_save (Default championship records and high scores table restore)."""
-        if self.is_function_decompiled("func_8007B630"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_8007B630 is currently non-matching (in progress)")
+        """TDE test for func_8007B630 in wr64_save (unpack the EEPROM image into the in-RAM record tables)."""
+        self.assertTrue(self.is_function_decompiled("func_8007B630"), "func_8007B630 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "core", "wr64_save", "func_8007B630.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_8007B930_save_matched(self):
         """TDE test for func_8007B930 in wr64_save (pack in-RAM record tables into the EEPROM image)."""
