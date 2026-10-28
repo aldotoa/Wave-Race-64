@@ -227,13 +227,76 @@ void func_i4_802C6ED0(void) {
     }
 }
 
-#ifdef NON_MATCHING
+extern s16 D_801CE60C;
+extern s32 D_i4_802C754C;
+extern s32 D_i4_802C757C[][4];
+extern s32 D_802C76CC;
+extern s32 D_802C76D0;
+
+/* Difficulty select. The skip-unavailable-entry loops test at the head and
+ * wrap via a back jump, i.e. `for (;;) { if (...) break; ... }` -- a plain
+ * `while (tbl == 0)` gets rotated by IDO. */
 void func_i4_802C70C0(void) {
-    /* Sunny Beach course setup phase 2 */
+    if (D_801CE65A[D_802C76B0].unk0 & (A_BUTTON | Z_TRIG | START_BUTTON)) {
+        if (D_i4_802C754C == 3) {
+            gDifficulty = 2;
+            D_800DAB68 = 1;
+        } else {
+            gDifficulty = D_i4_802C754C;
+            D_800DAB68 = 0;
+        }
+        if (D_801CE60C == 1) {
+            func_i4_802C7474(0x28);
+            AudioGeneral_PlaySound(0x37, 0);
+            return;
+        }
+        D_i4_802C7554 = 1;
+        D_i4_802C7538 = 3;
+        D_i4_802C753C = 0;
+        AudioGeneral_PlaySound(0x11, 0);
+        return;
+    }
+
+    if (D_801CE65A[D_802C76B0].unk0 & B_BUTTON) {
+        D_i4_802C7538 = 1;
+        D_i4_802C753C = 0;
+        D_i4_802C7544 = 2;
+        D_i4_802C7548 = 0;
+        AudioGeneral_PlaySound(0x16, 0);
+        return;
+    }
+
+    if (D_801CE65A[D_802C76B0].unk0 & U_JPAD) {
+        if (--D_i4_802C754C < D_802C76CC) {
+            D_i4_802C754C = D_802C76D0 - 1;
+        }
+        for (;;) {
+            if (D_i4_802C757C[D_800DAAD8[D_800DA9D0]][D_i4_802C754C] != 0) {
+                break;
+            }
+            if (--D_i4_802C754C < D_802C76CC) {
+                D_i4_802C754C = D_802C76D0 - 1;
+            }
+        }
+        AudioGeneral_PlaySound(0x10, 0);
+        return;
+    }
+
+    if (D_801CE65A[D_802C76B0].unk0 & D_JPAD) {
+        if (++D_i4_802C754C >= D_802C76D0) {
+            D_i4_802C754C = D_802C76CC;
+        }
+        for (;;) {
+            if (D_i4_802C757C[D_800DAAD8[D_800DA9D0]][D_i4_802C754C] != 0) {
+                break;
+            }
+            if (++D_i4_802C754C >= D_802C76D0) {
+                D_i4_802C754C = D_802C76CC;
+            }
+        }
+        AudioGeneral_PlaySound(0x10, 0);
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C70C0.s")
-#endif
 
 void func_i4_802C7344(void) {
     if (D_801CE65A[D_802C76B0].unk0 & (A_BUTTON | Z_TRIG | START_BUTTON)) {
