@@ -2166,13 +2166,49 @@ void func_800616B0(s32 arg0) {
     func_80061184(&D_80192690[arg0]);
 }
 
-#ifdef NON_MATCHING
-void func_80061708(s32 arg0) {
-    /* Dynamic field-of-view adjustment based on speed boost */
+extern s32 D_80154344;
+
+/*
+ * Rider arg0's per-frame controller latch: reverts via func_800616B0 when
+ * unk1446 is negative, otherwise copies controller slot arg1 into unkB50
+ * (zeroed when arg1 is past D_80154344), runs func_80061184, then scales the
+ * unkB5E/unkB5F stick pair by its length over its larger axis (written as
+ * 70 / ((70 / len) * max)) and re-curves both through func_80061644.
+ * Load-bearing: the `scale, x, y, mag` declaration order lays out the 0x30
+ * frame's spill slots.
+ */
+void func_80061708(s32 arg0, s32 arg1) {
+    UnkStruct_80192690* rider = &D_80192690[arg0];
+    f32 scale;
+    f32 x;
+    f32 y;
+    f32 mag;
+
+    if (rider->unk1446 < 0) {
+        func_800616B0(arg0);
+    } else {
+        if (arg1 < D_80154344) {
+            rider->unkB50 = gControllers[D_80154330[arg1]];
+        } else {
+            rider->unkB50.stick_x = rider->unkB50.stick_y = rider->unkB50.button = 0;
+        }
+        rider->unk1578 = 1.0f;
+        func_80061184(rider);
+        x = (rider->unkB5E < 0) ? -rider->unkB5E : rider->unkB5E;
+        y = (rider->unkB5F < 0) ? -rider->unkB5F : rider->unkB5F;
+        mag = SQ(x) + SQ(y);
+        if (mag != 0.0f) {
+            mag = sqrtf(mag);
+            if (y < x) {
+                scale = 70.0f / ((70.0f / mag) * x);
+            } else {
+                scale = 70.0f / ((70.0f / mag) * y);
+            }
+            rider->unkB5E = func_80061644(rider->unkB5E * scale);
+            rider->unkB5F = func_80061644(rider->unkB5F * scale);
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80061708.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_800618F4(void* arg0, f32 arg1, f32 arg2, f32 arg3) {
