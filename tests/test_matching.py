@@ -1712,11 +1712,11 @@ class TestCourseOverlays(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i4_802C58F8_matched(self):
-        """TDE test for func_i4_802C58F8 in ovl_1BE0B0 (Sunny Beach shallow reef water surface state reset)."""
-        if self.is_function_decompiled("func_i4_802C58F8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i4_802C58F8 is currently non-matching (in progress)")
+        """TDE test for func_i4_802C58F8 in ovl_1BE0B0 (course/difficulty select unlock table setup)."""
+        self.assertTrue(self.is_function_decompiled("func_i4_802C58F8"), "func_i4_802C58F8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i4", "ovl_1BE0B0", "func_i4_802C58F8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i4_802C5CDC_matched(self):
         """TDE test for func_i4_802C5CDC in ovl_1BE0B0 (Sunny Beach shoreline surf swell display list emitter)."""
