@@ -1726,11 +1726,11 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i4_802C5CDC is currently non-matching (in progress)")
 
     def test_func_i4_802C6778_matched(self):
-        """TDE test for func_i4_802C6778 in ovl_1BE0B0 (Sunny Beach shallow sandbar grounding depth check)."""
-        if self.is_function_decompiled("func_i4_802C6778"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i4_802C6778 is currently non-matching (in progress)")
+        """TDE test for func_i4_802C6778 in ovl_1BE0B0 (Sunny Beach backdrop and scenery display list)."""
+        self.assertTrue(self.is_function_decompiled("func_i4_802C6778"), "func_i4_802C6778 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i4", "ovl_1BE0B0", "func_i4_802C6778.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i4_802C69C4_matched(self):
         """TDE test for func_i4_802C69C4 in ovl_1BE0B0 (Sunny Beach umbrella and palm tree prop animations)."""
