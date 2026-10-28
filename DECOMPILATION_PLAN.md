@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **211 remaining non-matching functions** (88 matched in prioritized matrix, 1,157 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **210 remaining non-matching functions** (89 matched in prioritized matrix, 1,158 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **211 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,157** | 1,368 | **84.58%** |
-| **Non-Matching Functions** | **211** | 1,368 | **15.42%** |
-| **Matched Code Bytes** | **419,196 B** | 834,052 B | **50.26%** |
+| **Matched Functions** | **1,158** | 1,368 | **84.65%** |
+| **Non-Matching Functions** | **210** | 1,368 | **15.35%** |
+| **Matched Code Bytes** | **419,964 B** | 834,052 B | **50.35%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 4 | 27 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 14 | 9 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 29 | 2 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 163 | 23 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **213** | **88** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **212** | **89** | **301** | | |
 
 ---
 
@@ -204,7 +204,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 122 | `func_80051238` | `src/game/water_69D0.c` | 188 | 14/9  | Floats, Rodata  | Pending | Routine logic  |
 | 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | **MATCHED** | Rider and player state init (completes code_43A60)  |
 | 124 | `func_8004D018` | `src/game/water_69D0.c` | 189 | 40/0  | Floats, Rodata  | Pending | Routine logic  |
-| 125 | `func_8007B630` | `src/game/core/wr64_save.c` | 192 | 12/6  | Integer Clean  | Pending | Default championship records and high scores table restore  |
+| 125 | `func_8007B630` | `src/game/core/wr64_save.c` | 192 | 12/6  | Integer Clean  | **MATCHED** | Unpacks the EEPROM image into the in-RAM record tables, inverse of `func_8007B930` (dead `n = i + 1` per loop keeps the s4 counter; signed `s8` struct fields give `lb`; the 4-entry copy is a pointer walk so IDO keeps it rolled; `pad[3]` sizes the 0x88 frame)  |
 | 126 | `func_80077F5C` | `src/game/code_2FB10.c` | 194 | 27/0  | Floats, Rodata  | Pending | Jet ski throttle response and water drag velocity damping  |
 | 127 | `func_i1_802C5AE4` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 196 | 30/20  | JumpTable, Rodata, ParkedFloor  | Pending | Course buoy waypoint sequence update  |
 | 128 | `func_8004D30C` | `src/game/water_69D0.c` | 199 | 37/1  | Floats, Rodata  | Pending | Routine logic  |
