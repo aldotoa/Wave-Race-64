@@ -98,135 +98,109 @@ void func_801E9858(Gfx* glistp, s32 a1, s32 a2, s32 a3, s32 a4) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E9858.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Proportional-font glyph mapper: (mode, char) -> glyph index, 0xFF = space
-   (fixed-width 12 in caller func_i8_802C6EB8 string-width accumulator).
-   Diff floor 2885 probe-verified: head (sign-extend, a1 ghost home, beqzl
-   join), all value arms, all a1-chain links (bnel/bne likely-ness), switch
-   beq-chains, and the irregular 0x2E case order (0,2,1) all exact. Remainder
-   is purely default-return convergence: retail shares ONE `jr; or v0,v1`
-   reached via `bne + nop`, while every C shape toward it either
-   const-propagates to per-site `jr; move v0,zero` (all `return fallbackGlyph`
-   spellings: in-switch, after-switch, |0-masked, register-qualified) or
-   emits `bnel + move` / `b` edges (all goto spellings: plain, inverted,
-   1-case-switch, early-def, upper else-goto, 0x2F 2-case-switch). Suspect a
-   uopt global-analysis cutoff on 20-return functions; not triggerable from C
-   (micros m1-m10 in scratch history). Parked. */
+/*
+ * Proportional-font glyph mapper: (mode, char) -> glyph index, 0 when the
+ * mode has no glyph for it, 0xFF for a space (fixed-width 12 in caller
+ * func_i8_802C6EB8's string-width accumulator).
+ * Load-bearing: a single `return glyph;`. IDO copies that return block into
+ * each arm (`jr ra; li v0,K`) and each switch default (`jr ra; move v0,v1`);
+ * per-arm C returns turn the shared tail into `move; jr; nop` reached by
+ * `bnel` likely-fills instead.
+ */
 s32 func_801E9B04(s32 fontMode, s8 character) {
-    s32 fallbackGlyph;
+    s32 glyph = 0;
 
-    fallbackGlyph = 0;
     if ((character >= 0x30) && (character < 0x3A)) {
-        return character - 0x30;
-    }
-    if ((character >= 0x41) && (character < 0x5B)) {
+        glyph = character - 0x30;
+    } else if ((character >= 0x41) && (character < 0x5B)) {
         if ((fontMode == 0) || (fontMode == 1) || (fontMode == 2)) {
-            return character - 0x37;
+            glyph = character - 0x37;
         }
-        return fallbackGlyph;
-    }
-    if (character == 0x2F) {
+    } else if (character == 0x2F) {
         if (fontMode != 2) {
             if (fontMode == 5) {
-                return 0xA;
+                glyph = 0xA;
             }
-            return fallbackGlyph;
+        } else {
+            glyph = 0x28;
         }
-        return 0x28;
-    }
-    if (character == 0x2D) {
+    } else if (character == 0x2D) {
         switch (fontMode) {
             case 0:
             case 1:
-                return 0x24;
+                glyph = 0x24;
+                break;
             case 2:
-                return 0x25;
-            default:
-                return fallbackGlyph;
+                glyph = 0x25;
+                break;
         }
     } else if (character == 0x27) {
         switch (fontMode) {
             case 0:
             case 1:
-                return 0x25;
+                glyph = 0x25;
+                break;
             case 2:
-                return 0x26;
+                glyph = 0x26;
+                break;
             case 3:
-                return 0xA;
-            default:
-                return fallbackGlyph;
+                glyph = 0xA;
+                break;
         }
     } else if (character == 0x40) {
         switch (fontMode) {
             case 0:
             case 1:
-                return 0x26;
+                glyph = 0x26;
+                break;
             case 2:
-                return 0x27;
+                glyph = 0x27;
+                break;
             case 3:
-                return 0xB;
-            default:
-                return fallbackGlyph;
+                glyph = 0xB;
+                break;
         }
-    } else {
-        if (character == 0x26) {
-            if (fontMode == 2) {
-                return 0x24;
-            }
-            return fallbackGlyph;
+    } else if (character == 0x26) {
+        if (fontMode == 2) {
+            glyph = 0x24;
         }
-        if (character == 0x2E) {
-            switch (fontMode) {
-                case 0:
-                    return 0x27;
-                case 2:
-                    return 0x29;
-                case 1:
-                    return 0x29;
-                default:
-                    return fallbackGlyph;
-            }
-        } else {
-            if (character == 0x7C) {
-                if (fontMode == 2) {
-                    return 0x2A;
-                }
-                return fallbackGlyph;
-            }
-            if (character == 0x3C) {
-                if (fontMode == 2) {
-                    return 0x2B;
-                }
-                return fallbackGlyph;
-            }
-            if (character == 0x3E) {
-                if (fontMode == 2) {
-                    return 0x2C;
-                }
-                return fallbackGlyph;
-            }
-            if (character == 0xA) {
-                if (fontMode == 1) {
-                    return 0x28;
-                }
-                return fallbackGlyph;
-            }
-            if (character == 0x2B) {
-                if (fontMode == 2) {
-                    return 0x2D;
-                }
-                return fallbackGlyph;
-            }
-            if (character == 0x20) {
-                fallbackGlyph = 0xFF;
-            }
-            return fallbackGlyph;
+    } else if (character == 0x2E) {
+        switch (fontMode) {
+            case 0:
+                glyph = 0x27;
+                break;
+            case 2:
+                glyph = 0x29;
+                break;
+            case 1:
+                glyph = 0x29;
+                break;
         }
+    } else if (character == 0x7C) {
+        if (fontMode == 2) {
+            glyph = 0x2A;
+        }
+    } else if (character == 0x3C) {
+        if (fontMode == 2) {
+            glyph = 0x2B;
+        }
+    } else if (character == 0x3E) {
+        if (fontMode == 2) {
+            glyph = 0x2C;
+        }
+    } else if (character == 0xA) {
+        if (fontMode == 1) {
+            glyph = 0x28;
+        }
+    } else if (character == 0x2B) {
+        if (fontMode == 2) {
+            glyph = 0x2D;
+        }
+    } else if (character == 0x20) {
+        glyph = 0xFF;
     }
+    return glyph;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E9B04.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801E9D6C(void) {
