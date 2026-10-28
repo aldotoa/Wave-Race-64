@@ -446,13 +446,64 @@ void func_8007B630(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B630.s")
 #endif
 
-#ifdef NON_MATCHING
+extern UnkStruct_func_8007AF78_1 D_801C1FF0[][3];
+extern s32 D_801C22C0[][5];
+extern s32 D_801C24A0[][9];
+
+/*
+ * Packs the in-RAM record tables into the EEPROM image D_801AEA18 (the inverse
+ * of the default-fill in func_8007B370). The RAM tables are 1-based by course
+ * (n = i + 1). The named n is load-bearing: it keeps IDO's n induction register
+ * (s5) alive in every loop and turns the initials loop's `i++` into `i = n`.
+ */
 void func_8007B930(void) {
-    /* Stunt mode default high score initials and point tables reset */
+    s32 pad; /* frame-keeping unused local */
+    s32 i;
+    s32 n;
+    s32 j;
+    s32 k;
+
+    for (i = 0; i < 8; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            func_8007AF78(&D_801C1FF0[n][j],
+                          (UnkStruct_func_8007AF78_2*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][j]);
+        }
+        func_8007AF78((UnkStruct_func_8007AF78_1*) &D_801C22C0[n],
+                      (UnkStruct_func_8007AF78_2*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][j]);
+        for (j = 0; j < 2; j++) {
+            func_8007B2BC(D_801C24A0[n][j], (UnkStruct_8007B2BC*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1A8[i][j]);
+        }
+    }
+    for (i = 0; i < 9; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            func_8007B1AC((Unkstruct_8007B1AC_arg0*) &D_801C26E8[i][j],
+                          (Unkstruct_8007B1AC_arg1*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk120[i][j]);
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        n = i + 1;
+        func_8007B09C((UnkStruct_func_8007AF78_1*) &D_801C23B0[n * 0x14],
+                      (UnkStruct_func_8007AF78_2*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1D8[i]);
+    }
+    for (i = 0; i < 4; i++) {
+        n = i + 1;
+        Libc_strncpy(D_801AEA28[i], D_801CB298[i].unk_0, 10);
+        for (k = 0; k < 2; k++) {
+            for (j = 0; j < 3; j++) {
+                ((UnkStruct_8007CB68_2*) D_801AEA18)->unk38[k][i][j] = D_801CB298[k * 4 + i].unk_B[j];
+            }
+        }
+    }
+    func_8007B31C();
+    for (i = 0; i < 3; i++) {
+        n = i + 1;
+        for (j = 0; j < 3; j++) {
+            ((UnkStruct_8007CB68_2*) D_801AEA18)->unk50[i][j] = D_801CB308[i][j];
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/core/wr64_save/func_8007B930.s")
-#endif
 
 void func_8007BBE8() {
 }
@@ -560,9 +611,6 @@ s32 func_8007BE64(void) {
 }
 
 /* Splat-owned EEPROM tables (bss/data); element strides below must match the stub. */
-extern UnkStruct_func_8007AF78_1 D_801C1FF0[][3];
-extern s32 D_801C22C0[][5];
-extern s32 D_801C24A0[][9];
 extern s32 D_800D82B0[];
 extern s32 D_801AEBC0;
 
