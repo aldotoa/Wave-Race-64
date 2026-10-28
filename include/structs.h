@@ -322,7 +322,11 @@ typedef struct RiderStruct {
     /* 0x010 */ s32 unk10;
     /* 0x014 */ char pad14[0xC];                    /* maybe part of unk10[4]? */
     /* 0x020 */ s32 unk20;                          /* inferred */
-    /* 0x024 */ char pad24[0x178];                  /* maybe part of unk20[0x5F]? */
+    /* 0x024 */ char pad24[4];
+    /* 0x028 */ s32 unk28;
+    /* 0x02C */ char pad2C[0x100];
+    /* 0x12C */ s32 unk12C;
+    /* 0x130 */ char pad130[0x6C];
     /* 0x19C */ s32 unk19C;
     /* 0x1A0 */ char pad1A0[0x14C]; /* maybe part of unk19C[0x54]? */
     /* 0x2EC */ s32 unk2EC;
@@ -330,7 +334,9 @@ typedef struct RiderStruct {
     /* 0x2F4 */ s32 unk2F4;
     /* 0x2F8 */ char pad2F8[0x10];                  /* maybe part of unk2F4[0xB]? */
     /* 0x308 */ s32 unk308;
-    /* 0x30C */ char pad30C[0x14];
+    /* 0x30C */ char pad30C[8];
+    /* 0x314 */ s32 unk314;
+    /* 0x318 */ char pad318[8];
     /* 0x320 */ s32 unk320;                         /* inferred */
     /* 0x324 */ char pad324[0xC];                   /* maybe part of unk320[4]? */
     /* 0x330 */ f32 unk330;        /* inferred */
@@ -855,7 +861,8 @@ typedef struct UnkStruct_80192690 {
     /* 0x0948 */ f32 unk948;                        /* inferred */
     /* 0x094C */ char pad94C[0x20A];                /* maybe part of unk948[0x83]? */
     /* 0x0B56 */ u16 unkB56;
-    /* 0x0B58 */ char padB58[8];                    /* maybe part of unkB56[5]? */
+    /* 0x0B58 */ u16 unkB58;
+    /* 0x0B5A */ char padB5A[6];
     /* 0x0B60 */ s32 unkB60;
     /* 0x0B64 */ char padB64[4];
     /* 0x0B68 */ s32 unkB68;
