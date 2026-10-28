@@ -225,10 +225,18 @@ void func_i1_802C6BD8(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6BD8.s")
 #endif
 
-#ifdef NON_MATCHING
+extern s32 D_801CE708[];
+extern RiderStruct D_801C293C[];
+extern RiderStruct D_801C2C24[];
+
+/* Race-finish setup: enters game state 0x29, latches per-rider record flags in
+ * championship mode (the 4-iteration loop is fully unrolled by IDO into
+ * absolute-address loads/stores) and queues the result banners. The lap-state
+ * check reads the rider field twice inline; caching it in a local flips the
+ * beq operand order. */
 void func_i1_802C6DCC(void) {
-    s32 temp_v0;
-    u16 var_a1;
+    s32 i;
+    u16 arg;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -242,25 +250,12 @@ void func_i1_802C6DCC(void) {
     D_802C96A4 = 0;
     D_802C96A0 = 0;
     if (D_801CE608.gameMode == 4) {
-        if (*(s32*) ((u8*) &D_801CE6FC + 0xC) >= D_801C293C) {
-            D_801CB3F8[0] = 1;
-        } else {
-            D_801CB3F8[0] = 0;
-        }
-        if (*(s32*) ((u8*) &D_801CE6FC + 0x10) >= *(s32*) ((u8*) D_801C2C70 + 0x44)) {
-            D_801CB3F8[1] = 1;
-        } else {
-            D_801CB3F8[1] = 0;
-        }
-        if (*(s32*) ((u8*) &D_801CE6FC + 0x14) >= *(s32*) ((u8*) D_801C2C70 + 0x3BC)) {
-            D_801CB3F8[2] = 1;
-        } else {
-            D_801CB3F8[2] = 0;
-        }
-        if (*(s32*) ((u8*) &D_801CE6FC + 0x18) >= *(s32*) ((u8*) D_801C2C70 + 0x734)) {
-            D_801CB3F8[3] = 1;
-        } else {
-            D_801CB3F8[3] = 0;
+        for (i = 0; i < 4; i++) {
+            if (D_801CE708[i] >= D_801C293C[i].lapCount) {
+                D_801CB3F8[i] = 1;
+            } else {
+                D_801CB3F8[i] = 0;
+            }
         }
     }
     if (gPlayers == ONE_PLAYER) {
@@ -272,16 +267,13 @@ void func_i1_802C6DCC(void) {
     }
     func_801E6A4C(0, 0);
     if (gPlayers == ONE_PLAYER) {
-        var_a1 = 0;
-        temp_v0 = *(s32*) (D_801C2C24 + D_800D48DC * 0x378);
-        if (temp_v0 == 1) {
-            goto label;
+        arg = 0;
+        if (D_801C2C24[D_800D48DC].lapCount != 1) {
+            if (D_801C2C24[D_800D48DC].lapCount == 2) {
+                arg = 1;
+            }
         }
-        if (temp_v0 == 2) {
-            var_a1 = 1;
-        }
-    label:
-        func_801E6A4C(4, var_a1);
+        func_801E6A4C(4, arg);
     }
     D_801CE62A = 0;
     func_800BFD34();
@@ -289,9 +281,6 @@ void func_i1_802C6DCC(void) {
     func_800C1F60(4);
     func_800C21F4(4, 0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6DCC.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i1_802C6FE0(void) {

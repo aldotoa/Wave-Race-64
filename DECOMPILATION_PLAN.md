@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **226 remaining non-matching functions** (73 matched in prioritized matrix, 1,142 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **225 remaining non-matching functions** (74 matched in prioritized matrix, 1,143 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **226 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,142** | 1,368 | **83.48%** |
-| **Non-Matching Functions** | **226** | 1,368 | **16.52%** |
-| **Matched Code Bytes** | **407,748 B** | 834,052 B | **48.89%** |
+| **Matched Functions** | **1,143** | 1,368 | **83.55%** |
+| **Non-Matching Functions** | **225** | 1,368 | **16.45%** |
+| **Matched Code Bytes** | **408,280 B** | 834,052 B | **48.95%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 17 | 14 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 16 | 15 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 15 | 8 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 29 | 2 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 164 | 22 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **228** | **73** | **301** | | |
+| **Total** | | **227** | **74** | **301** | | |
 
 ---
 
@@ -98,7 +98,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 40 | `func_i4_802C69C4` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 122 | 3/0  | Integer Clean  | **MATCHED** | Sunny Beach shoreline surf swell display list emitter  |
 | 41 | `func_i1_802C6BD8` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 125 | 6/3  | Integer Clean  | Pending | clang-format off  |
 | 42 | `func_i15_802C5CE8` | `src/overlays/ovl_i15/ovl_1CFB60.c` | 127 | 19/0  | Integer Clean  | **MATCHED** | Course-setup effect slot reset and rider slot scan (indexed struct-copy loop, inline lap-state reads)  |
-| 43 | `func_i1_802C6DCC` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 133 | 15/7  | Integer Clean  | Pending | clang-format off  |
+| 43 | `func_i1_802C6DCC` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 133 | 15/7  | Integer Clean  | **MATCHED** | Race-finish state setup and record flag latch (4-iteration loop fully unrolled by IDO into absolute-address loads/stores)  |
 | 44 | `func_i3_802C5B40` | `src/overlays/ovl_i3/ovl_1BC890.c` | 133 | 22/11  | Integer Clean  | **MATCHED** | Course-overview frame: race scene, demo panel dispatch, skip/advance input  |
 | 45 | `func_1B1FB0_802C6C1C` | `src/unused_code_1B1FB0.c` | 137 | 11/0  | Integer Clean  | Pending | Flight mode terrain height lookup  |
 | 46 | `func_i11_802C5D48` | `src/overlays/ovl_i11/ovl_1CA480.c` | 141 | 21/11  | Integer Clean  | **MATCHED** | Warmup options menu controller input handler |
