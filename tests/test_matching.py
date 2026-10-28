@@ -480,11 +480,11 @@ class TestCodesegUI(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801E2058_matched(self):
-        """TDE test for func_801E2058 in AF8C0 (slider cursor movement and audio SFX feedback)."""
-        if self.is_function_decompiled("func_801E2058"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801E2058 is currently non-matching (in progress)")
+        """TDE test for func_801E2058 in AF8C0 (machine tuning slider track display list renderer)."""
+        self.assertTrue(self.is_function_decompiled("func_801E2058"), "func_801E2058 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "AF8C0", "func_801E2058.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801E229C_matched(self):
         """TDE test for func_801E229C in AF8C0 (jet ski color customization palette selector)."""
