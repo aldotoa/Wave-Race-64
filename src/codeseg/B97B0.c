@@ -1055,12 +1055,64 @@ void func_801EDFFC(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE040(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
-    ((void) arg3);
-    ((void) arg4);
+/*
+ * Axis-angle rotation matrix: libultra guRotateF with an inlined normalize and the gSinTable lookups.
+ * Floor: 68 diff rows (probe); the 0x70 frame, the s/t stack slots and the 1.0f register already match.
+ * Load-bearing: `one` used only by [3][3] and (one - xx), plus the empty `if (c) {}` right after the
+ * [0][0] store. That splits the block, so retail's pre-branch `lui/mtc1 $f12` 1.0f survives while the
+ * other 1.0f literals are rematerialized. Remaining: register choice only (target xx $f2, yy $f18 with
+ * call spills, c $f24, zz $f26). The target looks like it has one extra hidden FPR live range holding $f16.
+ */
+void func_801EE040(float (*arg0)[4], f32 a, f32 x, f32 y, f32 z) {
+    f32 s;
+    f32 one;
+    f32 yy;
+    s32 idx;
+    f32 mag;
+    f32 xx;
+    f32 zz;
+    f32 bc;
+    f32 c;
+    f32 ca;
+    f32 ab;
+    f32 t;
+    xx = x * x;
+    yy = y * y;
+    zz = z * z;
+    mag = sqrtf(xx + yy + zz);
+    if (mag > 0.0f) {
+        x /= mag;
+        y /= mag;
+        xx = x * x;
+        z /= mag;
+        yy = y * y;
+        zz = z * z;
+    }
+    one = 1.0f;
+    s = gSinTable[(s32) ((a / 360.0f) * 4096.0f) & 0xFFF];
+    c = gSinTable[((s32) ((a / 360.0f) * 4096.0f) + 0x400) & 0xFFF];
+    arg0[3][0] = 0.0f;
+    arg0[3][1] = 0.0f;
+    arg0[3][2] = 0.0f;
+    arg0[0][3] = 0.0f;
+    arg0[1][3] = 0.0f;
+    arg0[2][3] = 0.0f;
+    arg0[3][3] = one;
+    arg0[0][0] = ((one - xx) * c) + xx;
+    if (c) {}
+    t = 1.0f - c;
+    if (mag) {}
+    bc = y * z * t;
+    arg0[2][1] = bc - (x * s);
+    arg0[1][2] = (x * s) + bc;
+    arg0[1][1] = ((1.0f - yy) * c) + yy;
+    ca = z * x * t;
+    arg0[2][0] = (y * s) + ca;
+    arg0[0][2] = ca - (y * s);
+    arg0[2][2] = ((1.0f - zz) * c) + zz;
+    ab = x * y * t;
+    arg0[1][0] = ab - (z * s);
+    arg0[0][1] = (z * s) + ab;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE040.s")
@@ -1077,15 +1129,57 @@ void func_801EE228(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 
 #ifdef NON_MATCHING
-void func_801EE274(float (*arg0)[4], f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
-    ((void) arg3);
-    ((void) arg4);
-    ((void) arg5);
-    ((void) arg6);
-    ((void) arg7);
+/*
+ * func_801EE040 plus translation (tx, ty, tz in row 3). Floor: 32 diff rows (probe), register choice only;
+ * the instruction count, the 0x68 frame and the s/t/ca/ys slots match. Load-bearing: `one` for [3][3]/(one - xx), the
+ * empty ifs after [0][0] and [2][2], and zz squared first. Remaining: IDO hands out caller-saved FPRs as
+ * $f2, $f16, $f18 in priority order. Retail has xx $f16, yy $f18 and zz callee-saved $f24, as if a
+ * hidden range already holds $f2. No tested construct reproduces that: register keyword, decl order,
+ * PRE/inline squares, uninitialized-read empty ifs, constant vars, decomp-permuter runs.
+ */
+void func_801EE274(float (*arg0)[4], f32 a, f32 x, f32 y, f32 z, f32 tx, f32 ty, f32 tz) {
+    f32 s;
+    f32 yy;
+    f32 mag;
+    s32 idx;
+    f32 one;
+    f32 c;
+    f32 ab;
+    f32 zz;
+    f32 xx;
+    zz = z * z;
+    xx = x * x;
+    yy = y * y;
+    mag = sqrtf(xx + yy + zz);
+    if (mag > 0.0f) {
+        x /= mag;
+        y /= mag;
+        xx = x * x;
+        z /= mag;
+        yy = y * y;
+        zz = z * z;
+    }
+    one = 1.0f;
+    idx = (a / 360.0f) * 4096.0f;
+    s = gSinTable[idx & 0xFFF];
+    c = gSinTable[(idx + 0x400) & 0xFFF];
+    arg0[3][0] = tx;
+    arg0[3][1] = ty;
+    arg0[3][2] = tz;
+    arg0[0][3] = arg0[1][3] = arg0[2][3] = 0.0f;
+    arg0[3][3] = one;
+    arg0[0][0] = ((one - xx) * c) + xx;
+    if (yy) {}
+    arg0[2][1] = (y * z * (1.0f - c)) - (x * s);
+    arg0[1][2] = (x * s) + (y * z * (1.0f - c));
+    arg0[1][1] = ((1.0f - yy) * c) + yy;
+    arg0[2][0] = (y * s) + (z * x * (1.0f - c));
+    arg0[0][2] = (z * x * (1.0f - c)) - (y * s);
+    arg0[2][2] = ((1.0f - zz) * c) + zz;
+    if (zz) {}
+    ab = x * y * (1.0f - c);
+    arg0[1][0] = ab - (z * s);
+    arg0[0][1] = (z * s) + ab;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EE274.s")

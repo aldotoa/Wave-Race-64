@@ -136,11 +136,11 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 70 | `func_801E0A18` | `src/codeseg/A95D0.c` | 116 | 0/4  | Floats  | **MATCHED** | Post-race results total time rank calculator / 3-triplet spline evaluator  |
 | 71 | `func_801E0BE8` | `src/codeseg/A95D0.c` | 116 | 0/4  | Floats  | **MATCHED** | Stage clear victory jingle sequencer / 3-triplet with single scale evaluator  |
 | 72 | `func_801E0DB8` | `src/codeseg/A95D0.c` | 117 | 0/4  | Floats  | **MATCHED** | Championship cup award presentation animation / 4-triplet with single scale evaluator  |
-| 73 | `func_801EE040` | `src/codeseg/B97B0.c` | 122 | 1/1  | Floats  | Pending | Routine logic  |
+| 73 | `func_801EE040` | `src/codeseg/B97B0.c` | 122 | 1/1  | Floats, ParkedFloor  | Pending (Floor 68) | Axis-angle rotation MtxF (sin-table guRotateF with inlined normalize); draft parked behind NON_MATCHING (`one` var + empty if after [0][0] give the $f12 1.0f; FPR choice for xx/yy/zz/c left)  |
 | 74 | `func_801DF38C` | `src/codeseg/A95D0.c` | 123 | 6/1  | Floats  | Pending | Routine logic  |
 | 75 | `func_80061708` | `src/game/code_C6C0.c` | 123 | 11/5  | Floats  | **MATCHED** | Rider controller latch (`OSContPad` copy into `unkB50`, zeroed by a chained `stick_x = stick_y = button = 0` store) and analog stick rescale through `func_80061644` (`scale, x, y, mag` declaration order lays out the 0x30 frame's spill slots)  |
 | 76 | `func_i4_802C6ED0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 124 | 4/0  | Floats  | **MATCHED** | Course preview panel open/close zoom animation (both arms compute the `(5 - n) / 5.0f` term first)  |
-| 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats  | Pending | Routine logic  |
+| 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats, ParkedFloor  | Pending (Floor 32) | Axis-angle rotation + translation MtxF (sibling of func_801EE040); draft parked behind NON_MATCHING (insn count and frame exact; only xx/zz FPR choice left, retail acts as if a hidden range holds $f2)  |
 | 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
 | 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats, ParkedFloor  | Pending (Floor 53) | Euler angles (degrees) * scale + translation to Mtx via local MtxF; draft parked behind NON_MATCHING (per-angle idx vars + MtxF last fix the 0xA0 frame, sy load routed through sysz)  |
 | 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | **MATCHED** | Spray emitter seeding and quad texcoord init  |
