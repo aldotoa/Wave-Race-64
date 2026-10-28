@@ -182,13 +182,50 @@ void func_i4_802C6C2C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6C2C.s")
 #endif
 
-#ifdef NON_MATCHING
+extern s32 D_i4_802C7540;
+extern s32 D_i4_802C7544;
+extern s32 D_i4_802C7548;
+extern s32 D_802C76B4;
+extern s32 D_802C76B8;
+extern s32 D_802C76BC;
+extern s32 D_802C76C0;
+
+/* Course preview panel open (state 1) / close (state 2) zoom over 6 frames.
+ * Both arms compute the (5 - n) term first: that order decides which FP
+ * temps IDO assigns in the close arm. */
 void func_i4_802C6ED0(void) {
-    /* Sunny Beach course setup phase 1 */
+    f32 a;
+    f32 b;
+
+    switch (D_i4_802C7544) {
+        case 1:
+            D_i4_802C7540 = 1;
+            a = (5 - D_i4_802C753C) / 5.0f;
+            b = D_i4_802C753C / 5.0f;
+            D_802C76B4 = (s32) (71.0f * a) + 142;
+            D_802C76B8 = (s32) (53.0f * a) + 33;
+            D_802C76BC = 142.0f * b;
+            D_802C76C0 = 106.0f * b;
+            if (++D_i4_802C753C >= 6) {
+                D_i4_802C7538 = 2;
+                D_i4_802C753C = 0;
+                D_i4_802C7548 = 1;
+            }
+            break;
+        case 2:
+            a = (5 - D_i4_802C753C) / 5.0f;
+            b = D_i4_802C753C / 5.0f;
+            D_802C76B4 = (s32) (71.0f * b) + 142;
+            D_802C76B8 = (s32) (53.0f * b) + 33;
+            D_802C76BC = 142.0f * a;
+            D_802C76C0 = 106.0f * a;
+            if (++D_i4_802C753C >= 6) {
+                D_i4_802C7538 = 0;
+                D_i4_802C753C = 0;
+            }
+            break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6ED0.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_i4_802C70C0(void) {
