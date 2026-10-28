@@ -1648,11 +1648,11 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i15_802C5800 is currently non-matching (in progress)")
 
     def test_func_i15_802C5CE8_matched(self):
-        """TDE test for func_i15_802C5CE8 in ovl_1CFB60 (Glacier Coast ice floe bobbing physics)."""
-        if self.is_function_decompiled("func_i15_802C5CE8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i15_802C5CE8 is currently non-matching (in progress)")
+        """TDE test for func_i15_802C5CE8 in ovl_1CFB60 (Glacier Coast course-setup effect slot and rider slot initializer)."""
+        self.assertTrue(self.is_function_decompiled("func_i15_802C5CE8"), "func_i15_802C5CE8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i15", "ovl_1CFB60", "func_i15_802C5CE8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i15_802C5F50_matched(self):
         """TDE test for func_i15_802C5F50 in ovl_1CFB60 (Glacier Coast freezing mist particle update)."""
