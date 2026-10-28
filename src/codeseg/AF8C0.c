@@ -80,15 +80,6 @@ Gfx* func_801E1E8C(Gfx* glistp) {
     return glistp;
 }
 
-#ifdef NON_MATCHING
-/* Slider cursor movement & audio feedback (Machine tuning slider track renderer)
- * Floor score: 848 (compiler caches constant 16 in s1 register across loop iterations)
- * Load-bearing structures:
- * - isWrap = (D_802287E0 < D_802287E4) ? 0 : 1;
- * - do-while loop from i = 0 to 16 with step 2
- * - conditional matrix push and pop: gSPMatrix(..., G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH); ... gSPPopMatrix(...,
- * G_MTX_MODELVIEW);
- */
 extern Gfx D_106F6C0;
 extern Gfx* D_80226040[];
 extern s32 D_802261F8;
@@ -97,6 +88,10 @@ extern s32 D_802287E4;
 extern s32 D_802287E8[];
 void func_8006DE24(Gfx** glistp);
 
+/* Slider track renderer: draws the selected range of 16 slider segments.
+ * The four empty `if (x) {}` statements are load-bearing: they raise the
+ * allocation priority of i/isWrap/cond so the loop bound 16 is rematerialized
+ * in $at each iteration instead of being cached in a callee-saved register. */
 Gfx* func_801E2058(Gfx* glistp) {
     s32 cond;
     s32 isWrap;
@@ -109,14 +104,9 @@ Gfx* func_801E2058(Gfx* glistp) {
         func_8006DE24(&glistp);
     }
 
-    if (D_802287E0 < D_802287E4) {
-        isWrap = 0;
-    } else {
-        isWrap = 1;
-    }
+    isWrap = (D_802287E0 < D_802287E4) ? 0 : 1;
 
-    i = 0;
-    do {
+    for (i = 0; i < 16; i += 2) {
         cond = 0;
         if (isWrap == 0) {
             if (i >= D_802287E0 && D_802287E4 >= i) {
@@ -125,12 +115,14 @@ Gfx* func_801E2058(Gfx* glistp) {
         } else if (i >= D_802287E0 || D_802287E4 >= i) {
             cond = 1;
         }
+        if (i) {}
 
         if (cond != 0) {
             gSPMatrix(glistp++, (u8*) D_801CE5F8 + (i << 6) + 0x1380, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
             gSPDisplayList(glistp++, D_80226040[D_802287E8[i]]);
             gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
         }
+        if (isWrap) {}
 
         cond = 0;
         if (isWrap == 0) {
@@ -141,20 +133,17 @@ Gfx* func_801E2058(Gfx* glistp) {
             cond = 1;
         }
 
-        if (cond != 0) {
+        if (cond) {
             gSPMatrix(glistp++, (u8*) D_801CE5F8 + (i << 6) + 0x13C0, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
             gSPDisplayList(glistp++, D_80226040[D_802287E8[i + 1]]);
             gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
         }
-
-        i += 2;
-    } while (i != 0x10);
+        if (cond) {}
+    }
+    if (i) {}
 
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/AF8C0/func_801E2058.s")
-#endif
 
 #ifdef NON_MATCHING
 Gfx* func_801E229C(Gfx* glistp) {
