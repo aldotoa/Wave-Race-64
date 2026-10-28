@@ -2526,11 +2526,11 @@ class TestCameraEngine(unittest.TestCase):
             self.skipTest("func_80067E40 is currently non-matching (in progress)")
 
     def test_func_800683A0_matched(self):
-        """TDE test for func_800683A0 in code_C6C0 (2-Player split-screen lower viewport matrix setup)."""
-        if self.is_function_decompiled("func_800683A0"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_800683A0 is currently non-matching (in progress)")
+        """TDE test for func_800683A0 in code_C6C0 (Rider projected-position entry fill and unk16EC counter step)."""
+        self.assertTrue(self.is_function_decompiled("func_800683A0"), "func_800683A0 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "code_C6C0", "func_800683A0.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_80068538_matched(self):
         """TDE test for func_80068538 in code_C6C0 (Rider-type-2 jet ski five-part matrix and display list emitter)."""

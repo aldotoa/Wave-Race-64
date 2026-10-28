@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **210 remaining non-matching functions** (89 matched in prioritized matrix, 1,158 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **209 remaining non-matching functions** (90 matched in prioritized matrix, 1,159 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **210 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,158** | 1,368 | **84.65%** |
-| **Non-Matching Functions** | **210** | 1,368 | **15.35%** |
-| **Matched Code Bytes** | **419,964 B** | 834,052 B | **50.35%** |
+| **Matched Functions** | **1,159** | 1,368 | **84.72%** |
+| **Non-Matching Functions** | **209** | 1,368 | **15.28%** |
+| **Matched Code Bytes** | **420,372 B** | 834,052 B | **50.40%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -26,9 +26,9 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 4 | 27 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 14 | 9 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
-| **5** | Rodata & Jump Table Blocked | 29 | 2 | 31 | High | Multi-case switches & rodata migration |
+| **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **212** | **89** | **301** | | |
+| **Total** | | **211** | **90** | **301** | | |
 
 ---
 
@@ -163,7 +163,7 @@ Functions containing `switch` statements with compiler-generated jump tables (`j
 | 89 | `func_801EB00C` | `src/codeseg/B66E0.c` | 93 | 18/2  | Rodata  | Pending | Fast3D font texture tile loader  |
 | 90 | `func_i13_802C6068` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 94 | 20/16  | JumpTable, Rodata  | Pending | Routine logic  |
 | 91 | `func_801DC274` | `src/codeseg/A95D0.c` | 100 | 4/2  | Floats, Rodata  | Pending | 3D particle fireworks and water splash simulator  |
-| 92 | `func_800683A0` | `src/game/code_C6C0.c` | 102 | 8/1  | Floats, Rodata  | Pending | Winner podium presentation camera framing  |
+| 92 | `func_800683A0` | `src/game/code_C6C0.c` | 102 | 8/1  | Floats, Rodata  | **MATCHED** | Rider projected-position entry fill (queued via `func_800AC098`) and `unk16EC` counter step (no `entry`/`t` locals: each costs a stack word past the 0x20 frame; projected position written before the velocity copy; `.late_rodata` 0.1f links in place)  |
 | 93 | `func_801DD6B4` | `src/codeseg/A95D0.c` | 106 | 24/2  | JumpTable, Rodata  | Pending | Routine logic  |
 | 94 | `func_800C1BD8` | `src/audio/audio_general.c` | 116 | 18/6  | Floats, Rodata  | Pending | irregular  |
 | 95 | `func_i5_802C781C` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 118 | 15/2  | JumpTable, Rodata  | **MATCHED** | Results-panel slide state machine: slides the panel in, steps the buoy path index, waits for A/B/Start, then slides out and hands off to func_801EC9C8 or func_801EC830  |

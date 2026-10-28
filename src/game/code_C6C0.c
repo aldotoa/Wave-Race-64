@@ -2351,13 +2351,64 @@ void func_80067E40(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067E40.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_800683A0(void) {
-    /* 2-Player split-screen lower viewport matrix setup */
+typedef struct UnkStruct_80192540 {
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ Vec3f unkC;
+    /* 0x18 */ Vec3f unk18;
+    /* 0x24 */ Vec3f unk24;
+    /* 0x30 */ f32 unk30;
+} UnkStruct_80192540; /* size = 0x34 */
+
+extern UnkStruct_80192540 D_80192540[];
+extern s32 D_800D4948;
+void func_800AC098(UnkStruct_80192540* src, s32 n);
+
+/*
+ * Fills rider arg0's D_80192540 entry (state, position projected D_800D4948
+ * frames ahead along its velocity, velocity, 0.1f) and queues it through
+ * func_800AC098, then advances the rider's unk16EC counter, wrapping at 16.
+ * Load-bearing: no `entry`/`t` locals (each costs a stack word past the 0x20
+ * frame), and the projected position is written before the velocity copy.
+ */
+void func_800683A0(s32 arg0) {
+    UnkStruct_80192690* rider = &D_80192690[arg0];
+
+    D_80192540[arg0].unk0 = 6;
+    D_80192540[arg0].unk4 = rider->unk16E8;
+    D_80192540[arg0].unk8 = rider->unk16EC;
+    D_80192540[arg0].unkC.x = rider->unk44.x + D_800D4948 * rider->unk6C;
+    D_80192540[arg0].unkC.y = rider->unk44.y + D_800D4948 * rider->unk70;
+    D_80192540[arg0].unkC.z = rider->unk44.z + D_800D4948 * rider->unk74;
+    D_80192540[arg0].unk18.x = rider->unk6C;
+    D_80192540[arg0].unk18.y = rider->unk70;
+    D_80192540[arg0].unk18.z = rider->unk74;
+    D_80192540[arg0].unk24.x = rider->unk78;
+    D_80192540[arg0].unk24.y = rider->unk7C;
+    D_80192540[arg0].unk24.z = rider->unk80;
+    D_80192540[arg0].unk30 = 0.1f;
+    func_800AC098(&D_80192540[arg0], 1);
+    if (gRiderGameModes != 0) {
+        if (rider->unk16E8 == 0) {
+            if (rider->unkC7C != 0) {
+                if (rider->unkC66 != 0) {
+                    rider->unk16EC += 2;
+                } else {
+                    rider->unk16EC++;
+                }
+            }
+        } else {
+            rider->unk16EC++;
+        }
+        if (rider->unk16EC >= 16) {
+            rider->unk16EC = 0;
+            if (rider->unk16E8 == 3) {
+                rider->unk16E8 = 0;
+            }
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800683A0.s")
-#endif
 
 extern u8 D_3000000[];
 
