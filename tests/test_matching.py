@@ -1952,11 +1952,11 @@ class TestCourseOverlays(unittest.TestCase):
             self.skipTest("func_i1_802C6BD8 is currently non-matching (in progress)")
 
     def test_func_i1_802C6DCC_matched(self):
-        """TDE test for func_i1_802C6DCC in ovl_1B55A0 (Course lap counter increment and split time recorder)."""
-        if self.is_function_decompiled("func_i1_802C6DCC"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i1_802C6DCC is currently non-matching (in progress)")
+        """TDE test for func_i1_802C6DCC in ovl_1B55A0 (Race-finish state setup and record flag latch)."""
+        self.assertTrue(self.is_function_decompiled("func_i1_802C6DCC"), "func_i1_802C6DCC should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i1", "ovl_1B55A0", "func_i1_802C6DCC.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i1_802C6FE0_matched(self):
         """TDE test for func_i1_802C6FE0 in ovl_1B55A0 (Course final lap fanfare cue)."""
