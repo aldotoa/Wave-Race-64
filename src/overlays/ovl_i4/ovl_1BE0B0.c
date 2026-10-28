@@ -16,13 +16,108 @@ void func_i4_802C5800(void) {
     func_80069798(D_801CE5F8->unkA80, D_801CE5F8->unk1780, D_801CE5F8->unkA40, &D_802C76AC, &D_80198310, &D_80198350);
 }
 
-#ifdef NON_MATCHING
+extern s32 D_801CB288[];
+extern s16 D_800EAC14[][8];
+extern s32 D_i4_802C7534;
+extern s32 D_i4_802C7558[];
+extern s32 D_i4_802C757C[][4];
+extern s32 D_802C76A4;
+extern s32 D_802C76C4;
+extern s32 D_802C76C8;
+extern s32 D_802C76D0;
+
+/* Course/difficulty select setup: marks every (course, difficulty) pair the
+ * player has unlocked in D_i4_802C757C, then flags courses with any unlocked
+ * entry in D_i4_802C7558. Expert (i == 3) reuses the hard course list, and
+ * writing that row as `i - 1` (not a literal 2) is what lets IDO walk both
+ * rows with one pointer. */
 void func_i4_802C58F8(void) {
-    /* Sunny Beach shallow reef water surface state reset */
+    s32 i;
+    s32 j;
+    s32 found;
+    s32 course;
+
+    if (D_801CE608.gameMode == 11) {
+        D_i4_802C7534 = 1;
+    } else {
+        D_i4_802C7534 = 0;
+    }
+
+    if (D_801CE608.player == 1) {
+        D_802C76B0 = 0;
+        if (D_801CB280 & 8) {
+            D_802C76C8 = 1;
+            D_802C76D0 = 4;
+            D_802C76C4 = 1;
+        } else {
+            D_802C76C8 = 0;
+            D_802C76D0 = 3;
+            D_802C76C4 = 0;
+        }
+    } else {
+        D_802C76B0 = 2;
+        if (D_801CB280 & 8) {
+            D_802C76C8 = 3;
+            D_802C76D0 = 4;
+            D_802C76C4 = 1;
+        } else {
+            D_802C76C8 = 2;
+            D_802C76D0 = 3;
+            D_802C76C4 = 0;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < D_801CB288[i] + 1; j++) {
+            if (i == 3) {
+                course = D_800EAC14[i - 1][j];
+            } else {
+                course = D_800EAC14[i][j];
+            }
+            D_i4_802C757C[course][i] = 1;
+        }
+    }
+
+    if ((D_801CE608.gameMode == 0) || (D_801CE608.gameMode == 1)) {
+        if (!(D_801CB280 & 1)) {
+            D_i4_802C757C[1][1] = 0;
+        }
+        if (!(D_801CB280 & 2)) {
+            D_i4_802C757C[1][2] = 0;
+        }
+    }
+
+    for (i = 0; i < 9; i++) {
+        found = 0;
+        for (j = 0; j < 4; j++) {
+            if (D_i4_802C757C[i][j] != 0) {
+                found = 1;
+                break;
+            }
+        }
+        if (found) {
+            D_i4_802C7558[i] = 1;
+        }
+    }
+
+    if ((D_801CE608.gameMode == 0) || (D_801CE608.gameMode == 1)) {
+        D_i4_802C7558[0] = 0;
+    }
+
+    if (D_801CE608.player == 1) {
+        if (D_801CE608.gameMode == 0) {
+            D_802C76A4 = 1;
+        } else {
+            D_802C76A4 = 0;
+        }
+    } else {
+        D_802C76A4 = 1;
+    }
+
+    if (D_800DA9D0 < D_802C76A4) {
+        D_800DA9D0 = D_802C76A4;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C58F8.s")
-#endif
 
 Gfx* func_i4_802C5B78(Gfx* dList) {
     Gfx* temp_v0;
@@ -74,7 +169,6 @@ Gfx* func_i4_802C5CDC(Gfx* dList) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C5CDC.s")
 #endif
 
-extern s32 D_i4_802C7534;
 extern uintptr_t D_800DB5F8[];
 extern uintptr_t D_800DB6D0[];
 extern uintptr_t D_800DB5B0[];
@@ -229,9 +323,7 @@ void func_i4_802C6ED0(void) {
 
 extern s16 D_801CE60C;
 extern s32 D_i4_802C754C;
-extern s32 D_i4_802C757C[][4];
 extern s32 D_802C76CC;
-extern s32 D_802C76D0;
 
 /* Difficulty select. The skip-unavailable-entry loops test at the head and
  * wrap via a back jump, i.e. `for (;;) { if (...) break; ... }` -- a plain
