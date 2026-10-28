@@ -2359,14 +2359,61 @@ void func_800683A0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800683A0.s")
 #endif
 
-#ifdef NON_MATCHING
+extern u8 D_3000000[];
+
+typedef struct UnkStruct_80227A60 {
+    /* 0x00 */ u8 pad0[0x30];
+    /* 0x30 */ Gfx* dl[5];
+} UnkStruct_80227A60; /* size = 0x44 */
+
+extern UnkStruct_80227A60 D_80227A60[];
+extern Gfx D_1007968[];
+
+/*
+ * Draws each rider-type-2 jet ski as five matrix + display list parts,
+ * disabling back-face culling when the player's D_801CE6F4 flag is set.
+ */
 Gfx* func_80068538(Gfx* glistp) {
-    /* Multiplayer aspect ratio and scissor box calculator */
+    s32 i;
+    s32 twoSided;
+
+    gSPDisplayList(glistp++, D_1007968);
+    for (i = 0; i < gRiders; i++) {
+        if (i) {} // FAKE: swaps the hoisted G_DL/G_MTX command words (t3/t2)
+        if (D_80192690[i].unkB68 == 2) {
+            if (i == D_800D48DC) {
+                if (D_801CE6F4[0] != 0) {
+                    twoSided = 1;
+                } else {
+                    twoSided = 0;
+                }
+            } else if ((i == D_800D48E0) && (gPlayers == 2)) {
+                if (D_801CE6F4[1] != 0) {
+                    twoSided = 1;
+                } else {
+                    twoSided = 0;
+                }
+            } else {
+                twoSided = 0;
+            }
+            gSPClearGeometryMode(glistp++, G_CULL_BOTH);
+            if (!twoSided) {
+                gSPSetGeometryMode(glistp++, G_CULL_BACK);
+            }
+            gSPMatrix(glistp++, D_3000000 + 0xF308 + i * sizeof(Mtx), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(glistp++, D_80227A60[twoSided].dl[0]);
+            gSPMatrix(glistp++, D_3000000 + 0xF408 + i * sizeof(Mtx), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(glistp++, D_80227A60[twoSided].dl[1]);
+            gSPMatrix(glistp++, D_3000000 + 0xF508 + i * sizeof(Mtx), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(glistp++, D_80227A60[twoSided].dl[2]);
+            gSPMatrix(glistp++, D_3000000 + 0xF608 + i * sizeof(Mtx), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(glistp++, D_80227A60[twoSided].dl[3]);
+            gSPMatrix(glistp++, D_3000000 + 0xF708 + i * sizeof(Mtx), G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPDisplayList(glistp++, D_80227A60[twoSided].dl[4]);
+        }
+    }
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80068538.s")
-#endif
 
 #ifdef NON_MATCHING
 Gfx* func_800687A4(Gfx* arg0) {
@@ -2407,7 +2454,6 @@ s32 func_8006931C(UnkStruct_80192690* arg0, Mtx* arg1) {
     return 0;
 }
 
-extern u8 D_3000000[];
 extern Gfx D_10068B0[];
 
 Gfx* func_800694B8(Gfx* arg0, s32 arg1) {
