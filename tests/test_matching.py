@@ -568,11 +568,11 @@ class TestCodesegUI(unittest.TestCase):
             self.skipTest("func_801E9858 is currently non-matching (in progress)")
 
     def test_func_801E9B04_matched(self):
-        """TDE test for func_801E9B04 in B66E0 (formatted integer digit printer)."""
-        if self.is_function_decompiled("func_801E9B04"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_801E9B04 is currently non-matching (in progress)")
+        """TDE test for func_801E9B04 in B66E0 (proportional-font glyph mapper)."""
+        self.assertTrue(self.is_function_decompiled("func_801E9B04"), "func_801E9B04 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "B66E0", "func_801E9B04.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_801E9D6C_matched(self):
         """TDE test for func_801E9D6C in B66E0 (formatted lap timer display printer mm:ss.ms)."""
