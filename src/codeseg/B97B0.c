@@ -1262,12 +1262,81 @@ void func_801EFFD8(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EFFD8.s")
 #endif
 
-#ifdef NON_MATCHING
+extern s32 D_80228D08;
+extern s32 D_80228D0C;
+extern s32 D_80228D10;
+extern s8 D_80228B58[];
+extern RiderStruct D_801C2938[];
+extern s32 D_800D817C;
+
+/*
+ * Start-countdown driver. D_80228A90 is read directly everywhere (no local):
+ * IDO CSEs it into a spilled stack temp, and the abs() result is coalesced
+ * with that temp's reload. A named local leaves an extra v0->a2 move.
+ */
 void func_801F03E0(void) {
+    s32 i;
+    s32 d;
+
+    if (gGameModeState == 1 || gGameModeState == 2) {
+        if (D_80228D08 == 0) {
+            D_80228D0C -= 3;
+            if (D_80228D0C <= 0) {
+                D_80228D0C = 0;
+                D_80228D08 = 1;
+            }
+        } else {
+            if (D_80228A90 % 15 == 0) {
+                if (gGameModeState != 2) {
+                    AudioGeneral_PlaySound(0x22, D_80228A90 / 15 - 1);
+                } else {
+                    AudioGeneral_PlaySound(0x23, 0);
+                }
+            }
+            d = D_80228A90 - 15;
+            if (d < 0) {
+                d = -d;
+            }
+            if (d < 15) {
+                for (i = 0; i < gRiders; i++) {
+                    if ((D_80192690[i].unkB58 & 0xA000) && (D_80228B58[i] == 0)) {
+                        if (d < 1) {
+                            D_801C2938[i].unk12C = 5;
+                        } else if (d < 2) {
+                            D_801C2938[i].unk12C = 4;
+                        } else if (d < 3) {
+                            D_801C2938[i].unk12C = 3;
+                        } else if (d < 4) {
+                            D_801C2938[i].unk12C = 2;
+                        } else if (d < 5) {
+                            D_801C2938[i].unk12C = 1;
+                        }
+                        if (d < 5) {
+                            D_801C2938[i].unk314 = 1;
+                            D_801C2938[i].unk28 = 1;
+                        }
+                        D_80228B58[i] = 1;
+                    }
+                }
+            }
+            D_80228A90--;
+            if (D_80228A90 == 15) {
+                gGameModeState = 2;
+                D_800D817C = 0;
+            } else if (D_80228A90 <= 0) {
+                gGameModeState = 3;
+                D_80228D08 = 2;
+            }
+        }
+    } else if (D_80228D08 == 2) {
+        if (gCurrentPauseMenuOption == -1) {
+            D_80228D0C += 6;
+            if (D_80228D0C >= D_80228D10) {
+                D_80228D08 = 0;
+            }
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F03E0.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801F06A0(void) {
