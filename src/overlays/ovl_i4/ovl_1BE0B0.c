@@ -160,14 +160,195 @@ Gfx* func_i4_802C5B78(Gfx* dList) {
     return dList;
 }
 
-#ifdef NON_MATCHING
-Gfx* func_i4_802C5CDC(Gfx* dList) {
-    /* Sunny Beach shoreline surf swell display list emitter */
-    return dList;
+extern s32 D_i4_802C7540;
+extern s32 D_i4_802C754C;
+extern s32 D_i4_802C7550;
+extern s32 D_i4_802C7548;
+extern s32 D_802C76B4;
+extern s32 D_802C76B8;
+extern s32 D_802C76BC;
+extern s32 D_802C76C0;
+extern s16 D_801CE60C;
+
+typedef struct {
+    s16 x;
+    s16 y;
+    s32 id;
+} I4Label;
+typedef struct {
+    s32 w;
+    s32 pad[11];
+} I4Ent48;
+typedef struct {
+    s32 w;
+    s32 pad[14];
+} I4Ent60;
+typedef struct {
+    s32 w;
+    s32 pad[4];
+} I4Ent20;
+
+extern Gfx D_80A6DB0[];
+extern u16 D_80A3DD8[];
+extern I4Label D_i4_802C7630[];
+extern I4Label D_i4_802C7650[];
+extern s32 D_i4_802C7660[];
+extern s32 D_800DAA10[];
+extern I4Ent48 D_801C26E8[];
+extern I4Ent60 D_801C1FF0[];
+extern I4Ent20 D_801C22C0[];
+extern I4Ent20 D_801C23B0[];
+
+Gfx* func_i4_802C6778(Gfx* gdl);
+Gfx* func_i4_802C69C4(Gfx* gdl, s32 arg1, s32 arg2);
+Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
+Gfx* func_801E8B24(Gfx*, s32, s32, s32, s32);
+
+/* Course select screen: preview scene, menu frames, course list, record time
+ * and difficulty list. The pad[] reproduces the 0xD8 frame (off/base homes at
+ * 0xCC/0xC8, y spill at 0x58). The nested `if (flag) { if (i == sel) ... }`
+ * color picks and the I4Label cursors initialised in the for headers are what
+ * give the target's branch skeleton and loop preheaders. */
+Gfx* func_i4_802C5CDC(Gfx* gdl) {
+    s32 i;
+    s32 color;
+    s32 off;
+    s32 base;
+    s32 pad[27];
+    s32 y;
+    s32 k;
+    s32 tex;
+    s32 h;
+    I4Label* p;
+
+    gSPDisplayList(gdl++, D_80A6DB0);
+    gDPFillRectangle(gdl++, 150, 53, 291, 158);
+    gdl = func_i4_802C6778(gdl);
+    if (D_i4_802C7540 != 0) {
+        gSPDisplayList(gdl++, D_80A6DB0);
+        gDPFillRectangle(gdl++, D_802C76B4 + 8, D_802C76B8 + 0x14, D_802C76B4 + D_802C76BC + 7,
+                         D_802C76B8 + D_802C76C0 + 0x13);
+    }
+    gSPDisplayList(gdl++, D_106F628);
+    gdl = Menu_DrawFrame(gdl, 0, 0x1C, 0x18, 0x108, 0x18);
+    if (D_801CE608.gameMode == 11) {
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xB9, 0x65, 0xA);
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xC5, 0x65, 0x10);
+    } else {
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xA1, 0x65, 0xC);
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xAE, 0x65, 0xC);
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xBC, 0x65, 0xC);
+        gdl = Menu_DrawFrame(gdl, 0, 0xAB, 0xC9, 0x65, 0xC);
+    }
+    for (y = 0x35; y < 0xD7; y += 0x12) {
+        gdl = Menu_DrawFrame(gdl, 0, 0x1C, y, 0x76, 0x10);
+    }
+
+    if (D_i4_802C7548 != 0) {
+        switch (D_802C76C8) {
+            case 0:
+            case 1:
+                gdl = func_i4_802C69C4(gdl, 0xA2, 0x49);
+                break;
+            case 2:
+            case 3:
+                gdl = func_i4_802C69C4(gdl, 0xA2, 0x37);
+                for (tex = 0, k = 0, y = 0x7C; y != 0x9E; y += 0x11, k += 0x11, tex += 0x7D6) {
+                    if (y != 0x8D) {
+                        h = 0x11;
+                    } else {
+                        h = 0x10;
+                    }
+                    gDPLoadTextureTile(gdl++, D_80A3DD8 + tex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, h, 0, 0, 117, h - 1,
+                                       0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gSPTextureRectangle(gdl++, 0xA2 << 2, y << 2, (0xA2 + 0x76) << 2, (k + h + 0x7C) << 2,
+                                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                }
+                break;
+        }
+    }
+
+    gdl = func_801E946C(gdl, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gdl = func_801E3EE0(gdl, 2, 4, 0x40, 0x1B, 0);
+    if (D_801CE608.gameMode == 11) {
+        gdl = func_801E3EE0(gdl, 0, 0x1E, 0xBF, 0xBA, 0);
+        gdl = Font_DrawDecimal(gdl, 2, D_801C26E8[D_800DAAD8[D_800DA9D0]].w, 0xBF, 0xC8);
+    } else {
+        gdl = func_801E3EE0(gdl, 0, 0xE, 0xC3, 0xA3, 0);
+        gdl = func_801E3EE0(gdl, 0, 0xD, 0xC5, 0xBE, 0);
+        if ((D_i4_802C754C == 3) && (D_i4_802C7548 != 0)) {
+            gdl = func_801E9858(func_801E8B24(gdl, 1, D_801C23B0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xB0), 1,
+                                "-'--@---", 0xC3, 0xCB);
+        } else {
+            gdl = func_801E8B24(func_801E8B24(gdl, 1, D_801C1FF0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xB0), 1,
+                                D_801C22C0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xCB);
+        }
+    }
+
+    for (i = 0; i < 9; i++) {
+        if (i == D_800DA9D0) {
+            color = 6;
+        } else if (D_i4_802C7558[D_800DAAD8[i]] != 0) {
+            color = 0;
+        } else {
+            color = 7;
+        }
+        gdl = func_801E946C(gdl, color, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+        gdl = func_801E3EE0(gdl, 1, D_800DAA10[D_800DAAD8[i]], D_i4_802C7660[D_800DAAD8[i]] + 0x30, i * 0x12 + 0x38,
+                            0);
+    }
+
+    if (D_i4_802C7548 != 0) {
+        off = 0;
+        if (D_801CE60C == 1) {
+            if (D_802C76C4 != 0) {
+                off = -6;
+            }
+            base = 0x41;
+        } else {
+            if (D_802C76C4 != 0) {
+                off = -8;
+            }
+            base = 0x2F;
+            gdl = func_801E946C(gdl, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            gdl = func_801E3EE0(gdl, 0, 0x20, 0xC3, 0x80, 0);
+            for (i = 0, p = D_i4_802C7650; i != 2; i++, p++) {
+                if (D_i4_802C7554 != 0) {
+                    if (i == D_800DAA04) {
+                        color = 6;
+                    } else {
+                        color = 0;
+                    }
+                } else {
+                    color = 0;
+                }
+                gdl = func_801E946C(gdl, color, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+                gdl = func_801E3EE0(gdl, 1, p->id, p->x + 0xC1, 0x8F - i, 0);
+            }
+        }
+        for (i = 0, p = D_i4_802C7630; i < D_802C76D0; i++, p++) {
+            if (D_i4_802C7550 != 0) {
+                if (i == D_i4_802C754C) {
+                    color = 6;
+                } else if (D_i4_802C757C[D_800DAAD8[D_800DA9D0]][i] == 0) {
+                    color = 7;
+                } else {
+                    color = 0;
+                }
+            } else {
+                if (D_i4_802C757C[D_800DAAD8[D_800DA9D0]][i] == 0) {
+                    color = 7;
+                } else {
+                    color = 0;
+                }
+            }
+            gdl = func_801E946C(gdl, color, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+            gdl = func_801E3EE0(gdl, 1, p->id, p->x + 0xC2, base + off + 0x14 + i * 0xF,
+                                0);
+        }
+    }
+    return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C5CDC.s")
-#endif
 
 extern uintptr_t D_800DB5F8[];
 extern uintptr_t D_800DB6D0[];
@@ -268,10 +449,7 @@ void func_i4_802C6BAC(void) {
     }
 }
 
-extern s32 D_i4_802C7540;
 extern s32 D_i4_802C7544;
-extern s32 D_i4_802C754C;
-extern s32 D_i4_802C7550;
 extern s32 D_802C76CC;
 
 /* Course select input. The chained `D_802C76CC = D_i4_802C754C = i` store is
@@ -339,12 +517,6 @@ void func_i4_802C6C2C(void) {
     SysUtils_Rand();
 }
 
-extern s32 D_i4_802C7548;
-extern s32 D_802C76B4;
-extern s32 D_802C76B8;
-extern s32 D_802C76BC;
-extern s32 D_802C76C0;
-
 /* Course preview panel open (state 1) / close (state 2) zoom over 6 frames.
  * Both arms compute the (5 - n) term first: that order decides which FP
  * temps IDO assigns in the close arm. */
@@ -381,8 +553,6 @@ void func_i4_802C6ED0(void) {
             break;
     }
 }
-
-extern s16 D_801CE60C;
 
 /* Difficulty select. The skip-unavailable-entry loops test at the head and
  * wrap via a back jump, i.e. `for (;;) { if (...) break; ... }` -- a plain
