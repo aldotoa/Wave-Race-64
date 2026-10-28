@@ -2414,11 +2414,11 @@ class TestCameraEngine(unittest.TestCase):
             self.skipTest("func_80061184 is currently non-matching (in progress)")
 
     def test_func_80061708_matched(self):
-        """TDE test for func_80061708 in code_C6C0 (Dynamic field-of-view adjustment based on speed boost)."""
-        if self.is_function_decompiled("func_80061708"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_80061708 is currently non-matching (in progress)")
+        """TDE test for func_80061708 in code_C6C0 (Rider controller latch and analog stick rescale)."""
+        self.assertTrue(self.is_function_decompiled("func_80061708"), "func_80061708 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "game", "code_C6C0", "func_80061708.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_800618F4_matched(self):
         """TDE test for func_800618F4 in code_C6C0 (Submerged camera water ripple distortion filter)."""

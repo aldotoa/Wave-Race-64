@@ -859,10 +859,13 @@ typedef struct UnkStruct_80192690 {
     /* 0x0940 */ f32 unk940;                        /* inferred */
     /* 0x0944 */ f32 unk944;                        /* inferred */
     /* 0x0948 */ f32 unk948;                        /* inferred */
-    /* 0x094C */ char pad94C[0x20A];                /* maybe part of unk948[0x83]? */
+    /* 0x094C */ char pad94C[0x204];                /* maybe part of unk948[0x83]? */
+    /* 0x0B50 */ OSContPad unkB50;
     /* 0x0B56 */ u16 unkB56;
     /* 0x0B58 */ u16 unkB58;
-    /* 0x0B5A */ char padB5A[6];
+    /* 0x0B5A */ char padB5A[4];
+    /* 0x0B5E */ s8 unkB5E;
+    /* 0x0B5F */ s8 unkB5F;
     /* 0x0B60 */ s32 unkB60;
     /* 0x0B64 */ char padB64[4];
     /* 0x0B68 */ s32 unkB68;
@@ -969,7 +972,11 @@ typedef struct UnkStruct_80192690 {
     /* 0x1438 */ f32 unk1438;
     /* 0x143C */ f32 unk143C;
     /* 0x1440 */ f32 unk1440;
-    /* 0x1444 */ char pad1444[0x170];               /* maybe part of unk1440[0x5D]? */
+    /* 0x1444 */ char pad1444[2];
+    /* 0x1446 */ s16 unk1446;
+    /* 0x1448 */ char pad1448[0x130];
+    /* 0x1578 */ f32 unk1578;
+    /* 0x157C */ char pad157C[0x38];
     /* 0x15B4 */ f32 unk15B4;
     /* 0x15B8 */ f32 unk15B8;
     /* 0x15BC */ f32 unk15BC;
