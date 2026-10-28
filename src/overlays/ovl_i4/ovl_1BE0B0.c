@@ -74,15 +74,6 @@ Gfx* func_i4_802C5CDC(Gfx* dList) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C5CDC.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Sunny Beach backdrop and scenery GBI display list emitter
- * Floor score: ~10050 (instruction schedule differences within straight-line GBI macro emissions)
- * Load-bearing structures:
- * - course branch: if (D_i4_802C7534 == 0) var_a3 = &D_800DB5F8[course * 2]; else var_a3 = &D_800DB6D0[course * 2];
- * - temp_v1: (course << 15) + 0x10000
- * - temp_t1: &D_800DB5B0[course * 2]
- */
-extern u16 D_802C76AC;
 extern s32 D_i4_802C7534;
 extern uintptr_t D_800DB5F8[];
 extern uintptr_t D_800DB6D0[];
@@ -92,64 +83,54 @@ extern Mtx D_7000A40;
 extern Vp D_106F738;
 extern Gfx D_106F748;
 
+/* Sunny Beach backdrop and scenery display list. Shares its template with
+ * ovl_i3's course-overview scene: `t2` is always 1 here, but the two
+ * `if (t2 != 0)` blocks are load-bearing -- their block boundaries decide
+ * where IDO writes gdl back to its home register (a0) and how the long-lived
+ * course/table values get registers. */
 Gfx* func_i4_802C6778(Gfx* gdl) {
     s32 course;
-    uintptr_t* var_a3;
-    uintptr_t* temp_t1;
+    s32* var_a3;
+    s32* temp_t1;
     u32 temp_v1;
+    s32 t2;
 
+    t2 = 1;
     course = D_800DAAD8[D_800DA9D0];
     if (D_i4_802C7534 == 0) {
-        var_a3 = &D_800DB5F8[course * 2];
+        var_a3 = (s32*) ((u8*) D_800DB5F8 + course * 8);
     } else {
-        var_a3 = &D_800DB6D0[course * 2];
+        var_a3 = (s32*) ((u8*) D_800DB6D0 + course * 8);
     }
-
     gSPDisplayList(gdl++, &D_80A6E00);
     gDPPipeSync(gdl++);
     gDPSetColorImage(gdl++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, OS_PHYSICAL_TO_K0(gFrameBuffers[gFramebuffersIdx]));
-
-    gdl->words.w0 = 0xB4000000;
-    gdl->words.w1 = D_802C76AC;
-    gdl++;
-
+    gSPPerspNormalize(gdl++, *(u16*) &D_802C76AC);
     gSPMatrix(gdl++, &D_7000A40, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gdl++, D_801CE5F8->unkA80, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPViewport(gdl++, &D_106F738);
     gSPDisplayList(gdl++, &D_106F748);
     gDPSetEnvColor(gdl++, 255, 255, 255, 255);
-
-    gdl->words.w0 = 0xED2580D4;
-    gdl->words.w1 = 0x0049027C;
-    gdl++;
-
-    temp_t1 = &D_800DB5B0[course * 2];
+    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, 150, 53, 292, 159);
+    temp_t1 = (s32*) ((u8*) D_800DB5B0 + course * 8);
     temp_v1 = (course << 15) + 0x10000;
-
-    gSPDisplayList(gdl++, (Gfx*) (temp_t1[0] + temp_v1));
-    gSPClearGeometryMode(gdl++, G_CULL_BACK);
-    gSPDisplayList(gdl++, (Gfx*) (var_a3[0] + temp_v1));
-    gSPSetGeometryMode(gdl++, G_CULL_BACK);
+    gSPDisplayList(gdl++, temp_t1[0] + temp_v1);
+    if (t2 != 0) {
+        gSPClearGeometryMode(gdl++, G_LIGHTING);
+        gSPDisplayList(gdl++, var_a3[0] + temp_v1);
+    }
+    gSPSetGeometryMode(gdl++, G_LIGHTING);
     gDPPipeSync(gdl++);
-
-    gdl->words.w0 = 0xB900031D;
-    gdl->words.w1 = 0x005049D8;
-    gdl++;
-
-    gSPDisplayList(gdl++, (Gfx*) (temp_t1[1] + temp_v1));
-    gSPClearGeometryMode(gdl++, G_CULL_BACK);
-    gSPDisplayList(gdl++, (Gfx*) (var_a3[1] + temp_v1));
+    gDPSetRenderMode(gdl++, G_RM_AA_ZB_XLU_SURF, G_RM_AA_ZB_XLU_SURF2);
+    gSPDisplayList(gdl++, temp_t1[1] + temp_v1);
+    if (t2 != 0) {
+        gSPClearGeometryMode(gdl++, G_LIGHTING);
+        gSPDisplayList(gdl++, var_a3[1] + temp_v1);
+    }
     gDPPipeSync(gdl++);
-
-    gdl->words.w0 = 0xED000000;
-    gdl->words.w1 = 0x004FC3BC;
-    gdl++;
-
+    gDPSetScissor(gdl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i4/ovl_1BE0B0/func_i4_802C6778.s")
-#endif
 
 extern u16 D_80A0008[];
 
