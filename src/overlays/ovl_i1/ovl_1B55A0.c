@@ -217,13 +217,39 @@ end:
     return passThrough;
 }
 
-#ifdef NON_MATCHING
-void func_i1_802C6BD8(void) {
-    /* Course retire and exit coordinator */
+/* Warm-up banner panel: draws the frame and, while the banner is active,
+ * scrolls its glyph slots left and retires it once fully off-screen. The
+ * second `b = &D_802C96A8;` before the loop is load-bearing: it splits b's
+ * live range (s0 before the loop, copied to s4 for the bound) so the loop
+ * guard reads through the register instead of an absolute address. */
+Gfx* func_i1_802C6BD8(Gfx* gfx) {
+    s32 i;
+    UnkStruct_802C96A8* b;
+
+    gSPDisplayList(gfx++, D_106F628);
+    gfx = Menu_DrawFrame(gfx, 0, 0x16, 0xC5, 0x114, 0x14);
+    b = &D_802C96A8;
+    if (b->unk_0 != 0) {
+        gfx = func_801E946C(gfx, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+        gDPPipeSync(gfx++);
+        gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 30, 20, 290, 218);
+        b = &D_802C96A8;
+        for (i = 0; i < b->unk_4; i++) {
+            if (b->unk_18[i] != -1) {
+                if (gCurrentPauseMenuOption == -1) {
+                    b->unk_C[i] -= 2;
+                }
+                gfx = func_801E3EE0(gfx, 3, b->unk_18[i], b->unk_C[i], 0xC8, 0);
+            }
+        }
+        if (b->unk_C[0] < -b->unk_8) {
+            b->unk_0 = 0;
+        }
+    }
+    gDPPipeSync(gfx++);
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+    return gfx;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6BD8.s")
-#endif
 
 extern s32 D_801CE708[];
 extern RiderStruct D_801C293C[];
