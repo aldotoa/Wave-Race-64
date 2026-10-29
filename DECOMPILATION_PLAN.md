@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **198 remaining non-matching functions** (103 matched in prioritized matrix, 1,170 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **197 remaining non-matching functions** (104 matched in prioritized matrix, 1,171 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **198 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,170** | 1,368 | **85.53%** |
-| **Non-Matching Functions** | **198** | 1,368 | **14.47%** |
-| **Matched Code Bytes** | **425,872 B** | 834,052 B | **51.06%** |
+| **Matched Functions** | **1,171** | 1,368 | **85.60%** |
+| **Non-Matching Functions** | **197** | 1,368 | **14.40%** |
+| **Matched Code Bytes** | **426,588 B** | 834,052 B | **51.15%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **421** | 421 | **100% OK** |
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 8 | 15 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **4** | Medium Floating-Point & Physics | 7 | 16 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **198** | **103** | **301** | | |
+| **Total** | | **197** | **104** | **301** | | |
 
 ---
 
@@ -147,7 +147,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | Pending | Routine logic  |
 | 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | Pending | Routine logic  |
 | 83 | `func_801E8800` | `src/codeseg/B66E0.c` | 161 | 16/0  | Floats  | Pending | Font glyph metrics table and character bounds initializer  |
-| 84 | `func_i13_802C6700` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 179 | 15/1  | Floats  | Pending | Routine logic  |
+| 84 | `func_i13_802C6700` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 179 | 15/1  | Floats  | **MATCHED** | Save menu panel controller: fade-in (state 0) / confirm-back-toggle input (state 1, returns 1-4) / fade-out (state 2), deriving four layout values from `n / 5.0f`. Load-bearing: in the fade-out case `(5 - n) / 5.0f` must be computed before `n / 5.0f` (the reverse swaps `$f4`/`$f16`)  |
 
 ## Tier 5: Rodata & Jump Table Blocked Routines (< 180 insns, Switch/Rodata Blocked)
 
