@@ -232,71 +232,20 @@ Gfx* func_1B1FB0_802C6C1C(Gfx* gdl) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6C1C.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Debug flight telemetry display list builder (110 instructions).
- * Emits 4 iterations (0xB stride, total 0x2C) of 8-byte RDP commands.
- * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
- * scheduling across the 10 RDP word stores per iteration. */
+extern u8 D_8008510[];
+
+/* Debug flight telemetry banner: four IA8 192x11 strips stacked at (arg1, arg2). */
 Gfx* func_1B1FB0_802C6E40(Gfx* gdl, s32 arg1, s32 arg2) {
-    u32 w0_e4 = ((((arg1 + 0xC0) * 4) & 0xFFF) << 12) | 0xE4000000;
-    u32 w1_e4_base = (((arg1 * 4) & 0xFFF) << 12);
-    u8* tex = (u8*) &D_8008510;
-    s32 i = 0;
-    s32 a3 = arg2;
-    s32 t2 = arg2 + 0xB;
+    s32 i;
 
-    do {
-        gdl->words.w0 = 0xFD6800BF;
-        gdl->words.w1 = (u32) tex;
-        gdl++;
-
-        gdl->words.w0 = 0xF5683000;
-        gdl->words.w1 = 0x07080200;
-        gdl++;
-
-        gdl->words.w0 = 0xE6000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF4000000;
-        gdl->words.w1 = 0x072FC028;
-        gdl++;
-
-        gdl->words.w0 = 0xE7000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF5683000;
-        gdl->words.w1 = 0x00080200;
-        gdl++;
-
-        gdl->words.w0 = 0xF2000000;
-        gdl->words.w1 = 0x002FC028;
-        gdl++;
-
-        gdl->words.w0 = w0_e4 | ((t2 * 4) & 0xFFF);
-        gdl->words.w1 = w1_e4_base | ((a3 * 4) & 0xFFF);
-        gdl++;
-
-        gdl->words.w0 = 0xB3000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xB2000000;
-        gdl->words.w1 = 0x04000400;
-        gdl++;
-
-        i += 0xB;
-        a3 += 0xB;
-        t2 += 0xB;
-        tex += 0x840;
-    } while (i != 0x2C);
-
+    for (i = 0; i < 4; i++) {
+        gDPLoadTextureTile(gdl++, &D_8008510[i * 0x840], G_IM_FMT_IA, G_IM_SIZ_8b, 192, 11, 0, 0, 191, 10, 0,
+                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, arg1 << 2, (arg2 + i * 11) << 2, (arg1 + 192) << 2, (arg2 + i * 11 + 11) << 2,
+                            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6E40.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Onscreen debug font glyph display list builder (112 instructions).
