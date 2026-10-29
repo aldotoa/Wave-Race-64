@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **197 remaining non-matching functions** (104 matched in prioritized matrix, 1,171 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **193 remaining non-matching functions** (108 matched in prioritized matrix, 1,175 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **197 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,171** | 1,368 | **85.60%** |
-| **Non-Matching Functions** | **197** | 1,368 | **14.40%** |
-| **Matched Code Bytes** | **426,588 B** | 834,052 B | **51.15%** |
+| **Matched Functions** | **1,175** | 1,368 | **85.89%** |
+| **Non-Matching Functions** | **193** | 1,368 | **14.11%** |
+| **Matched Code Bytes** | **428,864 B** | 834,052 B | **51.42%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **421** | 421 | **100% OK** |
+| **Passing Regression Tests** | **425** | 425 | **100% OK** |
 
 ---
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 7 | 16 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **4** | Medium Floating-Point & Physics | 3 | 20 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **197** | **104** | **301** | | |
+| **Total** | | **193** | **108** | **301** | | |
 
 ---
 
@@ -137,16 +137,16 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 71 | `func_801E0BE8` | `src/codeseg/A95D0.c` | 116 | 0/4  | Floats  | **MATCHED** | Stage clear victory jingle sequencer / 3-triplet with single scale evaluator  |
 | 72 | `func_801E0DB8` | `src/codeseg/A95D0.c` | 117 | 0/4  | Floats  | **MATCHED** | Championship cup award presentation animation / 4-triplet with single scale evaluator  |
 | 73 | `func_801EE040` | `src/codeseg/B97B0.c` | 122 | 1/1  | Floats, ParkedFloor  | Pending (Floor 68) | Axis-angle rotation MtxF (sin-table guRotateF with inlined normalize); draft parked behind NON_MATCHING (`one` var + empty if after [0][0] give the $f12 1.0f; FPR choice for xx/yy/zz/c left)  |
-| 74 | `func_801DF38C` | `src/codeseg/A95D0.c` | 123 | 6/1  | Floats  | Pending | Routine logic  |
+| 74 | `func_801DF38C` | `src/codeseg/A95D0.c` | 123 | 6/1  | Floats  | **MATCHED** | Look-at orbit camera update: eases distance/yaw/pitch, builds the offset vector from gSinTable, then writes eye/target by type (2 or 3) and calls func_801DEEC4. Load-bearing: typed sub-struct pointers `a = (A*)(arg0 + 4)`, `b = (B*)(arg0 + 0x5C)` (house style, see func_801DF128) so retail reloads the source after each store; f32 `yaw`/`pitch` inside inline `COS((s32)((yaw * 4096.0f) / 360.0f))`; `i` declared after `vec`  |
 | 75 | `func_80061708` | `src/game/code_C6C0.c` | 123 | 11/5  | Floats  | **MATCHED** | Rider controller latch (`OSContPad` copy into `unkB50`, zeroed by a chained `stick_x = stick_y = button = 0` store) and analog stick rescale through `func_80061644` (`scale, x, y, mag` declaration order lays out the 0x30 frame's spill slots)  |
 | 76 | `func_i4_802C6ED0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 124 | 4/0  | Floats  | **MATCHED** | Course preview panel open/close zoom animation (both arms compute the `(5 - n) / 5.0f` term first)  |
 | 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats, ParkedFloor  | Pending (Floor 32) | Axis-angle rotation + translation MtxF (sibling of func_801EE040); draft parked behind NON_MATCHING (insn count and frame exact; only xx/zz FPR choice left, retail acts as if a hidden range holds $f2)  |
 | 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
-| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats, ParkedFloor  | Pending (Floor 53) | Euler angles (degrees) * scale + translation to Mtx via local MtxF; draft parked behind NON_MATCHING (per-angle idx vars + MtxF last fix the 0xA0 frame, sy load routed through sysz)  |
+| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats, ParkedFloor  | Pending (Floor 36) | Euler angles (degrees) * scale + translation to Mtx via local MtxF; draft parked behind NON_MATCHING (sin(y) before cos(x) aligns all t-regs; left: retail gives $f2 to cx/cycz and keeps sysz in memory)  |
 | 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | **MATCHED** | Spray emitter seeding and quad texcoord init  |
-| 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | Pending | Routine logic  |
-| 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | Pending | Routine logic  |
-| 83 | `func_801E8800` | `src/codeseg/B66E0.c` | 161 | 16/0  | Floats  | Pending | Font glyph metrics table and character bounds initializer  |
+| 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | **MATCHED** | Menu banner slide-in (state 0, func_80048A88 with eased offsets) / hold (state 1, SysUtils_MatrixLookAt, then closes after 11 frames by game mode). Load-bearing: `1 - scale` spelled differently from the `1.0f` call args (breaks IDO constant CSE); param retyped to `UnkStruct_menu_buffer_1*`  |
+| 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | **MATCHED** | Per-rider lean target: maps the unkB98 position into 0-180 (with Math_Rand jitter) in unk2CC, then steps unk2C8 toward it. Load-bearing: `ABS()` / `SIGNUM()` from macros.h over the inline `unk2CC - unk2C8` (no named diff), one float var reused for the delta and t; new RiderStruct unk2C8/unk2CC and UnkStruct_80192690 unkB98/BBC/BC0 fields  |
+| 83 | `func_801E8800` | `src/codeseg/B66E0.c` | 161 | 16/0  | Floats  | **MATCHED** | Textured quad emitter: fills 4 Vtx (scaled extent, texcoords, per-corner color) in the D_801CE5F8 pool at D_80228A40, then gSPVertex + 2 gSP1Triangle. Load-bearing: byte-offset loop `i += 16`, `u32 j = i` copy used in only some of the compares (found by decomp-permuter), `tc[1] = (h * 2) << 5`  |
 | 84 | `func_i13_802C6700` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 179 | 15/1  | Floats  | **MATCHED** | Save menu panel controller: fade-in (state 0) / confirm-back-toggle input (state 1, returns 1-4) / fade-out (state 2), deriving four layout values from `n / 5.0f`. Load-bearing: in the fade-out case `(5 - n) / 5.0f` must be computed before `n / 5.0f` (the reverse swaps `$f4`/`$f16`)  |
 
 ## Tier 5: Rodata & Jump Table Blocked Routines (< 180 insns, Switch/Rodata Blocked)

@@ -769,10 +769,11 @@ void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty
 
 #ifdef NON_MATCHING
 /*
- * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 53 diff rows (probe).
- * Load-bearing: one idx variable per angle and MtxF declared last (gives the target 0xA0 frame with
- * mtx at sp+0x2C); target store order with the chained zeros last; routing the sy load through sysz.
- * Remaining: 4096.0f in $f14 (target $f18) cascading into sin/cos registers. Search reached 45.
+ * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 36 diff rows (probe).
+ * Load-bearing: one idx variable per angle and MtxF declared last (0xA0 frame, mtx at sp+0x2C); sin(y)
+ * generated before cos(x) (this lines up every t-register with retail); routing the sy load through sysz;
+ * [1][2] computed after [3][0]. Remaining: retail gives $f2 to cx/cycz and keeps sysz memory-resident,
+ * while this draft gives sysz $f2 and leaves cx in a local temp, cascading into an f0/f2 swap.
  */
 void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f32 scale) {
     f32 sx;
@@ -792,14 +793,13 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
 
     idx = (rx * 4096.0f) / 360.0f;
     sx = gSinTable[idx & 0xFFF];
-    cx = gSinTable[(idx + 0x400) & 0xFFF];
     mtx.mf[2][1] = -sx * scale;
-
     idxy = (ry * 4096.0f) / 360.0f;
     sysz = gSinTable[idxy & 0xFFF];
     sy = sysz;
-    cy = gSinTable[(idxy + 0x400) & 0xFFF];
+    cx = gSinTable[(idx + 0x400) & 0xFFF];
     mtx.mf[2][0] = cx * sy * scale;
+    cy = gSinTable[(idxy + 0x400) & 0xFFF];
     mtx.mf[2][2] = cy * cx * scale;
 
     idxz = (rz * 4096.0f) / 360.0f;
@@ -816,11 +816,12 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
     mtx.mf[1][0] = (sx * sycz - szcy) * scale;
     mtx.mf[0][2] = (sx * szcy - sycz) * scale;
     mtx.mf[3][0] = tx;
+    mtx.mf[1][2] = (sx * cycz + sysz) * scale;
     mtx.mf[3][1] = ty;
     mtx.mf[3][2] = tz;
     mtx.mf[3][3] = 1.0f;
-    mtx.mf[1][2] = (sx * cycz + sysz) * scale;
     mtx.mf[0][3] = mtx.mf[1][3] = mtx.mf[2][3] = 0.0f;
+    if (sy) {}
 
     SysUtils_MtxFToMtx(&mtx, arg0);
 }
