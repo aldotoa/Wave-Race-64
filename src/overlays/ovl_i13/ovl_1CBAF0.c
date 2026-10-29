@@ -247,12 +247,67 @@ s32 func_i13_802C65D4(void) {
     return var_v1;
 }
 
-#ifdef NON_MATCHING
-void func_i13_802C6700(void) {
+extern s32 D_802C8EB0;
+extern s32 D_802C8EB4;
+extern s32 D_802C8EB8;
+extern s32 D_802C8EBC;
+
+s32 func_i13_802C6700(void) {
+    s32 ret = 0;
+    f32 a;
+    f32 b;
+
+    switch (D_i13_802C8DD0) {
+        case 0:
+            D_i13_802C8DC8 = 1;
+            D_i13_802C8DCC++;
+            a = (5 - D_i13_802C8DCC) / 5.0f;
+            b = D_i13_802C8DCC / 5.0f;
+            D_802C8EB0 = (s32)(129.0f * a) + 0x1F;
+            D_802C8EB4 = (s32)(20.0f * a) + 0x89;
+            D_802C8EB8 = (s32)(258.0f * b);
+            D_802C8EBC = (s32)(40.0f * b);
+            if (D_i13_802C8DCC >= 5) {
+                D_i13_802C8DD0 = 1;
+                D_i13_802C8DD4 = 1;
+            }
+            break;
+        case 1:
+            if (D_801CE65A->unk0 & 0xB000) {
+                D_801CE640 = 7;
+                D_i13_802C8D70 = 1;
+                ret = 1;
+                func_800C3E6C(3);
+            } else if (D_801CE65A->unk0 & 0x4000) {
+                D_i13_802C8DD0 = 2;
+                D_i13_802C8DCC = 0;
+                ret = 2;
+                D_i13_802C8DD4 = 0;
+            } else if (D_801CE65A->unk0 & 0x200) {
+                ret = 3;
+                D_i13_802C8DC4 ^= 1;
+            } else if (D_801CE65A->unk0 & 0x100) {
+                ret = 4;
+                D_i13_802C8DC4 ^= 1;
+            }
+            break;
+        case 2:
+            D_i13_802C8DC8 = 1;
+            D_i13_802C8DCC++;
+            b = (5 - D_i13_802C8DCC) / 5.0f;
+            a = D_i13_802C8DCC / 5.0f;
+            D_802C8EB0 = (s32)(129.0f * a) + 0x1F;
+            D_802C8EB4 = (s32)(20.0f * a) + 0x89;
+            D_802C8EB8 = (s32)(258.0f * b);
+            D_802C8EBC = (s32)(40.0f * b);
+            if (D_i13_802C8DCC >= 5) {
+                D_i13_802C8DD0 = 0;
+                D_801CE640 = 4;
+            }
+            break;
+    }
+    return ret;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6700.s")
-#endif
 
 extern s32 D_i13_802C8D70;
 extern s32 D_i13_802C8D80;

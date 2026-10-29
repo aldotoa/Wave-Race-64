@@ -2137,11 +2137,11 @@ class TestCourseOverlays(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i13_802C6700_matched(self):
-        """TDE test for func_i13_802C6700 in ovl_1CBAF0 (Pier support post collision envelope)."""
-        if self.is_function_decompiled("func_i13_802C6700"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_i13_802C6700 is currently non-matching (in progress)")
+        """TDE test for func_i13_802C6700 in ovl_1CBAF0 (Save menu panel fade-in/out and confirm input handler)."""
+        self.assertTrue(self.is_function_decompiled("func_i13_802C6700"), "func_i13_802C6700 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "overlays", "ovl_i13", "ovl_1CBAF0", "func_i13_802C6700.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_i13_802C69CC_matched(self):
         """TDE test for func_i13_802C69CC in ovl_1CBAF0 (Course boundary invisible collision plane)."""
