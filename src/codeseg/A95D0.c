@@ -752,13 +752,58 @@ void func_801DF2F8(u8* dst, f32* src1, f32* src2, f32* src3, f32* src4) {
     }
 }
 
-#ifdef NON_MATCHING
+typedef struct {
+    f32 vec1[3];
+    f32 vec2[3];
+} Struct_A_801DF38C;
+
+typedef struct {
+    f32 unk0[3];
+    f32 unkC;
+    f32 unk10;
+    f32 unk14;
+    f32 unk18;
+    f32 unk1C;
+    f32 unk20;
+    f32 unk24;
+    f32 unk28;
+    f32 unk2C;
+    f32 unk30;
+    f32 unk34;
+} Struct_B_801DF38C;
+
 void func_801DF38C(void* arg0) {
-    ((void) arg0);
+    Struct_A_801DF38C* a = (Struct_A_801DF38C*) ((u8*) arg0 + 4);
+    Struct_B_801DF38C* b = (Struct_B_801DF38C*) ((u8*) arg0 + 0x5C);
+    f32 yaw;
+    f32 pitch;
+    f32 vec[3];
+    s32 i;
+
+    b->unk14 += (b->unk18 - b->unk14) * b->unk1C;
+    b->unk20 += (b->unk24 - b->unk20) * b->unk28;
+    b->unk2C += (b->unk30 - b->unk2C) * b->unk34;
+    yaw = b->unkC + b->unk20;
+    pitch = b->unk10 + b->unk2C;
+    vec[0] = (b->unk14 * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f));
+    vec[1] = b->unk14 * SIN((s32) ((pitch * 4096.0f) / 360.0f));
+    vec[2] = (b->unk14 * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f));
+    switch (*(s32*) arg0) {
+        case 2:
+            for (i = 0; i < 3; i++) {
+                a->vec1[i] = b->unk0[i];
+                a->vec2[i] = b->unk0[i] + vec[i];
+            }
+            break;
+        case 3:
+            for (i = 0; i < 3; i++) {
+                a->vec2[i] = b->unk0[i];
+                a->vec1[i] = b->unk0[i] + vec[i];
+            }
+            break;
+    }
+    func_801DEEC4((u8*) arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DF38C.s")
-#endif
 
 typedef struct {
     s32 data[33];
