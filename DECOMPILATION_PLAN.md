@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **202 remaining non-matching functions** (99 matched in prioritized matrix, 1,166 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **201 remaining non-matching functions** (100 matched in prioritized matrix, 1,167 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **202 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,166** | 1,368 | **85.23%** |
-| **Non-Matching Functions** | **202** | 1,368 | **14.77%** |
-| **Matched Code Bytes** | **423,820 B** | 834,052 B | **50.81%** |
+| **Matched Functions** | **1,167** | 1,368 | **85.31%** |
+| **Non-Matching Functions** | **201** | 1,368 | **14.69%** |
+| **Matched Code Bytes** | **424,412 B** | 834,052 B | **50.89%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 3 | 28 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 2 | 29 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 9 | 14 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **202** | **99** | **301** | | |
+| **Total** | | **201** | **100** | **301** | | |
 
 ---
 
@@ -104,7 +104,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 46 | `func_i11_802C5D48` | `src/overlays/ovl_i11/ovl_1CA480.c` | 141 | 21/11  | Integer Clean  | **MATCHED** | Warmup options menu controller input handler |
 | 47 | `func_801E2058` | `src/codeseg/AF8C0.c` | 145 | 18/2  | Integer Clean  | **MATCHED** | Machine tuning slider track renderer (four empty `if (x) {}` raise i/isWrap/cond priority so the loop bound 16 stays in `$at`)  |
 | 48 | `func_i4_802C6778` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 147 | 2/0  | Integer Clean  | **MATCHED** | Sunny Beach backdrop and scenery display list (ovl_i3 template; always-true `if (t2 != 0)` blocks are load-bearing)  |
-| 49 | `func_1B1FB0_802C5BA4` | `src/unused_code_1B1FB0.c` | 148 | 10/10  | Integer Clean  | Pending | Flight mode debug camera controller  |
+| 49 | `func_1B1FB0_802C5BA4` | `src/unused_code_1B1FB0.c` | 148 | 10/10  | Integer Clean  | **MATCHED** | Boot/fade-in display list builder: base DLs + scissor, strip renderers, prim color, telemetry banners, then the `D_1B1FB0_802C76F0 = D_1B1FB0_802C76F4 * 255 / 10` fade clamped to 255 (`osViBlack` at full, `func_801EB180` after 14 frames). Load-bearing: `D_1B1FB0_802C76F0` declared `u32` with a plain `> 255` clamp — as `s32`, uopt shares one register for every 255, so the multiply emits `multu` instead of the retail `sll`/`subu` (`(v1 << 8) - v1` gives the right shape but is one t-reg off) |
 | 50 | `func_801E9B04` | `src/codeseg/B66E0.c` | 154 | 41/0  | Integer Clean  | **MATCHED** | Proportional-font glyph mapper, (mode, char) -> glyph index (single `return glyph;` with every arm assigning `glyph`: IDO copies the return block into each arm, while per-arm C returns give a `move; jr; nop` tail reached by `bnel` likely-fills; closed the old parked floor)  |
 | 51 | `func_80068538` | `src/game/code_C6C0.c` | 155 | 13/0  | Integer Clean  | **MATCHED** | Rider-type-2 jet ski five-part matrix + display list emitter (loop-head `if (i) {}` swaps the hoisted G_DL/G_MTX command words t3/t2)  |
 | 52 | `func_i7_802C5A18` | `src/overlays/ovl_i7/ovl_1C43F0.c` | 159 | 3/6  | Integer Clean  | **MATCHED** | Options menu frame and label renderer (completes ovl_1C43F0)  |
