@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **203 remaining non-matching functions** (98 matched in prioritized matrix, 1,165 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **202 remaining non-matching functions** (99 matched in prioritized matrix, 1,166 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **203 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,165** | 1,368 | **85.16%** |
-| **Non-Matching Functions** | **203** | 1,368 | **14.84%** |
-| **Matched Code Bytes** | **423,136 B** | 834,052 B | **50.73%** |
+| **Matched Functions** | **1,166** | 1,368 | **85.23%** |
+| **Non-Matching Functions** | **202** | 1,368 | **14.77%** |
+| **Matched Code Bytes** | **423,820 B** | 834,052 B | **50.81%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 4 | 27 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 3 | 28 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 9 | 14 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **203** | **98** | **301** | | |
+| **Total** | | **202** | **99** | **301** | | |
 
 ---
 
@@ -112,7 +112,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 54 | `func_i4_802C70C0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 161 | 19/6  | Integer Clean  | **MATCHED** | Difficulty select menu input handler (skip loops must be `for (;;) { if (tbl) break; ... }` so IDO does not rotate them)  |
 | 55 | `func_801E229C` | `src/codeseg/AF8C0.c` | 165 | 10/6  | Integer Clean  | **MATCHED** | Name-entry option labels and initials renderer (`s8` char tables and buffer give `lb`; no spare locals, or the 0x88 frame grows)  |
 | 56 | `func_i4_802C6C2C` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 169 | 21/8  | Integer Clean  | **MATCHED** | Course select menu input handler (chained `D_802C76CC = D_i4_802C754C = i` store shifts the t-reg queue)  |
-| 57 | `func_1B1FB0_802C6970` | `src/unused_code_1B1FB0.c` | 171 | 1/0  | Integer Clean  | Pending | Flight mode debug camera controller  |
+| 57 | `func_1B1FB0_802C6970` | `src/unused_code_1B1FB0.c` | 171 | 1/0  | Integer Clean  | **MATCHED** | Debug image strip renderer: 8 × (`gDPLoadTextureTile` IA8 360x8 from `D_1B1FB0_802C7664[D_1B1FB0_802C7660]` + old-F3D copy-mode `gSPTextureRectangle` at x 140..500, y = 59 + i * 8); IDO unrolls the loop 2x. Load-bearing: the texture pointer is initialised in the `for` header (`for (i = 0, tex = ...; i < 8; i++)` with `tex += 0xB40`) — initialising it before the loop schedules its `lw` 8 slots early in the prologue, and `&tex[i * 0xB40]` indexing loses the pointer IV |
 | 58 | `func_801ECB98` | `src/codeseg/B97B0.c` | 174 | 1/5  | Integer Clean  | **MATCHED** | Award ceremony state init (`GAME_STATE_CEREMONY`, Glacier Coast podium grid; matched first draft, 4-rider loop is unrolled by IDO)  |
 | 59 | `func_8007B930` | `src/game/core/wr64_save.c` | 174 | 11/7  | Integer Clean  | **MATCHED** | Packs in-RAM record tables into the EEPROM image (a named `n = i + 1` per loop keeps IDO's dead s5 induction register and turns the initials loop's `i++` into `i = n`)  |
 | 60 | `func_801EBD28` | `src/codeseg/B97B0.c` | 175 | 12/7  | Integer Clean  | **MATCHED** | 2-player versus state init (GAME_STATE 10; chained `D_800DA9C8[0] = D_800DA9C8[1] = 0` store shifts the t-reg queue, switch case bodies ordered 4/0/11/1)  |

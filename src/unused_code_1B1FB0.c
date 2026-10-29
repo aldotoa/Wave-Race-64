@@ -143,13 +143,22 @@ Gfx* func_1B1FB0_802C67BC(Gfx* gdl, s32 arg1, s32 arg2) {
     return gdl;
 }
 
-#ifdef NON_MATCHING
-void func_1B1FB0_802C6970(void) {
-    /* Flight mode player input interpreter */
+extern s32 D_1B1FB0_802C7660;
+extern u8* D_1B1FB0_802C7664[];
+
+Gfx* func_1B1FB0_802C6970(Gfx* gdl) {
+    s32 i;
+    u8* tex;
+
+    for (i = 0, tex = D_1B1FB0_802C7664[D_1B1FB0_802C7660]; i < 8; i++) {
+        gDPLoadTextureTile(gdl++, tex, G_IM_FMT_IA, G_IM_SIZ_8b, 360, 8, 0, 0, 359, 7, 0, G_TX_CLAMP, G_TX_CLAMP,
+                           G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, 140 << 2, (i * 8 + 59) << 2, 500 << 2, (i * 8 + 67) << 2, G_TX_RENDERTILE, 0, 0,
+                            1 << 10, 1 << 10);
+        tex += 0xB40;
+    }
+    return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6970.s")
-#endif
 
 #ifdef NON_MATCHING
 /* Debug flight HUD coordinates (137 instructions).
