@@ -3017,11 +3017,11 @@ class TestFlightDebug(unittest.TestCase):
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_1B1FB0_802C6FF8_matched(self):
-        """TDE test for func_1B1FB0_802C6FF8 in unused_code_1B1FB0 (Onscreen debug font glyph index lookup)."""
-        if self.is_function_decompiled("func_1B1FB0_802C6FF8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_1B1FB0_802C6FF8 is currently non-matching (in progress)")
+        """TDE test for func_1B1FB0_802C6FF8 in unused_code_1B1FB0 (Debug text banner renderer)."""
+        self.assertTrue(self.is_function_decompiled("func_1B1FB0_802C6FF8"), "func_1B1FB0_802C6FF8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "unused_code_1B1FB0", "func_1B1FB0_802C6FF8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_1B1FB0_802C71B8_matched(self):
         """TDE test for func_1B1FB0_802C71B8 in unused_code_1B1FB0 (Debug text character renderer)."""

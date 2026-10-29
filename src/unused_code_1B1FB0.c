@@ -247,65 +247,21 @@ Gfx* func_1B1FB0_802C6E40(Gfx* gdl, s32 arg1, s32 arg2) {
     return gdl;
 }
 
-#ifdef NON_MATCHING
-/* Onscreen debug font glyph display list builder (112 instructions).
- * Emits 4 iterations (0x5 stride, total 0x14) of 8-byte RDP commands.
- * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
- * scheduling across the 10 RDP word stores per iteration. */
+extern u8 D_800A618[];
+extern s32 D_1B1FB0_802C76B0;
+
+/* Debug text banner: four IA8 496x5 strips stacked at y = 248 + D_1B1FB0_802C76B0 * 20. */
 Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
-    u8* tex = (u8*) &D_800A618;
-    s32 a3 = 0;
+    s32 i;
 
-    do {
-        gdl->words.w0 = 0xFD6801EF;
-        gdl->words.w1 = (u32) tex;
-        gdl++;
-
-        gdl->words.w0 = 0xF5687C00;
-        gdl->words.w1 = 0x07080200;
-        gdl++;
-
-        gdl->words.w0 = 0xE6000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF4000000;
-        gdl->words.w1 = 0x077BC010;
-        gdl++;
-
-        gdl->words.w0 = 0xE7000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF5687C00;
-        gdl->words.w1 = 0x00080200;
-        gdl++;
-
-        gdl->words.w0 = 0xF2000000;
-        gdl->words.w1 = 0x007BC010;
-        gdl++;
-
-        gdl->words.w0 = ((((D_1B1FB0_802C76B0 * 0x14) + a3 + 0xFD) * 4) & 0xFFF) | 0xE48E0000;
-        gdl->words.w1 = ((((D_1B1FB0_802C76B0 * 0x14) + a3 + 0xF8) * 4) & 0xFFF) | 0x00120000;
-        gdl++;
-
-        gdl->words.w0 = 0xB3000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xB2000000;
-        gdl->words.w1 = 0x04000400;
-        gdl++;
-
-        tex += 0x9B0;
-        a3 += 5;
-    } while (a3 != 0x14);
-
+    for (i = 0; i < 4; i++) {
+        gDPLoadTextureTile(gdl++, &D_800A618[i * 0x9B0], G_IM_FMT_IA, G_IM_SIZ_8b, 496, 5, 0, 0, 495, 4, 0,
+                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, 72 << 2, (D_1B1FB0_802C76B0 * 20 + i * 5 + 248) << 2, 568 << 2,
+                            (D_1B1FB0_802C76B0 * 20 + i * 5 + 253) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6FF8.s")
-#endif
 
 /* Debug text character renderer: emits one IA8 16x16 glyph at (arg2, arg3)
    and returns the advanced display list. Values below 0x10 emit nothing;

@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **204 remaining non-matching functions** (97 matched in prioritized matrix, 1,164 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **203 remaining non-matching functions** (98 matched in prioritized matrix, 1,165 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **204 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,164** | 1,368 | **85.09%** |
-| **Non-Matching Functions** | **204** | 1,368 | **14.91%** |
-| **Matched Code Bytes** | **422,688 B** | 834,052 B | **50.68%** |
+| **Matched Functions** | **1,165** | 1,368 | **85.16%** |
+| **Non-Matching Functions** | **203** | 1,368 | **14.84%** |
+| **Matched Code Bytes** | **423,136 B** | 834,052 B | **50.73%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -24,11 +24,11 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
-| **3** | Medium Integer & Overlay Logic | 5 | 26 | 31 | Medium | HUD, menus, and state dispatchers |
+| **3** | Medium Integer & Overlay Logic | 4 | 27 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 9 | 14 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **204** | **97** | **301** | | |
+| **Total** | | **203** | **98** | **301** | | |
 
 ---
 
@@ -90,7 +90,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 32 | `func_i5_802C5C1C` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 105 | 15/12  | Integer Clean  | **MATCHED** | Port Blue harbor crane and dock surface display list  |
 | 33 | `func_1B1FB0_802C67BC` | `src/unused_code_1B1FB0.c` | 109 | 1/0  | Integer Clean  | **MATCHED** | Debug texture strip renderer: 5 × (`gDPLoadTextureBlock` RGBA16 512x4 from `D_804A460` + old-F3D copy-mode `gSPTextureRectangle`). Load-bearing: `for (i = 0; i < 5; i++)` with `i * 2048` / `i * 4` scaling keeps the `i` counter as the loop test (an `i += 4` loop gets LFTR'd onto the texture pointer) |
 | 34 | `func_1B1FB0_802C6E40` | `src/unused_code_1B1FB0.c` | 110 | 1/0  | Integer Clean  | **MATCHED** | Debug telemetry banner renderer: 4 × (`gDPLoadTextureTile` IA8 192x11 from `D_8008510` + old-F3D copy-mode `gSPTextureRectangle`). Load-bearing: `for (i = 0; i < 4; i++)` with `i * 0x840` / `i * 11` scaling (an `i += 11` loop gets LFTR'd onto the texture pointer) |
-| 35 | `func_1B1FB0_802C6FF8` | `src/unused_code_1B1FB0.c` | 112 | 1/0  | Integer Clean  | Pending | Debug flight matrix transform setup  |
+| 35 | `func_1B1FB0_802C6FF8` | `src/unused_code_1B1FB0.c` | 112 | 1/0  | Integer Clean  | **MATCHED** | Debug text banner renderer: 4 × (`gDPLoadTextureTile` IA8 496x5 from `D_800A618` + old-F3D copy-mode `gSPTextureRectangle` at y = 248 + `D_1B1FB0_802C76B0` * 20 + i * 5). Load-bearing: `for (i = 0; i < 4; i++)` with `i * 0x9B0` / `i * 5` scaling (`i += 5` or a pointer walk gets unrolled 2x) |
 | 36 | `func_i13_802C62EC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 112 | 17/5  | Integer Clean  | **MATCHED** | Save file search & validation menu input handler (chained `result = D_8D74 = call()` stores)  |
 | 37 | `func_801DC0AC` | `src/codeseg/A95D0.c` | 114 | 10/5  | Integer Clean, ParkedFloor | Pending (Floor 2607) | 3D particle fireworks and water splash simulator  |
 | 38 | `func_801E1E8C` | `src/codeseg/AF8C0.c` | 115 | 11/10  | Integer Clean  | **MATCHED** | Machine tuning interaction and controller input loop  |
