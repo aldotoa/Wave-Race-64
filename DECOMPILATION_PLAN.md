@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **207 remaining non-matching functions** (92 matched in prioritized matrix, 1,161 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **206 remaining non-matching functions** (93 matched in prioritized matrix, 1,162 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **207 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,161** | 1,368 | **84.87%** |
-| **Non-Matching Functions** | **207** | 1,368 | **15.13%** |
-| **Matched Code Bytes** | **421,480 B** | 834,052 B | **50.53%** |
+| **Matched Functions** | **1,162** | 1,368 | **84.94%** |
+| **Non-Matching Functions** | **206** | 1,368 | **15.06%** |
+| **Matched Code Bytes** | **421,812 B** | 834,052 B | **50.57%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **420** | 420 | **100% OK** |
 
@@ -22,13 +22,13 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 
 | Tier | Classification | Remaining | Matched | Original | Est. Complexity | Matching Focus |
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
-| **1** | Immediate Quick Wins | 1 | 10 | 11 | Low | High-velocity leaf & overlay routines |
+| **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 2 | 17 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 3 | 28 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 13 | 10 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **209** | **92** | **301** | | |
+| **Total** | | **208** | **93** | **301** | | |
 
 ---
 
@@ -43,7 +43,7 @@ These functions have the highest matching velocity: **fewer than 100 instruction
 | 1 | `func_i5_802C7594` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 65 | 1/0  | Integer Clean  | **MATCHED** | Routine logic  |
 | 2 | `func_i13_802C61E0` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 67 | 13/2  | Integer Clean  | **MATCHED** | Routine logic  |
 | 3 | `func_801FAD68` | `src/codeseg/B97B0.c` | 80 | 18/0  | Integer Clean  | **MATCHED** | Routine logic  |
-| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean, ParkedFloor | Pending (Floor 390) | Debug text character renderer |
+| 4 | `func_1B1FB0_802C71B8` | `src/unused_code_1B1FB0.c` | 83 | 2/0  | Integer Clean | **MATCHED** | Debug text character renderer: `gDPLoadTextureBlock` (IA8 16x16) + old-F3D `gSPTextureRectangle` on a `Gfx*` cursor (`Gfx*` param, not an `s32` copy, puts the glyph in `v0` and stores the first packet through `a0`; dead `arg2 = arg2; arg3 = arg3;` self-assignments place the texrect cursors; closed the old 390 floor) |
 | 5 | `func_800998B0` | `src/game/code_52CD0.c` | 84 | 2/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 6 | `func_i13_802C6F0C` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 85 | 12/8  | Integer Clean  | **MATCHED** | Routine logic  |
 | 7 | `func_80096694` | `src/game/code_4F850.c` | 86 | 5/2  | Integer Clean  | **MATCHED** | Jet ski texture and rider livery palette decompression dispatcher |

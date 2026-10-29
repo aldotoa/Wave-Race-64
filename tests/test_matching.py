@@ -3025,10 +3025,10 @@ class TestFlightDebug(unittest.TestCase):
 
     def test_func_1B1FB0_802C71B8_matched(self):
         """TDE test for func_1B1FB0_802C71B8 in unused_code_1B1FB0 (Debug text character renderer)."""
-        if self.is_function_decompiled("func_1B1FB0_802C71B8"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_1B1FB0_802C71B8 is currently non-matching (in progress)")
+        self.assertTrue(self.is_function_decompiled("func_1B1FB0_802C71B8"), "func_1B1FB0_802C71B8 should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "unused_code_1B1FB0", "func_1B1FB0_802C71B8.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
 
 class TestAIRivals(unittest.TestCase):
