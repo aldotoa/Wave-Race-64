@@ -3,7 +3,7 @@
 extern s32 D_800D45DC[]; // array pointing to some mio0 adresses
 extern u8 D_8000008[];
 
-s32 func_1B1FB0_802C71B8(s32, char, s32, s32);
+Gfx* func_1B1FB0_802C71B8(Gfx*, char, s32, s32);
 extern s32 D_802C7718;
 
 #ifdef NON_MATCHING
@@ -410,66 +410,26 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6FF8.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Debug text character renderer: emits one glyph's RDP packets at arg0,
-   returns the advanced cursor. Values below 0x10 emit nothing; values at
-   or above 0x42 use glyph 0x3B.
- * PARKED behind NON_MATCHING at standalone CURRENT (370). The byte cursor
- * advances by 8 after each Gfx packet, preserving the integer cursor used
- * by existing callers.
- * Remaining scheduler mismatch: retail puts `addiu t0,a0,8` in the clamp
- * branch delay slot and computes the glyph address into `t4` before the
- * first packet stores. IDO assigns those values to different registers and
- * routes the first packet cursor through `a1`; the register renumbering
- * continues through the final E4/B3/B2 packets. Local declaration order
- * and signedness sweeps did not lower this floor. A s32 glyph argument lowers
- * the numeric score to 345, but changes the opening `andi v0,a1,0xff` to
- * `andi v1,a1,0xff` and removes the required `sw a1,4(sp)`; it is not a match.
- * Masking the subtracted glyph index before shifting reduced the standalone
- * probe score from 390 to 370. The first eight opcodes match retail; IDO then
- * emits `move v1,v0` where retail fills the clamp branch delay slot with
- * `addiu t0,a0,8`. Split-branch index calculations, an explicit packet
- * cursor, and register declarations did not resolve that divergence. Keep
- * this implementation non-matching until the complete 0x14C-byte function
- * diffs cleanly. */
-s32 func_1B1FB0_802C71B8(s32 arg0, char arg1, s32 arg2, s32 arg3) {
-    s32 v0;
-    u8* img;
-    s32 t8a;
-    s32 t6a;
-
-    if ((arg1 & 0xFF) < 0x10) {
-        return (s32)arg0;
+/* Debug text character renderer: emits one IA8 16x16 glyph at (arg2, arg3)
+   and returns the advanced display list. Values below 0x10 emit nothing;
+   values at or above 0x42 use glyph 0x3B. */
+Gfx* func_1B1FB0_802C71B8(Gfx* gdl, char arg1, s32 arg2, s32 arg3) {
+    if (arg1 < 0x10) {
+        return gdl;
     }
-    v0 = arg1 & 0xFF;
-    if (v0 >= 0x42) {
-        v0 = 0x3B;
+    if (arg1 >= 0x42) {
+        arg1 = 0x3B;
     }
-    v0 -= 0x10;
-    v0 &= 0xFF;
-    img = &D_8000008[v0 << 8];
-
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xFD700000; _g->words.w1 = (u32)img; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF5700000; _g->words.w1 = 0x07080200; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xE6000000; _g->words.w1 = 0; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF3000000; _g->words.w1 = 0x0707F400; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xE7000000; _g->words.w1 = 0; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF5680400; _g->words.w1 = 0x00080200; }
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xF2000000; _g->words.w1 = 0x0003C03C; }
-
-    t8a = arg2 + 0x10;
-    t6a = arg3 + 0x10;
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = (((t8a << 2) & 0xFFF) << 0xC) | 0xE4000000 | ((t6a << 2) & 0xFFF); _g->words.w1 = (((arg2 << 2) & 0xFFF) << 0xC) | ((arg3 << 2) & 0xFFF); }
-
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xB3000000; _g->words.w1 = 0; }
-
-    { Gfx* _g = (Gfx*)arg0; arg0 += 8; _g->words.w0 = 0xB2000000; _g->words.w1 = 0x04000400; }
-
-    return arg0;
+    // Self-assignments are load-bearing: they shift the texrect cursor registers.
+    arg2 = arg2;
+    arg3 = arg3;
+    arg1 -= 0x10;
+    gDPLoadTextureBlock(gdl++, &D_8000008[arg1 << 8], G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, G_TX_CLAMP, G_TX_CLAMP,
+                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gSPTextureRectangle(gdl++, arg2 << 2, arg3 << 2, (arg2 + 16) << 2, (arg3 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                        1 << 10);
+    return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C71B8.s")
-#endif
 
 s32 func_1B1FB0_802C7304(s32 arg0, s8* arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 s1 = arg3;
@@ -480,7 +440,7 @@ s32 func_1B1FB0_802C7304(s32 arg0, s8* arg1, s32 arg2, s32 arg3, s32 arg4) {
         if (*arg1 != 0) {
             D_802C7718++;
         }
-        arg0 = func_1B1FB0_802C71B8(arg0, *(arg1++), s1, arg4);
+        arg0 = (s32)func_1B1FB0_802C71B8((Gfx*)arg0, *(arg1++), s1, arg4);
         arg2--;
         s1 += 0x10;
     }
