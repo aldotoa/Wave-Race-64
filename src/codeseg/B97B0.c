@@ -3,6 +3,7 @@
 #include "rider.h"
 #include "camera.h"
 #include "libc/math.h"
+#include "macros.h"
 
 extern s16 D_800DAB60;
 extern s32 D_800DA9F8;
@@ -1467,12 +1468,58 @@ void func_801F2060(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F2060.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_801F23A0(void) {
+    f32 range;
+    f32 lo;
+    s32 i;
+    f32 t;
+    RiderStruct* rs;
+    s32 step;
+    s32 absDiff;
+    UnkStruct_80192690* r;
+
+    for (i = 0; i < gRiders; i++) {
+        r = &D_80192690[i];
+        rs = &D_801C2938[i];
+        t = r->unkBBC - r->unkBC0;
+        lo = r->unkBC0 - t / 5.0f;
+        range = (t * 6.0f) / 5.0f;
+        t = r->unkB98;
+        if (lo <= r->unkB98) {
+            if (0.0f < range) {
+                t = (r->unkB98 - lo) / range;
+            }
+            if (0.0f > t) {
+                t = 0.0f;
+            }
+            if (1.0f < t) {
+                t = 1.0f;
+            }
+            rs->unk2CC = t * 180.0f;
+            rs->unk2CC += (Math_Rand(3) * 2) - 2;
+            if (rs->unk2CC >= 181) {
+                rs->unk2CC = 180;
+            }
+        } else {
+            rs->unk2CC = (r->unkB98 / lo) * 36.0f;
+        }
+        absDiff = ABS(rs->unk2CC - rs->unk2C8);
+        step = absDiff / 4;
+        if (step < 2) {
+            step = 2;
+        }
+        if (rs->unk2CC > rs->unk2C8) {
+            if (step >= 5) {
+                step = 4;
+            }
+        }
+        if (step >= absDiff) {
+            rs->unk2C8 = rs->unk2CC;
+        } else {
+            rs->unk2C8 += SIGNUM(rs->unk2CC - rs->unk2C8) * step;
+        }
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F23A0.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801F25E0(void) {
