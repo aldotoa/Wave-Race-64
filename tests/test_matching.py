@@ -3148,11 +3148,18 @@ class TestHUDOverlays(unittest.TestCase):
         return False
 
     def test_func_8009934C_matched(self):
-        """TDE test for func_8009934C in code_52CD0 (Catmull-Rom spline evaluator for HUD particle paths)."""
-        if self.is_function_decompiled("func_8009934C"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_8009934C is currently non-matching (in progress)")
+        """func_8009934C (code_52CD0) is matched: cubic B-spline basis evaluator for HUD paths."""
+        filepath = os.path.join(PROJECT_ROOT, "src", "game", "code_52CD0.c")
+        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        self.assertNotIn("nonmatchings/game/code_52CD0/func_8009934C.s", content)
+        self.assertFalse(
+            os.path.exists(
+                os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "nonmatchings", "game", "code_52CD0", "func_8009934C.s")
+            )
+        )
+        self.assertTrue(self.is_function_decompiled("func_8009934C"))
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_800998B0_matched(self):
         """TDE test for func_800998B0 in code_52CD0 (HUD coordinate screen projection)."""

@@ -551,7 +551,9 @@ void func_8009917C(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
               (SIN((s32) ((arg3->y / 360.0f) * 4096.0f)) * sp24.vec1.x);
 }
 
-#if defined(NEEDS_RODATA) || defined(NON_MATCHING)
+extern f32 D_800EB4C4; // 2.0f / 3.0f
+extern f32 D_800EB4C8; // 1.0f / 6.0f
+
 void func_8009934C(f32 t, Vec3f* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5, f32* arg6) {
     f32 b[4];
 
@@ -560,17 +562,14 @@ void func_8009934C(f32 t, Vec3f* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg
     }
 
     b[0] = (CUBE(1.0f - t)) / 6.0f;
-    b[1] = ((CUBE(t) / 2.0f) - SQ(t)) + 2.0f / 3.0f;
-    b[2] = ((-t * t * t) / 2.0f) + (SQ(t) / 2.0f) + (t / 2.0f) + 1.0f / 6.0f;
+    b[1] = ((CUBE(t) / 2.0f) - SQ(t)) + D_800EB4C4;
+    b[2] = ((-t * t * t) / 2.0f) + (SQ(t) / 2.0f) + (t / 2.0f) + D_800EB4C8;
     b[3] = CUBE(t) / 6.0f;
     arg1->x = (b[0] * arg3[0]) + (b[1] * arg4[0]) + (b[2] * arg5[0]) + (b[3] * arg6[0]);
     arg1->y = (b[0] * arg3[1]) + (b[1] * arg4[1]) + (b[2] * arg5[1]) + (b[3] * arg6[1]);
     arg1->z = (b[0] * arg3[2]) + (b[1] * arg4[2]) + (b[2] * arg5[2]) + (b[3] * arg6[2]);
     *arg2 = (b[0] * arg3[3]) + (b[1] * arg4[3]) + (b[2] * arg5[3]) + (b[3] * arg6[3]);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_8009934C.s")
-#endif
 
 s32 func_80099514(s32 arg0, s32 arg1, UnkStruct_801CED60* arg2, s16* arg3, f32* arg4) {
     s32 sp9C;
