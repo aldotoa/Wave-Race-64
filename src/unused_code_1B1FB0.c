@@ -129,71 +129,19 @@ void func_1B1FB0_802C62E4(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C62E4.s")
 #endif
 
-#ifdef NON_MATCHING
-/* Debug flight mode texture quad rasterizer (109 instructions).
- * Emits 5 iterations of 8-byte RDP commands for texture rectangle display lists.
- * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
- * scheduling across the 10 RDP word stores per iteration. */
+extern u16 D_804A460[];
+
 Gfx* func_1B1FB0_802C67BC(Gfx* gdl, s32 arg1, s32 arg2) {
-    u32 w0_e4 = ((((arg1 + 0x1FF) * 4) & 0xFFF) << 12) | 0xE4000000;
-    u32 w1_e4_base = (((arg1 * 4) & 0xFFF) << 12);
-    u8* tex = D_804A460;
-    s32 i = 0;
-    s32 a3 = arg2;
-    s32 t2 = arg2 + 3;
+    s32 i;
 
-    do {
-        gdl->words.w0 = 0xFD100000;
-        gdl->words.w1 = (u32) tex;
-        gdl++;
-
-        gdl->words.w0 = 0xF5100000;
-        gdl->words.w1 = 0x07080200;
-        gdl++;
-
-        gdl->words.w0 = 0xE6000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF3000000;
-        gdl->words.w1 = 0x077FF010;
-        gdl++;
-
-        gdl->words.w0 = 0xE7000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xF5110000;
-        gdl->words.w1 = 0x00080200;
-        gdl++;
-
-        gdl->words.w0 = 0xF2000000;
-        gdl->words.w1 = 0x007FC00C;
-        gdl++;
-
-        gdl->words.w0 = w0_e4 | ((t2 * 4) & 0xFFF);
-        gdl->words.w1 = w1_e4_base | ((a3 * 4) & 0xFFF);
-        gdl++;
-
-        gdl->words.w0 = 0xB3000000;
-        gdl->words.w1 = 0;
-        gdl++;
-
-        gdl->words.w0 = 0xB2000000;
-        gdl->words.w1 = 0x10000400;
-        gdl++;
-
-        i += 4;
-        a3 += 4;
-        t2 += 4;
-        tex += 0x1000;
-    } while (i != 0x14);
-
+    for (i = 0; i < 5; i++) {
+        gDPLoadTextureBlock(gdl++, &D_804A460[i * 2048], G_IM_FMT_RGBA, G_IM_SIZ_16b, 512, 4, 0, G_TX_CLAMP,
+                            G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, arg1 << 2, (arg2 + i * 4) << 2, (arg1 + 511) << 2, (arg2 + i * 4 + 3) << 2,
+                            G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
+    }
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C67BC.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_1B1FB0_802C6970(void) {
