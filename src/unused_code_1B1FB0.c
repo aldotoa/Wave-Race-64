@@ -144,18 +144,17 @@ Gfx* func_1B1FB0_802C6970(Gfx* gdl) {
     return gdl;
 }
 
-#ifdef NON_MATCHING
-/* Debug flight HUD coordinates (137 instructions).
- * Emits variable iterations (1 to 3) of 10 8-byte RDP commands for HUD digit rendering.
- * Parked behind NON_MATCHING: loop-invariant hoisting and register allocator
- * scheduling across the 10 RDP word stores per iteration. */
+extern u8* D_1B1FB0_802C767C[];
+
+/* Debug flight HUD: D_801CB410 as 1-3 IA8 16x18 digits, right to left from x=544.
+ * The `dp` pointer temp is load-bearing: indexing D_1B1FB0_802C767C[digit]
+ * directly swaps the remainder's a3 with the E7 packet's t3. */
 Gfx* func_1B1FB0_802C6C1C(Gfx* gdl) {
-    s32 count;
-    s32 i;
-    s32 t1;
-    s32 t2;
     s32 val;
-    s32 ten;
+    s32 count;
+    s32 digit;
+    s32 i;
+    u8** dp;
 
     val = D_801CB410;
     if (val < 10) {
@@ -165,65 +164,17 @@ Gfx* func_1B1FB0_802C6C1C(Gfx* gdl) {
     } else {
         count = 3;
     }
-
-    i = 0;
-    t1 = 0x230;
-    t2 = 0x220;
-    ten = 10;
-    if (count > 0) {
-        do {
-            gdl->words.w0 = 0xFD700000;
-            gdl->words.w1 = (u32) D_1B1FB0_802C767C[val % ten];
-            gdl++;
-
-            gdl->words.w0 = 0xF5700000;
-            gdl->words.w1 = 0x07080200;
-            gdl++;
-
-            gdl->words.w0 = 0xE6000000;
-            gdl->words.w1 = 0;
-            gdl++;
-
-            gdl->words.w0 = 0xF3000000;
-            gdl->words.w1 = 0x0708F400;
-            gdl++;
-
-            gdl->words.w0 = 0xE7000000;
-            gdl->words.w1 = 0;
-            gdl++;
-
-            gdl->words.w0 = 0xF5680400;
-            gdl->words.w1 = 0x00080200;
-            gdl++;
-
-            gdl->words.w0 = 0xF2000000;
-            gdl->words.w1 = 0x0003C044;
-            gdl++;
-
-            gdl->words.w0 = 0xE4000608 | (((t1 * 4) & 0xFFF) << 12);
-            gdl->words.w1 = (((t2 * 4) & 0xFFF) << 12) | 0x5C0;
-            gdl++;
-
-            gdl->words.w0 = 0xB3000000;
-            gdl->words.w1 = 0;
-            gdl++;
-
-            gdl->words.w0 = 0xB2000000;
-            gdl->words.w1 = 0x04000400;
-            gdl++;
-
-            i++;
-            val /= ten;
-            t2 -= 18;
-            t1 -= 18;
-        } while (i != count);
+    for (i = 0; i < count; i++) {
+        digit = val % 10;
+        val /= 10;
+        dp = &D_1B1FB0_802C767C[digit];
+        gDPLoadTextureBlock(gdl++, *dp, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 18, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(gdl++, (544 - i * 18) << 2, 368 << 2, (560 - i * 18) << 2, 386 << 2, G_TX_RENDERTILE, 0,
+                            0, 1 << 10, 1 << 10);
     }
-
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/unused_code_1B1FB0/func_1B1FB0_802C6C1C.s")
-#endif
 
 extern u8 D_8008510[];
 
