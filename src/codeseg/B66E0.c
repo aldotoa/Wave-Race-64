@@ -15,13 +15,63 @@ void func_801E80B0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E80B0.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801E8800(void) {
-    /* Character spacing and kerning metrics calculator */
+extern s32 D_80228A40;
+extern Gfx D_7000000[];
+
+/* Builds a textured quad (4 Vtx at D_80228A40 in the D_801CE5F8 vertex pool, one color per corner) and its display list. */
+Gfx* func_801E8800(Gfx* gfx, u32 w, u32 h, s32 x, s32 y, u8 r0, u8 g0, u8 b0, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2,
+                   u8 b2, u8 r3, u8 g3, u8 b3, f32 scale) {
+    u32 j; /* unsigned copy of i: load-bearing for register allocation */
+    Vtx* vtx;
+    s32 i;
+
+    for (i = 0; i < 64; i += 16) {
+        vtx = (Vtx*) ((u8*) D_801CE5F8 + (D_80228A40 * 16) + i + 0x40);
+        if (i == 16 || i == 48) {
+            vtx->v.ob[0] = (s32) (w * scale) + x - 1;
+            vtx->v.tc[0] = ((w * 2) + 1) << 5;
+        } else {
+            vtx->v.ob[0] = x;
+            vtx->v.tc[0] = -32;
+        }
+        j = i;
+        if (i == 32 || j == 48) {
+            vtx->v.ob[1] = (s32) (h * scale) + y - 1;
+            vtx->v.tc[1] = (h * 2) << 5;
+        } else {
+            vtx->v.ob[1] = y;
+            vtx->v.tc[1] = -32;
+        }
+        vtx->v.ob[2] = 0;
+        vtx->v.flag = 0;
+        if (j == 0) {
+            vtx->v.cn[0] = r0;
+            vtx->v.cn[1] = g0;
+            vtx->v.cn[2] = b0;
+        } else if (j == 16) {
+            vtx->v.cn[0] = r1;
+            vtx->v.cn[1] = g1;
+            vtx->v.cn[2] = b1;
+        } else if (j == 32) {
+            vtx->v.cn[0] = r2;
+            vtx->v.cn[1] = g2;
+            vtx->v.cn[2] = b2;
+        } else {
+            vtx->v.cn[0] = r3;
+            vtx->v.cn[1] = g3;
+            vtx->v.cn[2] = b3;
+        }
+        vtx->v.cn[3] = 0xFF;
+    }
+    gSPVertex(gfx++, (u8*) D_7000000 + (D_80228A40 * 16) + 0x40, 4, 0);
+    gSP1Triangle(gfx++, 0, 3, 1, 0);
+    gSP1Triangle(gfx++, 0, 2, 3, 0);
+    D_80228A40 += 4;
+    if (D_80228A40 >= 120) {
+        D_80228A40 = 116;
+    }
+    return gfx;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E8800.s")
-#endif
 
 void func_801E8A84(Gfx* arg0, s32 arg1, char* buf, s32 arg3, s32 arg4, s32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 arg10, u8 arg11, u8 arg12, u8 arg13, u8 arg14, u8 arg15, u8 arg16, u8 arg17) {
