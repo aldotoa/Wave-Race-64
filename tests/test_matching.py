@@ -3337,6 +3337,39 @@ class TestHUDOverlays(unittest.TestCase):
             self.skipTest("func_800ADF90 is currently non-matching (in progress)")
 
 
+class TestTier4FloatMatches(unittest.TestCase):
+    """Tier 4 float routines matched in one batch: 801DF38C, 801E6074, 801F23A0, 801E8800."""
+
+    CASES = [
+        ("func_801DF38C", "codeseg", "A95D0"),
+        ("func_801E6074", "codeseg", "B3AA0"),
+        ("func_801F23A0", "codeseg", "B97B0"),
+        ("func_801E8800", "codeseg", "B66E0"),
+    ]
+
+    def _check(self, func, seg, unit):
+        source_path = os.path.join(PROJECT_ROOT, "src", seg, unit + ".c")
+        stub_path = os.path.join(NONMATCHINGS_DIR, seg, unit, func + ".s")
+        with open(source_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertRegex(source, r"\b%s\([^;]*\)\s*\{" % func)
+        self.assertNotIn('GLOBAL_ASM("asm/us/rev1/nonmatchings/%s/%s/%s.s")' % (seg, unit, func), source)
+        self.assertFalse(os.path.exists(stub_path), "%s must not have a GLOBAL_ASM stub" % func)
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
+    def test_func_801DF38C_matched(self):
+        self._check(*self.CASES[0])
+
+    def test_func_801E6074_matched(self):
+        self._check(*self.CASES[1])
+
+    def test_func_801F23A0_matched(self):
+        self._check(*self.CASES[2])
+
+    def test_func_801E8800_matched(self):
+        self._check(*self.CASES[3])
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -3357,6 +3390,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestFlightDebug))
     suite.addTests(loader.loadTestsFromTestCase(TestAIRivals))
     suite.addTests(loader.loadTestsFromTestCase(TestHUDOverlays))
+    suite.addTests(loader.loadTestsFromTestCase(TestTier4FloatMatches))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

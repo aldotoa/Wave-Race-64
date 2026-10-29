@@ -3,6 +3,7 @@
 extern UnkStruct_menu_buffer_1 D_80226C50;
 
 extern UnkStruct_menu_buffer_1 menu_buffer_1[];
+extern s32 D_801C2650;
 
 void func_801E5470(void) {
     UnkStruct_menu_buffer_1* var_s0;
@@ -58,21 +59,45 @@ Gfx* func_801E5554(Gfx* glistp) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E5554.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801E6074(void* arg0_in) {
-    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
+void func_801E6074(UnkStruct_menu_buffer_1* arg0) {
+    MtxF mtx;
+    f32 scale;
+
     switch (arg0->unk2) {
         case 0:
-            arg0->unk8 = 40;
-            arg0->unkC = 50;
+            scale = (arg0->unk18 / 5.0f) * 1.5f;
+            arg0->unk8 = ((1 - scale) * 74.0f) + 80.0f;
+            arg0->unkC = ((1 - scale) * 20.0f) + 93.0f;
+            func_80048A88(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+                          arg0->unk8, arg0->unkC, 0.0f, scale);
+            arg0->unk18++;
+            if (arg0->unk18 >= 6) {
+                arg0->unk2 = 1;
+                arg0->unk8 = 80;
+                arg0->unkC = 93;
+                arg0->unk18 = 0;
+            }
             break;
         case 1:
+            SysUtils_MatrixLookAt(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, 0.0f, 0.0f, 1.0f, 0.0f,
+                                  1.0f, 0.0f, arg0->unk8, arg0->unkC, 0.0f);
+            arg0->unk18++;
+            if (D_801CE608.gameMode == 4) {
+                if (arg0->unk18 >= 11) {
+                    arg0->unk_0 = 0;
+                    func_801E6A4C(2, 0);
+                }
+            } else if (D_801CE608.gameMode == 0) {
+                if (arg0->unk18 >= 11) {
+                    arg0->unk_0 = 0;
+                    if (D_801C2650 == 1) {
+                        func_801E6A4C(2, 1);
+                    }
+                }
+            }
             break;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E6074.s")
-#endif
 
 #ifdef NON_MATCHING
 void func_801E62A8(void* arg0_in) {
