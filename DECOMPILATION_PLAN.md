@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **200 remaining non-matching functions** (101 matched in prioritized matrix, 1,168 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **198 remaining non-matching functions** (103 matched in prioritized matrix, 1,170 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **200 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,169** | 1,368 | **85.45%** |
-| **Non-Matching Functions** | **199** | 1,368 | **14.55%** |
-| **Matched Code Bytes** | **425,416 B** | 834,052 B | **51.01%** |
+| **Matched Functions** | **1,170** | 1,368 | **85.53%** |
+| **Non-Matching Functions** | **198** | 1,368 | **14.47%** |
+| **Matched Code Bytes** | **425,872 B** | 834,052 B | **51.06%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **421** | 421 | **100% OK** |
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 9 | 14 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **4** | Medium Floating-Point & Physics | 8 | 15 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 28 | 3 | 31 | High | Multi-case switches & rodata migration |
 | **6** | Monolithic Routines & Core Engines | 162 | 24 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **199** | **102** | **301** | | |
+| **Total** | | **198** | **103** | **301** | | |
 
 ---
 
@@ -128,7 +128,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 62 | `func_801DC404` | `src/codeseg/A95D0.c` | 105 | 9/3  | Floats  | **MATCHED** | 3D particle fireworks and water splash simulator  |
 | 63 | `func_801E0FF0` | `src/codeseg/A95D0.c` | 113 | 0/4  | Floats  | **MATCHED** | Look-at camera orientation vector orthogonalizer and normalizer  |
 | 64 | `func_801EE4D0` | `src/codeseg/B97B0.c` | 114 | 0/0  | Floats  | **MATCHED** | Routine logic  |
-| 65 | `func_8009934C` | `src/game/code_52CD0.c` | 114 | 1/0  | Floats  | Pending | Routine logic  |
+| 65 | `func_8009934C` | `src/game/code_52CD0.c` | 114 | 1/0  | Floats  | **MATCHED** | Uniform cubic B-spline basis evaluator (4 control points → Vec3f + scalar). Load-bearing: `2/3` and `1/6` read via `extern f32 D_800EB4C4/C8` (unmigrated A5CC0 rodata); `/ 2.0f` folds to the `0.5f` immediates  |
 | 66 | `func_801DD85C` | `src/codeseg/A95D0.c` | 114 | 1/3  | Floats  | **MATCHED** | Routine logic  |
 | 67 | `func_801EADB0` | `src/codeseg/B66E0.c` | 114 | 14/0  | Floats  | **MATCHED** | Formatted lap timer display printer (mm:ss.ms)  |
 | 68 | `func_801EE6F4` | `src/codeseg/B97B0.c` | 115 | 0/0  | Floats  | **MATCHED** | Routine logic  |
