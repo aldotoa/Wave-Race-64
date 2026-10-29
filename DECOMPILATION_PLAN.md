@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **200 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,168** | 1,368 | **85.38%** |
-| **Non-Matching Functions** | **200** | 1,368 | **14.62%** |
-| **Matched Code Bytes** | **424,960 B** | 834,052 B | **50.95%** |
+| **Matched Functions** | **1,169** | 1,368 | **85.45%** |
+| **Non-Matching Functions** | **199** | 1,368 | **14.55%** |
+| **Matched Code Bytes** | **425,416 B** | 834,052 B | **51.01%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **420** | 420 | **100% OK** |
+| **Passing Regression Tests** | **421** | 421 | **100% OK** |
 
 ---
 
@@ -92,7 +92,7 @@ Mid-sized functions (100–180 instructions) covering menu logic, HUD element up
 | 34 | `func_1B1FB0_802C6E40` | `src/unused_code_1B1FB0.c` | 110 | 1/0  | Integer Clean  | **MATCHED** | Debug telemetry banner renderer: 4 × (`gDPLoadTextureTile` IA8 192x11 from `D_8008510` + old-F3D copy-mode `gSPTextureRectangle`). Load-bearing: `for (i = 0; i < 4; i++)` with `i * 0x840` / `i * 11` scaling (an `i += 11` loop gets LFTR'd onto the texture pointer) |
 | 35 | `func_1B1FB0_802C6FF8` | `src/unused_code_1B1FB0.c` | 112 | 1/0  | Integer Clean  | **MATCHED** | Debug text banner renderer: 4 × (`gDPLoadTextureTile` IA8 496x5 from `D_800A618` + old-F3D copy-mode `gSPTextureRectangle` at y = 248 + `D_1B1FB0_802C76B0` * 20 + i * 5). Load-bearing: `for (i = 0; i < 4; i++)` with `i * 0x9B0` / `i * 5` scaling (`i += 5` or a pointer walk gets unrolled 2x) |
 | 36 | `func_i13_802C62EC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 112 | 17/5  | Integer Clean  | **MATCHED** | Save file search & validation menu input handler (chained `result = D_8D74 = call()` stores)  |
-| 37 | `func_801DC0AC` | `src/codeseg/A95D0.c` | 114 | 10/5  | Integer Clean, ParkedFloor | Pending (Floor 2607) | 3D particle fireworks and water splash simulator  |
+| 37 | `func_801DC0AC` | `src/codeseg/A95D0.c` | 114 | 10/5  | Integer Clean | **MATCHED** | Stunt-replay particle range dispatcher (index loop, `s32 i` declared first)  |
 | 38 | `func_801E1E8C` | `src/codeseg/AF8C0.c` | 115 | 11/10  | Integer Clean  | **MATCHED** | Machine tuning interaction and controller input loop  |
 | 39 | `func_80067C6C` | `src/game/code_C6C0.c` | 117 | 13/12  | Integer Clean  | **MATCHED** | Course intro cinematic camera path interpolation  |
 | 40 | `func_i4_802C69C4` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 122 | 3/0  | Integer Clean  | **MATCHED** | Sunny Beach shoreline surf swell display list emitter  |
