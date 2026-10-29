@@ -2989,11 +2989,11 @@ class TestFlightDebug(unittest.TestCase):
             self.skipTest("func_1B1FB0_802C62E4 is currently non-matching (in progress)")
 
     def test_func_1B1FB0_802C67BC_matched(self):
-        """TDE test for func_1B1FB0_802C67BC in unused_code_1B1FB0 (Debug flight collision boundary detector)."""
-        if self.is_function_decompiled("func_1B1FB0_802C67BC"):
-            self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
-        else:
-            self.skipTest("func_1B1FB0_802C67BC is currently non-matching (in progress)")
+        """TDE test for func_1B1FB0_802C67BC in unused_code_1B1FB0 (Debug flight texture strip renderer)."""
+        self.assertTrue(self.is_function_decompiled("func_1B1FB0_802C67BC"), "func_1B1FB0_802C67BC should be decompiled in C")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "unused_code_1B1FB0", "func_1B1FB0_802C67BC.s")
+        self.assertFalse(os.path.exists(stub_path), f"Nonmatching stub {stub_path} should be deleted after matching")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
     def test_func_1B1FB0_802C6970_matched(self):
         """TDE test for func_1B1FB0_802C6970 in unused_code_1B1FB0 (Flight mode player input interpreter)."""
