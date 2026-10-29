@@ -336,6 +336,16 @@ class TestCodeSegA95D0(unittest.TestCase):
         self.assertFalse(os.path.exists(stub_path), "func_801DEC00 must not have a GLOBAL_ASM stub")
         self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
 
+    def test_func_801DC0AC_matched(self):
+        source_path = os.path.join(PROJECT_ROOT, "src", "codeseg", "A95D0.c")
+        stub_path = os.path.join(NONMATCHINGS_DIR, "codeseg", "A95D0", "func_801DC0AC.s")
+        with open(source_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertIn("void func_801DC0AC(", source)
+        self.assertNotIn('GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC0AC.s")', source)
+        self.assertFalse(os.path.exists(stub_path), "func_801DC0AC must not have a GLOBAL_ASM stub")
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
 
 
 class TestCodesegUI(unittest.TestCase):
