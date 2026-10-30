@@ -380,7 +380,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 298 | `func_800A68A4` | `src/game/code_52CD0.c` | 2595 | 171/118  | Floats  | Pending | Wrong way warning banner animator  |
 | 299 | `func_8005DE24` | `src/game/code_C6C0.c` | 2802 | 317/36  | Floats, JumpTable, Rodata  | Pending | Reverse-view (rear mirror) camera orientation  |
 | 300 | `func_8006E674` | `src/game/code_24B00.c` | 3580 | 206/21  | Floats  | **MATCHED** | Course display list renderer: LookAt/matrix setup, fog, spray (completes code_24B00)  |
-| 301 | `func_801F4120` | `src/codeseg/B97B0.c` | 4908 | 273/13  | Floats  | Pending | Routine logic  |
+| 301 | `func_801F4120` | `src/codeseg/B97B0.c` | 4908 | 273/13  | Floats, ParkedFloor  | Pending (Floor 1797) | Race HUD display-list builder; full C draft parked behind NON_MATCHING (insn count, frame 0x700 and control flow match, 266 register-blind rows; left: IDO hoists &D_80228B50/&D_80228B54 and large GBI constants into s-regs the target rematerializes; 1.8f literal lives in the next TU's rodata at 0x80227A4C)  |
 
 ---
 
