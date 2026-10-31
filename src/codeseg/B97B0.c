@@ -1529,7 +1529,690 @@ void func_801F25E0(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801F4120(void) {
+/*
+ * HUD overlay (lap list, race/split times, position, lap counter, speed, buoys, boost meter,
+ * stunt score, time-trial best times). Draft parked at 1797 diff rows (266 register-blind)
+ * against a 4908-insn target; instruction count, frame (0x700) and control flow match.
+ * Load-bearing:
+ *  - 15 named locals in this declaration order (homes 0x6FC i, 0x6F4 j, 0x6CC/0x6C8 x2/y2,
+ *    0x6C4 gfx) plus one f32; every extra local grows the frame.
+ *  - RGBA32 textures typed u32[] (element strides) and ternary / empty-else shapes where the
+ *    target emits a branch to the next label.
+ *  - `scale` is the target's 1.8f literal (rodata 0x80227A4C, which lives in the next TU's
+ *    .rodata), loaded in the loop preheader via the explicit gPlayers guard.
+ * Remaining rows are register allocation: IDO hoists &D_80228B50/&D_80228B54 and some large
+ * GBI constants into s-regs that the target rematerializes. The empty-if / self-assign fakes
+ * came from an annealing search and only shift allocation priorities.
+ */
+typedef struct UnkStruct_80228D28 {
+    s32 unk0;
+    s32 unk4;
+    char pad8[0xC];
+} UnkStruct_80228D28; /* size = 0x14 */
+
+typedef struct UnkStruct_80228C30 {
+    char pad0[0x18];
+    s32 unk18;
+    char pad1C[0x38];
+} UnkStruct_80228C30; /* size = 0x54 */
+
+extern Gfx D_1014708[];
+extern u8 D_102DF50[];
+extern u8 D_102E3D8[];
+extern u8 D_102E620[];
+extern u8 D_102E868[];
+extern u32 D_102EE70[];
+extern u8 D_1032078[];
+extern u8 D_1032500[];
+extern u8 D_1032B08[];
+extern u8 D_10331D0[];
+extern u8 D_10337D8[];
+extern u8 D_1033C60[];
+extern u8 D_1039248[];
+extern u32 D_103B4D0[];
+extern u8 D_103D5D0[];
+extern u32 D_103D8D8[];
+extern u8 D_10416A8[];
+extern u8 D_1042780[];
+extern u8 D_8024008[];
+extern u32 D_8024BC8[];
+extern u32 D_80273D8[];
+extern u8 D_802A5E0[];
+extern u32 D_802C3E8[];
+extern s32 D_801C1FDC;
+extern char* D_801C1FE4;
+extern char* D_801C1FE8;
+extern s32 D_800D4B00;
+extern s32 D_801CE704;
+extern u8* D_80227978[];
+extern char D_802279E0[];
+extern char D_802279EC[];
+extern f32 D_80227A4C;
+extern s32 D_80228A9C;
+extern s32 D_80228AAC;
+extern s32 D_80228AB0;
+extern s32 D_80228AB4;
+extern s32 D_80228B50;
+extern s32 D_80228B54;
+extern UnkStruct_80228C30 D_80228C30[];
+extern s8 D_80228CF8[];
+extern UnkStruct_80228D28 D_80228D28[];
+extern s32 D_80228DF8;
+
+void func_801F25E0(Gfx**, s32, s32, s32, s32, s32, s32);
+Gfx* func_801E8A84(Gfx*, s32, char*, s32, s32, s32, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
+Gfx* func_801E92FC(Gfx*, s32, char*, s32, s32, s32, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
+
+#define RECT(xl, yl, xh, yh) gSPTextureRectangle(gfx++, (xl) << 2, (yl) << 2, (xh) << 2, (yh) << 2, 0, 0, 0, 1 << 10, 1 << 10)
+#define SCISRECT(xl, yl, xh, yh) \
+    gSPScisTextureRectangle(gfx++, (xl) << 2, (yl) << 2, (xh) << 2, (yh) << 2, 0, 0, 0, 1 << 10, 1 << 10)
+
+void func_801F4120(Gfx** gfxP) {
+    s32 i;
+    s32 x;
+    s32 j;
+    s32 val;
+    s8* p;
+    RiderStruct* rs;
+    s32 k;
+    s32 y;
+    UnkStruct_80228C30* pc;
+    s32 m;
+    s32 f;
+    f32 scale;
+    s32 x2;
+    s32 y2;
+    Gfx* gfx;
+    s32 n;
+
+    gfx = *gfxP;
+    gSPDisplayList(gfx++, D_1014708);
+    if ((gGameModes == GMODE_CHAMPIONSHIP || gGameModes == GMODE_TIME_TRIALS) && gCourseID != DOLPHIN_PARK) {
+        rs = &D_801C2938[D_800D48DC];
+        if (p) {}
+        if (rs->lapCount >= 2 || D_800D8178 != 0) {
+            n = rs->lapCount - 1;
+            y = 0x34;
+            if (n >= 10) {
+                k = n - 9;
+                n = 9;
+            } else {
+                k = 0;
+            }
+            if (rs->unk2F4 != 0 || D_800D8178 != 0) {
+                n++;
+            }
+            j = 0;
+            if (n > 0) {
+                do {
+                    func_801F25E0(&gfx, D_80228B54 + 0x18, y, rs->unk178[j], 0, (k + j + 1) % 10, 0);
+                    if (y) {}
+                    if (val) {}
+                    j++;
+                    if (n) {}
+                    y += 10;
+                } while (j != n);
+            }
+        }
+        if (rs->unk2F4 != 0 || rs->unk2EC == 2) {
+            if (pc) {}
+            i = 0;
+        } else {
+            i = 1;
+        }
+        func_801F25E0(&gfx, D_80228B50 + 0x18, 0x22, rs->unk19C, 1, i, rs->unk16C);
+    } else if (gGameModes == GMODE_2P_VS) {
+        rs = &D_801C2938[D_800D48DC];
+        if (rs->unk2F4 != 0) {
+            i = 0;
+        } else {
+            i = 1;
+        }
+        func_801F25E0(&gfx, 0x18, 0xE, rs->unk19C, 1, i, rs->unk16C);
+        rs = &D_801C2938[D_800D48E0];
+        if (rs->unk2F4 != 0) {
+            i = 0;
+        } else {
+            i = 1;
+        }
+        func_801F25E0(&gfx, 0x18, 0x7C, rs->unk19C, 1, i, rs->unk16C);
+    }
+    if (gGameModes == GMODE_CHAMPIONSHIP && gCourseID != DOLPHIN_PARK && D_801C1FDC >= 40) {
+        for (j = 0; j < gRiders; j++) {
+            if (D_801C2938[j].unk2F4 != 0 && D_801C2938[j].racePosition == 0) {
+                break;
+            }
+        }
+        if (j >= gRiders) {
+            j = 0;
+        }
+        k = D_801C2938[j].unk19C;
+        for (i = 0; i < gRiders; i++) {
+            rs = &D_801C2938[i];
+            if (D_801C1FDC >= rs->racePosition * 10 + 40) {
+                x = D_80228D28[i].unk0 + 0xB0;
+                y = D_80228D28[i].unk4 + 0x3F;
+                m = (i == D_800D48DC) ? 2 : 1;
+                if (i == j) {
+                    func_801F25E0(&gfx, x + D_80228B50, y, rs->unk19C, 3, 3, m);
+                } else if (rs->unk2F4 != 0) {
+                    func_801F25E0(&gfx, x + D_80228B50, y, rs->unk19C - k, 3, 1, m);
+                }
+            }
+        }
+    }
+    if (gGameModes == GMODE_2P_VS) {
+        for (i = 0; i < gPlayers; i++) {
+            y = 0xB2;
+            if (i == 0) {
+                y = 0x44;
+                rs = &D_801C2938[D_800D48DC];
+            } else {
+                rs = &D_801C2938[D_800D48E0];
+            }
+            if (rs->unk300 != 0) {
+                if (rs->unk2F8 < 10000) {
+                    x = -15;
+                } else if (rs->unk2F8 < 60000) {
+                    x = -10;
+                } else {
+                    x = 0;
+                }
+                m = (rs->unk2FC == 1) ? 1 : 2;
+                func_801F25E0(&gfx, x + 0x80, y, rs->unk2F8, 3, rs->unk2FC, m);
+            }
+        }
+    }
+    if (gGameModes == GMODE_CHAMPIONSHIP && gCourseID != DOLPHIN_PARK) {
+        for (i = 0; i < gRiders; i++) {
+            if (i != D_800D48DC) {
+                rs = &D_801C2938[i];
+                x = D_80228D28[i].unk0 + 0xBA;
+                y = D_80228D28[i].unk4 + 0x3F;
+                if (rs->unk300 != 0) {
+                    func_801F25E0(&gfx, x, y, rs->unk2F8, 3, rs->unk2FC, 1);
+                }
+            }
+        }
+    }
+    if (gGameModes == GMODE_CHAMPIONSHIP || gGameModes == GMODE_TIME_TRIALS) {
+        rs = &D_801C2938[D_800D48DC];
+        if (rs->unk300 != 0) {
+            m = 2;
+            if (rs->unk2F8 < 10000) {
+                j = 2;
+            } else if (rs->unk2F8 < 60000) {
+                j = 1;
+            } else {
+                j = 0;
+            }
+            x = 0x8C;
+            if (j == 1) {
+                x = 0x85;
+            } else if (j == 2) {
+                x = 0x7F;
+            }
+            if (gGameModes == GMODE_TIME_TRIALS && rs->unk2FC == 1) {
+                m = 1;
+            } else {
+            }
+            if (p) {}
+            func_801F25E0(&gfx, x, 0x7E, rs->unk2F8, 3, rs->unk2FC, m);
+            gDPPipeSync(gfx++);
+            gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+            x -= 40;
+            y = 122;
+            if (j == 1) {
+                x += 15;
+            } else if (j == 2) {
+                x += 26;
+            }
+            if (gGameModes == GMODE_CHAMPIONSHIP) {
+                if (val) {}
+                gDPLoadTextureBlock(gfx++, D_10416A8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, y, x + 32, y + 20);
+                x += 9;
+                y += 2;
+                gDPLoadTextureBlock(gfx++, D_80227978[D_80192690[rs->unk33C].unkB68], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSPTextureRectangle(gfx++, x << 2, y << 2, (x + 16) << 2, (y + 16) << 2, 0, 0, 0, 0x500, 0x500);
+            } else {
+                if (p) {}
+                gDPLoadTextureBlock(gfx++, D_1042780, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                x -= 6;
+                RECT(x, y, x + 32, y + 20);
+            }
+        }
+    }
+    gDPPipeSync(gfx++);
+    gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    if ((gGameModes == GMODE_CHAMPIONSHIP || gGameModes == GMODE_TIME_TRIALS) && gCourseID != DOLPHIN_PARK) {
+        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        RECT(D_80228B50 + 0x38, 21, D_80228B50 + 0x58, 33);
+    }
+    if (gGameModes != GMODE_STUNT && gCourseID != DOLPHIN_PARK) {
+        if (gPlayers == ONE_PLAYER) {
+            y = 0x15;
+            if (gGameModes == GMODE_CHAMPIONSHIP) {
+                x = D_80228B50 + 0xBC;
+            } else {
+                x = 0x84;
+            }
+        } else {
+            x = 0xCA;
+            y = 0xD;
+            x2 = 0xCA;
+            y2 = 0x7B;
+        }
+        gDPLoadTextureBlock(gfx++, D_1032078, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        RECT(x, y, x + 24, y + 12);
+        if (gPlayers == TWO_PLAYERS) {
+            RECT(x2, y2, x2 + 24, y2 + 12);
+        }
+        for (i = 0; i < gPlayers; i++) {
+            if (f) {}
+            if (gPlayers == ONE_PLAYER) {
+                y = 0x22;
+                if (y) {}
+                if (gGameModes == GMODE_CHAMPIONSHIP) {
+                    x = D_80228B50 + 0xC0;
+                } else {
+                    x = 0x88;
+                }
+                val = D_801C2938[D_800D48DC].lapCount;
+            } else {
+                x = 0xD0;
+                if (i == 0) {
+                    y = 0x19;
+                    val = D_801C2938[D_800D48DC].lapCount;
+                } else {
+                    y = 0x87;
+                    val = D_801C2938[D_800D48E0].lapCount;
+                }
+            if (y) {}
+            }
+            if (D_801CE728[0] < val) {
+                val = D_801CE728[0];
+            }
+            if (gPlayers == ONE_PLAYER) {
+                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, y, x + 16, y + 20);
+            } else {
+                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                if (val) {}
+                if (y2) {}
+                RECT(x, y, x + 12, y + 16);
+            }
+        }
+    }
+    if (gGameModes == GMODE_CHAMPIONSHIP) {
+        if (gCourseID != DOLPHIN_PARK) {
+            gDPLoadTextureBlock(gfx++, D_1032B08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            RECT(D_80228B50 + 0x84, 21, D_80228B50 + 0xA8, 33);
+            gDPLoadTextureBlock(gfx++, D_103D8D8 + (D_801C2938[D_800D48DC].racePosition + 1) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16,
+                    20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            x = D_80228B50 + 0x88;
+            if (D_80228A9C == 0) {
+                RECT(x, 34, x + 16, 54);
+            } else {
+                if (p) {}
+                k = D_80228DF8 * 6;
+                gDPPipeSync(gfx++);
+                gDPSetTextureFilter(gfx++, G_TF_BILERP);
+                gSPTextureRectangle(gfx++, (x - k) << 2, 34 << 2, (x + 16) << 2, (k + 54) << 2, 0, 0, 0,
+                                    0x4000 / (k + 16), 0x5000 / (k + 20));
+                gDPPipeSync(gfx++);
+                gDPSetTextureFilter(gfx++, G_TF_POINT);
+            }
+            gDPPipeSync(gfx++);
+            if (f) {}
+            gDPSetCombine(gfx++, 0x129A25, 0xFF37FFFF);
+            if (D_801CE704 < D_801C2938[D_800D48DC].racePosition) {
+                gDPSetEnvColor(gfx++, D_80228AAC, D_80228AB0, D_80228AB4, 255);
+            if (x2) {}
+            } else {
+                gDPSetEnvColor(gfx++, 255, 255, 255, 255);
+            }
+            gDPLoadTextureBlock(gfx++, D_1033C60, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 10, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            RECT(D_80228B50 + 0x9B, 32, D_80228B50 + 0xA3, 42);
+            if (D_801CE704 < 4) {
+                n = D_801CE704 + 1;
+            } else {
+                n = 0x25;
+            }
+            gDPLoadTextureBlock(gfx++, D_1039248 + n * 0xC0, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            RECT(D_80228B50 + 0x9A, 42, D_80228B50 + 0xAA, 54);
+            gDPPipeSync(gfx++);
+            gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+        }
+    }
+    gDPLoadTextureBlock(gfx++, D_10331D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    if (gGameModes == GMODE_STUNT) {
+        RECT(236, 22, 268, 34);
+    } else if (gPlayers == ONE_PLAYER) {
+        if (gCourseID == DOLPHIN_PARK) {
+            n = 0xD9;
+        } else if (gGameModes == GMODE_TIME_TRIALS) {
+            n = 0x97;
+        } else {
+            n = 0xD9;
+        }
+        RECT(n + D_80228B50 + 0x18, 21, n + D_80228B50 + 0x38, 33);
+    } else {
+        RECT(242, 13, 274, 25);
+        RECT(242, 123, 274, 135);
+    }
+    if (gPlayers > 0) {
+        scale = D_80227A4C;
+        i = 0;
+        do {
+            if (gPlayers == ONE_PLAYER) {
+                y = 0x22;
+                x = D_80228B50 + 0xE1;
+                val = D_80192690[D_800D48DC].unkB90;
+            } else if (i == 0) {
+                x = 0xEC;
+                y = 0x19;
+                val = D_80192690[D_800D48DC].unkB90;
+            } else {
+                x = 0xEC;
+                y = 0x87;
+                val = D_80192690[D_800D48E0].unkB90;
+            }
+            if (gCourseID == DOLPHIN_PARK) {
+                x = 0xE1;
+            } else if (gGameModes == GMODE_TIME_TRIALS) {
+                x = 0x9F;
+            if (p) {}
+            }
+            val = val * scale;
+            if (val >= 1000) {
+                j = j;
+                val = 999;
+            }
+            if (gGameModes == GMODE_STUNT) {
+                x = 0xE4;
+                if (i) {}
+                y = 0x26;
+                y = y;
+                if (val >= 100) {
+                    pc = pc;
+                    gDPLoadTextureBlock(gfx++, D_802C3E8 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    RECT(x, y, x + 12, y + 16);
+                if (val) {}
+                }
+                x += 14;
+                if (val) {}
+                if (val >= 10) {
+                    gDPLoadTextureBlock(gfx++, D_802C3E8 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    RECT(x, y, x + 12, y + 16);
+                }
+                x += 14;
+                gDPLoadTextureBlock(gfx++, D_802C3E8 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, y, x + 12, y + 16);
+            } else if (gPlayers == ONE_PLAYER) {
+                if (val >= 100) {
+                    gDPLoadTextureBlock(gfx++, D_103D8D8 + (val / 100) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    if (pc) {}
+                    RECT(x, y, x + 16, y + 20);
+                }
+                x += 16;
+                if (val >= 10) {
+                    gDPLoadTextureBlock(gfx++, D_103D8D8 + ((val % 100) / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    RECT(x, y, x + 16, y + 20);
+                }
+                x += 16;
+                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, y, x + 16, y + 20);
+            y = y;
+            } else {
+                val = val;
+                if (val >= 100) {
+                    if (i) {}
+                    gDPLoadTextureBlock(gfx++, D_103B4D0 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    f = f;
+                    RECT(x, y, x + 12, y + 16);
+                }
+                p = p;
+                x = x;
+                x += 13;
+                if (val >= 10) {
+                    gDPLoadTextureBlock(gfx++, D_103B4D0 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    if (pc) {}
+                    y = y;
+                    RECT(x, y, x + 12, y + 16);
+                }
+                x += 13;
+                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, y, x + 12, y + 16);
+            }
+            i++;
+        } while (i < gPlayers);
+    }
+    gDPLoadTextureBlock(gfx++, D_10337D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    if (gGameModes == GMODE_STUNT) {
+        RECT(0x10E, 0x2B, 0x126, 0x37);
+    } else if (gPlayers == ONE_PLAYER) {
+        if (p) {}
+        if (gCourseID == DOLPHIN_PARK) {
+            n = 0xD9;
+        } else if (gGameModes == GMODE_TIME_TRIALS) {
+            n = 0x97;
+        } else {
+            k = k;
+            n = 0xD9;
+        }
+        RECT(n + D_80228B50 + 0x39, 42, n + D_80228B50 + 0x51, 54);
+    } else {
+        RECT(0x114, 0x1E, 0x12C, 0x2A);
+        RECT(0x114, 0x8C, 0x12C, 0x98);
+    }
+    n = n;
+    if (gGameModes != GMODE_STUNT && gCourseID != DOLPHIN_PARK) {
+        if (gPlayers == ONE_PLAYER) {
+            x = D_80228B54 + 0x18;
+            y = 0xCD;
+            gDPLoadTextureBlock(gfx++, D_102DF50, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            SCISRECT(x, y, x + 24, y + 12);
+        }
+        gDPLoadTextureBlock(gfx++, D_102E3D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        n = gBuoyMisses;
+        if (n >= 29) {
+            n = 28;
+        }
+        for (i = 0; i < gPlayers; i++) {
+            if (gPlayers == ONE_PLAYER) {
+                y = 0xCD;
+                x = D_80228B54 + 0x38;
+            } else {
+                x = 0x18;
+                y = (i == 0) ? 0x68 : 0xD6;
+            }
+            for (j = 0; j < n; j++) {
+                SCISRECT(x, y, x + 12, y + 12);
+                x += 14;
+            }
+        if (x2) {}
+        }
+        pc = D_80228C30;
+        gDPLoadTextureBlock(gfx++, D_102E620, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        for (i = 0; i < gPlayers; i++, pc++) {
+            if (gPlayers == ONE_PLAYER) {
+                p = p;
+                y = 0xCD;
+                m = D_801C2938[D_800D48DC].unk134;
+                x = D_80228B54 + 0x38;
+            } else {
+                x = 0x18;
+                n = n;
+                if (i == 0) {
+                    y = 0x68;
+                    m = D_801C2938[D_800D48DC].unk134;
+                } else {
+                    y = 0xD6;
+                    m = D_801C2938[D_800D48E0].unk134;
+                if (i) {}
+                if (y) {}
+                }
+            j = j;
+            }
+            if (pc->unk18 == 1) {
+                m--;
+            }
+            if (x) {}
+            k = n - m;
+            if (k < 0) {
+                x = x;
+                if (x2) {}
+                k = 0;
+            p = p;
+            }
+            x += k * 14;
+            for (j = k; j < n; j++) {
+                SCISRECT(x, y, x + 12, y + 12);
+                x += 14;
+            }
+        y2 = y2;
+        }
+    }
+    if (gCourseID != DOLPHIN_PARK && gGameModes != GMODE_STUNT) {
+        x = x;
+        if (gPlayers == ONE_PLAYER) {
+            x = D_80228B54 + 0x94;
+            y = 0xCD;
+            gDPLoadTextureBlock(gfx++, D_102E868, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            SCISRECT(x, y, x + 32, y + 12);
+        }
+        for (i = 0; i < gPlayers; i++) {
+            if (i) {}
+            if (gPlayers == ONE_PLAYER) {
+                y = 0xCF;
+                m = D_801C2938[D_800D48DC].unk138;
+                x = D_80228B54 + 0xBC;
+            } else {
+                y = 0x6A;
+                j = j;
+                x = 0xBC;
+                if (i == 0) {
+                    x = x;
+                    j = j;
+                    x = 0xBC;
+                    m = D_801C2938[D_800D48DC].unk138;
+                } else {
+                    y = 0xD8;
+                    m = D_801C2938[D_800D48E0].unk138;
+                p = p;
+                x = x;
+                }
+            }
+            for (j = 0; j < 5; j++) {
+                k = j + 1;
+                if (m == k) {
+                    f = D_800D4B00 % 6;
+                    if (f >= 4) {
+                        y = y;
+                        f = 6 - f;
+                    }
+                if (pc) {}
+                } else {
+                    pc = pc;
+                    f = (j < m) ? 3 : 0;
+                }
+                gDPLoadTextureBlock(gfx++, D_102EE70 + (f + j * 4) * 0xA0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 20, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                SCISRECT(x, y, x + 20, y + 8);
+                x += 22;
+            }
+        }
+    j = j;
+    }
+    if (gGameModes == GMODE_STUNT) {
+        gDPLoadTextureBlock(gfx++, D_8024008, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        RECT(0x2D, 0x16, 0x51, 0x22);
+        val = D_801C26D0;
+        x = 0x1C;
+        if (val >= 100000) {
+            if (f) {}
+            val = 99999;
+        i = i;
+        }
+        for (k = 4; k > -1; k--) {
+            f = f;
+            if (val) {}
+            D_80228CF8[k] = val % 10;
+            k = k;
+            val /= 10;
+        }
+        for (p = D_80228CF8; p < &D_80228CF8[5]; p++) {
+            gDPLoadTextureBlock(gfx++, D_8024BC8 + *p * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            RECT(x, 0x26, x + 12, 0x36);
+            x += 14;
+        x = x;
+        if (x) {}
+        }
+    }
+    if (gGameModes == GMODE_STUNT) {
+        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        m = m;
+        RECT(0x8D, 0x16, 0xAD, 0x22);
+        val = D_801C2938[D_800D48DC].unk2C4;
+        y = val % 1000;
+        gDPLoadTextureBlock(gfx++, D_103B4D0 + (y / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        RECT(0xAA, 0x26, 0xB6, 0x36);
+        gDPLoadTextureBlock(gfx++, D_103D5D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        rs = rs;
+        RECT(0xA2, 0x23, 0xAE, 0x33);
+        f = val / 1000;
+        if (f >= 6 || D_801C2938[D_800D48DC].unk2F4 != 0 || D_801C2938[D_800D48DC].unk2EC != 0) {
+            x = 0x84;
+            if (val) {}
+            if (f >= 10) {
+                gDPLoadTextureBlock(gfx++, D_80273D8 + (f / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                RECT(x, 0x26, x + 16, 0x3A);
+            }
+            x += 16;
+            x2 = x2;
+            gDPLoadTextureBlock(gfx++, D_80273D8 + (f % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            RECT(x, 0x26, x + 16, 0x3A);
+        } else {
+            m = y - 700;
+            if (m < 0) {
+                m = 0;
+            }
+            k = (m * 16) / 300;
+            k = k;
+            val = 32 - k * 2;
+            x = 40 - k * 2;
+            if (val > 0 && x > 0) {
+                gDPPipeSync(gfx++);
+                gDPSetTextureFilter(gfx++, G_TF_BILERP);
+                gDPSetCombine(gfx++, 0x129A25, 0xFF37FFFF);
+                gDPSetEnvColor(gfx++, D_80228AAC, D_80228AB0, D_80228AB4, 255);
+                gDPLoadTextureBlock(gfx++, D_802A5E0 + f * 0x500, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 40, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSPTextureRectangle(gfx++, (k + 0x84) << 2, (k + 0x26) << 2, (0xA4 - k) << 2, (0x4E - k) << 2, 0, 0, 0,
+                                    0x8000 / val, 0xA000 / x);
+            if (m) {}
+            }
+        }
+    }
+    if (gGameModes == GMODE_TIME_TRIALS && gCourseID != DOLPHIN_PARK) {
+        y = 0x16;
+        k = k;
+        gfx = func_801E92FC(gfx, 1, D_802279E0, 0xEE, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        y += 9;
+        gfx = func_801E8A84(gfx, 1, D_801C1FE4, 0xEE, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        if (D_800DAB68 == 0) {
+            x = x;
+            y += 11;
+            gfx = func_801E92FC(gfx, 1, D_802279EC, 0xEE, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            y += 9;
+            p = p;
+            gfx = func_801E8A84(gfx, 1, D_801C1FE8, 0xEE, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        }
+    y2 = y2;
+    val = val;
+    }
+    rs = rs;
+    i = i;
+    *gfxP = gfx;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F4120.s")
