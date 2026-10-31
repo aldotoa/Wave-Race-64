@@ -84,12 +84,70 @@ Gfx* func_i13_802C5F6C(Gfx* dList) {
     return dList;
 }
 
-#ifdef NON_MATCHING
+s32 func_i13_802C61E0(void);
+s32 func_i13_802C62EC(void);
+s32 func_i13_802C64AC(void);
+s32 func_i13_802C65D4(void);
+s32 func_i13_802C6700(void);
+s32 func_i13_802C69CC(void);
+s32 func_i13_802C6ABC(void);
+s32 func_i13_802C6BC4(void);
+s32 func_i13_802C6CE4(void);
+s32 func_i13_802C6E48(void);
+s32 func_i13_802C6F0C(void);
+
 void func_i13_802C6068(void) {
+    s32 pad;
+    s32 sound;
+
+    switch (D_801CE640) {
+        case 0:
+            sound = func_i13_802C61E0();
+            break;
+        case 1:
+        case 2:
+            sound = func_i13_802C62EC();
+            break;
+        case 3:
+            sound = func_i13_802C64AC();
+            break;
+        case 4:
+            sound = func_i13_802C65D4();
+            break;
+        case 8:
+            sound = func_i13_802C6700();
+            break;
+        case 5:
+            sound = func_i13_802C69CC();
+            break;
+        case 6:
+            sound = func_i13_802C6ABC();
+            break;
+        case 7:
+            sound = func_i13_802C6BC4();
+            break;
+        case 11:
+            sound = func_i13_802C6CE4();
+            break;
+        case 10:
+            sound = func_i13_802C6E48();
+            break;
+        case 9:
+            sound = func_i13_802C6F0C();
+            break;
+    }
+    if (sound == 1) {
+        AudioGeneral_PlaySound(0x11, 0);
+    } else if (sound == 2) {
+        AudioGeneral_PlaySound(0x16, 0);
+    } else if (sound == 3) {
+        AudioGeneral_PlaySound(0x10, 0);
+    } else if (sound == 4) {
+        AudioGeneral_PlaySound(0x10, 0);
+    } else if (sound == 5) {
+        AudioGeneral_PlaySound(0x37, 0);
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C6068.s")
-#endif
 
 s32 func_i13_802C61E0(void) {
     s32 var_v1 = 0;
@@ -578,13 +636,50 @@ Gfx* func_i13_802C711C(Gfx* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C711C.s")
 #endif
 
-#ifdef NON_MATCHING
+extern u32 D_802C8E90;
+extern u32 D_802C8E94;
+extern s32 D_802C8E9C;
+
 void func_i13_802C81AC(s32 arg0) {
-    (void) arg0;
+    s32 var_v0;
+
+    D_i13_802C8D84 = 0;
+    D_i13_802C8D78 = 1;
+    D_802C8E90 = 0x1C;
+    D_802C8E94 = 0x44;
+    D_802C8E98 = 0;
+    var_v0 = 0;
+    switch (arg0) {
+        case 1:
+            var_v0 = 1;
+            D_802C8E9C = 4;
+            break;
+        case 6:
+            var_v0 = 1;
+            D_802C8E9C = 6;
+            break;
+        case 3:
+            var_v0 = 1;
+            D_802C8E9C = 0;
+            break;
+        case 4:
+            var_v0 = 1;
+            D_802C8E9C = 2;
+            break;
+        case 2:
+        case 5:
+            var_v0 = 1;
+            if (D_i13_802C8D50 == 0) {
+                D_802C8E9C = 1;
+            } else {
+                D_802C8E9C = 3;
+            }
+            break;
+    }
+    if (var_v0 != 0) {
+        func_800C3E6C(0);
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i13/ovl_1CBAF0/func_i13_802C81AC.s")
-#endif
 
 extern s32 D_i13_802C8D80;
 extern s32 D_i13_802C8D84;
