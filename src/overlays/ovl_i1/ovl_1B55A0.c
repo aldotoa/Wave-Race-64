@@ -462,13 +462,11 @@ Gfx* func_i1_802C7E48(Gfx* glistp) {
 #endif
 
 // https://decomp.me/scratch/7qW05
-#ifndef NON_MATCHING
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C8E70.s")
-#else
 void func_i1_802C8E70(void) {
     s32 pad;
     s32 var_v0;
     s32 flag = 0;
+    s32 i;
 
     switch (D_i1_802C9520) {
         case 0:
@@ -526,19 +524,12 @@ void func_i1_802C8E70(void) {
 
         case 5:
             var_v0 = 0;
-            if (D_i1_802C9534 == 0x14) {
-                var_v0++;
+            for (i = 0; i < 4; i++) {
+                if ((&D_i1_802C9534)[i] == 0x14) {
+                    var_v0++;
+                }
             }
-            if (D_i1_802C9538 == 0x14) {
-                var_v0++;
-            }
-            if (D_i1_802C953C == 0x14) {
-                var_v0++;
-            }
-            if (D_i1_802C9540 == 0x14) {
-                var_v0++;
-            }
-            if (var_v0 == 4) {
+            if (i == var_v0) {
                 D_i1_802C9520 = 6;
                 D_802C96D0 = 0;
             }
@@ -571,7 +562,6 @@ void func_i1_802C8E70(void) {
         AudioGeneral_PlaySound(0x31, 0);
     }
 }
-#endif
 
 Gfx* func_i1_802C913C(Gfx* dList) {
     s32 var_v0;

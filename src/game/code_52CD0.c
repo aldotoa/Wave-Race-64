@@ -2790,6 +2790,9 @@ void func_800AD418(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AD418.s")
 #endif
 
+/* Matches (probe score 0); blocked only on jtbl_800EBAE4 living in A5CC0.rodata.s
+ * until the whole TU's .rodata can be migrated. `ret += 1` (not `ret++`) in cases
+ * 2/4 stops IDO cross-jumping them into the case 12 tail. */
 #if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 
 s32 func_800ADC8C(s32 arg0) {
@@ -2801,13 +2804,13 @@ s32 func_800ADC8C(s32 arg0) {
             ret += 8;
             break;
         case 2:
-            ret++;
+            ret += 1;
             break;
         case 3:
             ret += 8;
             break;
         case 4:
-            ret++;
+            ret += 1;
             break;
         case 5:
             ret += 6;
