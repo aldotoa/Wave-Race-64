@@ -23,13 +23,41 @@ void func_i5_802C5800(void) {
     func_i5_802C5850();
 }
 
-#ifdef NON_MATCHING
+extern s16 D_802C7B04;
+extern u16 D_802C7B06;
+extern s16 D_i5_802C7A00;
+extern Vp D_i5_802C7A08;
+
 void func_i5_802C5850(void) {
-    /* Port Blue container ship wake disturbance simulation */
+    s32 i;
+    f32 x;
+    f32 z;
+    MtxF sp174;
+    MtxF sp134;
+    MtxF spF4;
+    Mtx spB0;
+    Mtx sp70;
+
+    D_802C7B04 = 0x28 - D_i5_802C7A00;
+    func_800481E0(D_801CE5F8->unkA40, &D_802C7B06, 33.0f, 1.0f, 16.0f, 4096.0f, 0.0f, 0.0f);
+    func_80048A88(&spB0, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.04f);
+    x = gSinTable[0x400] * 500.0f;
+    z = gSinTable[0] * 500.0f;
+    func_800484C8(&sp70, &sp134, x, 0, z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    SysUtils_MtxToMtxF(&spB0, &sp174);
+    SysUtils_MatrixAffineMultiply(&sp134, &sp174, &spF4);
+
+    for (i = 0; i < 4; i++) {
+        SysUtils_MtxFToMtx(&spF4, &D_801CE5F8->unkA80[i]);
+        D_801CE5F8->unk1280[i] = D_i5_802C7A08;
+        if (i & 1) {
+            D_801CE5F8->unk1280[i].vp.vtrans[0] = (D_802C7B04 + 0x42) << 2;
+        } else {
+            D_801CE5F8->unk1280[i].vp.vtrans[0] = (D_i5_802C7A00 + 0x42) << 2;
+        }
+        D_801CE5F8->unk1280[i].vp.vtrans[1] = (i * 0x20 + 0x58) << 2;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i5/ovl_1BFF50/func_i5_802C5850.s")
-#endif
 
 void func_i5_802C5A98(void) {
     s32 need;
