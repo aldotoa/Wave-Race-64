@@ -1974,12 +1974,12 @@ Gfx* func_800A063C(Gfx* arg0, s32 arg1) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A063C.s")
 #endif
 
-#ifdef NON_MATCHING
 Gfx* func_800A10E4(Gfx* gdl, s32 arg1) {
-    s32 sp68;
     UnkStruct_801CE780_unk4* temp_s4;
     UnkStruct_801CE780_unk4** v1;
     s32 var_s3;
+    s32 sp68;
+    s32 pad[4];
     s32 index;
 
     index = D_801CE76C;
@@ -1990,7 +1990,6 @@ Gfx* func_800A10E4(Gfx* gdl, s32 arg1) {
     }
     sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
     gSPDisplayList(gdl++, D_800E6CF8);
-    gdl++;
     if (arg1 < 12) {
         gdl = func_8009D96C(gdl, arg1, 0.3f);
     } else {
@@ -2022,17 +2021,14 @@ Gfx* func_800A10E4(Gfx* gdl, s32 arg1) {
     gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A10E4.s")
-#endif
 
-#ifdef NON_MATCHING
 Gfx* func_800A16F0(Gfx* gdl, s32 arg1) {
     UnkStruct_801CE780_unk4* temp_s4;
     UnkStruct_801CE780_unk4** v1;
-    s32 index;
-    s32 sp68;
     s32 var_s3;
+    s32 sp68;
+    s32 pad[4];
+    s32 index;
 
     index = D_801CE76C;
     v1 = D_801CE780[index].unk4;
@@ -2042,7 +2038,6 @@ Gfx* func_800A16F0(Gfx* gdl, s32 arg1) {
     }
     sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
     gSPDisplayList(gdl++, D_800E6CF8);
-    gdl++;
     if (arg1 < 12) {
         gdl = func_8009D96C(gdl, arg1, 0.3f);
     } else {
@@ -2074,16 +2069,13 @@ Gfx* func_800A16F0(Gfx* gdl, s32 arg1) {
     gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A16F0.s")
-#endif
 
-#ifdef NON_MATCHING
 Gfx* func_800A1CFC(Gfx* gdl, s32 arg1) {
-    s32 sp68;
     UnkStruct_801CE780_unk4* temp_s4;
     UnkStruct_801CE780_unk4** v1;
     s32 var_s3;
+    s32 sp68;
+    s32 pad[4];
     s32 index;
 
     index = D_801CE76C;
@@ -2094,7 +2086,6 @@ Gfx* func_800A1CFC(Gfx* gdl, s32 arg1) {
     }
     sp68 = D_801CF0D8[arg1].unk0 % temp_s4->unk0;
     gSPDisplayList(gdl++, D_800E6CF8);
-    gdl++;
     if (arg1 < 12) {
         gdl = func_8009D96C(gdl, arg1, 0.3f);
     } else {
@@ -2126,16 +2117,13 @@ Gfx* func_800A1CFC(Gfx* gdl, s32 arg1) {
     gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A1CFC.s")
-#endif
 
-#ifdef NON_MATCHING
 Gfx* func_800A2308(Gfx* gdl, s32 arg1) {
-    s32 sp68;
     UnkStruct_801CE780_unk4* temp_s4;
     UnkStruct_801CE780_unk4** v1;
     s32 var_s3;
+    s32 sp68;
+    s32 pad[4];
     s32 index;
 
     index = D_801CE770;
@@ -2173,9 +2161,6 @@ Gfx* func_800A2308(Gfx* gdl, s32 arg1) {
     gSPPopMatrix(gdl++, G_MTX_MODELVIEW);
     return gdl;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800A2308.s")
-#endif
 
 Gfx* func_800A28F4(Gfx* gdl, s32 arg1) {
     StructVarS0* temp_t0;
@@ -2805,6 +2790,9 @@ void func_800AD418(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_52CD0/func_800AD418.s")
 #endif
 
+/* Matches (probe score 0); blocked only on jtbl_800EBAE4 living in A5CC0.rodata.s
+ * until the whole TU's .rodata can be migrated. `ret += 1` (not `ret++`) in cases
+ * 2/4 stops IDO cross-jumping them into the case 12 tail. */
 #if defined(NEEDS_RODATA) || defined(NON_MATCHING)
 
 s32 func_800ADC8C(s32 arg0) {
@@ -2816,13 +2804,13 @@ s32 func_800ADC8C(s32 arg0) {
             ret += 8;
             break;
         case 2:
-            ret++;
+            ret += 1;
             break;
         case 3:
             ret += 8;
             break;
         case 4:
-            ret++;
+            ret += 1;
             break;
         case 5:
             ret += 6;
