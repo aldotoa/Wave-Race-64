@@ -208,7 +208,7 @@ void func_8004CC7C(ShorelineWaveStruct* arg0) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004CC7C.s")
 #endif
 
-extern s32 D_800D47C0;
+s32 D_800D47C0 = 0;
 
 #ifdef NON_MATCHING
 void func_8004D018(f32 arg0, f32 arg1, s32 arg2, s32 arg3, s32 arg4) {
@@ -1236,26 +1236,11 @@ void func_8004EFB4(f32, f32, s32);
 void func_80050F8C(s32, f32, f32);
 extern s32 D_80227D8C;
 
-/* Imported from decomp.me K6Xw9 (LLONSIT, remote score 0); replaces an
- * earlier draft whose call skeleton did not match the stub. Standalone
- * probe of this body vs the assembled stub: all-`i` rows, zero structural
- * diffs.
- * FLOOR: promotion breaks the ROM (measured ~6200-byte scattered ripple):
- * the four function-statics become TU-local .bss (renamed by asm-processor
- * convert-statics), shifting every later absolute .bss reference, and the
- * TU emits only 16 of the stub's 24 late_rodata bytes (dead 0.0 double at
- * D_800E9328 unreferenced by any stub). Pristine tree is ROM-OK, so the
- * original TU has no such .bss -- yet shared-binding reformulations were
- * not found for this one (unlike func_80091DBC's 945 floor). The u32
- * SysUtils_Rand return is load-bearing (unsigned int->float cvt block);
- * the (s32,f32,f32) 50F8C prototype with int-reg passing reproduces the
- * call sites exactly. Do NOT promote until `make` says OK. */
-#ifdef NON_MATCHING
 void func_80051238(void) {
-    static s32 D_800D47C4;
-    static s32 D_800D47C8;
-    static f32 D_800D47CC;
-    static f32 D_800D47D0;
+    static s32 D_800D47C4 = 0;
+    static s32 D_800D47C8 = 1;
+    static f32 D_800D47CC = 1024.0f;
+    static f32 D_800D47D0 = 1024.0f;
     f32 pad;
     f32 sp20;
     f32 sp1C;
@@ -1294,6 +1279,3 @@ void func_80051238(void) {
     func_80050B78(&gCameraPerspective, &sp20, &sp1C);
     func_80050F8C(0, sp20, sp1C);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_80051238.s")
-#endif
