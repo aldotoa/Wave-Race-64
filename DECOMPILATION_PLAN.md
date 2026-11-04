@@ -195,7 +195,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
-| 116 | `func_80069798` | `src/game/code_C6C0.c` | 181 | 4/5  | Floats  | Pending | Camera master cleanup and shutdown coordinator  |
+| 116 | `func_80069798` | `src/game/code_C6C0.c` | 181 | 4/5  | Floats, ParkedFloor  | Pending (Floor 18) | Orbit camera: spherical eye from distance/yaw/pitch, yaw wrap to [0,360), look-at * uniform scale MtxF, then perspective; draft parked behind NON_MATCHING (frame 0x120 and insn sequence exact; `Vec3f*` arg5 keeps mul operand order; FPR choice for dist/4096 and yaw/adj left)  |
 | 117 | `func_8004C998` | `src/game/water_69D0.c` | 185 | 6/2  | Floats  | Pending | Routine logic  |
 | 118 | `func_8008E4B0` | `src/game/code_43DA0.c` | 185 | 6/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 119 | `func_801E1BA8` | `src/codeseg/AF8C0.c` | 185 | 26/0  | Floats, Rodata  | Pending | Machine tuning interaction and controller input loop  |
