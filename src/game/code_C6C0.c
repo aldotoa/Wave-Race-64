@@ -2619,10 +2619,11 @@ void func_801EE91C(MtxF* mf, f32 x, f32 y, f32 z);
 
 #define S ((UnkStruct_80069798*) arg4)
 #define SC ((Vec3f*) arg5)
-// Floor: 18 rows, register allocation only (dist/4096.0f swap f0<->f2, yaw/adj swap f0<->f14).
+// Floor: 9 rows, register allocation only (yaw temp and the <0 adjust swapped: f2/f0, retail f0/f2).
 // Load-bearing: Vec3f access for arg5 (f32[] indexing lets IDO reorder mul operands); yaw as a repeated
 // expression (a named yaw or `?:` grows the 0x120 frame); `dist` reused for the <0 adjust with `adj`
-// declared after the matrices.
+// declared after the matrices; `if (dist) {}` after the yaw store (gives dist f0, 4096.0f f2); the
+// `if (1) {}` block from the wrap through the matrix multiply (permuter find, gives adj f14).
 void func_80069798(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, void* arg5) {
     f32 eye[3];
     f32 dist;
@@ -2637,20 +2638,23 @@ void func_80069798(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, v
     eye[1] = (SIN((s32) ((S->unk20 * 4096.0f) / 360.0f)) * dist) + S->unkC;
     eye[2] = ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * SIN((s32) ((S->unk18 * 4096.0f) / 360.0f))) +
              S->unk10;
-    if ((S->unk18 + (S->unk1C * SC->z)) > 360.0f) {
-        adj = -360.0f;
-    } else {
-        adj = 0.0f;
+    if (1) {
+        if ((S->unk18 + (S->unk1C * SC->z)) > 360.0f) {
+            adj = -360.0f;
+        } else {
+            adj = 0.0f;
+        }
+        if ((S->unk18 + (S->unk1C * SC->z)) < 0.0f) {
+            dist = 360.0f;
+        } else {
+            dist = 0.0f;
+        }
+        S->unk18 = dist + ((S->unk18 + (S->unk1C * SC->z)) + adj);
+        if (dist) {}
+        func_800484C8(arg0, &spD0, eye[0], eye[1], eye[2], S->unk8, S->unkC, S->unk10, 0.0f, 1.0f, 0.0f);
+        func_801EE91C(&sp90, S->unk0 * SC->x, S->unk0 * SC->x, S->unk0 * SC->x);
+        SysUtils_MatrixAffineMultiply(&spD0, &sp90, &sp50);
     }
-    if ((S->unk18 + (S->unk1C * SC->z)) < 0.0f) {
-        dist = 360.0f;
-    } else {
-        dist = 0.0f;
-    }
-    S->unk18 = dist + ((S->unk18 + (S->unk1C * SC->z)) + adj);
-    func_800484C8(arg0, &spD0, eye[0], eye[1], eye[2], S->unk8, S->unkC, S->unk10, 0.0f, 1.0f, 0.0f);
-    func_801EE91C(&sp90, S->unk0 * SC->x, S->unk0 * SC->x, S->unk0 * SC->x);
-    SysUtils_MatrixAffineMultiply(&spD0, &sp90, &sp50);
     SysUtils_MtxFToMtx(&sp50, arg0);
     *(UnkStruct_80069798_copy*) arg1 = *(UnkStruct_80069798_copy*) S->unk28;
     func_800481E0(arg2, arg3, S->unk4, 1.0f, D_800D4AF0, D_800D4AF4, 0.0f, 0.0f);
