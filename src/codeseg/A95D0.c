@@ -226,8 +226,16 @@ void func_801DB430(struct UnkStruct_801DB0E4_arg0* arg0, struct UnkStruct_801DB0
     }
 }
 
+void func_801DB8F0(UnkStruct_801DB0E4_arg0* arg0);
+void func_801DC274(UnkStruct_801DB0E4_arg0* arg0);
+void func_801DC60C(UnkStruct_801DB0E4_arg0* arg0);
+void func_801DCD34(UnkStruct_801DB0E4_arg0* arg0);
+void func_801DD2D0(UnkStruct_801DB0E4_arg0* arg0);
+void func_800AC098(UnkStruct_801DB0E4_arg0* arg0, s32 arg1);
+extern s32 D_801C2C70;
+
 #ifdef NON_MATCHING
-void func_801DB8F0(void* arg0) {
+void func_801DB8F0(UnkStruct_801DB0E4_arg0* arg0) {
     /* 3D particle fireworks and water splash simulator */
 }
 #else
@@ -299,7 +307,7 @@ void func_801DC0AC(struct UnkStruct_801DB0E4_arg0* arg0) {
 }
 
 #ifdef NON_MATCHING
-void func_801DC274(void) {
+void func_801DC274(UnkStruct_801DB0E4_arg0* arg0) {
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC274.s")
@@ -357,32 +365,94 @@ void func_801DC5A8(UnkStruct_801DC5A8* arg0) {
 }
 
 #ifdef NON_MATCHING
-void func_801DC60C(void) {
+void func_801DC60C(UnkStruct_801DB0E4_arg0* arg0) {
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC60C.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801DCD34(void) {
+void func_801DCD34(UnkStruct_801DB0E4_arg0* arg0) {
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DCD34.s")
 #endif
 
 #ifdef NON_MATCHING
-void func_801DD2D0(void) {
+void func_801DD2D0(UnkStruct_801DB0E4_arg0* arg0) {
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DD2D0.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_801DD6B4(void) {
+void func_801DD6B4(UnkStruct_801DB0E4_arg0* arg0) {
+    void (*var_v1)(UnkStruct_801DB0E4_arg0*);
+    s32* ptr;
+
+    D_802287A8 = 0;
+    var_v1 = NULL;
+    switch (D_801CE638) {
+    case 8:
+        switch (gCourseID) {
+        case DOLPHIN_PARK:
+            var_v1 = func_801DC274;
+            break;
+        case SUNNY_BEACH:
+            if (gDifficulty == DIFFICULTY_EXPERT) {
+                var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC404;
+            }
+            break;
+        case SUNSET_BAY:
+            var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC5A8;
+            break;
+        case DRAKE_LAKE:
+            var_v1 = func_801DC60C;
+            break;
+        case PORT_BLUE:
+            var_v1 = func_801DCD34;
+            break;
+        case GLACIER_COAST:
+            var_v1 = func_801DD2D0;
+            break;
+        }
+        break;
+    case 21:
+        switch (gDifficulty) {
+        case DIFFICULTY_NORMAL:
+        case DIFFICULTY_HARD:
+            ptr = &D_802287AC;
+            *ptr = D_801C2C70;
+            if (*ptr < 3) {
+                var_v1 = func_801DC0AC;
+            }
+            break;
+        case DIFFICULTY_EXPERT:
+                switch (D_801C2C70) {
+                case 0:
+                    var_v1 = func_801DB8F0;
+                    break;
+                case 1: {
+                    ptr = &D_802287AC;
+                    *ptr = 4;
+                    var_v1 = func_801DBF68;
+                    break;
+                }
+                case 2: {
+                    ptr = &D_802287AC;
+                    *ptr = 3;
+                    var_v1 = func_801DBF68;
+                    break;
+                }
+                }
+            break;
+        }
+        break;
+    }
+    if (var_v1 != NULL) {
+        var_v1(arg0);
+        func_800AC098(&D_80228190, D_802287A8);
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DD6B4.s")
-#endif
 
 typedef struct {
     u8 pad[0xE0];

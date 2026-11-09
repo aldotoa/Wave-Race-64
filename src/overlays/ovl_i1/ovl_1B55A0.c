@@ -308,13 +308,100 @@ void func_i1_802C6DCC(void) {
     func_800C21F4(4, 0);
 }
 
-#ifdef NON_MATCHING
+extern s32 D_i1_802C9500;
+extern s32 D_i1_802C9504;
+extern s32 D_i1_802C9508;
+extern s32 D_801C2650;
+
 void func_i1_802C6FE0(void) {
-    /* Course final lap fanfare cue */
+    s32 i;
+    s32 temp_v0;
+    s32 temp_v0_2;
+    s32 var_a1;
+    s32 var_a1_2;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_STATE_2A;
+    D_801CE638 = 1;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    D_i1_802C9500 = 0;
+    if (D_801CE608.gameMode == 4) {
+        for (i = 0; i < 4; i++) {
+            if (D_801CE708[i] >= D_801C293C[i].lapCount) {
+                D_801CB3F8[i] = 1;
+            } else {
+                D_801CB3F8[i] = 0;
+            }
+        }
+    }
+    if (gPlayers == ONE_PLAYER) {
+        temp_v0 = D_80192690[D_800D48DC].unk16C8;
+        if (temp_v0 == 1) {
+            D_i1_802C9504 = 0x82;
+        } else if (temp_v0 == 2) {
+            D_i1_802C9504 = 0x8C;
+        } else if (temp_v0 == 3) {
+            D_i1_802C9504 = 0x64;
+        } else if (temp_v0 == 4) {
+            D_i1_802C9504 = 0x78;
+        } else if (temp_v0 == 5) {
+            D_i1_802C9504 = 0x6E;
+        } else {
+            D_i1_802C9504 = 0x64;
+        }
+        if (gGameModes == GMODE_STUNT) {
+            FadeTransition_SetProps(1, 4, D_i1_802C9504);
+        }
+        D_i1_802C9508 = 0;
+    } else {
+        FadeTransition_SetProps(1, 4, 0x64);
+    }
+    func_801E6A4C(0, 0);
+    if (gPlayers == ONE_PLAYER) {
+        func_801E6A4C(1, 1);
+    }
+    D_801CE62A = 0;
+    switch (D_801CE608.gameMode) {
+    case 11:
+        break;
+    case 0:
+        if (D_801C2650 == 1) {
+            var_a1 = 0;
+        } else {
+            var_a1 = 1;
+        }
+        func_800C1F60(6);
+        func_800C21F4(6, var_a1);
+        break;
+    default:
+        func_800C1F60(6);
+        temp_v0_2 = D_801C293C[D_800D48DC].lapCount;
+        if (*(s32*)((u8*)&D_801CE6FC + 0x8) >= temp_v0_2) {
+            func_800C21F4(6, temp_v0_2 + 1);
+        } else {
+            func_800C21F4(6, 5);
+        }
+        break;
+    case 1:
+        func_800C1F60(6);
+        if (D_801CE6F0 == 3) {
+            var_a1_2 = 0;
+        } else if (D_801CE6F0 == 1) {
+            var_a1_2 = 2;
+        } else {
+            var_a1_2 = 1;
+        }
+        func_800C21F4(6, var_a1_2);
+        break;
+    }
+    func_800BFD34();
+    func_800BFD68();
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i1/ovl_1B55A0/func_i1_802C6FE0.s")
-#endif
 
 void func_i1_802C7394(void) {
     gPrevGameState = gGameState;

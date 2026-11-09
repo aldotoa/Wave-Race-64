@@ -3385,6 +3385,8 @@ class TestBatch20261109(unittest.TestCase):
         ("func_8009C2CC", "game/code_52CD0"),
         ("func_801E66F4", "codeseg/B3AA0"),
         ("func_80067810", "game/code_C6C0"),
+        ("func_801DD6B4", "codeseg/A95D0"),
+        ("func_i1_802C6FE0", "overlays/ovl_i1/ovl_1B55A0"),
     ]
 
     def _check(self, func, unit):
@@ -3426,6 +3428,12 @@ class TestBatch20261109(unittest.TestCase):
 
     def test_func_80067810_matched(self):
         self._check(*self.CASES[9])
+
+    def test_func_801DD6B4_matched(self):
+        self._check(*self.CASES[10])
+
+    def test_func_i1_802C6FE0_matched(self):
+        self._check(*self.CASES[11])
 
 
 # END batch-2026-11-09
