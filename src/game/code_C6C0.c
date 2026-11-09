@@ -2318,16 +2318,61 @@ void func_8006719C(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006719C.s")
 #endif
 
-#ifdef NON_MATCHING
+extern u8 D_3000000[];
+
+typedef struct UnkStruct_80227A60 {
+    /* 0x00 */ u32 unk[12];
+    /* 0x30 */ Gfx* dl[5];
+} UnkStruct_80227A60; /* size = 0x44 */
+
+extern UnkStruct_80227A60 D_80227A60[];
+
 Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2) {
-    /* Winner podium presentation camera framing */
-    ((void) arg1);
-    ((void) arg2);
+
+    gSPClearGeometryMode(glistp++, G_CULL_FRONT);
+    gSPSetGeometryMode(glistp++, G_CULL_BACK);
+    if (D_80193D5C[arg2].unk0.h == 0) {
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE108, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[0]);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE208, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[1]);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE308, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[2]);
+    }
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE408, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[3]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE508, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[4]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE608, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[5]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE708, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE908, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEB08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xED08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEF08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF108, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    gSPClearGeometryMode(glistp++, G_CULL_BACK);
+    gSPSetGeometryMode(glistp++, G_CULL_FRONT);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE808, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEA08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEC08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEE08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF008, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF208, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067810.s")
-#endif
 
 Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2);
 
@@ -2446,14 +2491,8 @@ void func_800683A0(s32 arg0) {
     }
 }
 
-extern u8 D_3000000[];
 
-typedef struct UnkStruct_80227A60 {
-    /* 0x00 */ u8 pad0[0x30];
-    /* 0x30 */ Gfx* dl[5];
-} UnkStruct_80227A60; /* size = 0x44 */
 
-extern UnkStruct_80227A60 D_80227A60[];
 extern Gfx D_1007968[];
 
 /*
