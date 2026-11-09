@@ -1,3 +1,46 @@
+.section .late_rodata
+nonmatching D_800EB9D8
+
+dlabel D_800EB9D8
+    /* A61D8 800EB9D8 45992000 */ .float 4900
+    /* A61DC 800EB9DC 00000000 */ .float 0
+enddlabel D_800EB9D8
+.size D_800EB9D8, . - D_800EB9D8
+
+.align 3
+nonmatching D_800EB9E0
+
+dlabel D_800EB9E0
+    /* A61E0 800EB9E0 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB9E0
+.size D_800EB9E0, . - D_800EB9E0
+
+.align 3
+nonmatching D_800EB9E8
+
+dlabel D_800EB9E8
+    /* A61E8 800EB9E8 3FC999999999999A */ .double 0.200000000000000011
+enddlabel D_800EB9E8
+.size D_800EB9E8, . - D_800EB9E8
+
+.align 3
+nonmatching D_800EB9F0
+
+dlabel D_800EB9F0
+    /* A61F0 800EB9F0 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EB9F0
+.size D_800EB9F0, . - D_800EB9F0
+
+nonmatching D_800EB9F8
+
+dlabel D_800EB9F8
+    /* A61F8 800EB9F8 48AFC800 */ .float 360000
+    /* A61FC 800EB9FC 00000000 */ .float 0
+enddlabel D_800EB9F8
+.size D_800EB9F8, . - D_800EB9F8
+
+
+.section .text
 nonmatching func_800AAAC8, 0x794
 
 glabel func_800AAAC8

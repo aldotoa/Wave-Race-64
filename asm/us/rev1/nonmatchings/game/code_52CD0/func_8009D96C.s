@@ -1,3 +1,25 @@
+.section .late_rodata
+nonmatching jtbl_800EB5A8
+
+dlabel jtbl_800EB5A8
+    /* A5DA8 800EB5A8 8009D9D0 */ .word .L8009D9D0
+    /* A5DAC 800EB5AC 8009D9D0 */ .word .L8009D9D0
+    /* A5DB0 800EB5B0 8009D9D0 */ .word .L8009D9D0
+    /* A5DB4 800EB5B4 8009D9D0 */ .word .L8009D9D0
+    /* A5DB8 800EB5B8 8009D9D0 */ .word .L8009D9D0
+    /* A5DBC 800EB5BC 8009D9D0 */ .word .L8009D9D0
+    /* A5DC0 800EB5C0 8009D9E8 */ .word .L8009D9E8
+    /* A5DC4 800EB5C4 8009D9E8 */ .word .L8009D9E8
+    /* A5DC8 800EB5C8 8009D9E8 */ .word .L8009D9E8
+    /* A5DCC 800EB5CC 8009D9E8 */ .word .L8009D9E8
+    /* A5DD0 800EB5D0 8009D9F8 */ .word .L8009D9F8
+    /* A5DD4 800EB5D4 8009D9D0 */ .word .L8009D9D0
+    /* A5DD8 800EB5D8 8009D9D0 */ .word .L8009D9D0
+enddlabel jtbl_800EB5A8
+.size jtbl_800EB5A8, . - jtbl_800EB5A8
+
+
+.section .text
 nonmatching func_8009D96C, 0x224
 
 glabel func_8009D96C

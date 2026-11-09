@@ -1,3 +1,190 @@
+.section .late_rodata
+nonmatching jtbl_800EBA10
+
+dlabel jtbl_800EBA10
+    /* A6210 800EBA10 800AC64C */ .word .L800AC64C
+    /* A6214 800EBA14 800AC8D4 */ .word .L800AC8D4
+    /* A6218 800EBA18 800ACB04 */ .word .L800ACB04
+    /* A621C 800EBA1C 800ACCB0 */ .word .L800ACCB0
+    /* A6220 800EBA20 800ACD64 */ .word .L800ACD64
+    /* A6224 800EBA24 800ACED0 */ .word .L800ACED0
+    /* A6228 800EBA28 800ACF7C */ .word .L800ACF7C
+    /* A622C 800EBA2C 800ACF94 */ .word .L800ACF94
+    /* A6230 800EBA30 800AD190 */ .word .L800AD190
+enddlabel jtbl_800EBA10
+.size jtbl_800EBA10, . - jtbl_800EBA10
+
+nonmatching D_800EBA34
+
+dlabel D_800EBA34
+    /* A6234 800EBA34 459C4000 */ .float 5000
+enddlabel D_800EBA34
+.size D_800EBA34, . - D_800EBA34
+
+nonmatching D_800EBA38
+
+dlabel D_800EBA38
+    /* A6238 800EBA38 47C35000 */ .float 100000
+enddlabel D_800EBA38
+.size D_800EBA38, . - D_800EBA38
+
+nonmatching D_800EBA3C
+
+dlabel D_800EBA3C
+    /* A623C 800EBA3C 47C35000 */ .float 100000
+enddlabel D_800EBA3C
+.size D_800EBA3C, . - D_800EBA3C
+
+nonmatching D_800EBA40
+
+dlabel D_800EBA40
+    /* A6240 800EBA40 453B8000 */ .float 3000
+enddlabel D_800EBA40
+.size D_800EBA40, . - D_800EBA40
+
+nonmatching D_800EBA44
+
+dlabel D_800EBA44
+    /* A6244 800EBA44 44898000 */ .float 1100
+enddlabel D_800EBA44
+.size D_800EBA44, . - D_800EBA44
+
+nonmatching D_800EBA48
+
+dlabel D_800EBA48
+    /* A6248 800EBA48 47C35000 */ .float 100000
+enddlabel D_800EBA48
+.size D_800EBA48, . - D_800EBA48
+
+nonmatching D_800EBA4C
+
+dlabel D_800EBA4C
+    /* A624C 800EBA4C C5866000 */ .float -4300
+enddlabel D_800EBA4C
+.size D_800EBA4C, . - D_800EBA4C
+
+nonmatching D_800EBA50
+
+dlabel D_800EBA50
+    /* A6250 800EBA50 45BB8000 */ .float 6000
+enddlabel D_800EBA50
+.size D_800EBA50, . - D_800EBA50
+
+nonmatching D_800EBA54
+
+dlabel D_800EBA54
+    /* A6254 800EBA54 47C35000 */ .float 100000
+enddlabel D_800EBA54
+.size D_800EBA54, . - D_800EBA54
+
+nonmatching D_800EBA58
+
+dlabel D_800EBA58
+    /* A6258 800EBA58 C59C4000 */ .float -5000
+enddlabel D_800EBA58
+.size D_800EBA58, . - D_800EBA58
+
+nonmatching D_800EBA5C
+
+dlabel D_800EBA5C
+    /* A625C 800EBA5C 458FC000 */ .float 4600
+enddlabel D_800EBA5C
+.size D_800EBA5C, . - D_800EBA5C
+
+nonmatching D_800EBA60
+
+dlabel D_800EBA60
+    /* A6260 800EBA60 459C4000 */ .float 5000
+enddlabel D_800EBA60
+.size D_800EBA60, . - D_800EBA60
+
+nonmatching D_800EBA64
+
+dlabel D_800EBA64
+    /* A6264 800EBA64 C5228000 */ .float -2600
+enddlabel D_800EBA64
+.size D_800EBA64, . - D_800EBA64
+
+nonmatching D_800EBA68
+
+dlabel D_800EBA68
+    /* A6268 800EBA68 450D4000 */ .float 2260
+enddlabel D_800EBA68
+.size D_800EBA68, . - D_800EBA68
+
+nonmatching D_800EBA6C
+
+dlabel D_800EBA6C
+    /* A626C 800EBA6C C5246000 */ .float -2630
+enddlabel D_800EBA6C
+.size D_800EBA6C, . - D_800EBA6C
+
+nonmatching D_800EBA70
+
+dlabel D_800EBA70
+    /* A6270 800EBA70 4505C000 */ .float 2140
+enddlabel D_800EBA70
+.size D_800EBA70, . - D_800EBA70
+
+nonmatching D_800EBA74
+
+dlabel D_800EBA74
+    /* A6274 800EBA74 C51C4000 */ .float -2500
+enddlabel D_800EBA74
+.size D_800EBA74, . - D_800EBA74
+
+nonmatching D_800EBA78
+
+dlabel D_800EBA78
+    /* A6278 800EBA78 44ED8000 */ .float 1900
+enddlabel D_800EBA78
+.size D_800EBA78, . - D_800EBA78
+
+nonmatching D_800EBA7C
+
+dlabel D_800EBA7C
+    /* A627C 800EBA7C C511A000 */ .float -2330
+enddlabel D_800EBA7C
+.size D_800EBA7C, . - D_800EBA7C
+
+nonmatching D_800EBA80
+
+dlabel D_800EBA80
+    /* A6280 800EBA80 44D0C000 */ .float 1670
+enddlabel D_800EBA80
+.size D_800EBA80, . - D_800EBA80
+
+nonmatching D_800EBA84
+
+dlabel D_800EBA84
+    /* A6284 800EBA84 C5034000 */ .float -2100
+enddlabel D_800EBA84
+.size D_800EBA84, . - D_800EBA84
+
+nonmatching D_800EBA88
+
+dlabel D_800EBA88
+    /* A6288 800EBA88 44C1C000 */ .float 1550
+enddlabel D_800EBA88
+.size D_800EBA88, . - D_800EBA88
+
+nonmatching D_800EBA8C
+
+dlabel D_800EBA8C
+    /* A628C 800EBA8C C4ED8000 */ .float -1900
+enddlabel D_800EBA8C
+.size D_800EBA8C, . - D_800EBA8C
+
+nonmatching D_800EBA90
+
+dlabel D_800EBA90
+    /* A6290 800EBA90 C520B000 */ .float -2571
+    /* A6294 800EBA94 00000000 */ .float 0
+enddlabel D_800EBA90
+.size D_800EBA90, . - D_800EBA90
+
+
+.section .text
 nonmatching func_800AC184, 0x1240
 
 glabel func_800AC184
