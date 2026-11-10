@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **169 remaining non-matching functions** (132 matched in prioritized matrix, 1,199 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **168 remaining non-matching functions** (133 matched in prioritized matrix, 1,200 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **169 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,199** | 1,368 | **87.65%** |
-| **Non-Matching Functions** | **169** | 1,368 | **12.35%** |
-| **Matched Code Bytes** | **448,984 B** | 834,036 B | **53.83%** |
+| **Matched Functions** | **1,200** | 1,368 | **87.72%** |
+| **Non-Matching Functions** | **168** | 1,368 | **12.28%** |
+| **Matched Code Bytes** | **450,636 B** | 834,036 B | **54.03%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **425** | 425 | **100% OK** |
 
@@ -27,8 +27,8 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 3 | 20 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
 | **5** | Rodata & Jump Table Blocked | 18 | 13 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 148 | 38 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **169** | **132** | **301** | | |
+| **6** | Monolithic Routines & Core Engines | 147 | 39 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **168** | **133** | **301** | | |
 
 ---
 
@@ -299,7 +299,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 217 | `func_i12_802C58A0` | `src/overlays/ovl_i12/ovl_1CAE40.c` | 401 | 45/14  | Integer Clean  | **MATCHED** | Course data menu display list (mode tabs, 9-course grid, confirm buttons)  |
 | 218 | `func_801EED70` | `src/codeseg/B97B0.c` | 405 | 40/1  | Floats  | Pending | Routine logic  |
 | 219 | `func_801E2530` | `src/codeseg/AF8C0.c` | 407 | 65/15  | Floats, JumpTable, Rodata  | Pending | Character select and machine tuning cursor display list renderer  |
-| 220 | `func_8006719C` | `src/game/code_C6C0.c` | 413 | 2/1  | Floats  | Pending | Camera target lock-on interpolation filter  |
+| 220 | `func_8006719C` | `src/game/code_C6C0.c` | 413 | 2/1  | Floats  | **MATCHED** | Rider model display-list chain with optional reflection-map setup (guLookAtReflect + gSPLookAt); the texture load must be the compound `_gDPLoadTextureBlockTile` macro, hand-expanded gDP calls schedule the stores differently |
 | 221 | `func_801DB8F0` | `src/codeseg/A95D0.c` | 414 | 34/21  | Floats, Rodata  | Pending | 3D particle fireworks and water splash simulator  |
 | 222 | `func_8008D94C` | `src/game/code_43DA0.c` | 417 | 43/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 223 | `SysMain_Thread` | `src/sys/sys_main.c` | 433 | 20/60  | Floats  | **MATCHED** | Routine logic  |

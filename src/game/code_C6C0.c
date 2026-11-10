@@ -2394,14 +2394,6 @@ void func_800665B0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800665B0.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_8006719C(void) {
-    /* Finish line celebration orbital pan camera */
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006719C.s")
-#endif
-
 extern u8 D_3000000[];
 
 typedef struct UnkStruct_80227A60 {
@@ -2410,6 +2402,72 @@ typedef struct UnkStruct_80227A60 {
 } UnkStruct_80227A60; /* size = 0x44 */
 
 extern UnkStruct_80227A60 D_80227A60[];
+
+extern RiderStruct D_801C2C70[];
+extern s32 D_800D4934;
+extern s32 D_800D4930;
+extern s16 D_800D492C;
+extern s32 D_800D48D0[];
+
+Gfx* func_8006719C(Gfx* glistp, s32 arg1) {
+    gSPClearGeometryMode(glistp++, G_CULL_FRONT);
+    gSPSetGeometryMode(glistp++, G_CULL_BACK);
+    if ((D_801C2C70[arg1].lapCount == 0) && (gDifficulty == 2)) {
+        guLookAtReflect(&gGfxPool->unkE108[arg1], (LookAt*) &gGfxPool->unkE208[arg1],
+                        gCameraPerspective[D_80223930].unk4C, gCameraPerspective[D_80223930].unk50,
+                        gCameraPerspective[D_80223930].unk54, gCameraPerspective[D_80223930].unk7C,
+                        gCameraPerspective[D_80223930].unk80, gCameraPerspective[D_80223930].unk84,
+                        gCameraPerspective[D_80223930].unk70, gCameraPerspective[D_80223930].unk74,
+                        gCameraPerspective[D_80223930].unk78);
+        gSPSetGeometryMode(glistp++, 0x00040000);
+        gSPLookAt(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE208);
+        gSPTexture(glistp++, D_800D4934, D_800D4934, 0, 0, G_ON);
+        gDPPipeSync(glistp++);
+        gDPSetTextureLUT(glistp++, G_TT_NONE);
+        gDPSetEnvColor(glistp++, 255, 255, 255, D_800D492C);
+        _gDPLoadTextureBlockTile(glistp++, D_800D48D0[D_800D4930], 0, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetCombineLERP(glistp++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, SHADE, TEXEL0, COMBINED, ENV_ALPHA, COMBINED, 0, 0, 0, SHADE);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE308, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[2]);
+        gSPClearGeometryMode(glistp++, 0x00040000);
+        gDPPipeSync(glistp++);
+        gDPSetCombineLERP(glistp++, TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
+        gDPSetTextureLUT(glistp++, G_TT_RGBA16);
+    }
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE408, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[3]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE508, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[4]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE608, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[5]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEB08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE708, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE908, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xED08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEF08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF108, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    gSPClearGeometryMode(glistp++, G_CULL_BACK);
+    gSPSetGeometryMode(glistp++, G_CULL_FRONT);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEC08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE808, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEA08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEE08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF008, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF208, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    return glistp;
+}
 
 Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2) {
 
