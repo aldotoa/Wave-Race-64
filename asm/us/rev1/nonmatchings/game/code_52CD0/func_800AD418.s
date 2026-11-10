@@ -1,3 +1,49 @@
+.section .late_rodata
+.align 3
+nonmatching D_800EBA98
+
+dlabel D_800EBA98
+    /* A6298 800EBA98 3F847AE147AE147B */ .double 0.0100000000000000002
+enddlabel D_800EBA98
+.size D_800EBA98, . - D_800EBA98
+
+nonmatching D_800EBAA0
+
+dlabel D_800EBAA0
+    /* A62A0 800EBAA0 3C23D70A */ .float 0.009999999776
+enddlabel D_800EBAA0
+.size D_800EBAA0, . - D_800EBAA0
+
+nonmatching jtbl_800EBAA4
+
+dlabel jtbl_800EBAA4
+    /* A62A4 800EBAA4 800AD940 */ .word .L800AD940
+    /* A62A8 800EBAA8 800AD9D0 */ .word .L800AD9D0
+    /* A62AC 800EBAAC 800ADAC8 */ .word .L800ADAC8
+    /* A62B0 800EBAB0 800ADB10 */ .word .L800ADB10
+    /* A62B4 800EBAB4 800ADB68 */ .word .L800ADB68
+    /* A62B8 800EBAB8 800ADBEC */ .word .L800ADBEC
+    /* A62BC 800EBABC 800ADC74 */ .word .L800ADC74
+    /* A62C0 800EBAC0 800ADA54 */ .word .L800ADA54
+    /* A62C4 800EBAC4 800ADC34 */ .word .L800ADC34
+enddlabel jtbl_800EBAA4
+.size jtbl_800EBAA4, . - jtbl_800EBAA4
+
+nonmatching jtbl_800EBAC8
+
+dlabel jtbl_800EBAC8
+    /* A62C8 800EBAC8 800ADA10 */ .word .L800ADA10
+    /* A62CC 800EBACC 800ADA10 */ .word .L800ADA10
+    /* A62D0 800EBAD0 800ADA40 */ .word .L800ADA40
+    /* A62D4 800EBAD4 800ADA40 */ .word .L800ADA40
+    /* A62D8 800EBAD8 800ADA2C */ .word .L800ADA2C
+    /* A62DC 800EBADC 800ADA2C */ .word .L800ADA2C
+    /* A62E0 800EBAE0 800ADA2C */ .word .L800ADA2C
+enddlabel jtbl_800EBAC8
+.size jtbl_800EBAC8, . - jtbl_800EBAC8
+
+
+.section .text
 nonmatching func_800AD418, 0x874
 
 glabel func_800AD418

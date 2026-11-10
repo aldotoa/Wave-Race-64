@@ -252,45 +252,130 @@ s32 func_801E9B04(s32 fontMode, s8 character) {
     return glyph;
 }
 
-#ifdef NON_MATCHING
 void func_801E9D6C(void) {
-    /* Formatted lap timer display printer (mm:ss.ms) */
+    switch (D_80228A78.unk2) {
+    case 0:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unk10 = 0;
+        break;
+    case 1:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 2:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 3:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unk10 = 0;
+        break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801E9D6C.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801EA0B0(void) {
-    /* 2D text quad texture rectangle emitter */
+    switch (D_80228A78.unk2) {
+        case 0:
+            D_80228A78.unkC = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0;
+            D_80228A78.unk10 = 0;
+            break;
+        case 1:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
+        case 2:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
+        case 3:
+            D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0;
+            D_80228A78.unk10 = 0;
+            break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EA0B0.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801EA3EC(void) {
-    /* Fast3D font texture tile loader */
+    switch (D_80228A78.unk2) {
+    case 0:
+        D_80228A78.unkC = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = 0;
+        break;
+    case 1:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 2:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 3:
+        D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unkE = 0xFF;
+        D_80228A78.unk10 = 0;
+        break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EA3EC.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801EA730(void) {
-    /* Variable-width proportional font mapper */
+    switch (D_80228A78.unk2) {
+        case 0:
+            D_80228A78.unkC = 0;
+            D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
+        case 1:
+            D_80228A78.unkC = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = 0;
+            break;
+        case 2:
+            D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = 0;
+            break;
+        case 3:
+            D_80228A78.unkC = 0;
+            D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EA730.s")
-#endif
 
-#ifdef NON_MATCHING
 void func_801EAA6C(void) {
-    /* Font tile cache and texture buffer manager */
+    switch (D_80228A78.unk2) {
+    case 0:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 128.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unk10 = 0xFF;
+        break;
+    case 1:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0;
+        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 2:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = 0;
+        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+        break;
+    case 3:
+        D_80228A78.unkC = 0xFF;
+        D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 128.0f) / (f32) D_80228A78.unk8);
+        D_80228A78.unk10 = 0xFF;
+        break;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EAA6C.s")
-#endif
 
 void func_801EADB0(void) {
     switch (D_80228A78.unk2) {

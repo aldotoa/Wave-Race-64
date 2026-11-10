@@ -1,3 +1,485 @@
+.section .late_rodata
+nonmatching jtbl_800EB5DC
+
+dlabel jtbl_800EB5DC
+    /* A5DDC 800EB5DC 800A2BA0 */ .word .L800A2BA0
+    /* A5DE0 800EB5E0 800A2DC0 */ .word .L800A2DC0
+    /* A5DE4 800EB5E4 800A2FF8 */ .word .L800A2FF8
+    /* A5DE8 800EB5E8 800A3224 */ .word .L800A3224
+    /* A5DEC 800EB5EC 800A34AC */ .word .L800A34AC
+    /* A5DF0 800EB5F0 800A3750 */ .word .L800A3750
+    /* A5DF4 800EB5F4 800A39A0 */ .word .L800A39A0
+    /* A5DF8 800EB5F8 800A3C00 */ .word .L800A3C00
+    /* A5DFC 800EB5FC 800A3DB8 */ .word .L800A3DB8
+    /* A5E00 800EB600 800A3FF0 */ .word .L800A3FF0
+    /* A5E04 800EB604 800A4104 */ .word .L800A4104
+    /* A5E08 800EB608 800A52C4 */ .word .L800A52C4
+    /* A5E0C 800EB60C 800A4210 */ .word .L800A4210
+    /* A5E10 800EB610 800A4234 */ .word .L800A4234
+    /* A5E14 800EB614 800A43E8 */ .word .L800A43E8
+    /* A5E18 800EB618 800A463C */ .word .L800A463C
+    /* A5E1C 800EB61C 800A4948 */ .word .L800A4948
+    /* A5E20 800EB620 800A4C2C */ .word .L800A4C2C
+    /* A5E24 800EB624 800A4E68 */ .word .L800A4E68
+    /* A5E28 800EB628 800A5098 */ .word .L800A5098
+    /* A5E2C 800EB62C 00000000 */ .word 0x00000000
+enddlabel jtbl_800EB5DC
+.size jtbl_800EB5DC, . - jtbl_800EB5DC
+
+.align 3
+nonmatching D_800EB630
+
+dlabel D_800EB630
+    /* A5E30 800EB630 3FE3333333333333 */ .double 0.599999999999999978
+enddlabel D_800EB630
+.size D_800EB630, . - D_800EB630
+
+.align 3
+nonmatching D_800EB638
+
+dlabel D_800EB638
+    /* A5E38 800EB638 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB638
+.size D_800EB638, . - D_800EB638
+
+.align 3
+nonmatching D_800EB640
+
+dlabel D_800EB640
+    /* A5E40 800EB640 3FECCCCCCCCCCCCD */ .double 0.900000000000000022
+enddlabel D_800EB640
+.size D_800EB640, . - D_800EB640
+
+.align 3
+nonmatching D_800EB648
+
+dlabel D_800EB648
+    /* A5E48 800EB648 4056800000000000 */ .double 90
+enddlabel D_800EB648
+.size D_800EB648, . - D_800EB648
+
+.align 3
+nonmatching D_800EB650
+
+dlabel D_800EB650
+    /* A5E50 800EB650 C056800000000000 */ .double -90
+enddlabel D_800EB650
+.size D_800EB650, . - D_800EB650
+
+.align 3
+nonmatching D_800EB658
+
+dlabel D_800EB658
+    /* A5E58 800EB658 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB658
+.size D_800EB658, . - D_800EB658
+
+.align 3
+nonmatching D_800EB660
+
+dlabel D_800EB660
+    /* A5E60 800EB660 4056800000000000 */ .double 90
+enddlabel D_800EB660
+.size D_800EB660, . - D_800EB660
+
+.align 3
+nonmatching D_800EB668
+
+dlabel D_800EB668
+    /* A5E68 800EB668 C056800000000000 */ .double -90
+enddlabel D_800EB668
+.size D_800EB668, . - D_800EB668
+
+.align 3
+nonmatching D_800EB670
+
+dlabel D_800EB670
+    /* A5E70 800EB670 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB670
+.size D_800EB670, . - D_800EB670
+
+.align 3
+nonmatching D_800EB678
+
+dlabel D_800EB678
+    /* A5E78 800EB678 4056800000000000 */ .double 90
+enddlabel D_800EB678
+.size D_800EB678, . - D_800EB678
+
+.align 3
+nonmatching D_800EB680
+
+dlabel D_800EB680
+    /* A5E80 800EB680 C056800000000000 */ .double -90
+enddlabel D_800EB680
+.size D_800EB680, . - D_800EB680
+
+.align 3
+nonmatching D_800EB688
+
+dlabel D_800EB688
+    /* A5E88 800EB688 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB688
+.size D_800EB688, . - D_800EB688
+
+.align 3
+nonmatching D_800EB690
+
+dlabel D_800EB690
+    /* A5E90 800EB690 4056800000000000 */ .double 90
+enddlabel D_800EB690
+.size D_800EB690, . - D_800EB690
+
+.align 3
+nonmatching D_800EB698
+
+dlabel D_800EB698
+    /* A5E98 800EB698 C056800000000000 */ .double -90
+enddlabel D_800EB698
+.size D_800EB698, . - D_800EB698
+
+.align 3
+nonmatching D_800EB6A0
+
+dlabel D_800EB6A0
+    /* A5EA0 800EB6A0 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB6A0
+.size D_800EB6A0, . - D_800EB6A0
+
+.align 3
+nonmatching D_800EB6A8
+
+dlabel D_800EB6A8
+    /* A5EA8 800EB6A8 4056800000000000 */ .double 90
+enddlabel D_800EB6A8
+.size D_800EB6A8, . - D_800EB6A8
+
+.align 3
+nonmatching D_800EB6B0
+
+dlabel D_800EB6B0
+    /* A5EB0 800EB6B0 C056800000000000 */ .double -90
+enddlabel D_800EB6B0
+.size D_800EB6B0, . - D_800EB6B0
+
+.align 3
+nonmatching D_800EB6B8
+
+dlabel D_800EB6B8
+    /* A5EB8 800EB6B8 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB6B8
+.size D_800EB6B8, . - D_800EB6B8
+
+.align 3
+nonmatching D_800EB6C0
+
+dlabel D_800EB6C0
+    /* A5EC0 800EB6C0 4056800000000000 */ .double 90
+enddlabel D_800EB6C0
+.size D_800EB6C0, . - D_800EB6C0
+
+.align 3
+nonmatching D_800EB6C8
+
+dlabel D_800EB6C8
+    /* A5EC8 800EB6C8 C056800000000000 */ .double -90
+enddlabel D_800EB6C8
+.size D_800EB6C8, . - D_800EB6C8
+
+.align 3
+nonmatching D_800EB6D0
+
+dlabel D_800EB6D0
+    /* A5ED0 800EB6D0 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB6D0
+.size D_800EB6D0, . - D_800EB6D0
+
+.align 3
+nonmatching D_800EB6D8
+
+dlabel D_800EB6D8
+    /* A5ED8 800EB6D8 4056800000000000 */ .double 90
+enddlabel D_800EB6D8
+.size D_800EB6D8, . - D_800EB6D8
+
+.align 3
+nonmatching D_800EB6E0
+
+dlabel D_800EB6E0
+    /* A5EE0 800EB6E0 C056800000000000 */ .double -90
+enddlabel D_800EB6E0
+.size D_800EB6E0, . - D_800EB6E0
+
+.align 3
+nonmatching D_800EB6E8
+
+dlabel D_800EB6E8
+    /* A5EE8 800EB6E8 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB6E8
+.size D_800EB6E8, . - D_800EB6E8
+
+.align 3
+nonmatching D_800EB6F0
+
+dlabel D_800EB6F0
+    /* A5EF0 800EB6F0 3FECCCCCCCCCCCCD */ .double 0.900000000000000022
+enddlabel D_800EB6F0
+.size D_800EB6F0, . - D_800EB6F0
+
+.align 3
+nonmatching D_800EB6F8
+
+dlabel D_800EB6F8
+    /* A5EF8 800EB6F8 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB6F8
+.size D_800EB6F8, . - D_800EB6F8
+
+.align 3
+nonmatching D_800EB700
+
+dlabel D_800EB700
+    /* A5F00 800EB700 4056800000000000 */ .double 90
+enddlabel D_800EB700
+.size D_800EB700, . - D_800EB700
+
+.align 3
+nonmatching D_800EB708
+
+dlabel D_800EB708
+    /* A5F08 800EB708 C056800000000000 */ .double -90
+enddlabel D_800EB708
+.size D_800EB708, . - D_800EB708
+
+.align 3
+nonmatching D_800EB710
+
+dlabel D_800EB710
+    /* A5F10 800EB710 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB710
+.size D_800EB710, . - D_800EB710
+
+.align 3
+nonmatching D_800EB718
+
+dlabel D_800EB718
+    /* A5F18 800EB718 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB718
+.size D_800EB718, . - D_800EB718
+
+.align 3
+nonmatching D_800EB720
+
+dlabel D_800EB720
+    /* A5F20 800EB720 4056800000000000 */ .double 90
+enddlabel D_800EB720
+.size D_800EB720, . - D_800EB720
+
+.align 3
+nonmatching D_800EB728
+
+dlabel D_800EB728
+    /* A5F28 800EB728 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB728
+.size D_800EB728, . - D_800EB728
+
+.align 3
+nonmatching D_800EB730
+
+dlabel D_800EB730
+    /* A5F30 800EB730 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB730
+.size D_800EB730, . - D_800EB730
+
+.align 3
+nonmatching D_800EB738
+
+dlabel D_800EB738
+    /* A5F38 800EB738 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB738
+.size D_800EB738, . - D_800EB738
+
+.align 3
+nonmatching D_800EB740
+
+dlabel D_800EB740
+    /* A5F40 800EB740 4056800000000000 */ .double 90
+enddlabel D_800EB740
+.size D_800EB740, . - D_800EB740
+
+.align 3
+nonmatching D_800EB748
+
+dlabel D_800EB748
+    /* A5F48 800EB748 C056800000000000 */ .double -90
+enddlabel D_800EB748
+.size D_800EB748, . - D_800EB748
+
+nonmatching D_800EB750
+
+dlabel D_800EB750
+    /* A5F50 800EB750 3E99999A */ .float 0.3000000119
+enddlabel D_800EB750
+.size D_800EB750, . - D_800EB750
+
+nonmatching D_800EB754
+
+dlabel D_800EB754
+    /* A5F54 800EB754 3DCCCCCD */ .float 0.1000000015
+enddlabel D_800EB754
+.size D_800EB754, . - D_800EB754
+
+.align 3
+nonmatching D_800EB758
+
+dlabel D_800EB758
+    /* A5F58 800EB758 3FECCCCCCCCCCCCD */ .double 0.900000000000000022
+enddlabel D_800EB758
+.size D_800EB758, . - D_800EB758
+
+.align 3
+nonmatching D_800EB760
+
+dlabel D_800EB760
+    /* A5F60 800EB760 4056800000000000 */ .double 90
+enddlabel D_800EB760
+.size D_800EB760, . - D_800EB760
+
+.align 3
+nonmatching D_800EB768
+
+dlabel D_800EB768
+    /* A5F68 800EB768 C056800000000000 */ .double -90
+enddlabel D_800EB768
+.size D_800EB768, . - D_800EB768
+
+.align 3
+nonmatching D_800EB770
+
+dlabel D_800EB770
+    /* A5F70 800EB770 BFF3333333333333 */ .double -1.19999999999999996
+enddlabel D_800EB770
+.size D_800EB770, . - D_800EB770
+
+nonmatching D_800EB778
+
+dlabel D_800EB778
+    /* A5F78 800EB778 3E99999A */ .float 0.3000000119
+enddlabel D_800EB778
+.size D_800EB778, . - D_800EB778
+
+nonmatching D_800EB77C
+
+dlabel D_800EB77C
+    /* A5F7C 800EB77C 3DCCCCCD */ .float 0.1000000015
+enddlabel D_800EB77C
+.size D_800EB77C, . - D_800EB77C
+
+.align 3
+nonmatching D_800EB780
+
+dlabel D_800EB780
+    /* A5F80 800EB780 3FECCCCCCCCCCCCD */ .double 0.900000000000000022
+enddlabel D_800EB780
+.size D_800EB780, . - D_800EB780
+
+.align 3
+nonmatching D_800EB788
+
+dlabel D_800EB788
+    /* A5F88 800EB788 4056800000000000 */ .double 90
+enddlabel D_800EB788
+.size D_800EB788, . - D_800EB788
+
+.align 3
+nonmatching D_800EB790
+
+dlabel D_800EB790
+    /* A5F90 800EB790 C056800000000000 */ .double -90
+enddlabel D_800EB790
+.size D_800EB790, . - D_800EB790
+
+.align 3
+nonmatching D_800EB798
+
+dlabel D_800EB798
+    /* A5F98 800EB798 BFF3333333333333 */ .double -1.19999999999999996
+enddlabel D_800EB798
+.size D_800EB798, . - D_800EB798
+
+.align 3
+nonmatching D_800EB7A0
+
+dlabel D_800EB7A0
+    /* A5FA0 800EB7A0 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB7A0
+.size D_800EB7A0, . - D_800EB7A0
+
+.align 3
+nonmatching D_800EB7A8
+
+dlabel D_800EB7A8
+    /* A5FA8 800EB7A8 4056800000000000 */ .double 90
+enddlabel D_800EB7A8
+.size D_800EB7A8, . - D_800EB7A8
+
+.align 3
+nonmatching D_800EB7B0
+
+dlabel D_800EB7B0
+    /* A5FB0 800EB7B0 C056800000000000 */ .double -90
+enddlabel D_800EB7B0
+.size D_800EB7B0, . - D_800EB7B0
+
+.align 3
+nonmatching D_800EB7B8
+
+dlabel D_800EB7B8
+    /* A5FB8 800EB7B8 BFF3333333333333 */ .double -1.19999999999999996
+enddlabel D_800EB7B8
+.size D_800EB7B8, . - D_800EB7B8
+
+.align 3
+nonmatching D_800EB7C0
+
+dlabel D_800EB7C0
+    /* A5FC0 800EB7C0 3FE3333333333333 */ .double 0.599999999999999978
+enddlabel D_800EB7C0
+.size D_800EB7C0, . - D_800EB7C0
+
+.align 3
+nonmatching D_800EB7C8
+
+dlabel D_800EB7C8
+    /* A5FC8 800EB7C8 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB7C8
+.size D_800EB7C8, . - D_800EB7C8
+
+.align 3
+nonmatching D_800EB7D0
+
+dlabel D_800EB7D0
+    /* A5FD0 800EB7D0 BFF3333333333333 */ .double -1.19999999999999996
+enddlabel D_800EB7D0
+.size D_800EB7D0, . - D_800EB7D0
+
+.align 3
+nonmatching D_800EB7D8
+
+dlabel D_800EB7D8
+    /* A5FD8 800EB7D8 3FE3333333333333 */ .double 0.599999999999999978
+enddlabel D_800EB7D8
+.size D_800EB7D8, . - D_800EB7D8
+
+.align 3
+nonmatching D_800EB7E0
+
+dlabel D_800EB7E0
+    /* A5FE0 800EB7E0 3FE999999999999A */ .double 0.800000000000000044
+enddlabel D_800EB7E0
+.size D_800EB7E0, . - D_800EB7E0
+
+
+.section .text
 nonmatching func_800A2B24, 0x27B4
 
 glabel func_800A2B24

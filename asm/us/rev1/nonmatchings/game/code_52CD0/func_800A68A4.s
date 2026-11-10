@@ -1,3 +1,382 @@
+.section .late_rodata
+.align 3
+nonmatching D_800EB838
+
+dlabel D_800EB838
+    /* A6038 800EB838 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB838
+.size D_800EB838, . - D_800EB838
+
+nonmatching D_800EB840
+
+dlabel D_800EB840
+    /* A6040 800EB840 451C4000 */ .float 2500
+    /* A6044 800EB844 00000000 */ .float 0
+enddlabel D_800EB840
+.size D_800EB840, . - D_800EB840
+
+.align 3
+nonmatching D_800EB848
+
+dlabel D_800EB848
+    /* A6048 800EB848 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB848
+.size D_800EB848, . - D_800EB848
+
+.align 3
+nonmatching D_800EB850
+
+dlabel D_800EB850
+    /* A6050 800EB850 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EB850
+.size D_800EB850, . - D_800EB850
+
+nonmatching D_800EB858
+
+dlabel D_800EB858
+    /* A6058 800EB858 45DAC000 */ .float 7000
+enddlabel D_800EB858
+.size D_800EB858, . - D_800EB858
+
+nonmatching D_800EB85C
+
+dlabel D_800EB85C
+    /* A605C 800EB85C C525A000 */ .float -2650
+enddlabel D_800EB85C
+.size D_800EB85C, . - D_800EB85C
+
+nonmatching D_800EB860
+
+dlabel D_800EB860
+    /* A6060 800EB860 C5DAC000 */ .float -7000
+enddlabel D_800EB860
+.size D_800EB860, . - D_800EB860
+
+nonmatching D_800EB864
+
+dlabel D_800EB864
+    /* A6064 800EB864 C525A000 */ .float -2650
+enddlabel D_800EB864
+.size D_800EB864, . - D_800EB864
+
+nonmatching D_800EB868
+
+dlabel D_800EB868
+    /* A6068 800EB868 C4A28000 */ .float -1300
+    /* A606C 800EB86C C4A28000 */ .float -1300
+enddlabel D_800EB868
+.size D_800EB868, . - D_800EB868
+
+nonmatching D_800EB870
+
+dlabel D_800EB870
+    /* A6070 800EB870 C4A28000 */ .float -1300
+enddlabel D_800EB870
+.size D_800EB870, . - D_800EB870
+
+nonmatching D_800EB874
+
+dlabel D_800EB874
+    /* A6074 800EB874 C4A28000 */ .float -1300
+enddlabel D_800EB874
+.size D_800EB874, . - D_800EB874
+
+nonmatching D_800EB878
+
+dlabel D_800EB878
+    /* A6078 800EB878 454E4000 */ .float 3300
+enddlabel D_800EB878
+.size D_800EB878, . - D_800EB878
+
+nonmatching D_800EB87C
+
+dlabel D_800EB87C
+    /* A607C 800EB87C 459C4000 */ .float 5000
+enddlabel D_800EB87C
+.size D_800EB87C, . - D_800EB87C
+
+nonmatching D_800EB880
+
+dlabel D_800EB880
+    /* A6080 800EB880 C4A28000 */ .float -1300
+enddlabel D_800EB880
+.size D_800EB880, . - D_800EB880
+
+nonmatching D_800EB884
+
+dlabel D_800EB884
+    /* A6084 800EB884 C5674000 */ .float -3700
+enddlabel D_800EB884
+.size D_800EB884, . - D_800EB884
+
+nonmatching D_800EB888
+
+dlabel D_800EB888
+    /* A6088 800EB888 C59C4000 */ .float -5000
+enddlabel D_800EB888
+.size D_800EB888, . - D_800EB888
+
+nonmatching D_800EB88C
+
+dlabel D_800EB88C
+    /* A608C 800EB88C 451C4000 */ .float 2500
+enddlabel D_800EB88C
+.size D_800EB88C, . - D_800EB88C
+
+.align 3
+nonmatching D_800EB890
+
+dlabel D_800EB890
+    /* A6090 800EB890 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB890
+.size D_800EB890, . - D_800EB890
+
+.align 3
+nonmatching D_800EB898
+
+dlabel D_800EB898
+    /* A6098 800EB898 3F9EB851EB851EB8 */ .double 0.0299999999999999989
+enddlabel D_800EB898
+.size D_800EB898, . - D_800EB898
+
+nonmatching D_800EB8A0
+
+dlabel D_800EB8A0
+    /* A60A0 800EB8A0 3E4CCCCD */ .float 0.200000003
+    /* A60A4 800EB8A4 00000000 */ .float 0
+enddlabel D_800EB8A0
+.size D_800EB8A0, . - D_800EB8A0
+
+.align 3
+nonmatching D_800EB8A8
+
+dlabel D_800EB8A8
+    /* A60A8 800EB8A8 3FC999999999999A */ .double 0.200000000000000011
+enddlabel D_800EB8A8
+.size D_800EB8A8, . - D_800EB8A8
+
+.align 3
+nonmatching D_800EB8B0
+
+dlabel D_800EB8B0
+    /* A60B0 800EB8B0 3FF3333333333333 */ .double 1.19999999999999996
+enddlabel D_800EB8B0
+.size D_800EB8B0, . - D_800EB8B0
+
+nonmatching D_800EB8B8
+
+dlabel D_800EB8B8
+    /* A60B8 800EB8B8 3F99999A */ .float 1.200000048
+    /* A60BC 800EB8BC 00000000 */ .float 0
+enddlabel D_800EB8B8
+.size D_800EB8B8, . - D_800EB8B8
+
+.align 3
+nonmatching D_800EB8C0
+
+dlabel D_800EB8C0
+    /* A60C0 800EB8C0 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EB8C0
+.size D_800EB8C0, . - D_800EB8C0
+
+nonmatching D_800EB8C8
+
+dlabel D_800EB8C8
+    /* A60C8 800EB8C8 481C4000 */ .float 160000
+enddlabel D_800EB8C8
+.size D_800EB8C8, . - D_800EB8C8
+
+nonmatching D_800EB8CC
+
+dlabel D_800EB8CC
+    /* A60CC 800EB8CC 4A742400 */ .float 4000000
+enddlabel D_800EB8CC
+.size D_800EB8CC, . - D_800EB8CC
+
+nonmatching D_800EB8D0
+
+dlabel D_800EB8D0
+    /* A60D0 800EB8D0 4EEE6B28 */ .float 2000000000
+enddlabel D_800EB8D0
+.size D_800EB8D0, . - D_800EB8D0
+
+nonmatching D_800EB8D4
+
+dlabel D_800EB8D4
+    /* A60D4 800EB8D4 4B742400 */ .float 16000000
+enddlabel D_800EB8D4
+.size D_800EB8D4, . - D_800EB8D4
+
+nonmatching D_800EB8D8
+
+dlabel D_800EB8D8
+    /* A60D8 800EB8D8 48742400 */ .float 250000
+enddlabel D_800EB8D8
+.size D_800EB8D8, . - D_800EB8D8
+
+nonmatching D_800EB8DC
+
+dlabel D_800EB8DC
+    /* A60DC 800EB8DC 45DAC000 */ .float 7000
+enddlabel D_800EB8DC
+.size D_800EB8DC, . - D_800EB8DC
+
+nonmatching D_800EB8E0
+
+dlabel D_800EB8E0
+    /* A60E0 800EB8E0 C525A000 */ .float -2650
+enddlabel D_800EB8E0
+.size D_800EB8E0, . - D_800EB8E0
+
+nonmatching D_800EB8E4
+
+dlabel D_800EB8E4
+    /* A60E4 800EB8E4 C5DAC000 */ .float -7000
+enddlabel D_800EB8E4
+.size D_800EB8E4, . - D_800EB8E4
+
+nonmatching D_800EB8E8
+
+dlabel D_800EB8E8
+    /* A60E8 800EB8E8 C525A000 */ .float -2650
+enddlabel D_800EB8E8
+.size D_800EB8E8, . - D_800EB8E8
+
+nonmatching D_800EB8EC
+
+dlabel D_800EB8EC
+    /* A60EC 800EB8EC C4A28000 */ .float -1300
+enddlabel D_800EB8EC
+.size D_800EB8EC, . - D_800EB8EC
+
+nonmatching D_800EB8F0
+
+dlabel D_800EB8F0
+    /* A60F0 800EB8F0 C4A28000 */ .float -1300
+enddlabel D_800EB8F0
+.size D_800EB8F0, . - D_800EB8F0
+
+nonmatching D_800EB8F4
+
+dlabel D_800EB8F4
+    /* A60F4 800EB8F4 454E4000 */ .float 3300
+enddlabel D_800EB8F4
+.size D_800EB8F4, . - D_800EB8F4
+
+nonmatching D_800EB8F8
+
+dlabel D_800EB8F8
+    /* A60F8 800EB8F8 459C4000 */ .float 5000
+enddlabel D_800EB8F8
+.size D_800EB8F8, . - D_800EB8F8
+
+nonmatching D_800EB8FC
+
+dlabel D_800EB8FC
+    /* A60FC 800EB8FC C5674000 */ .float -3700
+enddlabel D_800EB8FC
+.size D_800EB8FC, . - D_800EB8FC
+
+nonmatching D_800EB900
+
+dlabel D_800EB900
+    /* A6100 800EB900 C59C4000 */ .float -5000
+enddlabel D_800EB900
+.size D_800EB900, . - D_800EB900
+
+nonmatching D_800EB904
+
+dlabel D_800EB904
+    /* A6104 800EB904 451C4000 */ .float 2500
+enddlabel D_800EB904
+.size D_800EB904, . - D_800EB904
+
+.align 3
+nonmatching D_800EB908
+
+dlabel D_800EB908
+    /* A6108 800EB908 3F9EB851EB851EB8 */ .double 0.0299999999999999989
+enddlabel D_800EB908
+.size D_800EB908, . - D_800EB908
+
+.align 3
+nonmatching D_800EB910
+
+dlabel D_800EB910
+    /* A6110 800EB910 3FF3333333333333 */ .double 1.19999999999999996
+enddlabel D_800EB910
+.size D_800EB910, . - D_800EB910
+
+nonmatching D_800EB918
+
+dlabel D_800EB918
+    /* A6118 800EB918 451C4000 */ .float 2500
+    /* A611C 800EB91C 00000000 */ .float 0
+enddlabel D_800EB918
+.size D_800EB918, . - D_800EB918
+
+.align 3
+nonmatching D_800EB920
+
+dlabel D_800EB920
+    /* A6120 800EB920 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB920
+.size D_800EB920, . - D_800EB920
+
+.align 3
+nonmatching D_800EB928
+
+dlabel D_800EB928
+    /* A6128 800EB928 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB928
+.size D_800EB928, . - D_800EB928
+
+.align 3
+nonmatching D_800EB930
+
+dlabel D_800EB930
+    /* A6130 800EB930 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EB930
+.size D_800EB930, . - D_800EB930
+
+nonmatching D_800EB938
+
+dlabel D_800EB938
+    /* A6138 800EB938 453B8000 */ .float 3000
+enddlabel D_800EB938
+.size D_800EB938, . - D_800EB938
+
+nonmatching D_800EB93C
+
+dlabel D_800EB93C
+    /* A613C 800EB93C 4EEE6B28 */ .float 2000000000
+enddlabel D_800EB93C
+.size D_800EB93C, . - D_800EB93C
+
+nonmatching D_800EB940
+
+dlabel D_800EB940
+    /* A6140 800EB940 4B742400 */ .float 16000000
+enddlabel D_800EB940
+.size D_800EB940, . - D_800EB940
+
+nonmatching D_800EB944
+
+dlabel D_800EB944
+    /* A6144 800EB944 48742400 */ .float 250000
+enddlabel D_800EB944
+.size D_800EB944, . - D_800EB944
+
+.align 3
+nonmatching D_800EB948
+
+dlabel D_800EB948
+    /* A6148 800EB948 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB948
+.size D_800EB948, . - D_800EB948
+
+
+.section .text
 nonmatching func_800A68A4, 0x288C
 
 glabel func_800A68A4

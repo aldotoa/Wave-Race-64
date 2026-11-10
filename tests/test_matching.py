@@ -3370,6 +3370,83 @@ class TestTier4FloatMatches(unittest.TestCase):
         self._check(*self.CASES[3])
 
 
+# BEGIN batch-2026-11-09
+class TestBatch20261109(unittest.TestCase):
+    """Functions matched in the 2026-11-09 batch (Haiku implementers, supervisor-verified)."""
+
+    CASES = [
+        ("func_801E9D6C", "codeseg/B66E0"),
+        ("func_801EA0B0", "codeseg/B66E0"),
+        ("func_801EA3EC", "codeseg/B66E0"),
+        ("func_801EA730", "codeseg/B66E0"),
+        ("func_801EAA6C", "codeseg/B66E0"),
+        ("func_800ADC8C", "game/code_52CD0"),
+        ("func_800ADF90", "game/code_52CD0"),
+        ("func_8009C2CC", "game/code_52CD0"),
+        ("func_801E66F4", "codeseg/B3AA0"),
+        ("func_80067810", "game/code_C6C0"),
+        ("func_801DD6B4", "codeseg/A95D0"),
+        ("func_i1_802C6FE0", "overlays/ovl_i1/ovl_1B55A0"),
+        ("func_801E62A8", "codeseg/B3AA0"),
+        ("func_8006719C", "game/code_C6C0"),
+    ]
+
+    def _check(self, func, unit):
+        source_path = os.path.join(PROJECT_ROOT, "src", unit + ".c")
+        stub_path = os.path.join(NONMATCHINGS_DIR, unit, func + ".s")
+        with open(source_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertRegex(source, r"\b%s\([^;]*\)\s*\{" % func)
+        self.assertNotIn('GLOBAL_ASM("asm/us/rev1/nonmatchings/%s/%s.s")' % (unit, func), source)
+        self.assertFalse(os.path.exists(stub_path), "%s must not have a GLOBAL_ASM stub" % func)
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
+    def test_func_801E9D6C_matched(self):
+        self._check(*self.CASES[0])
+
+    def test_func_801EA0B0_matched(self):
+        self._check(*self.CASES[1])
+
+    def test_func_801EA3EC_matched(self):
+        self._check(*self.CASES[2])
+
+    def test_func_801EA730_matched(self):
+        self._check(*self.CASES[3])
+
+    def test_func_801EAA6C_matched(self):
+        self._check(*self.CASES[4])
+
+    def test_func_800ADC8C_matched(self):
+        self._check(*self.CASES[5])
+
+    def test_func_800ADF90_matched(self):
+        self._check(*self.CASES[6])
+
+    def test_func_8009C2CC_matched(self):
+        self._check(*self.CASES[7])
+
+    def test_func_801E66F4_matched(self):
+        self._check(*self.CASES[8])
+
+    def test_func_80067810_matched(self):
+        self._check(*self.CASES[9])
+
+    def test_func_801DD6B4_matched(self):
+        self._check(*self.CASES[10])
+
+    def test_func_i1_802C6FE0_matched(self):
+        self._check(*self.CASES[11])
+
+    def test_func_801E62A8_matched(self):
+        self._check(*self.CASES[12])
+
+    def test_func_8006719C_matched(self):
+        self._check(*self.CASES[13])
+
+
+# END batch-2026-11-09
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -3391,6 +3468,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestAIRivals))
     suite.addTests(loader.loadTestsFromTestCase(TestHUDOverlays))
     suite.addTests(loader.loadTestsFromTestCase(TestTier4FloatMatches))
+    suite.addTests(loader.loadTestsFromTestCase(TestBatch20261109))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

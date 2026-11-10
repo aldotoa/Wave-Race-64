@@ -1,3 +1,69 @@
+.section .late_rodata
+.align 3
+nonmatching D_800EB998
+
+dlabel D_800EB998
+    /* A6198 800EB998 3FA999999999999A */ .double 0.0500000000000000028
+    /* A61A0 800EB9A0 3FA999999999999A */ .double 0.0500000000000000028
+enddlabel D_800EB998
+.size D_800EB998, . - D_800EB998
+
+nonmatching D_800EB9A8
+
+dlabel D_800EB9A8
+    /* A61A8 800EB9A8 479C4000 */ .float 80000
+    /* A61AC 800EB9AC 00000000 */ .float 0
+enddlabel D_800EB9A8
+.size D_800EB9A8, . - D_800EB9A8
+
+.align 3
+nonmatching D_800EB9B0
+
+dlabel D_800EB9B0
+    /* A61B0 800EB9B0 3FA999999999999A */ .double 0.0500000000000000028
+enddlabel D_800EB9B0
+.size D_800EB9B0, . - D_800EB9B0
+
+.align 3
+nonmatching D_800EB9B8
+
+dlabel D_800EB9B8
+    /* A61B8 800EB9B8 3F747AE147AE147B */ .double 0.0050000000000000001
+enddlabel D_800EB9B8
+.size D_800EB9B8, . - D_800EB9B8
+
+.align 3
+nonmatching D_800EB9C0
+
+dlabel D_800EB9C0
+    /* A61C0 800EB9C0 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB9C0
+.size D_800EB9C0, . - D_800EB9C0
+
+.align 3
+nonmatching D_800EB9C8
+
+dlabel D_800EB9C8
+    /* A61C8 800EB9C8 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB9C8
+.size D_800EB9C8, . - D_800EB9C8
+
+nonmatching D_800EB9D0
+
+dlabel D_800EB9D0
+    /* A61D0 800EB9D0 4A742400 */ .float 4000000
+enddlabel D_800EB9D0
+.size D_800EB9D0, . - D_800EB9D0
+
+nonmatching D_800EB9D4
+
+dlabel D_800EB9D4
+    /* A61D4 800EB9D4 4A742400 */ .float 4000000
+enddlabel D_800EB9D4
+.size D_800EB9D4, . - D_800EB9D4
+
+
+.section .text
 nonmatching func_800A9D48, 0xD80
 
 glabel func_800A9D48

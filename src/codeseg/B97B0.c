@@ -238,8 +238,116 @@ void func_801EB4F4(void) {
 #endif
 
 #ifdef NON_MATCHING
+/* draft: probe score 172 (2026-11-09) */
+extern s16 D_800EAC14[][8];
+extern s16 D_800EABEC[];
+extern s16 D_800DAA00;
+extern s32 D_800D8240;
+extern enum Course D_801CB330;
+extern UnkStruct_800DB568 D_800DB58C[];
+
 void func_801EB91C(void) {
-    /* Stunt Mode state initialization */
+    s32 temp_a1;
+    s32 var_a1;
+    s32 var_a2;
+    s32 temp_v1;
+    s32 temp_a2;
+    s32 var_a3;
+    s16 temp_t0;
+    UnkStruct_80192690 *temp_v1_2;
+    UnkStruct_func_i8_802C6E00 *temp_a0;
+
+    gPrevGameState = gGameState;
+    D_801CE630 = 0;
+    gGameState = GAME_SATE_COURSE_OVERVIEW;
+    D_801CE638 = 8;
+    D_801CE63C = 1;
+    D_801CE640 = 0;
+    D_801CE644 = 0;
+    D_800DAB1C = 0;
+    D_800D461C = 3;
+    gPlayers = ONE_PLAYER;
+    if (D_800D8240 != 0) {
+        D_801CB330 = D_801C3A10;
+    }
+    temp_t0 = D_800EAC14[gDifficulty][D_801CB334];
+    D_801CB330 = temp_t0;
+    gCourseID = temp_t0;
+    if ((temp_t0 == 0) && (D_800DAA00 < 0x270F)) {
+        D_800DAA00 += 1;
+    }
+    gGameModes = 0xA;
+    D_800D49B0 = D_800EABEC[temp_t0];
+    gBuoyMisses = 5;
+    if (temp_t0 == 1) {
+        gRiders = 4;
+    } else if (temp_t0 == 2) {
+        gRiders = 2;
+    } else {
+        gRiders = 1;
+    }
+    gCameraPerspective[0].viewMode = 5;
+    if ((temp_t0 == 1) || (temp_t0 == 4)) {
+        gRiderGameModes = UNACTIVE_MODE;
+    } else {
+        gRiderGameModes = AI_MODE;
+    }
+    D_801CE64C = 0;
+    gGameModeState = GMODE_STATE_STARTED;
+    D_800D8178 = 1;
+    FadeTransition_SetProps(4, 0U, 0);
+    func_801E6A4C(0U, 0U);
+    D_800DAA08 = 0;
+    temp_a1 = D_800DA9B0[D_800D48DC];
+    var_a1 = temp_a1;
+    temp_v1 = SysUtils_Rand() & 3;
+    var_a2 = temp_v1;
+    if (var_a1 == temp_v1) {
+        var_a2 = (s32) (temp_v1 + 1) % 4;
+    }
+    if (D_801CE6F4[0] != 0) {
+        var_a1 += 4;
+    }
+    if (gCourseID == SUNNY_BEACH) {
+        func_80096960(0, var_a1, D_800DA9B0[1], D_800DA9B0[2], D_800DA9B0[3]);
+    } else {
+        func_80096960(1, var_a1, var_a2, 0, 0);
+    }
+    temp_a2 = D_800DA9B0[D_800D48DC];
+    temp_v1_2 = &D_80192690[D_800D48DC];
+    temp_v1_2->unkB68 = temp_a2;
+    temp_a0 = &D_801CB298[temp_a2];
+    temp_v1_2->unkB6C = temp_a0->unk_B[0];
+    temp_v1_2->unkB70 = temp_a0->unk_B[1];
+    temp_v1_2->unkB74 = temp_a0->unk_B[2];
+    if (gCourseID == SUNSET_BAY) {
+        D_80192690[D_800D48E0].unkB68 = temp_a2;
+    } else {
+        D_80192690[D_800D48E0].unkB68 = D_800DA9B0[D_800D48E0];
+    }
+    var_a3 = gCourseID;
+    temp_a0 = &D_801CB298[D_80192690[D_800D48E0].unkB68];
+    D_80192690[D_800D48E0].unkB6C = temp_a0->unk_B[0];
+    D_80192690[D_800D48E0].unkB70 = temp_a0->unk_B[1];
+    D_80192690[D_800D48E0].unkB74 = temp_a0->unk_B[2];
+    D_80192690[2].unkB68 = D_800DA9B0[2];
+    temp_a0 = &D_801CB298[D_800DA9B0[2]];
+    D_80192690[2].unkB6C = temp_a0->unk_B[0];
+    D_80192690[2].unkB70 = temp_a0->unk_B[1];
+    D_80192690[2].unkB74 = temp_a0->unk_B[2];
+    D_80192690[3].unkB68 = D_800DA9B0[3];
+    temp_a0 = &D_801CB298[D_800DA9B0[3]];
+    D_80192690[3].unkB6C = temp_a0->unk_B[0];
+    D_80192690[3].unkB70 = temp_a0->unk_B[1];
+    D_80192690[3].unkB74 = temp_a0->unk_B[2];
+    if (gCourseID < 0) {
+        var_a3 = DOLPHIN_PARK;
+    }
+    if (var_a3 >= 9) {
+        var_a3 = SOUTHERN_ISLAND;
+    }
+    func_8009684C(0x08060000, D_800DB58C[var_a3].unk0, D_800DB58C[var_a3].unk2);
+    func_800C21F4(2, gCourseID);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801EB91C.s")
@@ -1462,7 +1570,83 @@ void func_801F1CFC(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_801F2060(void) {
+/* draft: probe score 51 (2026-11-09) */
+extern char D_802279D0[];
+extern char D_802279D8[];
+extern char D_802279DC[];
+extern s8 D_80228CF8[];
+extern s32 D_80228B5C;
+Gfx* func_801E92FC(Gfx*, s32, char*, s32, s32, s32, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
+typedef struct RiderTail {
+    char pad[0x2E4];
+    s32 unk2E4;
+    s32 unk2E8;
+    s32 unk2EC;
+    char pad2F0[4];
+    s32 unk2F4;
+} RiderTail;
+
+void func_801F2060(Gfx** arg0) {
+    char pad[0x30];
+    Gfx* gfx;
+    s32 i;
+    u8 s0;
+    u8 s1;
+    u8 s2;
+    u8 s3;
+    s32 s4;
+    s32 s5;
+    s32 v0;
+    s32 v1;
+    s32 t0;
+    s32 t1;
+    s32 temp_lo;
+    UnkStruct_80192690* var_a0;
+    RiderTail* var_s7;
+
+    gfx = *arg0;
+    for (i = 0; i < gPlayers; i++) {
+        if (i == 0) {
+            var_a0 = &D_80192690[D_800D48DC];
+            var_s7 = (RiderTail*) &D_801C2938[D_800D48DC];
+        } else {
+            var_a0 = &D_80192690[D_800D48E0];
+            var_s7 = (RiderTail*) &D_801C2938[D_800D48E0];
+        }
+        if (var_s7->unk2E4 != 0) {
+            if (D_80228B5C >= var_s7->unk2E8 && var_s7->unk2EC == 0 && var_s7->unk2F4 == 0) {
+                if (gPlayers == ONE_PLAYER) {
+                    s5 = 0x5A;
+                } else {
+                    s5 = 0xA0;
+                    if (i == 0) {
+                        s5 = 0x32;
+                    }
+                }
+                if ((var_s7->unk2E8 % 20) != 0 || var_a0->unkC54 == 0x17 || (s4 = 1, var_a0->unkC54 == 7)) {
+                    s4 = 2;
+                    v0 = 0xFF;
+                    v1 = 0;
+                    t0 = 0;
+                    t1 = 0;
+                } else {
+                    v0 = 0x80;
+                    v1 = 0x80;
+                    t0 = 0xFF;
+                    t1 = 0xFF;
+                }
+                s0 = v0;
+                s1 = v1;
+                s2 = t0;
+                s3 = t1;
+                gfx = func_801E92FC(func_801E92FC(gfx, 0, D_802279D0, 0x44, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3), 0, D_802279D8, 0xA4, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3);
+                temp_lo = var_s7->unk2E8 / 20;
+                sprintf(D_80228CF8, D_802279DC, temp_lo);
+                gfx = func_801E92FC(gfx, 0, D_80228CF8, 0xDF - ((temp_lo >= 0xA) * 5), s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3);
+            }
+        }
+    }
+    *arg0 = gfx;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B97B0/func_801F2060.s")

@@ -1,3 +1,14 @@
+.section .late_rodata
+.align 3
+nonmatching D_800EBA00
+
+dlabel D_800EBA00
+    /* A6200 800EBA00 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EBA00
+.size D_800EBA00, . - D_800EBA00
+
+
+.section .text
 nonmatching func_800AB25C, 0x634
 
 glabel func_800AB25C

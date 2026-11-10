@@ -1,3 +1,20 @@
+.section .late_rodata
+nonmatching D_800EBA08
+
+dlabel D_800EBA08
+    /* A6208 800EBA08 45BB8000 */ .float 6000
+enddlabel D_800EBA08
+.size D_800EBA08, . - D_800EBA08
+
+nonmatching D_800EBA0C
+
+dlabel D_800EBA0C
+    /* A620C 800EBA0C 47C35000 */ .float 100000
+enddlabel D_800EBA0C
+.size D_800EBA0C, . - D_800EBA0C
+
+
+.section .text
 nonmatching func_800AB95C, 0x73C
 
 glabel func_800AB95C

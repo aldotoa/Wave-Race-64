@@ -1,3 +1,22 @@
+.section .late_rodata
+.align 3
+nonmatching D_800EB7E8
+
+dlabel D_800EB7E8
+    /* A5FE8 800EB7E8 3FB999999999999A */ .double 0.100000000000000006
+enddlabel D_800EB7E8
+.size D_800EB7E8, . - D_800EB7E8
+
+.align 3
+nonmatching D_800EB7F0
+
+dlabel D_800EB7F0
+    /* A5FF0 800EB7F0 3FC3333333333333 */ .double 0.149999999999999994
+enddlabel D_800EB7F0
+.size D_800EB7F0, . - D_800EB7F0
+
+
+.section .text
 nonmatching func_800A52D8, 0x99C
 
 glabel func_800A52D8

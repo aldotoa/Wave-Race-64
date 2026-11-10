@@ -99,37 +99,83 @@ void func_801E6074(UnkStruct_menu_buffer_1* arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_801E62A8(void* arg0_in) {
-    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
-    switch (arg0->unk2) {
-        case 0:
-            arg0->unk8 = 60;
-            arg0->unkC = 70;
-            break;
-        case 1:
-            break;
-    }
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E62A8.s")
-#endif
+void func_801E62A8(UnkStruct_menu_buffer_1* arg0) {
+    MtxF mtx;
+    f32 scale;
 
-#ifdef NON_MATCHING
-void func_801E66F4(void* arg0_in) {
-    UnkStruct_menu_buffer_1* arg0 = (UnkStruct_menu_buffer_1*) arg0_in;
     switch (arg0->unk2) {
         case 0:
-            arg0->unk8 = 80;
-            arg0->unkC = 90;
+            scale = ((f32) arg0->unk18 / 5.0f) * 1.5f;
+            if (arg0->unk28 != 0) {
+                arg0->unk8 = (u32) (((1 - scale) * 102.0f) + 58.0f);
+                arg0->unkC = (u32) (((1 - scale) * 15.0f) + 93.0f);
+            } else {
+                arg0->unk8 = (u32) (((1 - scale) * 38.0f) + 120.0f);
+                arg0->unkC = (u32) (((1 - scale) * 20.0f) + 93.0f);
+            }
+            func_80048A88(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+                          arg0->unk8, arg0->unkC, 0.0f, scale);
+            arg0->unk18++;
+            if (arg0->unk18 >= 6) {
+                arg0->unk2 = 1;
+                if (arg0->unk28 != 0) {
+                    arg0->unk8 = 0x3A;
+                } else {
+                    arg0->unk8 = 0x78;
+                }
+                arg0->unkC = 0x5D;
+                arg0->unk18 = 0;
+            }
             break;
         case 1:
+            SysUtils_MatrixLookAt(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, 0.0f, 0.0f, 1.0f, 0.0f,
+                                  1.0f, 0.0f, arg0->unk8, arg0->unkC, 0.0f);
+            arg0->unk18++;
+            if (arg0->unk18 >= 0x1F) {
+                arg0->unk_0 = 0;
+            }
             break;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B3AA0/func_801E66F4.s")
-#endif
+
+extern s32 D_802C6BD0;
+void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz);
+
+void func_801E66F4(UnkStruct_menu_buffer_1* arg0) {
+    MtxF mtx;
+    MtxF m2;
+    MtxF m3;
+    f32 angle;
+
+    switch (arg0->unk2) {
+        case 0:
+            arg0->unkC = D_802C6BD0 + 6 + (D_802C6EE4 * 0x14);
+            angle = 2.0f * ((f32) arg0->unk18 / 40.0f) * 3.1415927f;
+            func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0,
+                          arg0->unk8, arg0->unkC, 0.0f);
+            arg0->unk18++;
+            if (arg0->unk18 >= 40) {
+                arg0->unk18 -= 40;
+            }
+            arg0->unk20 += 4;
+            break;
+        case 1:
+            if (gCurrentPauseMenuOption == -1) {
+                arg0->unk_0 = 0;
+            } else {
+                arg0->unkC = arg0->unk24 + (gCurrentPauseMenuOption * 0xF);
+                angle = 2.0f * ((f32) arg0->unk18 / 40.0f) * 3.1415927f;
+                func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0,
+                              arg0->unk8, arg0->unkC, 0.0f);
+                arg0->unk18++;
+                if (arg0->unk18 >= 40) {
+                    arg0->unk18 -= 40;
+                }
+                arg0->unk20 += 4;
+            }
+            break;
+    }
+}
 
 void func_801E68EC(UnkStruct_menu_buffer_1* arg0) {
     switch (arg0->unk2) { /* irregular */

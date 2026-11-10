@@ -759,45 +759,54 @@ void func_8004EAA4(void) {
 #endif
 
 #ifdef NON_MATCHING
+/* draft: probe score 97 (2026-11-09) */
 void func_8004EFB4(f32 arg0, f32 arg1, s32 arg2) {
-    UnkStruct_80162420* var_v0;
-    UnkStruct_80162420* var_t4;
-    UnkStruct_80162420* var_a3;
-    s32 temp_a0;
-    s32 temp_a1;
-    s32 temp_hi;
+    s32 a0;
+    s32 idx_t4;
+    s32 idx_a3;
     s32 temp_hi_2;
-    s32 temp_val;
-    s32 temp_a1_plus_1;
+    s32 a7;
     s32 t0;
+    s32 a1;
+    s32 temp_hi;
     s32 t2;
+    s32 t1;
+    s32 idx_v0;
+    UnkStruct_80162420* p_v0;
+    UnkStruct_80162420* p_a3;
+    UnkStruct_80162420* p_t4;
+    s16 val;
 
     temp_hi = (s32) ((DIRLIGHT_DIRECTION * arg1) + arg0) % 24576;
     temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * arg1) % 24576;
-    temp_a0 = temp_hi_2 >> 6;
-    temp_a1 = temp_hi >> 6;
+    a1 = temp_hi >> 6;
+    a0 = temp_hi_2 >> 6;
 
-    if ((temp_hi - (temp_a1 * 64)) < (temp_hi_2 - (temp_a0 * 64))) {
-        t2 = temp_a0 + (temp_a1 & ~0x7F);
-        var_v0 = D_80162420 + ((((t2 + 0x601) % 384) * 128) + (temp_a1 & 0x7F));
-        temp_a1_plus_1 = temp_a1 + 1;
-        t0 = temp_a0 + (temp_a1_plus_1 & ~0x7F);
+    if ((temp_hi - (a1 << 6)) < (temp_hi_2 - (a0 << 6))) {
+        t2 = a0 + (a1 & ~0x7F);
+        idx_v0 = (((t2 + 0x601) % 384) << 7) + (a1 & 0x7F);
+        a7 = a1 + 1;
+        t0 = a0 + (a7 & ~0x7F);
+        t1 = a7 & 0x7F;
     } else {
-        temp_a1_plus_1 = temp_a1 + 1;
-        t0 = temp_a0 + (temp_a1_plus_1 & ~0x7F);
-        var_v0 = D_80162420 + ((((t0 + 0x600) % 384) * 128) + (temp_a1_plus_1 & 0x7F));
-        t2 = temp_a0 + (temp_a1 & ~0x7F);
+        a7 = a1 + 1;
+        t0 = a0 + (a7 & ~0x7F);
+        t1 = a7 & 0x7F;
+        idx_v0 = (((t0 + 0x600) % 384) << 7) + t1;
+        t2 = a0 + (a1 & ~0x7F);
     }
-
-    var_t4 = D_80162420 + ((((t0 + 0x601) % 384) * 128) + (temp_a1_plus_1 & 0x7F));
-    var_a3 = D_80162420 + ((((t2 + 0x600) % 384) * 128) + (temp_a1 & 0x7F));
-    temp_val = arg2 * 256;
-    var_t4->unk0 = temp_val;
-    var_a3->unk0 = temp_val;
-    var_v0->unk0 = temp_val;
-    var_t4->unk2 = 0;
-    var_a3->unk2 = var_t4->unk2;
-    var_v0->unk2 = var_t4->unk2;
+    idx_t4 = (((t0 + 0x601) % 384) << 7) + t1;
+    idx_a3 = (((t2 + 0x600) % 384) << 7) + (a1 & 0x7F);
+    p_v0 = &D_80162420[idx_v0];
+    p_t4 = &D_80162420[idx_t4];
+    p_a3 = &D_80162420[idx_a3];
+    val = arg2 << 8;
+    p_t4->unk0 = val;
+    p_a3->unk0 = val;
+    p_v0->unk0 = val;
+    p_t4->unk2 = 0;
+    p_a3->unk2 = p_t4->unk2;
+    p_v0->unk2 = p_t4->unk2;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EFB4.s")
@@ -872,61 +881,48 @@ void func_8004F3D4(f32 arg0, f32 arg1, s32 arg2) {
 }
 
 #ifdef NON_MATCHING
+/* draft: probe score 97 (2026-11-09) */
 void func_8004F520(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
-    s32 val;
-    s32 s0 = 384;
     UnkStruct_80162420* var_v1;
     UnkStruct_80162420* var_t1;
     UnkStruct_80162420* var_a2;
-    f32 curr_x = arg1;
-    f32 curr_z = arg2;
-    s32 temp_hi, temp_hi_2;
-    s32 a2_val, t1_val, t0_val;
-    s32 t9_diff, t7_diff;
-
-    if (arg5 == 0) {
-        return;
-    }
-
+    s32 val;
+    s32 temp_hi;
+    s32 temp_hi_2;
+    s32 a2_val;
+    s32 t1_val;
+    s32 t0_val;
+    s32 a1_val;
+    f32 curr_x;
+    f32 curr_z;
+    curr_x = arg1;
+    curr_z = arg2;
     val = (s32) arg0 << 8;
-
-    while (arg5 != 0) {
-        arg5--;
-        temp_hi = (s32) (DIRLIGHT_DIRECTION * curr_z) + (s32) curr_x;
-        temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * curr_z);
-
-        curr_x += arg3;
-
-        temp_hi %= 24576;
-        temp_hi_2 %= 24576;
-
-        a2_val = temp_hi >> 6;
-        t1_val = temp_hi_2 >> 6;
-
-        t9_diff = temp_hi_2 - (t1_val << 6);
-        t7_diff = temp_hi - (a2_val << 6);
-
-        if (t9_diff < t7_diff) {
+    if (arg5 != 0) {
+        do {
+            arg5--;
+            temp_hi = (s32) (TWO_OVER_SQRT_3 * curr_z) % 24576;
+            temp_hi_2 = (s32) ((DIRLIGHT_DIRECTION * curr_z) + curr_x) % 24576;
+            curr_x += arg3;
+            a2_val = temp_hi >> 6;
+            t1_val = temp_hi_2 >> 6;
             t0_val = t1_val;
-            var_v1 = &D_80162420[(((a2_val + (t1_val & ~0x7F) + 0x601) % s0) * 128) + (t1_val & 0x7F)];
-        } else {
-            t0_val = t1_val;
-            t1_val++;
-            var_v1 = &D_80162420[(((a2_val + (t1_val & ~0x7F) + 0x600) % s0) * 128) + (t1_val & 0x7F)];
-        }
-
-        var_t1 = &D_80162420[(((a2_val + ((t0_val + 1) & ~0x7F) + 0x601) % s0) * 128) + ((t0_val + 1) & 0x7F)];
-        var_a2 = &D_80162420[(((a2_val + (t0_val & ~0x7F) + 0x600) % s0) * 128) + (t0_val & 0x7F)];
-
-        var_t1->unk0 = val;
-        var_a2->unk0 = val;
-        var_v1->unk0 = val;
-
-        var_t1->unk2 = 0;
-        var_a2->unk2 = 0;
-        var_v1->unk2 = 0;
-
-        curr_z += arg4;
+            if ((temp_hi_2 - (t1_val << 6)) < (temp_hi - (a2_val << 6))) {
+                var_v1 = &D_80162420[(((((a2_val) + ((t1_val) & ~0x7F) + 0x601) % 384) * 128) + ((t1_val) & 0x7F))];
+            } else {
+                t1_val++;
+                var_v1 = &D_80162420[(((((a2_val) + ((t1_val) & ~0x7F) + 0x600) % 384) * 128) + ((t1_val) & 0x7F))];
+            }
+            var_t1 = &D_80162420[(((((a2_val) + (((t0_val + 1)) & ~0x7F) + 0x601) % 384) * 128) + (((t0_val + 1)) & 0x7F))];
+            var_a2 = &D_80162420[(((((a2_val) + ((t0_val) & ~0x7F) + 0x600) % 384) * 128) + ((t0_val) & 0x7F))];
+            var_t1->unk0 = val;
+            var_a2->unk0 = val;
+            var_v1->unk0 = val;
+            var_t1->unk2 = 0;
+            var_a2->unk2 = var_t1->unk2;
+            var_v1->unk2 = var_t1->unk2;
+            curr_z += arg4;
+        } while (arg5 != 0);
     }
 }
 #else

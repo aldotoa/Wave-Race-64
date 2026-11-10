@@ -2271,8 +2271,92 @@ void func_80062E50(void) {
 #endif
 
 #ifdef NON_MATCHING
-void func_8006390C(void) {
-    /* Camera target lock-on interpolation filter */
+/* draft: probe score 92 (2026-11-09) */
+extern s16 D_800DAB60;
+extern s16 D_800D4928;
+extern s8 D_800D4A3C;
+extern s8 D_800D4A3D;
+extern s8 D_800D4A3E;
+extern s8 D_800D4A3F;
+extern s8 D_800D4A40;
+extern f32 D_800D4AC0;
+extern f32 D_800D4AC4;
+extern f32 D_800D4AD0;
+extern f32 D_800D4AD8;
+extern f32 D_800D4ADC;
+extern f32 D_800D4AE0;
+extern s32 D_800D4AE4;
+void func_80062E50(s32 arg0);
+void func_8004AFE8(void *arg0, s32 arg1, s32 arg2);
+void func_8004AE88(void *arg0);
+void func_800629A8(Vec3f *arg0);
+
+void func_8006390C(s32 arg0) {
+    UnkStruct_80192690 *rider;
+    s8 *p;
+    u8 *v0;
+    s32 tmp;
+
+    if ((gCourseID == 0) && (D_800DAB60 != 0) && (gGameModes != GMODE_STUNT) && ((D_800DAB64 != 0) || ((D_801CE638 == 0) && (D_800D4928 != 0)))) {
+        rider = &D_80192690[arg0];
+        rider->unk16CC = 1;
+    } else {
+        rider = &D_80192690[arg0];
+        rider->unk16CC = 0;
+    }
+    if ((D_801CE638 == 8) || (D_801CE638 == 0)) {
+        *(s32 *) ((u8 *) rider + 0xB64) = 0;
+    } else {
+        *(s32 *) ((u8 *) rider + 0xB64) = rider->unkB68;
+    }
+    *(f32 *) ((u8 *) rider + 0x0) = D_800D4AC0;
+    *(f32 *) ((u8 *) rider + 0xC) = D_800D4AC4;
+    *(f32 *) ((u8 *) rider + 0x10) = D_800D4AD0;
+    *(f32 *) ((u8 *) rider + 0x18) = D_800D4AD8;
+    *(f32 *) ((u8 *) rider + 0x1C) = D_800D4ADC;
+    *(f32 *) ((u8 *) rider + 0x20) = D_800D4AE0;
+    *(s32 *) ((u8 *) rider + 0x28) = 0xB;
+    *(s32 *) ((u8 *) rider + 0x2C) = 0x41;
+    *(void **) ((u8 *) rider + 0x30) = (u8 *) rider + 0x90;
+    *(void **) ((u8 *) rider + 0x34) = (u8 *) rider + 0x210;
+    *(void **) ((u8 *) rider + 0x38) = (u8 *) rider + 0x528;
+    *(s32 *) ((u8 *) rider + 0x24) = D_800D4AE4;
+    func_80062E50(0);
+    func_8004AFE8((Vec3f *) rider, 0, 0xB);
+    func_8004AE88((Vec3f *) rider);
+    *(void **) ((u8 *) rider + 0x1624) = (u8 *) rider + 0x110;
+    *(void **) ((u8 *) rider + 0x1628) = (u8 *) rider + 0x130;
+    *(void **) ((u8 *) rider + 0x162C) = (u8 *) rider + 0xF0;
+    *(void **) ((u8 *) rider + 0x1648) = (u8 *) rider + 0x190;
+    *(void **) ((u8 *) rider + 0x164C) = (u8 *) rider + 0x170;
+    *(void **) ((u8 *) rider + 0x1650) = (u8 *) rider + 0x150;
+    *(void **) ((u8 *) rider + 0x166C) = (u8 *) rider + 0x1F0;
+    *(void **) ((u8 *) rider + 0x1670) = (u8 *) rider + 0x1D0;
+    *(void **) ((u8 *) rider + 0x1674) = (u8 *) rider + 0x1B0;
+    *(void **) ((u8 *) rider + 0x1690) = (u8 *) rider + 0xB0;
+    *(void **) ((u8 *) rider + 0x1694) = (u8 *) rider + 0xD0;
+    *(void **) ((u8 *) rider + 0x1698) = (u8 *) rider + 0x90;
+    func_800629A8((Vec3f *) rider);
+    p = &D_800D4A40;
+    v0 = (u8 *) rider + 0xA60;
+    *(void **) (v0 - 0x18) = (u8 *) rider + 0x660 + D_800D4A3C * 0x28;
+    *(void **) (v0 - 0x14) = (u8 *) rider + 0x660 + D_800D4A3D * 0x28;
+    *(void **) (v0 - 0xC) = (u8 *) rider + 0x660 + D_800D4A3E * 0x28;
+    *(void **) (v0 - 0x8) = (u8 *) rider + 0x660 + D_800D4A3F * 0x28;
+    do {
+        tmp = p[0];
+        p += 8;
+        v0 += 0x30;
+        *(void **) (v0 - 0x30) = (u8 *) rider + 0x660 + tmp * 0x28;
+        *(void **) (v0 - 0x2C) = (u8 *) rider + 0x660 + p[-7] * 0x28;
+        *(void **) (v0 - 0x24) = (u8 *) rider + 0x660 + p[-6] * 0x28;
+        *(void **) (v0 - 0x20) = (u8 *) rider + 0x660 + p[-5] * 0x28;
+        *(void **) (v0 - 0x18) = (u8 *) rider + 0x660 + p[-4] * 0x28;
+        *(void **) (v0 - 0x14) = (u8 *) rider + 0x660 + p[-3] * 0x28;
+        *(void **) (v0 - 0xC) = (u8 *) rider + 0x660 + p[-2] * 0x28;
+        *(void **) (v0 - 0x8) = (u8 *) rider + 0x660 + p[-1] * 0x28;
+    } while (p != (s8 *) D_800D4A68);
+    func_80062918((Vec3f *) rider);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006390C.s")
@@ -2310,24 +2394,127 @@ void func_800665B0(void) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_800665B0.s")
 #endif
 
-#ifdef NON_MATCHING
-void func_8006719C(void) {
-    /* Finish line celebration orbital pan camera */
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006719C.s")
-#endif
+extern u8 D_3000000[];
 
-#ifdef NON_MATCHING
-Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2) {
-    /* Winner podium presentation camera framing */
-    ((void) arg1);
-    ((void) arg2);
+typedef struct UnkStruct_80227A60 {
+    /* 0x00 */ u32 unk[12];
+    /* 0x30 */ Gfx* dl[5];
+} UnkStruct_80227A60; /* size = 0x44 */
+
+extern UnkStruct_80227A60 D_80227A60[];
+
+extern RiderStruct D_801C2C70[];
+extern s32 D_800D4934;
+extern s32 D_800D4930;
+extern s16 D_800D492C;
+extern s32 D_800D48D0[];
+
+Gfx* func_8006719C(Gfx* glistp, s32 arg1) {
+    gSPClearGeometryMode(glistp++, G_CULL_FRONT);
+    gSPSetGeometryMode(glistp++, G_CULL_BACK);
+    if ((D_801C2C70[arg1].lapCount == 0) && (gDifficulty == 2)) {
+        guLookAtReflect(&gGfxPool->unkE108[arg1], (LookAt*) &gGfxPool->unkE208[arg1],
+                        gCameraPerspective[D_80223930].unk4C, gCameraPerspective[D_80223930].unk50,
+                        gCameraPerspective[D_80223930].unk54, gCameraPerspective[D_80223930].unk7C,
+                        gCameraPerspective[D_80223930].unk80, gCameraPerspective[D_80223930].unk84,
+                        gCameraPerspective[D_80223930].unk70, gCameraPerspective[D_80223930].unk74,
+                        gCameraPerspective[D_80223930].unk78);
+        gSPSetGeometryMode(glistp++, 0x00040000);
+        gSPLookAt(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE208);
+        gSPTexture(glistp++, D_800D4934, D_800D4934, 0, 0, G_ON);
+        gDPPipeSync(glistp++);
+        gDPSetTextureLUT(glistp++, G_TT_NONE);
+        gDPSetEnvColor(glistp++, 255, 255, 255, D_800D492C);
+        _gDPLoadTextureBlockTile(glistp++, D_800D48D0[D_800D4930], 0, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetCombineLERP(glistp++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, SHADE, TEXEL0, COMBINED, ENV_ALPHA, COMBINED, 0, 0, 0, SHADE);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE308, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[2]);
+        gSPClearGeometryMode(glistp++, 0x00040000);
+        gDPPipeSync(glistp++);
+        gDPSetCombineLERP(glistp++, TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
+        gDPSetTextureLUT(glistp++, G_TT_RGBA16);
+    }
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE408, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[3]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE508, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[4]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE608, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[5]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEB08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE708, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE908, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xED08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEF08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF108, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    gSPClearGeometryMode(glistp++, G_CULL_BACK);
+    gSPSetGeometryMode(glistp++, G_CULL_FRONT);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEC08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE808, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEA08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xEE08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF008, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xF208, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
     return glistp;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80067810.s")
-#endif
+
+Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2) {
+
+    gSPClearGeometryMode(glistp++, G_CULL_FRONT);
+    gSPSetGeometryMode(glistp++, G_CULL_BACK);
+    if (D_80193D5C[arg2].unk0.h == 0) {
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE108, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[0]);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE208, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[1]);
+        gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE308, G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPDisplayList(glistp++, D_80227A60[arg1].unk[2]);
+    }
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE408, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[3]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE508, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[4]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE608, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[5]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE708, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE908, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEB08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xED08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEF08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF108, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    gSPClearGeometryMode(glistp++, G_CULL_BACK);
+    gSPSetGeometryMode(glistp++, G_CULL_FRONT);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xE808, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[6]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEA08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[7]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEC08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[8]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xEE08, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[9]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF008, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[10]);
+    gSPMatrix(glistp++, (u8*) D_3000000 + (arg2 * sizeof(Mtx)) + 0xF208, G_MTX_LOAD | G_MTX_NOPUSH);
+    gSPDisplayList(glistp++, D_80227A60[arg1].unk[11]);
+    return glistp;
+}
 
 Gfx* func_80067810(Gfx* glistp, s32 arg1, s32 arg2);
 
@@ -2446,14 +2633,8 @@ void func_800683A0(s32 arg0) {
     }
 }
 
-extern u8 D_3000000[];
 
-typedef struct UnkStruct_80227A60 {
-    /* 0x00 */ u8 pad0[0x30];
-    /* 0x30 */ Gfx* dl[5];
-} UnkStruct_80227A60; /* size = 0x44 */
 
-extern UnkStruct_80227A60 D_80227A60[];
 extern Gfx D_1007968[];
 
 /*

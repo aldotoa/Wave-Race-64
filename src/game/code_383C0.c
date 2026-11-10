@@ -314,8 +314,112 @@ void func_8007EF80(UnkStruct_80192690* arg0) {
 }
 
 #ifdef NON_MATCHING
-void func_8007F030(UnkStruct_80192690* arg0) {
-    /* Rider kinematic state and skeletal position evaluator */
+/* draft: probe score 175 (2026-11-09) */
+typedef struct UnkStruct_8007F030_arg1 {
+    /* 0x00 */ char pad0[0x28];
+    /* 0x28 */ s32 unk28;
+    /* 0x2C */ char pad2C[4];
+    /* 0x30 */ UnkStruct_8007E938* unk30;
+} UnkStruct_8007F030_arg1;
+
+void func_8007F030(UnkStruct_80192690* arg0, UnkStruct_8007F030_arg1* arg1) {
+    UnkStruct_8007E938* var_v1;
+    UnkStruct_8007E938* var_s0;
+    UnkStruct_8007E938* var_s2_2;
+    UnkStruct_801C3B84* temp_s0;
+    s16* var_s3;
+    s32 temp_s1;
+    s32 temp_s2;
+    u16* temp_s1_2;
+    u16* var_s1;
+    u16 var_s2;
+    u32 temp_v0_2;
+    f32 temp_fv0;
+    f32 temp_fv1;
+    f32 temp_fa0;
+    f32 temp_fa0_2;
+    f32 temp_fa1;
+    f32 temp_fa1_2;
+    f32 temp_fs0;
+    f32 temp_ft4;
+    f32 temp_ft5;
+    f32 temp_ft2;
+    f32 temp_ft0;
+    f32 temp_fv0_2;
+    f32 temp_fv1_2;
+    f32 temp_fa0_3;
+
+    temp_v0_2 = (u32) arg1->unk30;
+    var_v1 = (UnkStruct_8007E938*) temp_v0_2 + arg1->unk28;
+    var_s0 = arg1->unk30;
+    if ((u32) var_v1 >= (u32) var_s0) {
+        do {
+            temp_s1 = (s32) var_v1->unk0 - D_801C3B44;
+            if ((temp_s1 >= 0) && (temp_s1 < D_801C3B4C)) {
+                temp_s2 = (s32) var_v1->unk8 - D_801C3B50;
+                if ((temp_s2 >= 0) && (temp_s2 < D_801C3B58)) {
+                    if (D_801C3B40 != 0) {
+                        var_s3 = &D_801C3B7C[(temp_s2 >> D_801C3B78) | ((temp_s1 >> D_801C3B70) << D_801C3B68)];
+                    } else {
+                        var_s3 = &D_801C3B7C[(temp_s1 >> D_801C3B70) | ((temp_s2 >> D_801C3B78) << D_801C3B60)];
+                    }
+                    temp_s1_2 = &D_801C3B80[(u16) *var_s3];
+                    var_s2 = temp_s1_2[1];
+                    var_s1 = temp_s1_2 + 1;
+                    if (var_s2 != 0) {
+                        do {
+                            temp_s0 = &D_801C3B84[var_s2 - 1];
+                            temp_fv0 = temp_s0->unk0 - var_v1->unk0;
+                            temp_fv1 = temp_s0->unk4 - var_v1->unk4;
+                            temp_fa0 = temp_s0->unk8 - var_v1->unk8;
+                            if (!(((temp_s0->unk18 * temp_fv0) + (temp_fv1 * temp_s0->unk1C) + (temp_fa0 * temp_s0->unk20)) < 0.0f) && !(((temp_s0->unk24 * temp_fv0) + (temp_fv1 * temp_s0->unk28) + (temp_fa0 * temp_s0->unk2C)) < 0.0f)) {
+                                temp_fa1 = (temp_s0->unk30 * temp_fv0) + (temp_fv1 * temp_s0->unk34) + (temp_fa0 * temp_s0->unk38);
+                                if (!(temp_fa1 >= 0.0f) && !(temp_fa1 < temp_s0->unk3C)) {
+                                    temp_ft4 = temp_s0->unkC;
+                                    temp_ft5 = temp_s0->unk10;
+                                    temp_fs0 = temp_s0->unk14;
+                                    temp_fa1_2 = (temp_ft4 * temp_fv0) + (temp_fv1 * temp_ft5) + (temp_fa0 * temp_fs0);
+                                    if (!(temp_fa1_2 < 0.0f) && !(temp_fa1_2 > 16.0f)) {
+                                        temp_fa0_2 = ((-var_v1->unkC * temp_ft4) - (var_v1->unk10 * temp_ft5)) - (var_v1->unk14 * temp_fs0);
+                                        if (!(temp_fa0_2 <= 0.0f)) {
+                                            if (arg0->unkC4C < temp_fa0_2) {
+                                                arg0->unkC4C = temp_fa0_2;
+                                                arg0->unk15B4 = temp_s0->unkC;
+                                                arg0->unk15B8 = temp_s0->unk10;
+                                                arg0->unk15BC = temp_s0->unk14;
+                                            }
+                                            var_v1->unkC = var_v1->unkC + (temp_fa0_2 * temp_s0->unkC);
+                                            var_v1->unk10 = var_v1->unk10 + (temp_fa0_2 * temp_s0->unk10);
+                                            var_v1->unk14 = var_v1->unk14 + (temp_fa0_2 * temp_s0->unk14);
+                                            temp_fv0_2 = temp_s0->unkC * temp_fa1_2;
+                                            temp_fv1_2 = temp_s0->unk10 * temp_fa1_2;
+                                            temp_fa0_3 = temp_s0->unk14 * temp_fa1_2;
+                                            temp_v0_2 = (u32) arg1->unk30;
+                                            var_s2_2 = (UnkStruct_8007E938*) temp_v0_2;
+                                            if (temp_v0_2 < (u32) (temp_v0_2 + 0x180)) {
+                                                do {
+                                                    temp_ft2 = var_s2_2->unk0;
+                                                    temp_ft0 = var_s2_2->unk4;
+                                                    var_s2_2 += 1;
+                                                    var_s2_2[-1].unk0 = temp_ft2 + temp_fv0_2;
+                                                    var_s2_2[-1].unk4 = temp_ft0 + temp_fv1_2;
+                                                    var_s2_2[-1].unk8 = var_s2_2[-1].unk8 + temp_fa0_3;
+                                                } while ((u32) var_s2_2 < (u32) arg1->unk30 + 0x180);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            var_s2 = var_s1[1];
+                            var_s1 += 1;
+                        } while (var_s2 != 0);
+                        var_s0 = arg1->unk30;
+                    }
+                }
+            }
+            var_v1 -= 1;
+        } while ((u32) var_v1 >= (u32) var_s0);
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_383C0/func_8007F030.s")
