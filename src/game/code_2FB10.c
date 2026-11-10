@@ -69,8 +69,110 @@ void func_8007687C(s32 arg0) {
 #endif
 
 #ifdef NON_MATCHING
+/* draft: probe score 128 (2026-11-09) */
+extern s32 D_801C1FD4;
+extern s32 D_801C26C0[];
+
 void func_80077F5C(void) {
-    /* Stunt combo trick recognition and point award accumulator */
+    RiderStruct *a0;
+    RiderStruct *a3;
+    UnkStruct_801AEE20 *v0;
+    UnkStruct_801AEE20 *seg;
+    UnkStruct_80192690 *t0;
+    s32 i;
+    s32 j;
+    s32 a2;
+    s32 a3n;
+    s32 tmp;
+    s32 tmp2;
+    s32 *dst;
+    s32 *end;
+    f32 fv0;
+    f32 fv1;
+    s32 *lim;
+
+    if (D_801C1FD4 == 0) {
+        D_801C1FD4 = 1;
+        i = 0;
+        lim = D_801CE728;
+        a0 = D_801C2938;
+        if (lim == 0) {}
+        if (gRiders > 0) {
+            do {
+                if ((a0->unk2F4 == 0) && (a0->unk2EC == 0)) {
+                    v0 = &D_801AEE20[a0->unkC];
+                    seg = &D_801AEE20[v0->unkA8];
+                    t0 = &D_80192690[i];
+                    fv0 = (seg->unk74 * (t0->unk44.z - seg->unk8)) + ((t0->unk44.x - seg->unk0) * seg->unk70);
+                    if (fv0 < 0.0f) {
+                        fv0 = 0.0f;
+                    }
+                    fv0 = 1.0f - (fv0 / seg->unk88);
+                    if (fv0 < 0.0f) {
+                        fv0 = 0.0f;
+                    }
+                    fv0 = fv0 * 20.0f;
+                    fv1 = 80.0f - ((f32) a0->racePosition * 5.0f);
+                    a3n = v0->unk98;
+                    a2 = a0->lapCount;
+                    if ((a3n != 3) || (a2 < *lim)) {
+                        do {
+                            if (a3n == 3) {
+                                a2 += 1;
+                            }
+                            fv0 += v0->unk88;
+                            v0 = &D_801AEE20[v0->unkA0];
+                            a3n = v0->unk98;
+                        } while ((a3n != 3) || (a2 < *lim));
+                    }
+                    a0->unk19C = (s32) ((f32) a0->unk19C + ((fv0 / (fv1 / 1.8f)) * 50.0f));
+                }
+                i += 1;
+                a0 += 1;
+            } while (i < gRiders);
+            i = 0;
+        }
+        if (gRiders > 0) {
+            a0 = D_801C2938;
+            do {
+                if (a0->unk19C >= 0x927C0) {
+                    a0->unk19C = 0x927BF;
+                }
+                if ((a0->unk2F4 == 0) && (a0->unk2EC == 0)) {
+                    j = 0;
+                    if (gRiders > 0) {
+                        a3 = D_801C2938;
+                        do {
+                            if ((a3->unk2F4 == 0) && (a3->unk2EC == 0) && (j != i)) {
+                                tmp = a0->racePosition;
+                                tmp2 = a3->racePosition;
+                                if ((tmp < tmp2) && (a3->unk19C < a0->unk19C)) {
+                                    a0->racePosition = tmp2;
+                                    a3->racePosition = tmp;
+                                }
+                            }
+                            j += 1;
+                            a3 += 1;
+                        } while (j < gRiders);
+                    }
+                }
+                i += 1;
+                a0 += 1;
+            } while (i < gRiders);
+            i = 0;
+        }
+        if ((gCourseID != DOLPHIN_PARK) && (gRiders > 0)) {
+            dst = D_801C26C0;
+            a0 = D_801C2938;
+            end = D_801C26C0 + gRiders;
+            do {
+                tmp = a0->racePosition;
+                dst += 1;
+                a0 += 1;
+                dst[-1] = tmp;
+            } while (dst < end);
+        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_2FB10/func_80077F5C.s")

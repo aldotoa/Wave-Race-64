@@ -653,27 +653,19 @@ void func_80049710(Mtx* arg0, MtxF* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #ifdef NON_MATCHING
-/*
- * Euler angles (radians) -> rotation matrix. Floor: 44 diff rows (probe), register/spill-slot only.
- * Load-bearing: decl order; the third angle's `+ (1.0f / 2.0f)` spelled differently from the other two
- * `0.5f` sites (stops IDO holding 0.5f in an FPR, so it is rematerialized like the target); routing the
- * sz load through sysz. Remaining: 4096.0f/2pi get $f12/$f14 instead of $f16/$f18 and sx/sz the reverse;
- * spill slots of sy/sz/cy/cz/sysz (target 0x30/0x2C/0x24/0x20/0x1C) differ. A search with empty-if
- * insertions reached 36. The matched sibling func_801EE4D0 (B97B0.c) suggests the original declared
- * `f32 s1, s2, s3, c1, c2, c3; f32 temp;`, which reproduces the target slot order but scored 56.
- */
+/* draft: probe score 35 (2026-11-09) */
 void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
-    f32 cy;
-    f32 szcy;
+    s32 idx;
+    f32 sy;
     f32 cycz;
     f32 sysz;
+    f32 cy;
     f32 cz;
     f32 sycz;
     f32 sz;
-    f32 sy;
     f32 cx;
-    s32 idx;
     f32 sx;
+    f32 szcy;
     idx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
     sx = gSinTable[idx & 0xFFF];
     arg1->mf[2][1] = -sx;

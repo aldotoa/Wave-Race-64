@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **182 remaining non-matching functions** (119 matched in prioritized matrix, 1,186 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **169 remaining non-matching functions** (132 matched in prioritized matrix, 1,199 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,9 +8,9 @@ An exhaustive, prioritized decompilation plan for all **182 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,186** | 1,368 | **86.70%** |
-| **Non-Matching Functions** | **182** | 1,368 | **13.30%** |
-| **Matched Code Bytes** | **438,720 B** | 834,044 B | **52.60%** |
+| **Matched Functions** | **1,199** | 1,368 | **87.65%** |
+| **Non-Matching Functions** | **169** | 1,368 | **12.35%** |
+| **Matched Code Bytes** | **448,984 B** | 834,036 B | **53.83%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
 | **Passing Regression Tests** | **425** | 425 | **100% OK** |
 
@@ -26,9 +26,9 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
 | **4** | Medium Floating-Point & Physics | 3 | 20 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
-| **5** | Rodata & Jump Table Blocked | 22 | 9 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 157 | 29 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **182** | **119** | **301** | | |
+| **5** | Rodata & Jump Table Blocked | 18 | 13 | 31 | High | Multi-case switches & rodata migration |
+| **6** | Monolithic Routines & Core Engines | 148 | 38 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **169** | **132** | **301** | | |
 
 ---
 
@@ -128,7 +128,7 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 62 | `func_801DC404` | `src/codeseg/A95D0.c` | 105 | 9/3  | Floats  | **MATCHED** | 3D particle fireworks and water splash simulator  |
 | 63 | `func_801E0FF0` | `src/codeseg/A95D0.c` | 113 | 0/4  | Floats  | **MATCHED** | Look-at camera orientation vector orthogonalizer and normalizer  |
 | 64 | `func_801EE4D0` | `src/codeseg/B97B0.c` | 114 | 0/0  | Floats  | **MATCHED** | Routine logic  |
-| 65 | `func_8009934C` | `src/game/code_52CD0.c` | 114 | 1/0  | Floats  | **MATCHED** | Uniform cubic B-spline basis evaluator (4 control points → Vec3f + scalar). Load-bearing: `2/3` and `1/6` read via `extern f32 D_800EB4C4/C8` (unmigrated A5CC0 rodata); `/ 2.0f` folds to the `0.5f` immediates  |
+| 65 | `func_8009934C` | `src/game/code_52CD0.c` | 114 | 1/0  | Floats  | **MATCHED** | Uniform cubic B-spline basis evaluator (4 control points → Vec3f + scalar). Load-bearing: `2/3` and `1/6` are the literals `0.6666667f` / `0.16666667f` (rodata migrated into the TU); `/ 2.0f` folds to the `0.5f` immediates  |
 | 66 | `func_801DD85C` | `src/codeseg/A95D0.c` | 114 | 1/3  | Floats  | **MATCHED** | Routine logic  |
 | 67 | `func_801EADB0` | `src/codeseg/B66E0.c` | 114 | 14/0  | Floats  | **MATCHED** | Formatted lap timer display printer (mm:ss.ms)  |
 | 68 | `func_801EE6F4` | `src/codeseg/B97B0.c` | 115 | 0/0  | Floats  | **MATCHED** | Routine logic  |
@@ -156,29 +156,29 @@ Functions containing `switch` statements with compiler-generated jump tables (`j
 
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
-| 85 | `func_800ADC8C` | `src/game/code_52CD0.c` | 34 | 1/0  | JumpTable  | Pending | Split-screen HUD layout offset lookup: C matches (probe 0, `ret += 1` not `ret++` in cases 2/4); blocked only on jtbl_800EBAE4 in shared A5CC0.rodata.s |
+| 85 | `func_800ADC8C` | `src/game/code_52CD0.c` | 34 | 1/0  | JumpTable  | **MATCHED** | Split-screen HUD layout offset lookup; `ret += 1` (not `ret++`) in cases 2/4. Unblocked by migrating code_52CD0 .rodata out of the shared A5CC0.rodata.s |
 | 86 | `func_i13_802C81AC` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 62 | 8/1  | JumpTable, Rodata  | **MATCHED** | Options sub-menu cursor reset and selection to sub-state mapper |
 | 87 | `func_i6_802C6B34` | `src/overlays/ovl_i6/ovl_1C2250.c` | 79 | 10/2  | JumpTable, Rodata  | **MATCHED** | Twilight City intro banner slide state machine; old-style `()` definition, so arg0 is never homed |
 | 88 | `func_80096048` | `src/game/code_4F850.c` | 92 | 7/6  | JumpTable, Rodata  | Pending | Routine logic  |
 | 89 | `func_801EB00C` | `src/codeseg/B66E0.c` | 93 | 18/2  | Rodata  | Pending | Fast3D font texture tile loader  |
 | 90 | `func_i13_802C6068` | `src/overlays/ovl_i13/ovl_1CBAF0.c` | 94 | 20/16  | JumpTable, Rodata  | **MATCHED** | Options menu state dispatcher plus per-state sound cue if-chain; leading `s32 pad` puts the result at sp+0x18 |
-| 91 | `func_801DC274` | `src/codeseg/A95D0.c` | 100 | 4/2  | Floats, Rodata  | Pending | 3D particle fireworks and water splash simulator  |
+| 91 | `func_801DC274` | `src/codeseg/A95D0.c` | 100 | 4/2  | Floats, Rodata  | Pending | 3D particle fireworks and water splash simulator; Draft: probe score 38 (2026-11-09) |
 | 92 | `func_800683A0` | `src/game/code_C6C0.c` | 102 | 8/1  | Floats, Rodata  | **MATCHED** | Rider projected-position entry fill (queued via `func_800AC098`) and `unk16EC` counter step (no `entry`/`t` locals: each costs a stack word past the 0x20 frame; projected position written before the velocity copy; `.late_rodata` 0.1f links in place)  |
-| 93 | `func_801DD6B4` | `src/codeseg/A95D0.c` | 106 | 24/2  | JumpTable, Rodata  | Pending | Routine logic  |
+| 93 | `func_801DD6B4` | `src/codeseg/A95D0.c` | 106 | 24/2  | JumpTable, Rodata  | **MATCHED** | Course/difficulty intro-camera dispatcher; named `s32* ptr = &D_802287AC; *ptr = D_801C2C70; if (*ptr < 3)` keeps the address in v0 |
 | 94 | `func_800C1BD8` | `src/audio/audio_general.c` | 116 | 18/6  | Floats, Rodata  | Pending | irregular  |
 | 95 | `func_i5_802C781C` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 118 | 15/2  | JumpTable, Rodata  | **MATCHED** | Results-panel slide state machine: slides the panel in, steps the buoy path index, waits for A/B/Start, then slides out and hands off to func_801EC9C8 or func_801EC830  |
 | 96 | `func_8004F1EC` | `src/game/water_69D0.c` | 122 | 13/0  | Floats, Rodata  | Pending | Routine logic  |
-| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 44) | Euler angles (radians) to rotation MtxF/Mtx; draft parked behind NON_MATCHING (mixed 0.5f spellings, sz load routed through sysz; FPR choice for 4096/2pi left)  |
-| 98 | `func_801E66F4` | `src/codeseg/B3AA0.c` | 126 | 8/2  | Floats, Rodata  | Pending | Routine logic  |
+| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 44) | Euler angles (radians) to rotation MtxF/Mtx; draft parked behind NON_MATCHING (mixed 0.5f spellings, sz load routed through sysz; FPR choice for 4096/2pi left); Draft: probe score 35 (2026-11-09) |
+| 98 | `func_801E66F4` | `src/codeseg/B3AA0.c` | 126 | 8/2  | Floats, Rodata  | **MATCHED** | Pause-menu cursor spin matrix; three MtxF locals give the 0x100 frame, `D_802C6BD0 + 6 + (D_802C6EE4 * 0x14)` sets the load order, one `0` and one `0.0f` argument stop the zero constants sharing a register |
 | 99 | `func_80049A94` | `src/sys/sys_utils.c` | 130 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 64) | Euler angles (radians) + translation to MtxF/Mtx; draft parked behind NON_MATCHING (insn count exact; target has 3 distinct 2pi pool entries)  |
 | 100 | `func_8009D96C` | `src/game/code_52CD0.c` | 137 | 4/5  | Floats, JumpTable  | Pending | Buoy miss warning flash animator  |
-| 101 | `func_8004EFB4` | `src/game/water_69D0.c` | 142 | 32/0  | Floats, Rodata  | Pending | Routine logic  |
+| 101 | `func_8004EFB4` | `src/game/water_69D0.c` | 142 | 32/0  | Floats, Rodata  | Pending | Routine logic; Draft: probe score 97 (2026-11-09) |
 | 102 | `func_i5_802C5850` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 146 | 3/6  | Floats, Rodata, ParkedFloor  | **MATCHED** | Port Blue banner matrices and viewports (mirrors B17D0 func_801E3250); y arg passed as a literal `0` gives `li a3,0` |
 | 103 | `func_i14_802C5924` | `src/overlays/ovl_i14/ovl_1CF180.c` | 147 | 27/15  | JumpTable, Rodata  | **MATCHED** | Results menu frame/draw and post-race state dispatcher  |
 | 104 | `func_8004F790` | `src/game/water_69D0.c` | 148 | 10/6  | Floats, Rodata  | Pending | Routine logic  |
-| 105 | `func_8004F520` | `src/game/water_69D0.c` | 156 | 34/0  | Floats, Rodata  | Pending | Routine logic  |
-| 106 | `func_800ADF90` | `src/game/code_52CD0.c` | 158 | 22/16  | JumpTable  | Pending | Routine logic  |
-| 107 | `func_i8_802C6ADC` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 159 | 21/9  | JumpTable, Rodata  | Pending | Stunt mode ramp and floating ring display list generator  |
+| 105 | `func_8004F520` | `src/game/water_69D0.c` | 156 | 34/0  | Floats, Rodata  | Pending | Routine logic; Draft: probe score 97 (2026-11-09) |
+| 106 | `func_800ADF90` | `src/game/code_52CD0.c` | 158 | 22/16  | JumpTable  | **MATCHED** | HUD marker display-list emitter with 13-case jump table; unblocked by the code_52CD0 .rodata migration |
+| 107 | `func_i8_802C6ADC` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 159 | 21/9  | JumpTable, Rodata  | Pending | Stunt mode ramp and floating ring display list generator; Draft: probe score 62 (2026-11-09) |
 | 108 | `func_800534AC` | `src/game/code_C6C0.c` | 168 | 4/3  | Floats, Rodata  | Pending | Routine logic  |
 | 109 | `func_80053C08` | `src/game/code_C6C0.c` | 169 | 16/0  | JumpTable, Rodata  | Pending | Water surface wave height compensation for camera elevation  |
 | 110 | `func_801E9858` | `src/codeseg/B66E0.c` | 171 | 17/2  | Floats, JumpTable, Rodata  | Pending | Main string glyph display list generator  |
@@ -205,46 +205,46 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 123 | `func_800890B4` | `src/game/code_43A60.c` | 189 | 18/5  | Floats  | **MATCHED** | Rider and player state init (completes code_43A60)  |
 | 124 | `func_8004D018` | `src/game/water_69D0.c` | 189 | 40/0  | Floats, Rodata  | Pending | Routine logic  |
 | 125 | `func_8007B630` | `src/game/core/wr64_save.c` | 192 | 12/6  | Integer Clean  | **MATCHED** | Unpacks the EEPROM image into the in-RAM record tables, inverse of `func_8007B930` (dead `n = i + 1` per loop keeps the s4 counter; signed `s8` struct fields give `lb`; the 4-entry copy is a pointer walk so IDO keeps it rolled; `pad[3]` sizes the 0x88 frame)  |
-| 126 | `func_80077F5C` | `src/game/code_2FB10.c` | 194 | 27/0  | Floats, Rodata  | Pending | Jet ski throttle response and water drag velocity damping  |
+| 126 | `func_80077F5C` | `src/game/code_2FB10.c` | 194 | 27/0  | Floats, Rodata  | Pending | Jet ski throttle response and water drag velocity damping; Draft: probe score 128 (2026-11-09) |
 | 127 | `func_i1_802C5AE4` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 196 | 30/20  | JumpTable, Rodata, ParkedFloor  | Pending | Course buoy waypoint sequence update  |
 | 128 | `func_8004D30C` | `src/game/water_69D0.c` | 199 | 37/1  | Floats, Rodata  | Pending | Routine logic  |
 | 129 | `func_80073E6C` | `src/game/code_2C670.c` | 206 | 20/0  | Floats, Rodata  | Pending | Jet ski hull displacement and water elevation offset calculator  |
-| 130 | `func_801EA730` | `src/codeseg/B66E0.c` | 207 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
-| 131 | `func_801EA0B0` | `src/codeseg/B66E0.c` | 207 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
-| 132 | `func_801F2060` | `src/codeseg/B97B0.c` | 208 | 16/4  | Integer Clean  | Pending | Routine logic  |
-| 133 | `func_8007D2D4` | `src/game/core/wr64_save.c` | 208 | 26/16  | JumpTable, Rodata  | Pending | Controller Pak ghost data file verify, header check, and payload reader  |
-| 134 | `func_801EAA6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
-| 135 | `func_801EA3EC` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
-| 136 | `func_801E9D6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | Pending | Formatted lap timer display printer (mm:ss.ms)  |
+| 130 | `func_801EA730` | `src/codeseg/B66E0.c` | 207 | 24/0  | Floats  | **MATCHED** | Fade colour ramp setter (variant of 801E9D6C) |
+| 131 | `func_801EA0B0` | `src/codeseg/B66E0.c` | 207 | 24/0  | Floats  | **MATCHED** | Fade colour ramp setter (variant of 801E9D6C; different channel per case) |
+| 132 | `func_801F2060` | `src/codeseg/B97B0.c` | 208 | 16/4  | Integer Clean  | Pending | Routine logic; Draft: probe score 51 (2026-11-09) |
+| 133 | `func_8007D2D4` | `src/game/core/wr64_save.c` | 208 | 26/16  | JumpTable, Rodata  | Pending | Controller Pak ghost data file verify, header check, and payload reader; Draft: probe score 89 (2026-11-09) |
+| 134 | `func_801EAA6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | **MATCHED** | Fade colour ramp setter (variant of 801E9D6C; 128.0f scale in cases 0/3) |
+| 135 | `func_801EA3EC` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | **MATCHED** | Fade colour ramp setter (variant of 801E9D6C; 0xFF base channels) |
+| 136 | `func_801E9D6C` | `src/codeseg/B66E0.c` | 209 | 24/0  | Floats  | **MATCHED** | Fade colour ramp setter: switch on D_80228A78.unk2, `(s16) (u32) ((f32) x * 255.0f / (f32) unk8)` per channel, `break` not `return` |
 | 137 | `func_801E7908` | `src/codeseg/wr64_fade.c` | 212 | 14/4  | JumpTable, Rodata  | **MATCHED** | Fade overlay fill and wipe display list (completes wr64_fade)  |
 | 138 | `func_801F1CFC` | `src/codeseg/B97B0.c` | 217 | 47/4  | Floats  | Pending | Routine logic  |
 | 139 | `func_i0_802C6044` | `src/overlays/ovl_i0/ovl_1B3EC0.c` | 218 | 9/7  | Integer Clean  | Pending | Routine logic  |
 | 140 | `func_1C3D00_802C58DC` | `src/seg_1C3D00.c` | 220 | 3/16  | Rodata  | **MATCHED** | 1P/2P menu frame, header and label renderer (completes seg_1C3D00)  |
 | 141 | `func_801EB180` | `src/codeseg/B97B0.c` | 221 | 9/6  | Integer Clean  | **MATCHED** | Routine logic  |
 | 142 | `func_i6_802C5800` | `src/overlays/ovl_i6/ovl_1C2250.c` | 221 | 10/8  | Floats, Rodata  | Pending | Twilight City neon lighting and city canal display list renderer  |
-| 143 | `func_8006390C` | `src/game/code_C6C0.c` | 223 | 11/5  | Floats  | Pending | Camera roll leveling filter relative to horizon  |
+| 143 | `func_8006390C` | `src/game/code_C6C0.c` | 223 | 11/5  | Floats  | Pending | Camera roll leveling filter relative to horizon; Draft: probe score 92 (2026-11-09) |
 | 144 | `func_801E4C60` | `src/codeseg/B3290.c` | 226 | 1/2  | Floats, Rodata  | **MATCHED** | Fixed-point align matrix from fwd/up s8 vectors + translation; recomputed `s` sets the mask regalloc  |
 | 145 | `func_801DDAB8` | `src/codeseg/A95D0.c` | 228 | 27/8  | Floats, JumpTable, Rodata  | Pending | Routine logic  |
 | 146 | `func_8004CC7C` | `src/game/water_69D0.c` | 231 | 41/0  | Floats, Rodata  | Pending | Routine logic  |
 | 147 | `func_1B1FB0_802C5800` | `src/unused_code_1B1FB0.c` | 233 | 39/0  | Floats, Rodata  | Pending | Flight mode debug camera controller  |
 | 148 | `func_801EE9C0` | `src/codeseg/B97B0.c` | 236 | 4/0  | Floats  | Pending | Routine logic  |
-| 149 | `func_i1_802C6FE0` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 237 | 37/13  | Integer Clean  | Pending | clang-format off  |
+| 149 | `func_i1_802C6FE0` | `src/overlays/ovl_i1/ovl_1B55A0.c` | 237 | 37/13  | Integer Clean  | **MATCHED** | Results screen state init; per-player flags are the unrolled 4-trip `D_801CE708[i] >= D_801C293C[i].lapCount` loop from the matched sibling; else-if chain for the D_801CE6F0 music cue |
 | 150 | `func_8004A8B0` | `src/sys/sys_utils.c` | 242 | 46/0  | Integer Clean, ParkedFloor  | Pending (Floor 7) | Framebuffer emboss filter (RGBA5551 relief table + per-column luminance diff); draft parked behind NON_MATCHING, register naming only (inner table base vs row-218 pointer)  |
-| 151 | `func_8007C604` | `src/game/core/wr64_save.c` | 244 | 16/11  | Integer Clean  | Pending | Stunt high score rank slot compaction and displacement updater  |
+| 151 | `func_8007C604` | `src/game/core/wr64_save.c` | 244 | 16/11  | Integer Clean  | Pending | Stunt high score rank slot compaction and displacement updater; Draft: probe score 216 (2026-11-09) |
 | 152 | `func_801DD2D0` | `src/codeseg/A95D0.c` | 249 | 21/5  | Floats, Rodata  | Pending | Routine logic  |
 | 153 | `func_801FBFB4` | `src/codeseg/C94E0.c` | 250 | 12/0  | Floats  | Pending | Routine logic  |
-| 154 | `func_80067810` | `src/game/code_C6C0.c` | 251 | 1/0  | Integer Clean  | Pending | Replay spectator camera path spline evaluator  |
+| 154 | `func_80067810` | `src/game/code_C6C0.c` | 251 | 1/0  | Integer Clean  | **MATCHED** | Rider model display-list chain: 22 gSPMatrix/gSPDisplayList pairs, no locals (any local changes the 120-byte frame) |
 | 155 | `func_801E946C` | `src/codeseg/B66E0.c` | 251 | 12/6  | JumpTable, Rodata  | Pending | Routine logic  |
 | 156 | `func_i5_802C7090` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 253 | 18/6  | Floats, Rodata  | **MATCHED** | Buoy path loader and placer: loads the two 8-path buoy sets once per race, places the 8 active buoys at the current path step, and calls func_8004EFB4 the first time each one surfaces  |
 | 157 | `func_801DE690` | `src/codeseg/A95D0.c` | 257 | 10/0  | Floats, Rodata  | Pending | Routine logic  |
 | 158 | `func_801EFFD8` | `src/codeseg/B97B0.c` | 258 | 17/1  | Floats  | Pending | Routine logic  |
-| 159 | `func_801EB91C` | `src/codeseg/B97B0.c` | 259 | 20/7  | Integer Clean  | Pending | Stunt Mode state initialization  |
+| 159 | `func_801EB91C` | `src/codeseg/B97B0.c` | 259 | 20/7  | Integer Clean  | Pending | Stunt Mode state initialization; Draft: probe score 172 (2026-11-09) |
 | 160 | `func_80050B78` | `src/game/water_69D0.c` | 261 | 8/1  | Floats, Rodata  | Pending | Routine logic  |
-| 161 | `func_8007F030` | `src/game/code_383C0.c` | 262 | 20/0  | Floats  | Pending | Rider kinematic state and skeletal position evaluator  |
+| 161 | `func_8007F030` | `src/game/code_383C0.c` | 262 | 20/0  | Floats  | Pending | Rider kinematic state and skeletal position evaluator; Draft: probe score 175 (2026-11-09) |
 | 162 | `func_801EB4F4` | `src/codeseg/B97B0.c` | 266 | 10/9  | Integer Clean  | Pending | Routine logic  |
 | 163 | `func_800624CC` | `src/game/code_C6C0.c` | 275 | 2/4  | Floats  | Pending | Dynamic field-of-view adjustment based on speed boost  |
 | 164 | `func_8007FFA8` | `src/game/code_3A580.c` | 275 | 4/8  | Floats, Rodata  | **MATCHED** | Port Blue spray quad display list builder (completes code_3A580)  |
-| 165 | `func_801E62A8` | `src/codeseg/B3AA0.c` | 275 | 30/2  | Floats  | Pending | Routine logic  |
+| 165 | `func_801E62A8` | `src/codeseg/B3AA0.c` | 275 | 30/2  | Floats  | **MATCHED** | Menu panel slide-in matrix (sibling of 801E6074); `MtxF mtx; f32 scale;` decl order and typed parameter place mtx at sp+0x50 |
 | 166 | `func_80061FEC` | `src/game/code_C6C0.c` | 276 | 13/3  | Floats, Rodata  | Pending | Camera look-at matrix builder for single player  |
 | 167 | `func_80085510` | `src/game/code_3AC00.c` | 277 | 27/7  | Floats, Rodata  | **MATCHED** | Rider steering vector calculation and limit check (completes code_3AC00) |
 | 168 | `func_801E4FE8` | `src/codeseg/B3290.c` | 287 | 3/3  | Floats  | **MATCHED** | Three-node model DL emitter (push matrix, DL, pop); `D_80228920_2` alias stops address CSE. Completes B3290  |
@@ -273,7 +273,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 | 191 | `func_8007D614` | `src/game/core/wr64_save.c` | 331 | 29/10  | JumpTable, Rodata  | Pending | Controller Pak ghost data file verify, header check, and payload reader  |
 | 192 | `func_i8_802C5EB8` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 331 | 58/12  | Integer Clean  | Pending | Stunt mode ramp and floating ring display list generator  |
 | 193 | `func_i8_802C5800` | `src/overlays/ovl_i8/ovl_1C49A0.c` | 335 | 26/8  | Floats  | Pending | Stunt mode ramp and floating ring display list generator  |
-| 194 | `func_8009C2CC` | `src/game/code_52CD0.c` | 338 | 23/19  | Floats, JumpTable  | Pending | Routine logic  |
+| 194 | `func_8009C2CC` | `src/game/code_52CD0.c` | 338 | 23/19  | Floats, JumpTable  | **MATCHED** | Camera script step dispatcher (22-case jump table); `D_801CEA94[i] = (s16) D_801CEA94[i] + 1` gives `lh` not `lhu`. Its jtbl is followed by a 4-byte file-alignment pad now kept in func_8009D6B0.s |
 | 195 | `func_i11_802C5800` | `src/overlays/ovl_i11/ovl_1CA480.c` | 338 | 24/18  | Rodata  | **MATCHED** | Warmup options menu display list renderer (completes ovl_1CA480) |
 | 196 | `func_801E3EE0` | `src/codeseg/B2510.c` | 343 | 33/0  | JumpTable, Rodata  | **MATCHED** | Menu text banner renderer: IA8 block/tile strips + scissored texrects (completes B2510)  |
 | 197 | `func_80067E40` | `src/game/code_C6C0.c` | 344 | 23/3  | Floats  | Pending | Finish line celebration orbital pan camera  |

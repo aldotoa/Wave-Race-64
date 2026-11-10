@@ -72,8 +72,92 @@ void func_i8_802C63E4(void) {
 #endif
 
 #ifdef NON_MATCHING
+/* draft: probe score 62 (2026-11-09) */
+typedef struct KeyboardKey {
+    /* 0x00 */ u8 unk0;
+    /* 0x01 */ u8 unk1;
+    /* 0x02 */ char pad2[0xA];
+    /* 0x0C */ s8 unkC;
+    /* 0x0D */ char padD[0xF];
+} KeyboardKey; /* size = 0x1C */
+extern s32 D_802C7538;
+extern s32 D_802C753C;
+extern s8 D_802C7558;
+extern KeyboardKey D_i8_802C7054[];
+void func_i8_802C6D58(void);
+void func_i8_802C6DA8(void);
+void func_i8_802C6E00(void);
+void func_i8_802C6E68(void*);
+s32 func_i8_802C6EB8(s8* str, s32 arg1);
+void func_i8_802C6FD4(s8* src, s8* dest, s32 count);
+
 void func_i8_802C6ADC(void) {
-    /* Stunt trick recognition and rotation detector */
+    KeyboardKey* key;
+    s32 ok;
+    s32 i;
+    s32 idx;
+    s8* p;
+
+    idx = D_802C753C * 7 + D_802C7538;
+    key = &D_i8_802C7054[idx];
+    switch (key->unk1) {
+        case 0:
+        case 3:
+            ok = 1;
+            if (Strlen2(&D_802C7548) >= 10) {
+                ok = 0;
+            } else if (func_i8_802C6EB8(&D_802C7548, 2) >= 0x77) {
+                ok = 0;
+            }
+            if (ok) {
+                func_i8_802C6FD4(&D_802C7548, &D_802C7558, 11);
+                i = D_802C7564 + 1;
+                if (i < 11) {
+                    s8* src = &D_802C7558 + i;
+                    s8* dst = &D_802C7548 + i;
+                    do {
+                        s8 t = src[-1];
+                        src++;
+                        dst++;
+                        dst[-1] = t;
+                    } while (src < &D_802C7558 + 11);
+                }
+                p = &D_802C7548 + D_802C7564;
+                if (key->unk1 == 3) {
+                    *p = ' ';
+                } else {
+                    *p = key->unkC;
+                }
+                if (func_i8_802C6EB8(&D_802C7548, 2) >= 0x7C) {
+                    func_i8_802C6FD4(&D_802C7558, &D_802C7548, 11);
+                } else if ((&D_802C7558)[D_802C7564] == 0) {
+                    D_802C7564++;
+                }
+            }
+            break;
+        case 1:
+            func_i8_802C6D58();
+            break;
+        case 2:
+            func_i8_802C6DA8();
+            break;
+        case 5:
+            if (((&D_802C7548)[D_802C7564] != 0) && (D_802C7564 < 10)) {
+                D_802C7564++;
+            }
+            break;
+        case 4:
+            if (D_802C7564 > 0) {
+                D_802C7564--;
+            }
+            break;
+        case 6:
+            func_i8_802C6E68(&D_800DA950[D_i8_802C74F8[D_i8_802C7040]]);
+            break;
+        case 7:
+            func_i8_802C6E00();
+            break;
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/overlays/ovl_i8/ovl_1C49A0/func_i8_802C6ADC.s")

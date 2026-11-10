@@ -307,7 +307,50 @@ void func_801DC0AC(struct UnkStruct_801DB0E4_arg0* arg0) {
 }
 
 #ifdef NON_MATCHING
-void func_801DC274(UnkStruct_801DB0E4_arg0* arg0) {
+/* draft: probe score 38 (2026-11-09) */
+extern s32 D_80223A30[];
+extern s32 D_80228194;
+extern s32 D_80228198;
+extern f32 D_8022819C;
+extern f32 D_802281A0;
+extern f32 D_802281A4;
+extern f32 D_802281B4;
+extern f32 D_802281B8;
+extern f32 D_802281BC;
+extern f32 D_802281C0;
+
+void func_801DC274(struct UnkStruct_801DB0E4_arg0* arg0) {
+    f32 len;
+    f32 dir[3];
+    s32 i;
+    f32* p;
+
+    if (((arg0->unk4 - (s32) D_80223A30) / 12) == 2) {
+        D_802287A8 = 1;
+        if (arg0->unk8 == 1) {
+            func_800AB92C();
+            D_80228190.unk0 = 6;
+            D_80228194 = 2;
+            D_80228198 = 0;
+            D_802281C0 = 0.1f;
+            D_8022819C = -300.0f;
+            D_802281A0 = 0.0f;
+            D_802281A4 = -540.0f;
+            D_802281B4 = 0.0f;
+            D_802281BC = 0.0f;
+            D_802281B8 = 1.0f;
+        }
+        D_80228198 += 1;
+        dir[1] = 0.0f;
+        dir[0] = -3.0f;
+        dir[2] = -5.0f;
+        len = sqrtf(SQ(dir[0]) + SQ(dir[1]) + SQ(dir[2]));
+        p = (f32*) &D_80228190;
+        for (i = 0; i < 3; i++) {
+            p[i + 6] = dir[i] / len;
+            p[i + 3] += p[i + 6] * 8.0f;
+        }
+    }
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC274.s")
