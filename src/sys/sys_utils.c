@@ -761,10 +761,11 @@ void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty
 
 #ifdef NON_MATCHING
 /*
- * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 36 diff rows (probe).
+ * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 30 diff rows (strict probe).
  * Load-bearing: one idx variable per angle and MtxF declared last (0xA0 frame, mtx at sp+0x2C); sin(y)
  * generated before cos(x) (this lines up every t-register with retail); routing the sy load through sysz;
- * [1][2] computed after [3][0]. Remaining: retail gives $f2 to cx/cycz and keeps sysz memory-resident,
+ * [1][2] computed after [3][0]; `sy * cx` operand order in [2][0]; the [0][1] store ahead of the cz load.
+ * Remaining: retail gives $f2 to cx/cycz and keeps sysz memory-resident,
  * while this draft gives sysz $f2 and leaves cx in a local temp, cascading into an f0/f2 swap.
  */
 void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f32 scale) {
@@ -790,14 +791,14 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
     sysz = gSinTable[idxy & 0xFFF];
     sy = sysz;
     cx = gSinTable[(idx + 0x400) & 0xFFF];
-    mtx.mf[2][0] = cx * sy * scale;
+    mtx.mf[2][0] = sy * cx * scale;
     cy = gSinTable[(idxy + 0x400) & 0xFFF];
     mtx.mf[2][2] = cy * cx * scale;
 
     idxz = (rz * 4096.0f) / 360.0f;
     sz = gSinTable[idxz & 0xFFF];
-    cz = gSinTable[(idxz + 0x400) & 0xFFF];
     mtx.mf[0][1] = sz * cx * scale;
+    cz = gSinTable[(idxz + 0x400) & 0xFFF];
     mtx.mf[1][1] = cz * cx * scale;
 
     sysz = sy * sz;
