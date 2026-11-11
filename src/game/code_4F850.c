@@ -303,76 +303,57 @@ void func_80095CE8(u8* arg0, s32 arg1) {
     }
 }
 
-#ifdef NON_MATCHING
-/* Master game loop state asset loader and segment relocation: walks the
-   per-course pointer table, relocates each entry via func_800967EC, then
-   dispatches on the course-type word through jtbl_800EB2B4 to one of the
-   five SegmentedToVirtual fixup siblings (961B8/962F0/963CC/965B8/964CC).
-   Diff floor 905 probe-verified (M): loop/dispatch/tail/guard/s-map/frame
-   all exact; remainder is prelude allocation: table address in s3 (with an
-   early s3 save) vs retail v1, and index-zero emitted before the cursor
-   load vs retail load-then-zero. Load-bearing: empty-then loop form (plain
-   if/else-if emits beqz-over-inline-work, not retail bnez-into-out-of-line
-   work); cursor = *(table + discriminant) (address-only walk reads the
-   wrong array); sp40-held discriminant with no temp_t8 auto (a named temp
-   inflates the frame 0x48 -> 0x58); tail order count/index/cursor to land
-   the cursor bump in the bne delay slot. Attractor-proven across ~25 probes
-   (decl/statement/init/chained-zero/scope/pressure/type axes). The (zero,
-   load) order vs cursor/index regs is a coupled tension: statement-zero
-   gives retail emission but swaps the pair, decl-init fixes the pair but
-   swaps emission. Promotion needs a NEEDS_RODATA wrapper (C switch emits
-   the jump table) per the Handling-.rodata rule. */
+/* Course asset table loader: walks the zero-terminated pointer list for the course kind,
+ * relocates each entry via func_800967EC and records the rebased pointer, stores the entry
+ * count, then dispatches on the kind to one of the five SegmentedToVirtual fixup siblings.
+ * Both tables are indexed by the counter; IDO strength-reduces that into the separate
+ * byte-index and cursor registers seen in retail. */
 void func_80096048(void* arg0, s32 arg1) {
-    s32 sp40;
-    UnkStruct_801CE7D8* temp_v0;
-    s32 var_s2 = 0;
-    s32 temp_s0;
-    s32 temp_s5;
-    u32* var_s3;
-    s32 var_s4;
-    u32* temp_fp;
+    s32 pad;
+    s32 kind;
+    UnkStruct_801CE7D8* info;
+    s32 entry;
+    s32 segOffset;
+    u32* list;
+    s32 count;
+    u32* dst;
 
-    temp_v0 = &D_801CE7D8[arg1];
-    sp40 = temp_v0->unk0;
-    var_s3 = (u32*) *(D_800DB484 + sp40);
-    var_s4 = 0;
-    temp_fp = (u32*) (D_801CE780 + arg1 * 0x2C);
-    temp_s5 = temp_v0->unk4 & 0xFFFFFF;
-loop_1:
-    temp_s0 = *var_s3;
-    if (temp_s0 == 0) {
-    } else {
-        func_800967EC((u32*) ((temp_s0 & 0xFFFFFF) + (s32) arg0), temp_s5);
-        ((u32*) ((u8*) temp_fp + var_s2))[2] = temp_s0 + temp_s5;
-        var_s4 += 1;
-        var_s2 += 4;
-        var_s3++;
-        goto loop_1;
+    info = &D_801CE7D8[arg1];
+    kind = info->unk0;
+    list = (u32*) D_800DB484[kind];
+    segOffset = info->unk4 & 0xFFFFFF;
+    dst = (u32*) (D_801CE780 + arg1 * 0x2C);
+    count = 0;
+    while (1) {
+        entry = list[count];
+        if (entry == 0) {
+            break;
+        }
+        func_800967EC((u32*) ((entry & 0xFFFFFF) + (s32) arg0), segOffset);
+        dst[count + 2] = entry + segOffset;
+        count++;
     }
-    temp_fp[0] = var_s4;
-    switch (sp40) {
+    dst[0] = count;
+    switch (kind) {
         case 3:
         case 6:
-            temp_fp[1] = (u32) func_800961B8(sp40, temp_s5);
+            dst[1] = (u32) func_800961B8(kind, segOffset);
             break;
         case 1:
-            temp_fp[1] = (u32) func_800962F0(temp_s5);
+            dst[1] = (u32) func_800962F0(segOffset);
             break;
         case 2:
         case 4:
-            temp_fp[1] = (u32) func_800963CC(sp40, temp_s5);
+            dst[1] = (u32) func_800963CC(kind, segOffset);
             break;
         case 0:
-            temp_fp[1] = (u32) func_800965B8(temp_s5);
+            dst[1] = (u32) func_800965B8(segOffset);
             break;
         case 8:
-            temp_fp[1] = (u32) func_800964CC(temp_s5);
+            dst[1] = (u32) func_800964CC(segOffset);
             break;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_4F850/func_80096048.s")
-#endif
 
 /* Relocates segmented pointers for asset kinds 3 and 6: one table entry,
  * nine pointers per record (entry link plus fields 1-8). segOffset is the

@@ -2283,7 +2283,7 @@ class TestSysLayer(unittest.TestCase):
             self.skipTest("func_8004A3C0 is currently non-matching (in progress)")
 
     def test_func_8004A8B0_matched(self):
-        """TDE test for func_8004A8B0 in sys_utils (Controller data packing and hardware status processing)."""
+        """TDE test for func_8004A8B0 in sys_utils (Framebuffer emboss filter)."""
         if self.is_function_decompiled("func_8004A8B0"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
@@ -2324,7 +2324,7 @@ class TestAudioEngine(unittest.TestCase):
             self.skipTest("func_800C11CC is currently non-matching (in progress)")
 
     def test_func_800C1BD8_matched(self):
-        """TDE test for func_800C1BD8 in audio_general (Water splash and engine exhaust audio filter updater)."""
+        """TDE test for func_800C1BD8 in audio_general (Dynamic music volume and menu-state modulator)."""
         if self.is_function_decompiled("func_800C1BD8"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
@@ -2920,7 +2920,7 @@ class TestCourseLoading(unittest.TestCase):
             self.skipTest("unk_game_load is currently non-matching (in progress)")
 
     def test_func_80096048_matched(self):
-        """TDE test for func_80096048 in code_4F850 (Course terrain mesh and collision bounding volume loader)."""
+        """TDE test for func_80096048 in code_4F850 (Course asset pointer table loader and relocation dispatch)."""
         if self.is_function_decompiled("func_80096048"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
@@ -3134,13 +3134,17 @@ class TestAIRivals(unittest.TestCase):
 
 
 class TestHUDOverlays(unittest.TestCase):
-    """Test cases for In-Game HUD Overlays & Telemetry Generator (code_52CD0.c)."""
+    """Test cases for In-Game HUD Overlays & Telemetry Generator (code_52CD0.c, code_57EB0.c).
+
+    code_52CD0.c was split at func_8009D6B0 (original file boundary); the second half is code_57EB0.c.
+    """
 
     def is_function_decompiled(self, func_name: str) -> bool:
-        filepath = os.path.join(PROJECT_ROOT, "src", "game", "code_52CD0.c")
         pattern = re.compile(rf"\b{func_name}\b")
-        with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-            content = f.read()
+        for unit in ("code_52CD0.c", "code_57EB0.c"):
+            filepath = os.path.join(PROJECT_ROOT, "src", "game", unit)
+            with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
             if pattern.search(content):
                 for block in content.split(func_name)[1:]:
                     if "{" in block[:300]:
@@ -3183,154 +3187,154 @@ class TestHUDOverlays(unittest.TestCase):
             self.skipTest("func_8009C2CC is currently non-matching (in progress)")
 
     def test_func_8009D6B0_matched(self):
-        """TDE test for func_8009D6B0 in code_52CD0 (Buoy miss warning flash animator)."""
+        """TDE test for func_8009D6B0 in code_57EB0 (HUD buoy model vertex-table entry lookup)."""
         if self.is_function_decompiled("func_8009D6B0"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_8009D6B0 is currently non-matching (in progress)")
 
     def test_func_8009D96C_matched(self):
-        """TDE test for func_8009D96C in code_52CD0 (Buoy power meter level bar display list builder)."""
+        """TDE test for func_8009D96C in code_57EB0 (Buoy power meter level bar display list builder)."""
         if self.is_function_decompiled("func_8009D96C"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_8009D96C is currently non-matching (in progress)")
 
     def test_func_8009DC10_matched(self):
-        """TDE test for func_8009DC10 in code_52CD0 (Speedometer dial needle renderer)."""
+        """TDE test for func_8009DC10 in code_57EB0 (Speedometer dial needle renderer)."""
         if self.is_function_decompiled("func_8009DC10"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_8009DC10 is currently non-matching (in progress)")
 
     def test_func_8009F398_matched(self):
-        """TDE test for func_8009F398 in code_52CD0 (Tachometer RPM indicator display list generator)."""
+        """TDE test for func_8009F398 in code_57EB0 (Tachometer RPM indicator display list generator)."""
         if self.is_function_decompiled("func_8009F398"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_8009F398 is currently non-matching (in progress)")
 
     def test_func_8009FCB0_matched(self):
-        """TDE test for func_8009FCB0 in code_52CD0 (Lap counter digit sprite renderer)."""
+        """TDE test for func_8009FCB0 in code_57EB0 (Lap counter digit sprite renderer)."""
         if self.is_function_decompiled("func_8009FCB0"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_8009FCB0 is currently non-matching (in progress)")
 
     def test_func_800A063C_matched(self):
-        """TDE test for func_800A063C in code_52CD0 (Race timer millisecond split renderer)."""
+        """TDE test for func_800A063C in code_57EB0 (Race timer millisecond split renderer)."""
         if self.is_function_decompiled("func_800A063C"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A063C is currently non-matching (in progress)")
 
     def test_func_800A10E4_matched(self):
-        """TDE test for func_800A10E4 in code_52CD0 (Position badge rank indicator renderer)."""
+        """TDE test for func_800A10E4 in code_57EB0 (Position badge rank indicator renderer)."""
         if self.is_function_decompiled("func_800A10E4"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A10E4 is currently non-matching (in progress)")
 
     def test_func_800A16F0_matched(self):
-        """TDE test for func_800A16F0 in code_52CD0 (Checkpoint flyby time split banner)."""
+        """TDE test for func_800A16F0 in code_57EB0 (Checkpoint flyby time split banner)."""
         if self.is_function_decompiled("func_800A16F0"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A16F0 is currently non-matching (in progress)")
 
     def test_func_800A1CFC_matched(self):
-        """TDE test for func_800A1CFC in code_52CD0 (Maximum power boost indicator flame overlay)."""
+        """TDE test for func_800A1CFC in code_57EB0 (Maximum power boost indicator flame overlay)."""
         if self.is_function_decompiled("func_800A1CFC"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A1CFC is currently non-matching (in progress)")
 
     def test_func_800A2308_matched(self):
-        """TDE test for func_800A2308 in code_52CD0 (Course mini-map rider blip positioner)."""
+        """TDE test for func_800A2308 in code_57EB0 (Course mini-map rider blip positioner)."""
         if self.is_function_decompiled("func_800A2308"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A2308 is currently non-matching (in progress)")
 
     def test_func_800A2B24_matched(self):
-        """TDE test for func_800A2B24 in code_52CD0 (Course mini-map track contour display list builder)."""
+        """TDE test for func_800A2B24 in code_57EB0 (Course mini-map track contour display list builder)."""
         if self.is_function_decompiled("func_800A2B24"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A2B24 is currently non-matching (in progress)")
 
     def test_func_800A52D8_matched(self):
-        """TDE test for func_800A52D8 in code_52CD0 (Stunt score numerical counter display list builder)."""
+        """TDE test for func_800A52D8 in code_57EB0 (Stunt score numerical counter display list builder)."""
         if self.is_function_decompiled("func_800A52D8"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A52D8 is currently non-matching (in progress)")
 
     def test_func_800A68A4_matched(self):
-        """TDE test for func_800A68A4 in code_52CD0 (Wrong way warning banner animator)."""
+        """TDE test for func_800A68A4 in code_57EB0 (Wrong way warning banner animator)."""
         if self.is_function_decompiled("func_800A68A4"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A68A4 is currently non-matching (in progress)")
 
     def test_func_800A9D48_matched(self):
-        """TDE test for func_800A9D48 in code_52CD0 (Finish line final lap banner renderer)."""
+        """TDE test for func_800A9D48 in code_57EB0 (Finish line final lap banner renderer)."""
         if self.is_function_decompiled("func_800A9D48"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800A9D48 is currently non-matching (in progress)")
 
     def test_func_800AAAC8_matched(self):
-        """TDE test for func_800AAAC8 in code_52CD0 (Disqualification notice overlay renderer)."""
+        """TDE test for func_800AAAC8 in code_57EB0 (Disqualification notice overlay renderer)."""
         if self.is_function_decompiled("func_800AAAC8"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AAAC8 is currently non-matching (in progress)")
 
     def test_func_800AB25C_matched(self):
-        """TDE test for func_800AB25C in code_52CD0 (Retired / out of fuel banner renderer)."""
+        """TDE test for func_800AB25C in code_57EB0 (Retired / out of fuel banner renderer)."""
         if self.is_function_decompiled("func_800AB25C"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AB25C is currently non-matching (in progress)")
 
     def test_func_800AB95C_matched(self):
-        """TDE test for func_800AB95C in code_52CD0 (Time up game over banner renderer)."""
+        """TDE test for func_800AB95C in code_57EB0 (Time up game over banner renderer)."""
         if self.is_function_decompiled("func_800AB95C"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AB95C is currently non-matching (in progress)")
 
     def test_func_800AC098_matched(self):
-        """TDE test for func_800AC098 in code_52CD0 (Record lap flash alert display list generator)."""
+        """TDE test for func_800AC098 in code_57EB0 (Record lap flash alert display list generator)."""
         if self.is_function_decompiled("func_800AC098"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AC098 is currently non-matching (in progress)")
 
     def test_func_800AC184_matched(self):
-        """TDE test for func_800AC184 in code_52CD0 (New record congratulatory fanfare banner)."""
+        """TDE test for func_800AC184 in code_57EB0 (New record congratulatory fanfare banner)."""
         if self.is_function_decompiled("func_800AC184"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AC184 is currently non-matching (in progress)")
 
     def test_func_800AD418_matched(self):
-        """TDE test for func_800AD418 in code_52CD0 (2-Player split-screen HUD divider and layout setup)."""
+        """TDE test for func_800AD418 in code_57EB0 (2-Player split-screen HUD divider and layout setup)."""
         if self.is_function_decompiled("func_800AD418"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800AD418 is currently non-matching (in progress)")
 
     def test_func_800ADC8C_matched(self):
-        """TDE test for func_800ADC8C in code_52CD0 (Active HUD element visibility bitmask evaluator)."""
+        """TDE test for func_800ADC8C in code_57EB0 (Active HUD element visibility bitmask evaluator)."""
         if self.is_function_decompiled("func_800ADC8C"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
             self.skipTest("func_800ADC8C is currently non-matching (in progress)")
 
     def test_func_800ADF90_matched(self):
-        """TDE test for func_800ADF90 in code_52CD0 (Master HUD display list composite renderer)."""
+        """TDE test for func_800ADF90 in code_57EB0 (Master HUD display list composite renderer)."""
         if self.is_function_decompiled("func_800ADF90"):
             self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
         else:
@@ -3380,8 +3384,8 @@ class TestBatch20261109(unittest.TestCase):
         ("func_801EA3EC", "codeseg/B66E0"),
         ("func_801EA730", "codeseg/B66E0"),
         ("func_801EAA6C", "codeseg/B66E0"),
-        ("func_800ADC8C", "game/code_52CD0"),
-        ("func_800ADF90", "game/code_52CD0"),
+        ("func_800ADC8C", "game/code_57EB0"),
+        ("func_800ADF90", "game/code_57EB0"),
         ("func_8009C2CC", "game/code_52CD0"),
         ("func_801E66F4", "codeseg/B3AA0"),
         ("func_80067810", "game/code_C6C0"),
@@ -3447,6 +3451,60 @@ class TestBatch20261109(unittest.TestCase):
 # END batch-2026-11-09
 
 
+# BEGIN batch-2026-11-10
+class TestBatch20261110(unittest.TestCase):
+    """Functions matched in the 2026-11-10 batch (four closest parked drafts)."""
+
+    CASES = [
+        ("func_800C1BD8", "audio/audio_general"),
+        ("func_8009D6B0", "game/code_57EB0"),
+        ("func_80096048", "game/code_4F850"),
+        ("func_8004A8B0", "sys/sys_utils"),
+    ]
+
+    def _check(self, func, unit):
+        source_path = os.path.join(PROJECT_ROOT, "src", unit + ".c")
+        stub_path = os.path.join(NONMATCHINGS_DIR, unit, func + ".s")
+        with open(source_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertRegex(source, r"\b%s\([^;]*\)\s*\{" % func)
+        self.assertNotIn('GLOBAL_ASM("asm/us/rev1/nonmatchings/%s/%s.s")' % (unit, func), source)
+        self.assertFalse(os.path.exists(stub_path), "%s must not have a GLOBAL_ASM stub" % func)
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
+    def test_func_800C1BD8_matched(self):
+        self._check(*self.CASES[0])
+
+    def test_func_8009D6B0_matched(self):
+        self._check(*self.CASES[1])
+
+    def test_func_80096048_matched(self):
+        self._check(*self.CASES[2])
+
+    def test_func_8004A8B0_matched(self):
+        self._check(*self.CASES[3])
+
+    def test_code_52CD0_split_at_file_boundary(self):
+        """code_52CD0.c ends before func_8009D6B0; no stubs are left under the old unit name."""
+        with open(os.path.join(PROJECT_ROOT, "src", "game", "code_52CD0.c"), "r", encoding="utf-8") as f:
+            first = f.read()
+        self.assertNotIn("func_8009D6B0", first)
+        self.assertNotIn("GLOBAL_ASM", first)
+        old_dir = os.path.join(NONMATCHINGS_DIR, "game", "code_52CD0")
+        self.assertFalse(os.path.isdir(old_dir) and os.listdir(old_dir))
+
+    def test_sys_utils_data_migrated(self):
+        """Seed and the emboss filter's first-use flag live in sys_utils' own .data."""
+        with open(os.path.join(PROJECT_ROOT, "src", "sys", "sys_utils.c"), "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertIn("int Seed = 1;", source)
+        self.assertIn("static s16 D_800D4644 = 1;", source)
+        self.assertFalse(os.path.exists(os.path.join(PROJECT_ROOT, "asm", "us", "rev1", "data", "8EE40.data.s")))
+
+
+# END batch-2026-11-10
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -3469,6 +3527,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestHUDOverlays))
     suite.addTests(loader.loadTestsFromTestCase(TestTier4FloatMatches))
     suite.addTests(loader.loadTestsFromTestCase(TestBatch20261109))
+    suite.addTests(loader.loadTestsFromTestCase(TestBatch20261110))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1
