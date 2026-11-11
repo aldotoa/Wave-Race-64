@@ -1068,19 +1068,9 @@ void func_800C1B98(void) {
     AudioThread_QueueCmdS8(0x06000704U, -1);
 }
 
-#ifdef NON_MATCHING
-/* Dynamic music volume and menu-state modulator.
-   Diff floor 605 (probed): float/branch/call structure all matches; left is
-   two delay-slot fills (beqzl/b + lui a0 where retail has nop) plus .rodata
-   label naming (retail .late_rodata D_800EC39C..A8 vs probe-local pool;
-   verify pool layout + ROM hash at promotion). Parked.
-   Bisection note: deleting the enclosing beql-into-else branch flips the
-   case-0 test to beqz (S5), so the lever is the beql context, but no
-   byte-preserving spelling of the switch (~20 variants: case order, default,
-   if/else, nesting, load order/split, decl order, u32/u8/register) changes
-   the fills. Scheduler-opaque.
-   Empty-else probe (Q): explicit `else {}` on the bare D_801D7DE8 guard is
-   fully inert (identical rows, 605) - sole bare if in the function. */
+/* Dynamic music volume and menu-state modulator. Case 3 falls through into a
+   shared `case 0: default:` block whose redundant `var_a1 = 0x40` is optimised
+   away; that keeps the case-0 `beqz` and the default `b` delay slots as nops. */
 void func_800C1BD8(f32 arg0, f32 arg1) {
     f32 var_fv0;
     s32 temp_v0;
@@ -1102,9 +1092,7 @@ void func_800C1BD8(f32 arg0, f32 arg1) {
         } else {
             var_a1 = 0x40;
             temp_v0 = D_801D7DEC[0] + (D_801D7DEC[1] * 2);
-            switch (temp_v0) { /* irregular */
-                case 0:
-                    break;
+            switch (temp_v0) {
                 case 1:
                     var_a1 = 0x20;
                     var_fv0 *= 0.8f;
@@ -1115,6 +1103,10 @@ void func_800C1BD8(f32 arg0, f32 arg1) {
                     break;
                 case 3:
                     var_fv0 *= 0.3f;
+                    /* fallthrough */
+                case 0:
+                default:
+                    var_a1 = 0x40;
                     break;
             }
             AudioThread_QueueCmdS8(0x03000700, var_a1);
@@ -1130,9 +1122,7 @@ void func_800C1BD8(f32 arg0, f32 arg1) {
         func_800C1B98();
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/audio/audio_general/func_800C1BD8.s")
-#endif
+
 
 void func_800C1DA8(void) {
     if (D_800E7C94 == 7) {

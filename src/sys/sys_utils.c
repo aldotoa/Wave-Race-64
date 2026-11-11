@@ -8,7 +8,7 @@ extern s32 D_80154344;
 extern float gSinTable[0x1000];
 
 // .data
-extern int Seed;
+int Seed = 1;
 
 s32 SysUtils_Round(f32 x) {
     if (x < 0.0f) {
@@ -1062,15 +1062,12 @@ void func_8004A3C0(Mtx* arg0, MtxF* arg1, f32 x, f32 y, f32 z, f32 angle) {
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_8004A3C0.s")
 #endif
 
-#ifdef NON_MATCHING
 /*
  * Framebuffer emboss filter: builds a 125-entry RGBA5551 relief table on first use, then per column of
  * a 320-wide framebuffer replaces each pixel (rows 20..218) by table[(lum - lum_below + 0x3E80) >> 8].
- * Floor: 7 diff rows (probe), register naming only; instruction count matches.
- * Load-bearing: D_800D4644 as a function-local static (it lives in sys_utils' own .data right after
- * Seed); the (u32) cast in the inner lookup (keeps two table bases, s1 and a0, and the idx+base addu
- * order); the pix/prev initializers and `i = lum = 0` (give pix/prev v0/v1); `c0 = col` after p.
- * Remaining: the inner table base gets t2 and the row-218 pointer a0 (target a0 and a3).
+ * D_800D4644 is a function-local static (it lives in this file's .data right after Seed). The inner
+ * lookup goes through an integer copy of the table address taken before the column pointers are set
+ * up; that keeps it apart from the D_80158350[0x3E] base and gives it its retail register.
  */
 extern u16 D_80158350[];
 
@@ -1078,7 +1075,7 @@ void func_8004A8B0(u16* fb) {
     static s16 D_800D4644 = 1;
     s32 i;
     s32 v;
-    u16* base;
+    u32 tbl;
     u16* end;
     u16* col;
     u16* p;
@@ -1088,7 +1085,7 @@ void func_8004A8B0(u16* fb) {
     s32 prev = 0;
 
     if (D_800D4644 != 0) {
-        for (i = lum = 0; i < 125; i++) {
+        for (i = 0; i < 125; i++) {
             v = i * 2 - 0x6C;
             if (v >= 0x20) {
                 v = 0x1F;
@@ -1100,6 +1097,7 @@ void func_8004A8B0(u16* fb) {
         D_800D4644 = 0;
     }
     fb += 20 * 320;
+    tbl = (u32) D_80158350;
     col = fb + 8;
     end = fb + 311;
     do {
@@ -1114,11 +1112,8 @@ void func_8004A8B0(u16* fb) {
             p -= 320;
             lum = (pix >> 11) * 0x4D + ((pix >> 6) & 0x1F) * 0x97 + ((pix >> 1) & 0x1F) * 0x1C;
             pix = (lum - prev) + 0x3E80;
-            p[320] = *(u16*) (((pix >> 8) << 1) + (u32) D_80158350);
+            p[320] = *(u16*) (((pix >> 8) << 1) + tbl);
             prev = lum;
         } while (p >= c0);
     } while (col < end);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_8004A8B0.s")
-#endif
