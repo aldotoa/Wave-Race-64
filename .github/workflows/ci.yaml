@@ -18,7 +18,9 @@ jobs:
       run: ./tools/check_format.sh
 
   compile-check:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, which has no
+    # binutils-mips-linux-gnu package (apt exit 100).
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout
       uses: actions/checkout@v4
