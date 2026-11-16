@@ -108,7 +108,7 @@ void func_801E6074(UnkStruct_menu_buffer_1*);
 void func_801E62A8(UnkStruct_menu_buffer_1*);
 void func_801E66F4(UnkStruct_menu_buffer_1*);
 void func_801E68EC(UnkStruct_menu_buffer_1*);
-void func_801DDAB8(void*, void*, void*);
+void func_801DDAB8();
 void func_800C1DEC(void);
 void func_800C1B98(void);
 void func_800804C4(void);

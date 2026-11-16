@@ -418,8 +418,67 @@ void func_801EAFB4(void) {
 }
 
 #ifdef NON_MATCHING
-void func_801EB00C(void) {
-    /* Formatted integer text formatter */
+extern u8 D_80226D70[];
+extern u8 D_80226D98[];
+extern u8 D_80226DC4[];
+extern int sprintf(char*, const char*, ...);
+
+/*
+ * Draft, strict probe floor 36 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
+void func_801EB00C(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 acc;
+    s32 i;
+    s32 digits[3];
+    s32 n;
+    s32 found;
+    s32 d;
+    u8* tbl;
+    char buf[12];
+    s32 v;
+    s32* p;
+
+    if (arg1 == 0) {
+        tbl = D_80226D70;
+    } else {
+        if (arg1 == 2) {
+            tbl = D_80226DC4;
+        } else {
+            tbl = D_80226D98;
+        }
+    }
+    sprintf(buf, "%d", arg2);
+    v = arg2;
+    for (i = 0; i < 3; i++) {
+        digits[i] = v % 10;
+        v = v / 10;
+    }
+    acc = 0;
+    p = &digits[1];
+    i = 1;
+    do {
+        d = *p++;
+        found = 0;
+        n = i + 1;
+        if (d != 0) {
+            acc -= tbl[d];
+        } else {
+            if (n < 3) {
+                for (v = n; v < 3; v++) {
+                    if (digits[v] != 0) {
+                        found = 1;
+                        break;
+                    }
+                }
+            }
+            if (found == 0) {
+                break;
+            }
+            acc -= tbl[d];
+        }
+        i = n;
+    } while (n < 3);
+    func_801E9858(arg0, arg1, buf, arg3 + acc, arg4);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/B66E0/func_801EB00C.s")

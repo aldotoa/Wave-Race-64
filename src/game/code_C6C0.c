@@ -780,17 +780,149 @@ void func_80053A5C(UnkStruct_80052E90_arg1_s* arg0, f32 arg1, UnkStruct_80052E90
     func_8005374C(&arg0->unk6C, arg1, &arg2->unk6C, &arg3->unk6C);
 }
 
-#ifdef NON_MATCHING
-void func_80053C08(f32 arg0, s32 arg1) {
-    /* Water surface wave height compensation for camera elevation */
-    ((void) arg0);
-    ((void) arg1);
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80053C08.s")
-#endif
+typedef struct {
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ u8 pad4[0x24];
+} UnkStruct_80053C08; /* size = 0x28 */
 
-void func_80053C08(f32, s32);
+/* p->unk660 is really an array of 19 0x28-byte entries (0x660..0x930) */
+#define SLOT(n) (((UnkStruct_80053C08*) p->unk660)[n].unk0)
+
+void func_80053C08(s32 arg0, s32 arg1) {
+    UnkStruct_80192690* p;
+    UnkStruct_80192690* q;
+    UnkStruct_80053C08* it;
+
+    q = &D_80192690[arg0];
+    p = q;
+    if ((arg1 >= 0x12) && (arg1 < 0x16)) {
+        p->unkC68 = 0;
+    } else {
+        p->unkC68 = 1;
+    }
+    if ((arg1 == 0x17) || (arg1 == 0x18) || (arg1 == 0x11) || ((arg1 >= 0x12) && (arg1 < 0x16))) {
+        for (it = &((UnkStruct_80053C08*) p->unk660)[18]; it >= (UnkStruct_80053C08*) q->unk660; it--) {
+            it->unk0 = 0;
+        }
+        if (arg1 == 0x18) {
+            p->unk1574 = 0;
+        }
+    } else {
+        for (it = &((UnkStruct_80053C08*) p->unk660)[18]; it >= (UnkStruct_80053C08*) q->unk660; it--) {
+            it->unk0 = 1;
+        }
+    }
+    switch (arg1) {
+        case 22:
+        case 25:
+            if (p->unk16CC == 0) {
+                SLOT(17) = 4;
+                SLOT(9) = 4;
+                SLOT(18) = 4;
+                SLOT(10) = 4;
+                SLOT(6) = 2;
+                SLOT(14) = 3;
+                break;
+            }
+            SLOT(15) = 0;
+            SLOT(7) = 0;
+            SLOT(2) = 0;
+            SLOT(14) = 0;
+            SLOT(6) = 0;
+            break;
+        case 24:
+            SLOT(2) = 5;
+            SLOT(15) = 5;
+            SLOT(7) = 5;
+            SLOT(11) = 5;
+            SLOT(3) = 5;
+            SLOT(6) = 2;
+            SLOT(14) = 3;
+            break;
+        case 10:
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            SLOT(6) = 2;
+            SLOT(14) = 3;
+            break;
+        case 15:
+            SLOT(16) = 0;
+            SLOT(8) = 0;
+            SLOT(15) = 0;
+            SLOT(7) = 0;
+            SLOT(2) = 0;
+            SLOT(6) = 2;
+            SLOT(14) = 3;
+            break;
+        case 8:
+            SLOT(14) = 0;
+            SLOT(6) = 0;
+            SLOT(15) = 0;
+            SLOT(7) = 0;
+            SLOT(2) = 0;
+            p->unkC68 = 0;
+            break;
+        case 17:
+            p->unkC68 = 0;
+            break;
+        case 7:
+            SLOT(14) = 0;
+            SLOT(6) = 0;
+            SLOT(16) = 0;
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(15) = 0;
+            SLOT(8) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            SLOT(7) = 0;
+            SLOT(2) = 0;
+            SLOT(1) = 0;
+            SLOT(0) = 0;
+            break;
+        case 2:
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            SLOT(14) = 3;
+            break;
+        case 9:
+            SLOT(15) = 0;
+            SLOT(7) = 0;
+            SLOT(2) = 0;
+            SLOT(16) = 0;
+            SLOT(8) = 0;
+            break;
+        case 1:
+        case 6:
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            break;
+        case 3:
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            SLOT(14) = 3;
+            break;
+        case 4:
+            SLOT(16) = 0;
+            SLOT(18) = 0;
+            SLOT(17) = 0;
+            SLOT(8) = 0;
+            SLOT(10) = 0;
+            SLOT(9) = 0;
+            break;
+    }
+}
+
+#undef SLOT
+
 
 s32 func_80053EAC(s32 arg0, s32 arg1, s32 arg2, f32 arg3, u16 arg4) {
     UnkStruct_80192690* temp_v0;
@@ -806,7 +938,7 @@ s32 func_80053EAC(s32 arg0, s32 arg1, s32 arg2, f32 arg3, u16 arg4) {
         temp_v0->unkC58 = arg2;
         temp_v0->unkC6C = 0;
         temp_v0->unk142C = 0.0f;
-        func_80053C08(arg3, arg1);
+        func_80053C08(arg0, arg1);
         return 0;
     }
 
@@ -819,7 +951,7 @@ s32 func_80053EAC(s32 arg0, s32 arg1, s32 arg2, f32 arg3, u16 arg4) {
     temp_v0->unk1430 = arg3;
     temp_v0->unk142C = arg3;
     temp_v0->unkC64 = arg4;
-    func_80053C08(arg3, -1);
+    func_80053C08(arg0, -1);
     return 0;
 }
 

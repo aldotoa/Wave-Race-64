@@ -759,54 +759,39 @@ void func_8004EAA4(void) {
 #endif
 
 #ifdef NON_MATCHING
-/* draft: probe score 97 (2026-11-09) */
+/*
+ * Draft, strict probe floor 39 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
 void func_8004EFB4(f32 arg0, f32 arg1, s32 arg2) {
-    s32 a0;
-    s32 idx_t4;
-    s32 idx_a3;
-    s32 temp_hi_2;
-    s32 a7;
-    s32 t0;
-    s32 a1;
-    s32 temp_hi;
-    s32 t2;
-    s32 t1;
-    s32 idx_v0;
     UnkStruct_80162420* p_v0;
+    s32 val;
+    s32 t3;
+    s32 a0;
     UnkStruct_80162420* p_a3;
+    s32 a1;
     UnkStruct_80162420* p_t4;
-    s16 val;
+    s32 idx;
+    s32 temp_hi;
+    s32 temp_hi_2;
 
     temp_hi = (s32) ((DIRLIGHT_DIRECTION * arg1) + arg0) % 24576;
     temp_hi_2 = (s32) (TWO_OVER_SQRT_3 * arg1) % 24576;
-    a1 = temp_hi >> 6;
     a0 = temp_hi_2 >> 6;
-
-    if ((temp_hi - (a1 << 6)) < (temp_hi_2 - (a0 << 6))) {
-        t2 = a0 + (a1 & ~0x7F);
-        idx_v0 = (((t2 + 0x601) % 384) << 7) + (a1 & 0x7F);
-        a7 = a1 + 1;
-        t0 = a0 + (a7 & ~0x7F);
-        t1 = a7 & 0x7F;
+    a1 = temp_hi >> 6;
+    if ((temp_hi - (a1 * 64)) < (temp_hi_2 - (a0 * 64))) {
+        p_v0 = D_80162420 + ((((a0 + (a1 & ~0x7F) + 0x601) % 384) * 128) + (a1 & 0x7F));
     } else {
-        a7 = a1 + 1;
-        t0 = a0 + (a7 & ~0x7F);
-        t1 = a7 & 0x7F;
-        idx_v0 = (((t0 + 0x600) % 384) << 7) + t1;
-        t2 = a0 + (a1 & ~0x7F);
+        p_v0 = (UnkStruct_80162420*) ((u32) D_80162420 + ((((a0 + ((a1 + 1) & ~0x7F) + 0x600) % 384) * 128) + ((a1 + 1) & 0x7F)) * 4);
     }
-    idx_t4 = (((t0 + 0x601) % 384) << 7) + t1;
-    idx_a3 = (((t2 + 0x600) % 384) << 7) + (a1 & 0x7F);
-    p_v0 = &D_80162420[idx_v0];
-    p_t4 = &D_80162420[idx_t4];
-    p_a3 = &D_80162420[idx_a3];
-    val = arg2 << 8;
+    val = arg2 * 256;
+    idx = (((a0 + ((a1 + 1) & ~0x7F) + 0x601) % 384) * 128) + ((a1 + 1) & 0x7F); p_t4 = &D_80162420[idx];
+    p_a3 = (UnkStruct_80162420*) ((u32) D_80162420 + ((((a0 + (a1 & ~0x7F) + 0x600) % 384) * 128) + (a1 & 0x7F)) * 4);
     p_t4->unk0 = val;
     p_a3->unk0 = val;
     p_v0->unk0 = val;
     p_t4->unk2 = 0;
-    p_a3->unk2 = p_t4->unk2;
-    p_v0->unk2 = p_t4->unk2;
+    p_a3->unk2 = 0;
+    p_v0->unk2 = 0;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/water_69D0/func_8004EFB4.s")
