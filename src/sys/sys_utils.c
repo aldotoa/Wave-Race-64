@@ -653,7 +653,9 @@ void func_80049710(Mtx* arg0, MtxF* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5
     SysUtils_MtxFToMtx(arg1, arg0);
 }
 #ifdef NON_MATCHING
-/* draft: probe score 35 (2026-11-09) */
+/*
+ * Draft, strict probe floor 31 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
 void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
     s32 idx;
     f32 sy;
@@ -671,13 +673,13 @@ void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
     arg1->mf[2][1] = -sx;
     cx = gSinTable[(idx + 0x400) & 0xFFF];
     idx = ((ry * 4096.0f) / 6.283186f) + 0.5f;
-    sy = gSinTable[idx & 0xFFF];
+    sysz = gSinTable[idx & 0xFFF];
+    sy = sysz;
     arg1->mf[2][0] = cx * sy;
     cy = gSinTable[(idx + 0x400) & 0xFFF];
     arg1->mf[2][2] = cy * cx;
     idx = ((rz * 4096.0f) / 6.283186f) + (1.0f / 2.0f);
-    sysz = gSinTable[idx & 0xFFF];
-    sz = sysz;
+    sz = gSinTable[idx & 0xFFF];
     arg1->mf[0][1] = sz * cx;
     cz = gSinTable[(idx + 0x400) & 0xFFF];
     arg1->mf[1][1] = cz * cx;
@@ -692,8 +694,7 @@ void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
     arg1->mf[3][1] = 0.0f;
     arg1->mf[3][2] = 0.0f;
     arg1->mf[0][3] = 0.0f;
-    arg1->mf[1][2] = sx * cycz;
-    arg1->mf[1][2] = arg1->mf[1][2] + sysz;
+    arg1->mf[1][2] = (sx * cycz) + sysz;
     arg1->mf[1][3] = 0.0f;
     arg1->mf[2][3] = 0.0f;
     arg1->mf[3][3] = 1.0f;
@@ -761,12 +762,7 @@ void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty
 
 #ifdef NON_MATCHING
 /*
- * Euler angles (degrees) * scale + translation -> local MtxF -> Mtx. Floor: 30 diff rows (strict probe).
- * Load-bearing: one idx variable per angle and MtxF declared last (0xA0 frame, mtx at sp+0x2C); sin(y)
- * generated before cos(x) (this lines up every t-register with retail); routing the sy load through sysz;
- * [1][2] computed after [3][0]; `sy * cx` operand order in [2][0]; the [0][1] store ahead of the cz load.
- * Remaining: retail gives $f2 to cx/cycz and keeps sysz memory-resident,
- * while this draft gives sysz $f2 and leaves cx in a local temp, cascading into an f0/f2 swap.
+ * Draft, strict probe floor 26 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
  */
 void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f32 scale) {
     f32 sx;
@@ -775,13 +771,13 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
     f32 cx;
     f32 cy;
     f32 cz;
-    f32 sysz;
     f32 cycz;
     f32 sycz;
     f32 szcy;
-    s32 idx;
-    s32 idxy;
+    f32 sysz;
     s32 idxz;
+    s32 idxy;
+    s32 idx;
     MtxF mtx;
 
     idx = (rx * 4096.0f) / 360.0f;
@@ -793,26 +789,24 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
     cx = gSinTable[(idx + 0x400) & 0xFFF];
     mtx.mf[2][0] = sy * cx * scale;
     cy = gSinTable[(idxy + 0x400) & 0xFFF];
-    mtx.mf[2][2] = cy * cx * scale;
-
     idxz = (rz * 4096.0f) / 360.0f;
+    mtx.mf[2][2] = cy * cx * scale;
     sz = gSinTable[idxz & 0xFFF];
     mtx.mf[0][1] = sz * cx * scale;
     cz = gSinTable[(idxz + 0x400) & 0xFFF];
     mtx.mf[1][1] = cz * cx * scale;
-
     sysz = sy * sz;
     cycz = cy * cz;
-    mtx.mf[0][0] = (cycz + sx * sysz) * scale;
     sycz = sy * cz;
+    mtx.mf[0][0] = (cycz + sx * sysz) * scale;
     szcy = sz * cy;
     mtx.mf[1][0] = (sx * sycz - szcy) * scale;
     mtx.mf[0][2] = (sx * szcy - sycz) * scale;
     mtx.mf[3][0] = tx;
     mtx.mf[1][2] = (sx * cycz + sysz) * scale;
+    mtx.mf[3][3] = 1.0f;
     mtx.mf[3][1] = ty;
     mtx.mf[3][2] = tz;
-    mtx.mf[3][3] = 1.0f;
     mtx.mf[0][3] = mtx.mf[1][3] = mtx.mf[2][3] = 0.0f;
     if (sy) {}
 

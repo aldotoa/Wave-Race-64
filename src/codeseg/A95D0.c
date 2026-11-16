@@ -306,19 +306,25 @@ void func_801DC0AC(struct UnkStruct_801DB0E4_arg0* arg0) {
     }
 }
 
+typedef struct {
+    s32 unk0;
+    void* unk4;
+    void* unk8;
+} UnkStruct_80223F7C;
+
+extern UnkStruct_80223F7C D_80223A30[];
+
 #ifdef NON_MATCHING
-/* draft: probe score 38 (2026-11-09) */
-extern s32 D_80223A30[];
 extern s32 D_80228194;
 extern s32 D_80228198;
-extern f32 D_8022819C;
-extern f32 D_802281A0;
-extern f32 D_802281A4;
-extern f32 D_802281B4;
-extern f32 D_802281B8;
-extern f32 D_802281BC;
-extern f32 D_802281C0;
+extern s32 D_80228190s;
+extern s32 D_80228198s;
+extern f32 D_80228190f[];
+extern f32 D_8022819C,D_802281A0,D_802281A4,D_802281B4,D_802281B8,D_802281BC,D_802281C0;
 
+/*
+ * Draft, strict probe floor 37 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
 void func_801DC274(struct UnkStruct_801DB0E4_arg0* arg0) {
     f32 len;
     f32 dir[3];
@@ -330,7 +336,7 @@ void func_801DC274(struct UnkStruct_801DB0E4_arg0* arg0) {
         if (arg0->unk8 == 1) {
             func_800AB92C();
             D_80228190.unk0 = 6;
-            D_80228194 = 2;
+            D_80228190.unk4 = 2;
             D_80228198 = 0;
             D_802281C0 = 0.1f;
             D_8022819C = -300.0f;
@@ -340,7 +346,7 @@ void func_801DC274(struct UnkStruct_801DB0E4_arg0* arg0) {
             D_802281BC = 0.0f;
             D_802281B8 = 1.0f;
         }
-        D_80228198 += 1;
+        (&D_80228194)[1] += 1;
         dir[1] = 0.0f;
         dir[0] = -3.0f;
         dir[2] = -5.0f;
@@ -355,12 +361,6 @@ void func_801DC274(struct UnkStruct_801DB0E4_arg0* arg0) {
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DC274.s")
 #endif
-
-typedef struct {
-    s32 unk0;
-    void* unk4;
-    void* unk8;
-} UnkStruct_80223F7C;
 
 extern UnkStruct_80223F7C D_80223F7C[];
 extern UnkStruct_80223F7C D_80224B14[];
@@ -498,8 +498,24 @@ void func_801DD6B4(UnkStruct_801DB0E4_arg0* arg0) {
 }
 
 typedef struct {
-    u8 pad[0xE0];
-} Struct_80227E98;
+    /* 0x00 */ u8 pad0[0x3C];
+    /* 0x3C */ f32 unk3C;
+    /* 0x40 */ f32 unk40;
+    /* 0x44 */ u8 pad44[0x9C];
+} Struct_80227E98; /* size = 0xE0 */
+
+/* D_80227EF4 = D_80227E98 + 0x5C, same stride; a separate array in the original source */
+typedef struct {
+    /* 0x00 */ u8 pad0[0x4C];
+    /* 0x4C */ f32 unk4C;
+    /* 0x50 */ f32 unk50;
+    /* 0x54 */ u8 pad54[0x10];
+    /* 0x64 */ f32 unk64;
+    /* 0x68 */ f32 unk68;
+    /* 0x6C */ u8 pad6C[0x14];
+    /* 0x80 */ s32 unk80;
+    /* 0x84 */ u8 pad84[0x5C];
+} Struct_80227EF4; /* size = 0xE0 */
 
 typedef struct {
     u8 pad[0x38];
@@ -510,9 +526,10 @@ typedef struct {
 } Struct_802280C8;
 
 extern Struct_80227E98 D_80227E98[];
+extern Struct_80227EF4 D_80227EF4[];
 extern Struct_80228058 D_80228058[];
 extern Struct_802280C8 D_802280C8[];
-extern s32 D_80228108;
+extern f32 D_80228108;
 
 void func_801DFD8C();
 void func_801DFDA0();
@@ -543,16 +560,148 @@ void func_801DDA24(void) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_801DDAB8(void* arg0, void* arg1, void* arg2) {
-    /* Camera perspective_RGB/scale initializer (3-arg form) */
-    ((void) arg0);
-    ((void) arg1);
-    ((void) arg2);
+typedef struct {
+    /* 0x00 */ u8 pad0[0x38];
+    /* 0x38 */ f32 unk38;
+    /* 0x3C */ u8 pad3C[0x2C];
+    /* 0x68 */ f32 unk68;
+    /* 0x6C */ u8 pad6C[8];
+    /* 0x74 */ f32 unk74;
+    /* 0x78 */ f32 unk78;
+    /* 0x7C */ u8 pad7C[0x28];
+    /* 0xA4 */ f32 unkA4;
+    /* 0xA8 */ u8 padA8[0xC];
+    /* 0xB4 */ f32 unkB4;
+    /* 0xB8 */ u8 padB8[4];
+    /* 0xBC */ f32 unkBC;
+} UnkStruct_801DDAB8;
+
+typedef struct {
+    /* 0x00 */ u8 pad0[8];
+    /* 0x08 */ s32 unk8;
+} UnkStruct_801DDAB8_2;
+
+extern u8 D_801388D0[];
+extern u8 D_80225A84[];
+extern u8 D_80225AFC[];
+extern u8 D_80225BD8[];
+extern f32 D_80223940[];
+extern f32 D_80223950[];
+extern f32 D_80223960[];
+extern f32 D_80223970[];
+extern UnkStruct_80223F7C D_80223D38[];
+extern UnkStruct_80223F7C D_80224060[];
+extern UnkStruct_80223F7C D_802241E0[];
+extern UnkStruct_80223F7C D_802242C0[];
+extern UnkStruct_80223F7C D_80224430[];
+extern UnkStruct_80223F7C D_802245B4[];
+extern UnkStruct_80223F7C D_802246B4[];
+extern UnkStruct_80223F7C D_80224944[];
+
+void func_801E0F8C();
+void func_801DF008(void* dst, void* src);
+void func_801DF5F0(void* dst, void* src);
+void func_801DFD94(s32* arg0, s32 arg1);
+void func_801E0FF0();
+void func_801E11B4();
+
+void func_801DDAB8(camera_unk_1* arg0, UnkStruct_801DDAB8* arg1, void* arg2) {
+    UnkStruct_80223F7C* path;
+
+    arg0->unk9C = 10.0f;
+    arg0->unkA0 = 16138.0f;
+    D_80228108 = gWaterLevel;
+    switch (arg0->viewMode) {
+        case 1:
+            func_801DF008(arg1, D_80225A84);
+            break;
+        case 2:
+            func_801DF5F0(arg1, D_80225AFC);
+            arg1->unk68 = D_80228108;
+            arg1->unk74 = arg0->unk4 - (arg0->unk1C * 100.0f);
+            arg1->unk78 = arg0->unkC - (arg0->unk24 * 100.0f);
+            arg1->unkB4 = 90.0f;
+            break;
+        case 3:
+        block_4:
+            func_801DF5F0(arg1, D_80225BD8);
+            arg1->unk68 = D_80228108;
+            arg1->unk74 = arg0->unk4 - (arg0->unk1C * 100.0f);
+            arg1->unk78 = arg0->unkC - (arg0->unk24 * 100.0f);
+            if ((gGameState == GAME_STATE_DEMO) || (gGameState == GAME_STATE_8)) {
+                arg0->camViewY = 0.0f;
+            } else {
+                arg1->unk38 = D_80223940[arg0->unkEC];
+                arg1->unkA4 = D_80223950[arg0->unkEC];
+                arg1->unkBC = D_80223960[arg0->unkEC];
+                arg0->camViewY = D_80223970[arg0->unkEC];
+            }
+            arg0->viewMode = 4;
+            break;
+        case 5:
+            switch (D_801CE638) {
+                case 0:
+                    arg0->viewMode = 3;
+                    goto block_4;
+                default:
+                case 8:
+                    arg0->viewMode = 6;
+                    switch (gCourseID) {
+                        case DOLPHIN_PARK:
+                            path = D_80223A30;
+                            break;
+                        case SUNNY_BEACH:
+                            switch (gDifficulty) {
+                                case DIFFICULTY_NORMAL:
+                                    path = D_80223D38;
+                                    break;
+                                case DIFFICULTY_HARD:
+                                    path = D_80224944;
+                                    break;
+                                case DIFFICULTY_EXPERT:
+                                    path = D_80224B14;
+                                    break;
+                            }
+                            break;
+                        case SUNSET_BAY:
+                            path = D_80223F7C;
+                            break;
+                        case MARINE_FORTRESS:
+                            path = D_80224060;
+                            break;
+                        case DRAKE_LAKE:
+                            path = D_802241E0;
+                            break;
+                        case PORT_BLUE:
+                            path = D_802242C0;
+                            break;
+                        case TWILIGHT_CITY:
+                            path = D_80224430;
+                            break;
+                        case GLACIER_COAST:
+                            path = D_802245B4;
+                            break;
+                        case SOUTHERN_ISLAND:
+                            path = D_802246B4;
+                            break;
+                    }
+                    func_801DFD94(arg2, (s32) path);
+                    break;
+            }
+            break;
+        case 8:
+            ((UnkStruct_801DDAB8_2*) arg2)->unk8 = 0;
+            arg0->unk9C = 32.0f;
+            arg0->unk94 = 0.0f;
+            arg0->unk98 = 0.0f;
+            arg0->unkA0 = 4096.0f;
+            break;
+    }
+    func_801E0F8C(arg0, arg1);
+    func_801E0FF0(arg0);
+    func_801E11B4(D_8011F8E8, arg0);
+    func_801E11B4(D_801388D0, arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DDAB8.s")
-#endif
 
 void func_801DDEDC();
 
@@ -564,22 +713,344 @@ void func_801DDE48(void) {
     }
 }
 
-#ifdef NON_MATCHING
-void func_801DDEDC(void) {
-}
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DDEDC.s")
-#endif
+typedef struct {
+    /* 0x00 */ u8 pad0[0x28];
+    /* 0x28 */ f32 unk28;
+    /* 0x2C */ f32 unk2C;
+    /* 0x30 */ f32 unk30;
+    /* 0x34 */ u8 pad34[4];
+    /* 0x38 */ f32 unk38;
+    /* 0x3C */ u8 pad3C[4];
+    /* 0x40 */ f32 unk40;
+    /* 0x44 */ u8 pad44[0x18];
+    /* 0x5C */ f32 unk5C;
+    /* 0x60 */ f32 unk60;
+    /* 0x64 */ f32 unk64;
+    /* 0x68 */ f32 unk68;
+    /* 0x6C */ u8 pad6C[8];
+    /* 0x74 */ f32 unk74;
+    /* 0x78 */ f32 unk78;
+    /* 0x7C */ u8 pad7C[4];
+    /* 0x80 */ f32 unk80;
+    /* 0x84 */ f32 unk84;
+    /* 0x88 */ u8 pad88[8];
+    /* 0x90 */ f32 unk90;
+    /* 0x94 */ u8 pad94[0x10];
+    /* 0xA4 */ f32 unkA4;
+    /* 0xA8 */ u8 padA8[4];
+    /* 0xAC */ f32 unkAC;
+    /* 0xB0 */ u8 padB0[4];
+    /* 0xB4 */ f32 unkB4;
+    /* 0xB8 */ u8 padB8[4];
+    /* 0xBC */ f32 unkBC;
+    /* 0xC0 */ u8 padC0[4];
+    /* 0xC4 */ f32 unkC4;
+    /* 0xC8 */ u8 padC8[0x14];
+    /* 0xDC */ s32 unkDC;
+} UnkStruct_801DDEDC;
 
-#ifdef NON_MATCHING
+typedef struct {
+    /* 0x00 */ s32* unk0;
+    /* 0x04 */ s32* unk4;
+    /* 0x08 */ s32 unk8;
+} UnkStruct_801DDEDC_2;
+
+typedef struct {
+    /* 0x000 */ s32 viewMode;
+    /* 0x004 */ f32 unk4;
+    /* 0x008 */ f32 unk8;
+    /* 0x00C */ f32 unkC;
+    /* 0x010 */ f32 unk10;
+    /* 0x014 */ f32 unk14;
+    /* 0x018 */ f32 unk18;
+    /* 0x01C */ f32 unk1C;
+    /* 0x020 */ f32 unk20;
+    /* 0x024 */ f32 unk24;
+    /* 0x028 */ u8 pad28[0x24];
+    /* 0x04C */ f32 unk4C;
+    /* 0x050 */ f32 unk50;
+    /* 0x054 */ f32 unk54;
+    /* 0x058 */ f32 unk58;
+    /* 0x05C */ f32 unk5C;
+    /* 0x060 */ f32 unk60;
+    /* 0x064 */ u8 pad64[0x84];
+    /* 0x0E8 */ s32 unkE8;
+    /* 0x0EC */ s32 unkEC;
+    /* 0x0F0 */ u8 padF0[0xC];
+    /* 0x0FC */ f32 camViewY;
+} UnkCam_801DDEDC;
+
+extern u8 D_80224D9C[];
+extern u8 D_80224F98[];
+extern u8 D_8022512C[];
+extern u8 D_802252B4[];
+extern u8 D_802254F4[];
+extern u8 D_80225804[];
+void func_801DFC48(s32* arg0);
+struct UnkStruct_801DFCB8;
+void func_801DFCB8(struct UnkStruct_801DFCB8* arg0);
+void func_8009CB68();
+void func_8009CCE8();
+
+void func_801DDEDC(UnkCam_801DDEDC* arg0, UnkStruct_801DDEDC* arg1, UnkStruct_801DDEDC_2* arg2) {
+    u8* path;
+    s32 pad;
+    f32 sp2C;
+    f32 sp28;
+    f32 sp24;
+    s32 pad2;
+
+    D_80228108 = gWaterLevel;
+    sp2C = arg0->unk4C;
+    sp28 = arg0->unk50;
+    sp24 = arg0->unk54;
+    switch (arg0->viewMode) {
+        case 1:
+            break;
+        case 2:
+            arg1->unk5C = arg0->unk4;
+            arg1->unk60 = arg0->unk8 + 30.0f;
+            arg1->unk64 = arg0->unkC;
+            arg1->unk68 = D_80228108;
+            arg1->unk80 = arg0->unk1C;
+            arg1->unk84 = arg0->unk24;
+            arg1->unkB4 += 1.0f;
+            break;
+        case 4:
+            path = NULL;
+            if ((gGameModes == GMODE_TIME_TRIALS) || (gGameModes == GMODE_CHAMPIONSHIP) || (gGameModes == GMODE_STUNT)) {
+                switch (D_80192690[arg0->unkE8].unk16C8) {
+                    case 1:
+                        path = D_80224D9C;
+                        break;
+                    case 2:
+                        path = D_80224F98;
+                        break;
+                    case 3:
+                        path = D_8022512C;
+                        break;
+                    case 4:
+                        path = D_802252B4;
+                        break;
+                    case 5:
+                        path = D_802254F4;
+                        break;
+                    case 6:
+                        path = D_80225804;
+                        break;
+                }
+            }
+            if (path != NULL) {
+                arg1->unkDC = 0;
+                arg1->unk28 = 0.0f;
+                arg1->unk30 = 0.0f;
+                arg1->unk2C = 1.0f;
+                func_801DFD94((s32*) arg2, (s32) path);
+                arg0->viewMode = 7;
+            } else {
+                arg1->unk5C = arg0->unk4;
+                arg1->unk60 = arg0->unk8 + arg0->camViewY;
+                arg1->unk64 = arg0->unkC;
+                arg1->unk68 = D_80228108;
+                arg1->unk80 = arg0->unk1C;
+                arg1->unk84 = arg0->unk24;
+                arg1->unk90 = sqrtf((arg0->unk10 * arg0->unk10) + (arg0->unk18 * arg0->unk18));
+                break;
+            }
+        case 7:
+            arg0->camViewY += (0.0f - arg0->camViewY) * 0.15f;
+            if (*arg2->unk4 == -2) {
+                if (arg2->unk8 == 0) {
+                    func_801DF5F0(arg1, D_80225BD8);
+                    arg1->unk74 = arg0->unk4 - (arg0->unk1C * 100.0f);
+                    arg1->unk78 = arg0->unkC - (arg0->unk24 * 100.0f);
+                }
+                arg2->unk8 = 1;
+                arg1->unk5C = arg0->unk4;
+                arg1->unk60 = arg0->unk8 + arg0->camViewY;
+                arg1->unk64 = arg0->unkC;
+                arg1->unk68 = D_80228108;
+                arg1->unk80 = arg0->unk1C;
+                arg1->unk84 = arg0->unk24;
+                arg1->unk90 = sqrtf((arg0->unk10 * arg0->unk10) + (arg0->unk18 * arg0->unk18));
+                arg1->unkB4 += 1.2f;
+                if (arg1->unkB4 > 360.0f) {
+                    arg1->unkB4 -= 360.0f;
+                }
+            } else {
+                arg0->unk8 += arg0->camViewY;
+                func_801DFCB8((struct UnkStruct_801DFCB8*) arg2);
+                arg0->unk8 -= arg0->camViewY;
+                if (*arg2->unk0 == 5) {
+                    arg1->unk40 += 0.1;
+                    if (arg1->unk40 > 1.0f) {
+                        arg1->unk40 = 1.0f;
+                    }
+                    arg1->unkAC += 0.1;
+                    if (arg1->unkAC > 1.0f) {
+                        arg1->unkAC = 1.0f;
+                    }
+                    arg1->unkC4 += 0.1;
+                    if (arg1->unkC4 > 1.0f) {
+                        arg1->unkC4 = 1.0f;
+                    }
+                }
+            }
+            break;
+        case 6:
+            func_801DFCB8((struct UnkStruct_801DFCB8*) arg2);
+            func_801DD6B4((UnkStruct_801DB0E4_arg0*) arg2);
+            break;
+        case 8:
+            func_801DD6B4((UnkStruct_801DB0E4_arg0*) arg2);
+            arg2->unk8++;
+            goto skip;
+    }
+    func_801DFC48((s32*) arg1);
+skip:
+    func_801E0F8C(arg0, arg1);
+    func_8009CB68();
+    func_8009CCE8(arg0);
+    arg0->unk58 = arg0->unk4C - sp2C;
+    arg0->unk5C = arg0->unk50 - sp28;
+    arg0->unk60 = arg0->unk54 - sp24;
+    func_801E0FF0(arg0);
+    func_801E11B4(gGfxPool, arg0);
+}
+
 void func_801DE3CC(void) {
+    s32 i;
+    s32 sel;
+    f32 speed;
+    f32 target;
+    u16* buttons;
+    UnkStruct_80192690* race;
+    Struct_80227EF4* ef;
+    Struct_80227E98* e9;
+
+    for (i = 0; i < gPlayers; i++) {
+        sel = gCameraPerspective[i].unkEC;
+        e9 = &D_80227E98[i];
+        ef = &D_80227EF4[i];
+        buttons = &gControllerOne[D_80154330[i]].unk_2;
+        race = &D_80192690[i];
+        speed = 0.2f;
+        if (*buttons & 3) {
+            gCameraPerspective[i].unkF8 ^= 1;
+            if (gCameraPerspective[i].unkF8 != 0) {
+                AudioGeneral_PlaySound(0x11, i);
+            } else {
+                AudioGeneral_PlaySound(0x16, i);
+            }
+        }
+        ef->unk80 = gCameraPerspective[i].unkF8;
+        if (*buttons & 8) {
+            sel++;
+        }
+        if (*buttons & 4) {
+            sel--;
+        }
+        if (sel < 0) {
+            sel = 3;
+            speed = 0.3f;
+        } else if (sel >= 4) {
+            sel = 0;
+            speed = 0.3f;
+        }
+        if (gCameraPerspective[i].unkEC < sel) {
+            AudioGeneral_PlaySound(0x1D, i);
+        } else if (sel < gCameraPerspective[i].unkEC) {
+            AudioGeneral_PlaySound(0x1E, i);
+        }
+        ef->unk68 = speed;
+        ef->unk50 = speed;
+        e9->unk40 = speed;
+        e9->unk3C = D_80223940[sel];
+        ef->unk4C = D_80223950[sel];
+        ef->unk64 = D_80223960[sel];
+        if (sel == gCameraPerspective[i].unkEC) {
+            speed = 0.07f;
+        }
+        switch (race->unkC54) {
+            case 23:
+            case 24:
+                speed = 0.15f;
+            case 25:
+                if (sel >= 2) {
+                    target = 10.0f;
+                } else {
+                    target = 0.0f;
+                }
+                break;
+            case 7:
+                if (race->unkC58 < 0x38) {
+                    target = 0.0f;
+                } else {
+                    target = D_80223970[sel];
+                }
+                break;
+            default:
+                target = D_80223970[sel];
+        }
+        gCameraPerspective[i].unkEC = sel;
+        gCameraPerspective[i].camViewY += (target - gCameraPerspective[i].camViewY) * speed;
+    }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DE3CC.s")
-#endif
 
 #ifdef NON_MATCHING
-void func_801DE690(void) {
+/*
+ * Draft, strict probe floor 4 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
+f32 func_801DE690(f32 t, s32 seg, s32 arg2, s32 count) {
+    f32 u;
+    f32 uu;
+    f32 uuu;
+    f32* cp;
+    f32 w[5];
+
+    if (seg == 0) {
+        u = 1.0f - t;
+        uu = t * t;
+        w[0] = u * u * u;
+        uuu = uu * t;
+        w[1] = (((uuu * 21.0f) / 12.0f) - (uu * 9.0f * 0.5f)) + (t * 3.0f);
+        w[2] = ((-uuu * 11.0f) / 12.0f) + (uu * 3.0f * 0.5f);
+        w[3] = uuu / 6.0f;
+    } else if (seg == 1) {
+        u = 1.0f - t;
+        uu = t * t;
+        w[0] = u * u * u * 0.25f;
+        uuu = uu * t;
+        w[1] = (((uuu * 7.0f) / 12.0f) - (uu * 5.0f * 0.25f)) + (t * 0.25f) + 0.5833333f;
+        w[2] = (-uuu * 0.5f) + (uu * 0.5f) + (t * 0.5f) + 0.16666667f;
+        w[3] = uuu / 6.0f;
+    } else if ((count < 7) || ((seg + 5) < count)) {
+        u = 1.0f - t;
+        uu = t * t;
+        uuu = uu * t;
+        w[0] = (u * u * u) / 6.0f;
+        w[1] = ((uuu * 0.5f) - uu) + 0.6666667f;
+        w[2] = (-uuu * 0.5f) + (uu * 0.5f) + (t * 0.5f) + 0.16666667f;
+        w[3] = uuu / 6.0f;
+    } else if (count == (seg + 5)) {
+        u = 1.0f - t;
+        uu = u * u;
+        uuu = uu * u;
+        w[0] = uuu / 6.0f;
+        w[1] = (-uuu * 0.5f) + (uu * 0.5f) + (u * 0.5f) + 0.16666667f;
+        w[2] = (((uuu * 7.0f) / 12.0f) - (uu * 5.0f * 0.25f)) + (u * 0.25f) + 0.5833333f;
+        w[3] = t * t * t * 0.25f;
+    } else if (count == (seg + 4)) {
+        u = 1.0f - t;
+        uu = u * u;
+        uuu = uu * u;
+        w[0] = uuu / 6.0f;
+        w[1] = ((-uuu * 11.0f) / 12.0f) + (uu * 3.0f * 0.5f);
+        w[2] = (((uuu * 21.0f) / 12.0f) - (uu * 9.0f * 0.5f)) + (u * 3.0f);
+        w[3] = t * t * t;
+    }
+    cp = (f32*) arg2 + seg;
+    return (w[0] * cp[0]) + (w[1] * cp[1]) + (w[2] * cp[2]) + (w[3] * cp[3]);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/codeseg/A95D0/func_801DE690.s")

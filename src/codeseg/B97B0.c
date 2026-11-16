@@ -1555,7 +1555,6 @@ void func_801F1CFC(void) {
 #endif
 
 #ifdef NON_MATCHING
-/* draft: probe score 51 (2026-11-09) */
 extern char D_802279D0[];
 extern char D_802279D8[];
 extern char D_802279DC[];
@@ -1571,6 +1570,9 @@ typedef struct RiderTail {
     s32 unk2F4;
 } RiderTail;
 
+/*
+ * Draft, strict probe floor 50 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ */
 void func_801F2060(Gfx** arg0) {
     char pad[0x30];
     Gfx* gfx;
@@ -1603,9 +1605,10 @@ void func_801F2060(Gfx** arg0) {
                 if (gPlayers == ONE_PLAYER) {
                     s5 = 0x5A;
                 } else {
-                    s5 = 0xA0;
                     if (i == 0) {
                         s5 = 0x32;
+                    } else {
+                        s5 = 0xA0;
                     }
                 }
                 if ((var_s7->unk2E8 % 20) != 0 || var_a0->unkC54 == 0x17 || (s4 = 1, var_a0->unkC54 == 7)) {
