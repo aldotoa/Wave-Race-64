@@ -18,7 +18,7 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ## Project Structure
 
 ```text
-├── asm/             # Disassembled MIPS routines (non-matchings and data)
+├── asm/             # (generated, gitignored) splat disassembly of your baserom
 ├── include/         # Engine headers, Libultra structs, and hardware defines
 ├── linker_scripts/  # Segment layout maps and symbol address definitions
 ├── port/            # Native macOS ARM64 hardware abstraction layer
@@ -48,7 +48,7 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ```bash
 git submodule update --init   # tools/m2c
 make dependencies   # build tools, install splat + GitPython/colour/objdiff deps
-make init           # clean + extract assets + build ROM (verifies SHA-1 match)
+make init           # clean + extract asm/assets from your ROM + build (verifies SHA-1 match)
 ```
 
 ### Build & Verify

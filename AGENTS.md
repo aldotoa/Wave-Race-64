@@ -68,6 +68,12 @@ Probe-loop mechanics that must all hold at once:
 - Equivalent tail spellings can emit identical bytes when the join coincides with function end (`if (t < K) goto end; ...` vs nested `if (t >= K) { ... }`); if the tail already matches, try the other spelling to shift upstream scheduling.
 - Anonymous `D++` keeps the incremented value in a t-reg; a named `s32 temp = D + 1` local parks it in a v-reg. Drop the named local when the stub holds the temp in `t8`/`t9`.
 
+### Generated asm (never committed)
+- `asm/` is splat output from the user's baserom (`make extract`) and is gitignored, so the public repo holds no ROM-derived data. Every hand change to asm must instead live in splat config, or the next clean extract breaks the link.
+- Renaming a function or data symbol in C: add `Name = 0xADDR; // type:func` (or a data type such as `s32`/`f32`) to `linker_scripts/us/rev1/symbol_addrs.txt` (overlay symbols also need `rom:0x...`).
+- Splitting or migrating rodata/data: express it in `waverace64.us.rev1.yaml` or with `// force_migration:True` symbol entries, never by editing a `.s` file.
+- Check: `rm -rf asm/us/rev1 && make extract && make` must still report `waverace64.us.rev1.z64: OK`.
+
 ### Handling .rodata, .data, and .bss
 - Do not migrate global or static variables unless all functions accessing that symbol's offsets are matching.
 - If a function requires matched `.rodata` (e.g., switch jump tables or float pools), preserve the `#if defined(NEEDS_RODATA) || defined(NON_MATCHING)` wrapper until the whole translation unit matches.
@@ -83,7 +89,7 @@ A function may ONLY be promoted when `.venv/bin/python3 tools/asm-differ/diff.py
 
 1. **Verify C Implementation**: Ensure clean C compilation without warnings or syntax errors.
 2. **Remove Wrappers**: Remove `#ifdef NON_MATCHING` and `#pragma GLOBAL_ASM`, leaving raw C.
-3. **Delete Stub**: Delete the associated `.s` stub: `rm asm/us/rev1/nonmatchings/.../<func>.s`.
+3. **Delete Stub**: Delete the associated local `.s` stub: `rm asm/us/rev1/nonmatchings/.../<func>.s` (asm/ is untracked; splat will not regenerate a stub once the `GLOBAL_ASM` pragma is gone).
 4. **Verify Matching ROM**: Run `make` to verify binary hash integrity (`waverace64.us.rev1.z64: OK`).
 5. **Update Test Suite**: Add or update the matching test case in `tests/test_matching.py`. Test classes must inherit directly from `unittest.TestCase` and be registered in `run_tests()`.
 6. **Run Tests**: Run `make test` and ensure all suites pass cleanly.

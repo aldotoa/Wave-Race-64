@@ -469,9 +469,6 @@ extract:
 	@$(RM) -r asm/$(VERSION)/$(REV) bin/$(VERSION)/$(REV)
 	@echo "Extracting..."
 	@$(SPLAT) $(SPLAT_YAML)
-# Committed asm carries hand edits (labels, split stubs) that a fresh splat
-# run drops, which breaks the link; restore it so only bin/ and mio0/ are new.
-	@git checkout -- asm/$(VERSION)/$(REV)
 	@$(PYTHON) tools/mio0_extract.py $(BASEROM)
 
 assets:

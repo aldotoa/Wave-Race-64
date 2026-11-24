@@ -54,15 +54,17 @@ jobs:
     - name: Compile All C Objects (IDO, matching)
       # Compile-only: linking needs the baserom, which cannot live in git.
       # This is the same IDO 5.3 compile every C TU gets during a local
-      # `make`, minus the link. Only C objects: committed asm .s objects
-      # are disassembly output (some .incbin splat-extracted binaries),
-      # never hand-edited, so compiling them proves nothing.
+      # `make`, minus the link. Only C objects: asm/ is splat output
+      # generated from the baserom and is not in git.
       # Deliberately WITHOUT RUN_CC_CHECK and WITHOUT NON_MATCHING=1:
       # both flags compile in-progress #ifdef NON_MATCHING drafts, and
       # parked scaffolding such as the func_801EB4F4 draft in
       # src/codeseg/B97B0.c is not compilable yet (placeholder types).
       # Re-enable draft compilation once parked drafts are clean.
       run: |
+        # asm/ is generated from the baserom and not committed, so only
+        # TUs without GLOBAL_ASM stubs can be compiled here.
         CFILES=$(make print-C_FILES | sed -n 's/.*set to \[\(.*\)\]/\1/p')
+        CFILES=$(grep -L 'GLOBAL_ASM' $CFILES)
         OBJS=$(for f in $CFILES; do echo "build/${f%.c}.o"; done)
         make -j "$(nproc)" $OBJS
