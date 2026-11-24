@@ -82,13 +82,14 @@ Work-in-progress probes belong in `scratch/`, which is gitignored.
 
 ## Credits
 
-Built on community decompilation tooling: [splat](https://github.com/ethteck/splat), [asm-differ](https://github.com/simonlindholm/asm-differ), [m2c](https://github.com/matt-kempster/m2c), [asm-processor](https://github.com/simonlindholm/asm-processor), [ido-static-recomp](https://github.com/decompals/ido-static-recomp), and [Torch](https://github.com/HarbourMasters/Torch). Much of the matching work was done with AI coding agents.
+Original decompilation project: [LLONSIT/Wave-Race-64](https://github.com/LLONSIT/Wave-Race-64). Built on community decompilation tooling: [splat](https://github.com/ethteck/splat), [asm-differ](https://github.com/simonlindholm/asm-differ), [m2c](https://github.com/matt-kempster/m2c), [asm-processor](https://github.com/simonlindholm/asm-processor), [ido-static-recomp](https://github.com/decompals/ido-static-recomp), and [Torch](https://github.com/HarbourMasters/Torch). Much of the matching work was done with AI coding agents.
 
 ---
 
 ## License
 
-The original code in this repository (decompiled C, headers, port layer, scripts) is released under the [MIT License](LICENSE). Third-party tools under `tools/` keep their own licenses. The license grants no rights to Nintendo's game, ROM, or assets.
+This repository is a fork of the [LLONSIT/Wave-Race-64](https://github.com/LLONSIT/Wave-Race-64) decompilation project, which provides the project structure, symbol/segment configuration, and baseline matching work, and builds on the efforts of its contributors. That upstream repository does not currently declare a license, so its material is **not** relicensed here and remains the property of its respective authors.
+
+No license is granted by this fork. The additions made here (newly matched C, headers, tests, port layer, scripts) build on that upstream code, so they cannot be licensed independently of it; a license will be added only if and when the upstream authors declare one. Third-party tools under `tools/` keep their own licenses. Nothing here grants any rights to Nintendo's game, ROM, or assets.
 
 Wave Race 64 is a trademark of Nintendo. This project is not affiliated with or endorsed by Nintendo.
-
