@@ -39,7 +39,7 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ### Prerequisites
 
 * MIPS binutils (`mips-linux-gnu-ld` or compatible `MIPS_BINUTILS_PREFIX`)
-* Git (`make dependencies` fetches and builds the IDO 5.3 static recompilation from [decompals/ido-static-recomp](https://github.com/decompals/ido-static-recomp))
+* Git and GNU make (on macOS: `brew install make`, which provides `gmake`) — `make dependencies` fetches and builds the IDO 5.3 static recompilation from [decompals/ido-static-recomp](https://github.com/decompals/ido-static-recomp))
 * Python 3 with project venv (`.venv`) for `splat`, `GitPython`, `colour`
 * Place the US Rev 1 base ROM as `baserom.us.rev1.z64` in the repo root
 
