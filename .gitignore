@@ -46,3 +46,9 @@ scratch/*.err
 # Local probe / experiment workspace (never committed)
 scratch/
 graphify-out/
+# Unused bundled IRIX compiler copies; the build uses tools/ido-static-recomp
+tools/ido5.3_cc/
+tools/ido5.3_compiler/
+tools/ido7.1_compiler/
+tools/ido-static-recomp/
+tools/Torch/

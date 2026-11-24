@@ -115,7 +115,7 @@ local sub-struct cast, not flat float indexing.
 ## Build flags (verified: Makefile + yaml)
 
 - IDO driver is `tools/ido-static-recomp/build/5.3/out/cc`
-  (Makefile:222); phases on disk under `tools/ido5.3_compiler/`: `cfe`
+  (Makefile:222); phases on disk under `tools/ido-static-recomp/ido/5.3/usr/lib/`: `cfe`
   (front end — owns the frame-slot reservation above), `uopt` (Chow-Hennessy
   + copy propagation + redundant-store removal — pass names visible in root
   `uoptlist`), `as1` (assembler — treats `.loc` as a scheduling boundary,

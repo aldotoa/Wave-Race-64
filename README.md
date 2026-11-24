@@ -39,13 +39,14 @@ An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Ni
 ### Prerequisites
 
 * MIPS binutils (`mips-linux-gnu-ld` or compatible `MIPS_BINUTILS_PREFIX`)
-* SGI IDO 5.3 compiler (N64 matching build)
+* Git (`make dependencies` fetches and builds the IDO 5.3 static recompilation from [decompals/ido-static-recomp](https://github.com/decompals/ido-static-recomp))
 * Python 3 with project venv (`.venv`) for `splat`, `GitPython`, `colour`
 * Place the US Rev 1 base ROM as `baserom.us.rev1.z64` in the repo root
 
 ### Setup
 
 ```bash
+git submodule update --init   # tools/m2c
 make dependencies   # build tools, install splat + GitPython/colour/objdiff deps
 make init           # clean + extract assets + build ROM (verifies SHA-1 match)
 ```
@@ -82,6 +83,12 @@ Work-in-progress probes belong in `scratch/`, which is gitignored.
 ## Credits
 
 Built on community decompilation tooling: [splat](https://github.com/ethteck/splat), [asm-differ](https://github.com/simonlindholm/asm-differ), [m2c](https://github.com/matt-kempster/m2c), [asm-processor](https://github.com/simonlindholm/asm-processor), [ido-static-recomp](https://github.com/decompals/ido-static-recomp), and [Torch](https://github.com/HarbourMasters/Torch). Much of the matching work was done with AI coding agents.
+
+---
+
+## License
+
+The original code in this repository (decompiled C, headers, port layer, scripts) is released under the [MIT License](LICENSE). Third-party tools under `tools/` keep their own licenses. The license grants no rights to Nintendo's game, ROM, or assets.
 
 Wave Race 64 is a trademark of Nintendo. This project is not affiliated with or endorsed by Nintendo.
 
