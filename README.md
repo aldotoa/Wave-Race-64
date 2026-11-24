@@ -2,13 +2,15 @@
 
 An ongoing byte-matching decompilation of **Wave Race 64 (US Rev 1)** for the Nintendo 64, featuring a native Apple Silicon (macOS arm64) porting layer.
 
+> **This repository does not contain the game.** You must supply your own legally obtained copy of the US Rev 1 ROM to build anything. No ROM, assets, or copyrighted game data are distributed here.
+
 ---
 
 ## Current Status
 
 * **N64 ROM Target:** Byte-matching against retail US Rev 1 (`waverace64.us.rev1.z64: OK`).
-* **Progress:** 1,099 / 1,367 matched functions (80.40%) | 358,168 / 834,104 matched bytes (42.94%).
-* **Validation Suite:** 418 passing tests (`make test`) verifying integrity across physics, camera, HUD, and audio subroutines.
+* **Progress (2026-11-24):** 1,209 / 1,368 matched functions (88.38%) | 457,184 / 834,028 matched bytes (54.82%).
+* **Validation Suite:** 449 passing tests (`make test`) verifying integrity across physics, camera, HUD, and audio subroutines.
 * **Native macOS Port:** Boots natively on Apple Silicon via Clang (`make mac`), featuring a POSIX Libultra abstraction layer and direct ROM asset streaming.
 
 ---
@@ -66,3 +68,20 @@ Never commit unless `make` reports `waverace64.us.rev1.z64: OK`.
 ```bash
 make mac            # Clang ARM64 build via port/ Libultra abstraction layer
 ```
+
+---
+
+## Contributing
+
+The full remaining-work matrix (tiers, per-function status, and parked-draft floor notes) lives in [DECOMPILATION_PLAN.md](DECOMPILATION_PLAN.md). Matching workflow, compiler quirks, and promotion rules are in [AGENTS.md](AGENTS.md); every PR must keep `make` reporting `waverace64.us.rev1.z64: OK` and `make test` green.
+
+Work-in-progress probes belong in `scratch/`, which is gitignored.
+
+---
+
+## Credits
+
+Built on community decompilation tooling: [splat](https://github.com/ethteck/splat), [asm-differ](https://github.com/simonlindholm/asm-differ), [m2c](https://github.com/matt-kempster/m2c), [asm-processor](https://github.com/simonlindholm/asm-processor), [ido-static-recomp](https://github.com/decompals/ido-static-recomp), and [Torch](https://github.com/HarbourMasters/Torch). Much of the matching work was done with AI coding agents.
+
+Wave Race 64 is a trademark of Nintendo. This project is not affiliated with or endorsed by Nintendo.
+
