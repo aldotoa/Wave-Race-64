@@ -466,8 +466,7 @@ void func_8007B630(void) {
         func_8007AFF4((func_8007AFF4_arg0*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk60[i][j],
                       (func_8007AFF4_arg1*) &D_801C22C0[n]);
         for (j = 0; j < 2; j++) {
-            D_801C24A0[n][j] =
-                func_8007B2E4((UnkStruct_8007B2E4*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1A8[i][j]);
+            D_801C24A0[n][j] = func_8007B2E4((UnkStruct_8007B2E4*) ((UnkStruct_8007CB68_2*) D_801AEA18)->unk1A8[i][j]);
         }
     }
     for (i = 0; i < 9; i++) {
@@ -869,15 +868,15 @@ s32 func_8007C604(s32 arg0) {
     s32 j;
     s32 k;
     s32 val;
-    UnkStruct_func_8007AF78_1 *src;
-    UnkStruct_func_8007AF78_1 *dst;
-    UnkStruct_func_8007AF78_2 *p60;
-    s32 *p22c0;
-    s32 *p24a0;
-    UnkStruct_func_8007AF78_1 *p23b0;
-    u8 *p1a8;
-    u8 *base;
-    u8 *p;
+    UnkStruct_func_8007AF78_1* src;
+    UnkStruct_func_8007AF78_1* dst;
+    UnkStruct_func_8007AF78_2* p60;
+    s32* p22c0;
+    s32* p24a0;
+    UnkStruct_func_8007AF78_1* p23b0;
+    u8* p1a8;
+    u8* base;
+    u8* p;
     s32 off;
     s32 tmp;
 
@@ -920,15 +919,18 @@ s32 func_8007C604(s32 arg0) {
         return 3;
     }
     tmp = D_800D826C[arg0];
-    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEB38 - base) + tmp)) >> 3, base + 0x120 + tmp, 0x18) != 0) {
+    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEB38 - base) + tmp)) >> 3, base + 0x120 + tmp, 0x18) !=
+        0) {
         return 3;
     }
     off = D_800D82B0[i];
-    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEBC0 - base) + off)) >> 3, base + off + 0x1A8, 0x10) != 0) {
+    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEBC0 - base) + off)) >> 3, base + off + 0x1A8, 0x10) !=
+        0) {
         return 3;
     }
     off = *(s32*) (D_800D8290 + i * 4);
-    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEBF0 - base) + off)) >> 3, base + off + 0x1D8, 0x10) != 0) {
+    if (osEepromLongWrite(&D_801540D0, ((u32) (((u8*) &D_801AEBF0 - base) + off)) >> 3, base + off + 0x1D8, 0x10) !=
+        0) {
         return 3;
     }
     return 0;
@@ -1209,8 +1211,8 @@ s32 func_8007D2D4(s32 arg0) {
     s32 flag;
     s32 fileNo;
     s32 ret;
-    u8 *p1;
-    u8 *p2;
+    u8* p1;
+    u8* p2;
     s32 j;
 
     flag = 0;
@@ -1225,80 +1227,83 @@ s32 func_8007D2D4(s32 arg0) {
     if (osPfsFindFile(&D_801C3AD0, 1U, 0x4E57524AU, &D_800D82E8, &D_800D82D8, &fileNo) == 0) {
         ret = osPfsReadWriteFile(&D_801C3AD0, fileNo, 0U, 0, 0x200, &D_801AEC18);
         switch (ret) {
-        case 0:
-            p1 = D_800D8268;
-            p2 = &D_801AEC18;
-            do {
-                if (*p2 != *p1) {
+            case 0:
+                p1 = D_800D8268;
+                p2 = &D_801AEC18;
+                do {
+                    if (*p2 != *p1) {
+                        return 6;
+                    }
+                    p1++;
+                    p2++;
+                } while ((u32) p1 < (u32) &D_800D826A);
+                if (Save_GenCheckSum((u8*) (u32) &D_801AEC18) != D_801AEC1A) {
                     return 6;
                 }
-                p1++;
-                p2++;
-            } while ((u32) p1 < (u32) &D_800D826A);
-            if (Save_GenCheckSum((u8*) (u32) &D_801AEC18) != D_801AEC1A) {
-                return 6;
-            }
-            func_8007B930();
-            switch (arg0) {
-            case 0:
-                {
-                    Save12 *s12 = (Save12*) &D_801AEC18;
-                    Save12 *d12 = (Save12*) D_801AEA18;
-                    do {
-                        *d12 = *s12;
-                        s12++;
-                        d12++;
-                    } while (s12 != (Save12*) ((u8*) &D_801AEC18 + 0x1F8));
-                    ((s32*) D_801AEA18)[0x7E] = ((s32*) &D_801AEC18)[0x7E];
-                    ((s32*) D_801AEA18)[0x7F] = ((s32*) &D_801AEC18)[0x7F];
+                func_8007B930();
+                switch (arg0) {
+                    case 0: {
+                        Save12* s12 = (Save12*) &D_801AEC18;
+                        Save12* d12 = (Save12*) D_801AEA18;
+                        do {
+                            *d12 = *s12;
+                            s12++;
+                            d12++;
+                        } while (s12 != (Save12*) ((u8*) &D_801AEC18 + 0x1F8));
+                        ((s32*) D_801AEA18)[0x7E] = ((s32*) &D_801AEC18)[0x7E];
+                        ((s32*) D_801AEA18)[0x7F] = ((s32*) &D_801AEC18)[0x7F];
+                    }
+                        func_8007B630();
+                        if (func_8007BD20() != 0) {
+                            return 5;
+                        }
+                        return 0;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        a = arg0 - 1;
+                        if (flag == 0) {
+                            Libc_strncpy(((UnkStruct_801AEA18*) D_801AEA18)->unk10[a],
+                                         ((UnkStruct_801AEA18*) (u32) &D_801AEC18)->unk10[a], 10);
+                        }
+                        for (j = 0; j < 3; j++) {
+                            ((UnkStruct_801AEA18*) D_801AEA18)->unk38[flag][a][j] =
+                                ((UnkStruct_801AEA18*) &D_801AEC18)->unk38[0][a][j];
+                        }
+                        func_8007B630();
+                        if (func_8007C31C() != 0) {
+                            return 5;
+                        }
+                        return 0;
+                    case 5:
+                        func_8007CB68();
+                        func_8007B630();
+                        func_8007B31C();
+                        ((UnkStruct_801AEA18*) D_801AEA18)->unk2 = Save_GenCheckSum((u8*) D_801AEA18);
+                        if (D_800D8260 != 0) {
+                            if (osEepromLongWrite(&D_801540D0, 0U, (u8*) D_801AEA18, 0x10) != 0) {
+                                return 3;
+                            }
+                            if (osEepromLongWrite(&D_801540D0,
+                                                  ((u32) ((u8*) &D_801AEA78 - (u8*) D_801AEA18) >> 3) & 0xFF,
+                                                  &D_801AEA78, 0x1A0) != 0) {
+                                return 5;
+                            }
+                            return 0;
+                        }
+                        return 5;
+                    default:
+                        return 0;
                 }
-                func_8007B630();
-                if (func_8007BD20() != 0) {
-                    return 5;
-                }
-                return 0;
-            case 1:
             case 2:
             case 3:
             case 4:
-                a = arg0 - 1;
-                if (flag == 0) {
-                    Libc_strncpy(((UnkStruct_801AEA18*) D_801AEA18)->unk10[a], ((UnkStruct_801AEA18*) (u32) &D_801AEC18)->unk10[a], 10);
-                }
-                for (j = 0; j < 3; j++) {
-                    ((UnkStruct_801AEA18*) D_801AEA18)->unk38[flag][a][j] = ((UnkStruct_801AEA18*) &D_801AEC18)->unk38[0][a][j];
-                }
-                func_8007B630();
-                if (func_8007C31C() != 0) {
-                    return 5;
-                }
-                return 0;
             case 5:
-                func_8007CB68();
-                func_8007B630();
-                func_8007B31C();
-                ((UnkStruct_801AEA18*) D_801AEA18)->unk2 = Save_GenCheckSum((u8*) D_801AEA18);
-                if (D_800D8260 != 0) {
-                    if (osEepromLongWrite(&D_801540D0, 0U, (u8*) D_801AEA18, 0x10) != 0) {
-                        return 3;
-                    }
-                    if (osEepromLongWrite(&D_801540D0, ((u32) ((u8*) &D_801AEA78 - (u8*) D_801AEA18) >> 3) & 0xFF, &D_801AEA78, 0x1A0) != 0) {
-                        return 5;
-                    }
-                    return 0;
-                }
-                return 5;
+            case 6:
+                return 2;
             default:
-                return 0;
-            }
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-            return 2;
-        default:
-            return ret;
+                return ret;
         }
     } else {
         return 4;

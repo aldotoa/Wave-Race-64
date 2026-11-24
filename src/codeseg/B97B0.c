@@ -254,8 +254,8 @@ void func_801EB91C(void) {
     s32 temp_a2;
     s32 var_a3;
     s16 temp_t0;
-    UnkStruct_80192690 *temp_v1_2;
-    UnkStruct_func_i8_802C6E00 *temp_a0;
+    UnkStruct_80192690* temp_v1_2;
+    UnkStruct_func_i8_802C6E00* temp_a0;
 
     gPrevGameState = gGameState;
     D_801CE630 = 0;
@@ -1627,10 +1627,14 @@ void func_801F2060(Gfx** arg0) {
                 s1 = v1;
                 s2 = t0;
                 s3 = t1;
-                gfx = func_801E92FC(func_801E92FC(gfx, 0, D_802279D0, 0x44, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3), 0, D_802279D8, 0xA4, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3);
+                gfx =
+                    func_801E92FC(func_801E92FC(gfx, 0, D_802279D0, 0x44, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2,
+                                                s3, 0xFF, s2, s3),
+                                  0, D_802279D8, 0xA4, s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3);
                 temp_lo = var_s7->unk2E8 / 20;
                 sprintf(D_80228CF8, D_802279DC, temp_lo);
-                gfx = func_801E92FC(gfx, 0, D_80228CF8, 0xDF - ((temp_lo >= 0xA) * 5), s5, s4, s0, 0xFF, s1, s0, 0xFF, s1, 0xFF, s2, s3, 0xFF, s2, s3);
+                gfx = func_801E92FC(gfx, 0, D_80228CF8, 0xDF - ((temp_lo >= 0xA) * 5), s5, s4, s0, 0xFF, s1, s0, 0xFF,
+                                    s1, 0xFF, s2, s3, 0xFF, s2, s3);
             }
         }
     }
@@ -1775,7 +1779,8 @@ void func_801F25E0(Gfx**, s32, s32, s32, s32, s32, s32);
 Gfx* func_801E8A84(Gfx*, s32, char*, s32, s32, s32, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
 Gfx* func_801E92FC(Gfx*, s32, char*, s32, s32, s32, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
 
-#define RECT(xl, yl, xh, yh) gSPTextureRectangle(gfx++, (xl) << 2, (yl) << 2, (xh) << 2, (yh) << 2, 0, 0, 0, 1 << 10, 1 << 10)
+#define RECT(xl, yl, xh, yh) \
+    gSPTextureRectangle(gfx++, (xl) << 2, (yl) << 2, (xh) << 2, (yh) << 2, 0, 0, 0, 1 << 10, 1 << 10)
 #define SCISRECT(xl, yl, xh, yh) \
     gSPScisTextureRectangle(gfx++, (xl) << 2, (yl) << 2, (xh) << 2, (yh) << 2, 0, 0, 0, 1 << 10, 1 << 10)
 
@@ -1941,15 +1946,21 @@ void func_801F4120(Gfx** gfxP) {
             }
             if (gGameModes == GMODE_CHAMPIONSHIP) {
                 if (val) {}
-                gDPLoadTextureBlock(gfx++, D_10416A8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_10416A8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, y, x + 32, y + 20);
                 x += 9;
                 y += 2;
-                gDPLoadTextureBlock(gfx++, D_80227978[D_80192690[rs->unk33C].unkB68], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_80227978[D_80192690[rs->unk33C].unkB68], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20,
+                                    20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                    G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPTextureRectangle(gfx++, x << 2, y << 2, (x + 16) << 2, (y + 16) << 2, 0, 0, 0, 0x500, 0x500);
             } else {
                 if (p) {}
-                gDPLoadTextureBlock(gfx++, D_1042780, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_1042780, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 20, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 x -= 6;
                 RECT(x, y, x + 32, y + 20);
             }
@@ -1958,7 +1969,8 @@ void func_801F4120(Gfx** gfxP) {
     gDPPipeSync(gfx++);
     gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     if ((gGameModes == GMODE_CHAMPIONSHIP || gGameModes == GMODE_TIME_TRIALS) && gCourseID != DOLPHIN_PARK) {
-        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         RECT(D_80228B50 + 0x38, 21, D_80228B50 + 0x58, 33);
     }
     if (gGameModes != GMODE_STUNT && gCourseID != DOLPHIN_PARK) {
@@ -1975,7 +1987,8 @@ void func_801F4120(Gfx** gfxP) {
             x2 = 0xCA;
             y2 = 0x7B;
         }
-        gDPLoadTextureBlock(gfx++, D_1032078, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_1032078, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         RECT(x, y, x + 24, y + 12);
         if (gPlayers == TWO_PLAYERS) {
             RECT(x2, y2, x2 + 24, y2 + 12);
@@ -2000,16 +2013,20 @@ void func_801F4120(Gfx** gfxP) {
                     y = 0x87;
                     val = D_801C2938[D_800D48E0].lapCount;
                 }
-            if (y) {}
+                if (y) {}
             }
             if (D_801CE728[0] < val) {
                 val = D_801CE728[0];
             }
             if (gPlayers == ONE_PLAYER) {
-                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, y, x + 16, y + 20);
             } else {
-                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 if (val) {}
                 if (y2) {}
                 RECT(x, y, x + 12, y + 16);
@@ -2018,10 +2035,12 @@ void func_801F4120(Gfx** gfxP) {
     }
     if (gGameModes == GMODE_CHAMPIONSHIP) {
         if (gCourseID != DOLPHIN_PARK) {
-            gDPLoadTextureBlock(gfx++, D_1032B08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_1032B08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             RECT(D_80228B50 + 0x84, 21, D_80228B50 + 0xA8, 33);
-            gDPLoadTextureBlock(gfx++, D_103D8D8 + (D_801C2938[D_800D48DC].racePosition + 1) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16,
-                    20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_103D8D8 + (D_801C2938[D_800D48DC].racePosition + 1) * 0x140, G_IM_FMT_RGBA,
+                                G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             x = D_80228B50 + 0x88;
             if (D_80228A9C == 0) {
                 RECT(x, 34, x + 16, 54);
@@ -2040,24 +2059,28 @@ void func_801F4120(Gfx** gfxP) {
             gDPSetCombine(gfx++, 0x129A25, 0xFF37FFFF);
             if (D_801CE704 < D_801C2938[D_800D48DC].racePosition) {
                 gDPSetEnvColor(gfx++, D_80228AAC, D_80228AB0, D_80228AB4, 255);
-            if (x2) {}
+                if (x2) {}
             } else {
                 gDPSetEnvColor(gfx++, 255, 255, 255, 255);
             }
-            gDPLoadTextureBlock(gfx++, D_1033C60, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 10, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_1033C60, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 10, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             RECT(D_80228B50 + 0x9B, 32, D_80228B50 + 0xA3, 42);
             if (D_801CE704 < 4) {
                 n = D_801CE704 + 1;
             } else {
                 n = 0x25;
             }
-            gDPLoadTextureBlock(gfx++, D_1039248 + n * 0xC0, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_1039248 + n * 0xC0, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 12, 0,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
             RECT(D_80228B50 + 0x9A, 42, D_80228B50 + 0xAA, 54);
             gDPPipeSync(gfx++);
             gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
         }
     }
-    gDPLoadTextureBlock(gfx++, D_10331D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(gfx++, D_10331D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     if (gGameModes == GMODE_STUNT) {
         RECT(236, 22, 268, 34);
     } else if (gPlayers == ONE_PLAYER) {
@@ -2094,7 +2117,7 @@ void func_801F4120(Gfx** gfxP) {
                 x = 0xE1;
             } else if (gGameModes == GMODE_TIME_TRIALS) {
                 x = 0x9F;
-            if (p) {}
+                if (p) {}
             }
             val = val * scale;
             if (val >= 1000) {
@@ -2108,39 +2131,53 @@ void func_801F4120(Gfx** gfxP) {
                 y = y;
                 if (val >= 100) {
                     pc = pc;
-                    gDPLoadTextureBlock(gfx++, D_802C3E8 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_802C3E8 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     RECT(x, y, x + 12, y + 16);
-                if (val) {}
+                    if (val) {}
                 }
                 x += 14;
                 if (val) {}
                 if (val >= 10) {
-                    gDPLoadTextureBlock(gfx++, D_802C3E8 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_802C3E8 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12,
+                                        16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     RECT(x, y, x + 12, y + 16);
                 }
                 x += 14;
-                gDPLoadTextureBlock(gfx++, D_802C3E8 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_802C3E8 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, y, x + 12, y + 16);
             } else if (gPlayers == ONE_PLAYER) {
                 if (val >= 100) {
-                    gDPLoadTextureBlock(gfx++, D_103D8D8 + (val / 100) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_103D8D8 + (val / 100) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0,
+                                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     if (pc) {}
                     RECT(x, y, x + 16, y + 20);
                 }
                 x += 16;
                 if (val >= 10) {
-                    gDPLoadTextureBlock(gfx++, D_103D8D8 + ((val % 100) / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_103D8D8 + ((val % 100) / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16,
+                                        20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     RECT(x, y, x + 16, y + 20);
                 }
                 x += 16;
-                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_103D8D8 + (val % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, y, x + 16, y + 20);
-            y = y;
+                y = y;
             } else {
                 val = val;
                 if (val >= 100) {
                     if (i) {}
-                    gDPLoadTextureBlock(gfx++, D_103B4D0 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_103B4D0 + (val / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     f = f;
                     RECT(x, y, x + 12, y + 16);
                 }
@@ -2148,19 +2185,24 @@ void func_801F4120(Gfx** gfxP) {
                 x = x;
                 x += 13;
                 if (val >= 10) {
-                    gDPLoadTextureBlock(gfx++, D_103B4D0 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, D_103B4D0 + ((val % 100) / 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12,
+                                        16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     if (pc) {}
                     y = y;
                     RECT(x, y, x + 12, y + 16);
                 }
                 x += 13;
-                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_103B4D0 + (val % 10) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, y, x + 12, y + 16);
             }
             i++;
         } while (i < gPlayers);
     }
-    gDPLoadTextureBlock(gfx++, D_10337D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(gfx++, D_10337D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     if (gGameModes == GMODE_STUNT) {
         RECT(0x10E, 0x2B, 0x126, 0x37);
     } else if (gPlayers == ONE_PLAYER) {
@@ -2183,10 +2225,12 @@ void func_801F4120(Gfx** gfxP) {
         if (gPlayers == ONE_PLAYER) {
             x = D_80228B54 + 0x18;
             y = 0xCD;
-            gDPLoadTextureBlock(gfx++, D_102DF50, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_102DF50, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             SCISRECT(x, y, x + 24, y + 12);
         }
-        gDPLoadTextureBlock(gfx++, D_102E3D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_102E3D8, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         n = gBuoyMisses;
         if (n >= 29) {
             n = 28;
@@ -2203,10 +2247,11 @@ void func_801F4120(Gfx** gfxP) {
                 SCISRECT(x, y, x + 12, y + 12);
                 x += 14;
             }
-        if (x2) {}
+            if (x2) {}
         }
         pc = D_80228C30;
-        gDPLoadTextureBlock(gfx++, D_102E620, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_102E620, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         for (i = 0; i < gPlayers; i++, pc++) {
             if (gPlayers == ONE_PLAYER) {
                 p = p;
@@ -2222,10 +2267,10 @@ void func_801F4120(Gfx** gfxP) {
                 } else {
                     y = 0xD6;
                     m = D_801C2938[D_800D48E0].unk134;
-                if (i) {}
-                if (y) {}
+                    if (i) {}
+                    if (y) {}
                 }
-            j = j;
+                j = j;
             }
             if (pc->unk18 == 1) {
                 m--;
@@ -2236,14 +2281,14 @@ void func_801F4120(Gfx** gfxP) {
                 x = x;
                 if (x2) {}
                 k = 0;
-            p = p;
+                p = p;
             }
             x += k * 14;
             for (j = k; j < n; j++) {
                 SCISRECT(x, y, x + 12, y + 12);
                 x += 14;
             }
-        y2 = y2;
+            y2 = y2;
         }
     }
     if (gCourseID != DOLPHIN_PARK && gGameModes != GMODE_STUNT) {
@@ -2251,7 +2296,8 @@ void func_801F4120(Gfx** gfxP) {
         if (gPlayers == ONE_PLAYER) {
             x = D_80228B54 + 0x94;
             y = 0xCD;
-            gDPLoadTextureBlock(gfx++, D_102E868, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_102E868, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             SCISRECT(x, y, x + 32, y + 12);
         }
         for (i = 0; i < gPlayers; i++) {
@@ -2272,8 +2318,8 @@ void func_801F4120(Gfx** gfxP) {
                 } else {
                     y = 0xD8;
                     m = D_801C2938[D_800D48E0].unk138;
-                p = p;
-                x = x;
+                    p = p;
+                    x = x;
                 }
             }
             for (j = 0; j < 5; j++) {
@@ -2284,27 +2330,30 @@ void func_801F4120(Gfx** gfxP) {
                         y = y;
                         f = 6 - f;
                     }
-                if (pc) {}
+                    if (pc) {}
                 } else {
                     pc = pc;
                     f = (j < m) ? 3 : 0;
                 }
-                gDPLoadTextureBlock(gfx++, D_102EE70 + (f + j * 4) * 0xA0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 20, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_102EE70 + (f + j * 4) * 0xA0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 20, 8, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 SCISRECT(x, y, x + 20, y + 8);
                 x += 22;
             }
         }
-    j = j;
+        j = j;
     }
     if (gGameModes == GMODE_STUNT) {
-        gDPLoadTextureBlock(gfx++, D_8024008, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_8024008, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         RECT(0x2D, 0x16, 0x51, 0x22);
         val = D_801C26D0;
         x = 0x1C;
         if (val >= 100000) {
             if (f) {}
             val = 99999;
-        i = i;
+            i = i;
         }
         for (k = 4; k > -1; k--) {
             f = f;
@@ -2314,22 +2363,28 @@ void func_801F4120(Gfx** gfxP) {
             val /= 10;
         }
         for (p = D_80228CF8; p < &D_80228CF8[5]; p++) {
-            gDPLoadTextureBlock(gfx++, D_8024BC8 + *p * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_8024BC8 + *p * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
             RECT(x, 0x26, x + 12, 0x36);
             x += 14;
-        x = x;
-        if (x) {}
+            x = x;
+            if (x) {}
         }
     }
     if (gGameModes == GMODE_STUNT) {
-        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_1032500, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         m = m;
         RECT(0x8D, 0x16, 0xAD, 0x22);
         val = D_801C2938[D_800D48DC].unk2C4;
         y = val % 1000;
-        gDPLoadTextureBlock(gfx++, D_103B4D0 + (y / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_103B4D0 + (y / 100) * 0xC0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
         RECT(0xAA, 0x26, 0xB6, 0x36);
-        gDPLoadTextureBlock(gfx++, D_103D5D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, D_103D5D0, G_IM_FMT_RGBA, G_IM_SIZ_32b, 12, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         rs = rs;
         RECT(0xA2, 0x23, 0xAE, 0x33);
         f = val / 1000;
@@ -2337,12 +2392,16 @@ void func_801F4120(Gfx** gfxP) {
             x = 0x84;
             if (val) {}
             if (f >= 10) {
-                gDPLoadTextureBlock(gfx++, D_80273D8 + (f / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_80273D8 + (f / 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 RECT(x, 0x26, x + 16, 0x3A);
             }
             x += 16;
             x2 = x2;
-            gDPLoadTextureBlock(gfx++, D_80273D8 + (f % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(gfx++, D_80273D8 + (f % 10) * 0x140, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 20, 0,
+                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
             RECT(x, 0x26, x + 16, 0x3A);
         } else {
             m = y - 700;
@@ -2358,10 +2417,12 @@ void func_801F4120(Gfx** gfxP) {
                 gDPSetTextureFilter(gfx++, G_TF_BILERP);
                 gDPSetCombine(gfx++, 0x129A25, 0xFF37FFFF);
                 gDPSetEnvColor(gfx++, D_80228AAC, D_80228AB0, D_80228AB4, 255);
-                gDPLoadTextureBlock(gfx++, D_802A5E0 + f * 0x500, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 40, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(gfx++, D_802A5E0 + f * 0x500, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 40, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 gSPTextureRectangle(gfx++, (k + 0x84) << 2, (k + 0x26) << 2, (0xA4 - k) << 2, (0x4E - k) << 2, 0, 0, 0,
                                     0x8000 / val, 0xA000 / x);
-            if (m) {}
+                if (m) {}
             }
         }
     }
@@ -2379,8 +2440,8 @@ void func_801F4120(Gfx** gfxP) {
             p = p;
             gfx = func_801E8A84(gfx, 1, D_801C1FE8, 0xEE, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
-    y2 = y2;
-    val = val;
+        y2 = y2;
+        val = val;
     }
     rs = rs;
     i = i;

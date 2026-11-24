@@ -320,7 +320,7 @@ extern s32 D_80228198;
 extern s32 D_80228190s;
 extern s32 D_80228198s;
 extern f32 D_80228190f[];
-extern f32 D_8022819C,D_802281A0,D_802281A4,D_802281B4,D_802281B8,D_802281BC,D_802281C0;
+extern f32 D_8022819C, D_802281A0, D_802281A4, D_802281B4, D_802281B8, D_802281BC, D_802281C0;
 
 /*
  * Draft, strict probe floor 37 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
@@ -435,61 +435,61 @@ void func_801DD6B4(UnkStruct_801DB0E4_arg0* arg0) {
     D_802287A8 = 0;
     var_v1 = NULL;
     switch (D_801CE638) {
-    case 8:
-        switch (gCourseID) {
-        case DOLPHIN_PARK:
-            var_v1 = func_801DC274;
-            break;
-        case SUNNY_BEACH:
-            if (gDifficulty == DIFFICULTY_EXPERT) {
-                var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC404;
+        case 8:
+            switch (gCourseID) {
+                case DOLPHIN_PARK:
+                    var_v1 = func_801DC274;
+                    break;
+                case SUNNY_BEACH:
+                    if (gDifficulty == DIFFICULTY_EXPERT) {
+                        var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC404;
+                    }
+                    break;
+                case SUNSET_BAY:
+                    var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC5A8;
+                    break;
+                case DRAKE_LAKE:
+                    var_v1 = func_801DC60C;
+                    break;
+                case PORT_BLUE:
+                    var_v1 = func_801DCD34;
+                    break;
+                case GLACIER_COAST:
+                    var_v1 = func_801DD2D0;
+                    break;
             }
             break;
-        case SUNSET_BAY:
-            var_v1 = (void (*)(UnkStruct_801DB0E4_arg0*)) func_801DC5A8;
-            break;
-        case DRAKE_LAKE:
-            var_v1 = func_801DC60C;
-            break;
-        case PORT_BLUE:
-            var_v1 = func_801DCD34;
-            break;
-        case GLACIER_COAST:
-            var_v1 = func_801DD2D0;
-            break;
-        }
-        break;
-    case 21:
-        switch (gDifficulty) {
-        case DIFFICULTY_NORMAL:
-        case DIFFICULTY_HARD:
-            ptr = &D_802287AC;
-            *ptr = D_801C2C70;
-            if (*ptr < 3) {
-                var_v1 = func_801DC0AC;
+        case 21:
+            switch (gDifficulty) {
+                case DIFFICULTY_NORMAL:
+                case DIFFICULTY_HARD:
+                    ptr = &D_802287AC;
+                    *ptr = D_801C2C70;
+                    if (*ptr < 3) {
+                        var_v1 = func_801DC0AC;
+                    }
+                    break;
+                case DIFFICULTY_EXPERT:
+                    switch (D_801C2C70) {
+                        case 0:
+                            var_v1 = func_801DB8F0;
+                            break;
+                        case 1: {
+                            ptr = &D_802287AC;
+                            *ptr = 4;
+                            var_v1 = func_801DBF68;
+                            break;
+                        }
+                        case 2: {
+                            ptr = &D_802287AC;
+                            *ptr = 3;
+                            var_v1 = func_801DBF68;
+                            break;
+                        }
+                    }
+                    break;
             }
             break;
-        case DIFFICULTY_EXPERT:
-                switch (D_801C2C70) {
-                case 0:
-                    var_v1 = func_801DB8F0;
-                    break;
-                case 1: {
-                    ptr = &D_802287AC;
-                    *ptr = 4;
-                    var_v1 = func_801DBF68;
-                    break;
-                }
-                case 2: {
-                    ptr = &D_802287AC;
-                    *ptr = 3;
-                    var_v1 = func_801DBF68;
-                    break;
-                }
-                }
-            break;
-        }
-        break;
     }
     if (var_v1 != NULL) {
         var_v1(arg0);
@@ -818,7 +818,8 @@ void func_801DDEDC(UnkCam_801DDEDC* arg0, UnkStruct_801DDEDC* arg1, UnkStruct_80
             break;
         case 4:
             path = NULL;
-            if ((gGameModes == GMODE_TIME_TRIALS) || (gGameModes == GMODE_CHAMPIONSHIP) || (gGameModes == GMODE_STUNT)) {
+            if ((gGameModes == GMODE_TIME_TRIALS) || (gGameModes == GMODE_CHAMPIONSHIP) ||
+                (gGameModes == GMODE_STUNT)) {
                 switch (D_80192690[arg0->unkE8].unk16C8) {
                     case 1:
                         path = D_80224D9C;
@@ -1109,7 +1110,8 @@ void func_801DEC00(f32* arg0, UnkStruct_801DEA94* arg1, UnkCurve_801DEC00* arg2)
         arg1->unk4++;
     }
     for (i = 0; i < 3; i++) {
-        arg0[i] = func_801DE690((f32) arg1->unk0 / (f32) arg2->unk10[arg1->unk4], arg1->unk4, arg2->unk4[i], arg2->unk0);
+        arg0[i] =
+            func_801DE690((f32) arg1->unk0 / (f32) arg2->unk10[arg1->unk4], arg1->unk4, arg2->unk4[i], arg2->unk0);
     }
     if (++arg1->unk0 < arg2->unk10[arg1->unk4]) {
         return;
@@ -1121,7 +1123,6 @@ void func_801DEC00(f32* arg0, UnkStruct_801DEA94* arg1, UnkCurve_801DEC00* arg2)
     }
     arg1->unk4 = -1;
 }
-
 
 void func_801DED44(u8* arg0, u8* arg1, u8* arg2) {
     func_801DEC00(arg0, arg1, arg2);
@@ -1762,9 +1763,11 @@ void func_801E0304(UnkCmd_801DFE80* arg0, void* arg1) {
     yaw = sp50[1] + sub->unkC;
     sub->unk10 = 0.0f;
     pitch = sp50[2];
-    sp44[0] = *arg0->unk10[0] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp44[0] =
+        *arg0->unk10[0] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp44[1] = *arg0->unk10[1] + (sp50[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp44[2] = *arg0->unk10[2] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp44[2] =
+        *arg0->unk10[2] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp44, sp5C, NULL, NULL);
 }
 
@@ -1783,9 +1786,11 @@ void func_801E0454(UnkCmd_801DFE80* arg0, void* arg1) {
     yaw = sp4C[1] + sub->unkC;
     sub->unk10 = 0.0f;
     pitch = sp4C[2];
-    sp40[0] = *arg0->unk10[0] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp40[0] =
+        *arg0->unk10[0] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp40[1] = *arg0->unk10[1] + (sp4C[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp40[2] = *arg0->unk10[2] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp40[2] =
+        *arg0->unk10[2] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp40, sp58, sp64, NULL);
 }
 
@@ -1804,9 +1809,11 @@ void func_801E05A4(UnkCmd_801DFE80* arg0, void* arg1) {
     yaw = sp4C[1] + sub->unkC;
     sub->unk10 = 0.0f;
     pitch = sp4C[2];
-    sp40[0] = *arg0->unk10[0] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp40[0] =
+        *arg0->unk10[0] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp40[1] = *arg0->unk10[1] + (sp4C[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp40[2] = *arg0->unk10[2] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp40[2] =
+        *arg0->unk10[2] + ((sp4C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp40, sp58, NULL, &sp64);
 }
 
@@ -1826,9 +1833,11 @@ void func_801E06F8(UnkCmd_801DFE80* arg0, void* arg1) {
     yaw = sp50[1] + sub->unkC;
     sub->unk10 = 0.0f;
     pitch = sp50[2];
-    sp44[0] = *arg0->unk10[0] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp44[0] =
+        *arg0->unk10[0] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp44[1] = *arg0->unk10[1] + (sp50[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp44[2] = *arg0->unk10[2] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp44[2] =
+        *arg0->unk10[2] + ((sp50[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
     func_801DF2F8(arg0->obj, sp44, sp5C, sp68, &sp74);
 }
 
@@ -1844,9 +1853,11 @@ void func_801E084C(UnkCmd_801DFE80* arg0, void* arg1) {
     sub = &arg0->obj->sub;
     yaw = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]) + sp58[1];
     pitch = sp58[2];
-    sp4C[0] = *arg0->unk10[0] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp4C[0] =
+        *arg0->unk10[0] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp4C[1] = *arg0->unk10[1] + (sp58[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp4C[2] = *arg0->unk10[2] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp4C[2] =
+        *arg0->unk10[2] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
 
     sub->unkC = *arg0->unk34;
     sub->unk24 = *arg0->unk1C[sub->unk74[0]];
@@ -1869,9 +1880,11 @@ void func_801E0A18(UnkCmd_801DFE80* arg0, void* arg1) {
     sub = &arg0->obj->sub;
     yaw = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]) + sp5C[1];
     pitch = sp5C[2];
-    sp50[0] = *arg0->unk10[0] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp50[0] =
+        *arg0->unk10[0] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp50[1] = *arg0->unk10[1] + (sp5C[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp50[2] = *arg0->unk10[2] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp50[2] =
+        *arg0->unk10[2] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
 
     sub->unkC = *arg0->unk34;
     sub->unk24 = *arg0->unk1C[sub->unk74[0]];
@@ -1894,9 +1907,11 @@ void func_801E0BE8(UnkCmd_801DFE80* arg0, void* arg1) {
     sub = &arg0->obj->sub;
     yaw = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]) + sp5C[1];
     pitch = sp5C[2];
-    sp50[0] = *arg0->unk10[0] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp50[0] =
+        *arg0->unk10[0] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp50[1] = *arg0->unk10[1] + (sp5C[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp50[2] = *arg0->unk10[2] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp50[2] =
+        *arg0->unk10[2] + ((sp5C[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
 
     sub->unkC = *arg0->unk34;
     sub->unk24 = *arg0->unk1C[sub->unk74[0]];
@@ -1920,9 +1935,11 @@ void func_801E0DB8(UnkCmd_801DFE80* arg0, void* arg1) {
     sub = &arg0->obj->sub;
     yaw = func_801ED154(*arg0->unk1C[2], *arg0->unk1C[0]) + sp58[1];
     pitch = sp58[2];
-    sp4C[0] = *arg0->unk10[0] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp4C[0] =
+        *arg0->unk10[0] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * COS((s32) ((yaw * 4096.0f) / 360.0f)));
     sp4C[1] = *arg0->unk10[1] + (sp58[0] * SIN((s32) ((pitch * 4096.0f) / 360.0f)));
-    sp4C[2] = *arg0->unk10[2] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
+    sp4C[2] =
+        *arg0->unk10[2] + ((sp58[0] * COS((s32) ((pitch * 4096.0f) / 360.0f))) * SIN((s32) ((yaw * 4096.0f) / 360.0f)));
 
     sub->unkC = *arg0->unk34;
     sub->unk24 = *arg0->unk1C[sub->unk74[0]];

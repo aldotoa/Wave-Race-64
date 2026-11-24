@@ -1123,7 +1123,6 @@ void func_800C1BD8(f32 arg0, f32 arg1) {
     }
 }
 
-
 void func_800C1DA8(void) {
     if (D_800E7C94 == 7) {
         D_800E7C9C = 5;

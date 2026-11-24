@@ -151,8 +151,8 @@ void func_801E66F4(UnkStruct_menu_buffer_1* arg0) {
         case 0:
             arg0->unkC = D_802C6BD0 + 6 + (D_802C6EE4 * 0x14);
             angle = 2.0f * ((f32) arg0->unk18 / 40.0f) * 3.1415927f;
-            func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0,
-                          arg0->unk8, arg0->unkC, 0.0f);
+            func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0, arg0->unk8,
+                          arg0->unkC, 0.0f);
             arg0->unk18++;
             if (arg0->unk18 >= 40) {
                 arg0->unk18 -= 40;
@@ -165,8 +165,8 @@ void func_801E66F4(UnkStruct_menu_buffer_1* arg0) {
             } else {
                 arg0->unkC = arg0->unk24 + (gCurrentPauseMenuOption * 0xF);
                 angle = 2.0f * ((f32) arg0->unk18 / 40.0f) * 3.1415927f;
-                func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0,
-                              arg0->unk8, arg0->unkC, 0.0f);
+                func_80049A94(&((Mtx*) ((u8*) D_801CE5F8 + 0x900))[(u16) arg0->unk4], &mtx, angle, angle, 0, arg0->unk8,
+                              arg0->unkC, 0.0f);
                 arg0->unk18++;
                 if (arg0->unk18 >= 40) {
                     arg0->unk18 -= 40;

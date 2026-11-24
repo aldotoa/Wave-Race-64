@@ -83,7 +83,6 @@ void func_i1_802C59E8(s32 arg0) {
     func_800C37D4(arg0);
 }
 
-
 #ifdef NON_MATCHING
 void func_i1_802C5AE4(void) {
     /* Course buoy waypoint sequence update */
@@ -367,37 +366,37 @@ void func_i1_802C6FE0(void) {
     }
     D_801CE62A = 0;
     switch (D_801CE608.gameMode) {
-    case 11:
-        break;
-    case 0:
-        if (D_801C2650 == 1) {
-            var_a1 = 0;
-        } else {
-            var_a1 = 1;
-        }
-        func_800C1F60(6);
-        func_800C21F4(6, var_a1);
-        break;
-    default:
-        func_800C1F60(6);
-        temp_v0_2 = D_801C293C[D_800D48DC].lapCount;
-        if (*(s32*)((u8*)&D_801CE6FC + 0x8) >= temp_v0_2) {
-            func_800C21F4(6, temp_v0_2 + 1);
-        } else {
-            func_800C21F4(6, 5);
-        }
-        break;
-    case 1:
-        func_800C1F60(6);
-        if (D_801CE6F0 == 3) {
-            var_a1_2 = 0;
-        } else if (D_801CE6F0 == 1) {
-            var_a1_2 = 2;
-        } else {
-            var_a1_2 = 1;
-        }
-        func_800C21F4(6, var_a1_2);
-        break;
+        case 11:
+            break;
+        case 0:
+            if (D_801C2650 == 1) {
+                var_a1 = 0;
+            } else {
+                var_a1 = 1;
+            }
+            func_800C1F60(6);
+            func_800C21F4(6, var_a1);
+            break;
+        default:
+            func_800C1F60(6);
+            temp_v0_2 = D_801C293C[D_800D48DC].lapCount;
+            if (*(s32*) ((u8*) &D_801CE6FC + 0x8) >= temp_v0_2) {
+                func_800C21F4(6, temp_v0_2 + 1);
+            } else {
+                func_800C21F4(6, 5);
+            }
+            break;
+        case 1:
+            func_800C1F60(6);
+            if (D_801CE6F0 == 3) {
+                var_a1_2 = 0;
+            } else if (D_801CE6F0 == 1) {
+                var_a1_2 = 2;
+            } else {
+                var_a1_2 = 1;
+            }
+            func_800C21F4(6, var_a1_2);
+            break;
     }
     func_800BFD34();
     func_800BFD68();

@@ -75,7 +75,10 @@ s32 func_80088EA8(void) {
         raw = SysUtils_Rand();
         pick = (u32) raw >> 8;
         pick = pick & 3;
+        // Must stay on one line: IDO line markers change scheduling here.
+        // clang-format off
         D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[pick]; if (pick) {} idx = pick;
+        // clang-format on
         while (D_801C3C58->unk5C != -1 || idx == D_800D48DC) {
             idx = (idx % gRiders) + 1;
             D_801C3C58 = (struct unk_D_801C3C60*) &D_801C3C60[idx];

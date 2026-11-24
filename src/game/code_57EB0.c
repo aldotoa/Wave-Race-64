@@ -34,15 +34,15 @@ typedef struct UnkStruct_800AC098_src {
 } UnkStruct_800AC098_src;
 
 typedef struct UnkStruct_801CE780_unk4_unk4_s {
-    /* 0x0 */ s16 unk0;         /* inferred */
-    /* 0x2 */ s16 unk2;         /* inferred */
-    /* 0x4 */ s16 unk4;         /* inferred */
-    /* 0x6 */ s8 unk6;          /* inferred */
-    /* 0x7 */ s8 unk7;          /* inferred */
-    /* 0x8 */ s8 unk8;          /* inferred */
-    /* 0x9 */ s8 unk9;          /* inferred */
-    /* 0xA */ s8 unkA;          /* inferred */
-    /* 0xB */ s8 unkB;          /* inferred */
+    /* 0x0 */ s16 unk0; /* inferred */
+    /* 0x2 */ s16 unk2; /* inferred */
+    /* 0x4 */ s16 unk4; /* inferred */
+    /* 0x6 */ s8 unk6;  /* inferred */
+    /* 0x7 */ s8 unk7;  /* inferred */
+    /* 0x8 */ s8 unk8;  /* inferred */
+    /* 0x9 */ s8 unk9;  /* inferred */
+    /* 0xA */ s8 unkA;  /* inferred */
+    /* 0xB */ s8 unkB;  /* inferred */
 } UnkStruct_801CE780_unk4_unk4;
 
 typedef struct UnkStruct_801CE780_unk4_s {
@@ -936,9 +936,8 @@ void func_800A9494(s32 arg0) {
             D_801CF060[arg0].unk18 = func_8009D564(D_801CF060[arg0].unk18);
             D_801CF060[arg0].unk10 += 0.05 * (D_801D0758 - D_801CF060[arg0].unk10);
             D_801D0764 = (((180 - FABS(D_801D0760))) / 180.0f) * 30.0f;
-            D_801CF060[arg0].unk1C =
-                Math_Normalize_Angle(((f64) D_801CF060[arg0].unk1C) +
-                                     (Math_Normalize_Angle(D_801D0760 - D_801CF060[arg0].unk1C) * 0.1));
+            D_801CF060[arg0].unk1C = Math_Normalize_Angle(
+                ((f64) D_801CF060[arg0].unk1C) + (Math_Normalize_Angle(D_801D0760 - D_801CF060[arg0].unk1C) * 0.1));
             if (D_801CF060[arg0].unk1C > 45.0f) {
                 D_801CF060[arg0].unk1C = 45.0f;
             }

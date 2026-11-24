@@ -64,6 +64,7 @@ Probe-loop mechanics that must all hold at once:
 - Use a single `return` with `goto end;` for early exits: two C `return`s flip the final epilogue to `move;jr;nop` plus likely-fills (`bnezl`) on late branches.
 - A store in a non-likely branch delay slot (`bne`/`beqz` + `sw`) executes on BOTH paths: model it as straight-line code before the `if`, not inside either branch.
 - A redundant doubled store (`D = 1; if (f == 1) { D = 1; }`) merges to a single store in a normal (`bne`) branch delay slot, while the single-store form emits a likely (`bnel`) branch.
+- Statements sharing one line can be load-bearing (IDO line markers act as scheduling boundaries): keep them on one line inside `// clang-format off` / `// clang-format on`, and after `make format` always re-run `make` to confirm `OK`.
 - Empty `else {}` arms can be load-bearing for the branch skeleton — never delete one without re-diffing.
 - Equivalent tail spellings can emit identical bytes when the join coincides with function end (`if (t < K) goto end; ...` vs nested `if (t >= K) { ... }`); if the tail already matches, try the other spelling to shift upstream scheduling.
 - Anonymous `D++` keeps the incremented value in a t-reg; a named `s32 temp = D + 1` local parks it in a v-reg. Drop the named local when the stub holds the temp in `t8`/`t9`.

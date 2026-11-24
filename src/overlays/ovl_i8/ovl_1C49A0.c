@@ -115,9 +115,16 @@ void func_i8_802C6ADC(void) {
             if (ok) {
                 func_i8_802C6FD4(&D_802C7548, &D_802C7558, 11);
                 n = D_802C7564;
- i = n + 1;
-                if (i < 11) { s8* dst = &D_802C7548 + i; s8* src = &D_802C7558 + i;
- do { *dst = src[-1]; src++; dst++; } while (src < &D_802C7558 + 11); }
+                i = n + 1;
+                if (i < 11) {
+                    s8* dst = &D_802C7548 + i;
+                    s8* src = &D_802C7558 + i;
+                    do {
+                        *dst = src[-1];
+                        src++;
+                        dst++;
+                    } while (src < &D_802C7558 + 11);
+                }
                 p = &D_802C7548 + n;
                 if (key->unk1 == 3) {
                     *p = ' ';
@@ -131,16 +138,28 @@ void func_i8_802C6ADC(void) {
                 }
             }
             break;
-        case 1: func_i8_802C6D58(); break;
-        case 2: func_i8_802C6DA8(); break;
+        case 1:
+            func_i8_802C6D58();
+            break;
+        case 2:
+            func_i8_802C6DA8();
+            break;
         case 5:
-            if (((&D_802C7548)[D_802C7564] != 0) && (D_802C7564 < 10)) { D_802C7564++; }
+            if (((&D_802C7548)[D_802C7564] != 0) && (D_802C7564 < 10)) {
+                D_802C7564++;
+            }
             break;
         case 4:
-            if (D_802C7564 > 0) { D_802C7564--; }
+            if (D_802C7564 > 0) {
+                D_802C7564--;
+            }
             break;
-        case 6: func_i8_802C6E68(&D_800DA950[D_i8_802C74F8[D_i8_802C7040]]); break;
-        case 7: func_i8_802C6E00(); break;
+        case 6:
+            func_i8_802C6E68(&D_800DA950[D_i8_802C74F8[D_i8_802C7040]]);
+            break;
+        case 7:
+            func_i8_802C6E00();
+            break;
     }
 }
 #else

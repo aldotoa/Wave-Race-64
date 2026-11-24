@@ -2,8 +2,8 @@
 
 typedef struct BuoyPathHeader {
     /* 0x00 */ s16 count;
-    /* 0x04 */ u32 points;     /* segmented -> BuoyPoint[] */
-    /* 0x08 */ u32 paths[8];   /* segmented -> s16[] point indices */
+    /* 0x04 */ u32 points;   /* segmented -> BuoyPoint[] */
+    /* 0x08 */ u32 paths[8]; /* segmented -> s16[] point indices */
 } BuoyPathHeader;
 
 typedef struct BuoyPoint {
@@ -93,13 +93,13 @@ void func_i5_802C7090(void) {
     }
 
     switch (D_i5_802C7AC8) {
-    case 2:
-    case 3:
-        sel = 0;
-        break;
-    default:
-        sel = 1;
-        break;
+        case 2:
+        case 3:
+            sel = 0;
+            break;
+        default:
+            sel = 1;
+            break;
     }
     for (i = 0; i < 8; i++) {
         j = D_i5_802C7AA0;
@@ -115,8 +115,8 @@ void func_i5_802C7090(void) {
             D_802C7B10[i] = 1.0f;
             func_8004EFB4(x, z, 0x32);
         }
-        func_801E4C60(&D_801CE5F8->unk1380[i], pt->unk6[0], pt->unk6[1], pt->unk6[2], pt->unk6[3],
-                      pt->unk6[4], pt->unk6[5], x, y, z, 0.05f);
+        func_801E4C60(&D_801CE5F8->unk1380[i], pt->unk6[0], pt->unk6[1], pt->unk6[2], pt->unk6[3], pt->unk6[4],
+                      pt->unk6[5], x, y, z, 0.05f);
     }
 }
 

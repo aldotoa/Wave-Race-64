@@ -74,22 +74,22 @@ extern s32 D_801C1FD4;
 extern s32 D_801C26C0[];
 
 void func_80077F5C(void) {
-    RiderStruct *a0;
-    RiderStruct *a3;
-    UnkStruct_801AEE20 *v0;
-    UnkStruct_801AEE20 *seg;
-    UnkStruct_80192690 *t0;
+    RiderStruct* a0;
+    RiderStruct* a3;
+    UnkStruct_801AEE20* v0;
+    UnkStruct_801AEE20* seg;
+    UnkStruct_80192690* t0;
     s32 i;
     s32 j;
     s32 a2;
     s32 a3n;
     s32 tmp;
     s32 tmp2;
-    s32 *dst;
-    s32 *end;
+    s32* dst;
+    s32* end;
     f32 fv0;
     f32 fv1;
-    s32 *lim;
+    s32* lim;
 
     if (D_801C1FD4 == 0) {
         D_801C1FD4 = 1;

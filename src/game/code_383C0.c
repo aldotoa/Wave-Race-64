@@ -372,15 +372,20 @@ void func_8007F030(UnkStruct_80192690* arg0, UnkStruct_8007F030_arg1* arg1) {
                             temp_fv0 = temp_s0->unk0 - var_v1->unk0;
                             temp_fv1 = temp_s0->unk4 - var_v1->unk4;
                             temp_fa0 = temp_s0->unk8 - var_v1->unk8;
-                            if (!(((temp_s0->unk18 * temp_fv0) + (temp_fv1 * temp_s0->unk1C) + (temp_fa0 * temp_s0->unk20)) < 0.0f) && !(((temp_s0->unk24 * temp_fv0) + (temp_fv1 * temp_s0->unk28) + (temp_fa0 * temp_s0->unk2C)) < 0.0f)) {
-                                temp_fa1 = (temp_s0->unk30 * temp_fv0) + (temp_fv1 * temp_s0->unk34) + (temp_fa0 * temp_s0->unk38);
+                            if (!(((temp_s0->unk18 * temp_fv0) + (temp_fv1 * temp_s0->unk1C) +
+                                   (temp_fa0 * temp_s0->unk20)) < 0.0f) &&
+                                !(((temp_s0->unk24 * temp_fv0) + (temp_fv1 * temp_s0->unk28) +
+                                   (temp_fa0 * temp_s0->unk2C)) < 0.0f)) {
+                                temp_fa1 = (temp_s0->unk30 * temp_fv0) + (temp_fv1 * temp_s0->unk34) +
+                                           (temp_fa0 * temp_s0->unk38);
                                 if (!(temp_fa1 >= 0.0f) && !(temp_fa1 < temp_s0->unk3C)) {
                                     temp_ft4 = temp_s0->unkC;
                                     temp_ft5 = temp_s0->unk10;
                                     temp_fs0 = temp_s0->unk14;
                                     temp_fa1_2 = (temp_ft4 * temp_fv0) + (temp_fv1 * temp_ft5) + (temp_fa0 * temp_fs0);
                                     if (!(temp_fa1_2 < 0.0f) && !(temp_fa1_2 > 16.0f)) {
-                                        temp_fa0_2 = ((-var_v1->unkC * temp_ft4) - (var_v1->unk10 * temp_ft5)) - (var_v1->unk14 * temp_fs0);
+                                        temp_fa0_2 = ((-var_v1->unkC * temp_ft4) - (var_v1->unk10 * temp_ft5)) -
+                                                     (var_v1->unk14 * temp_fs0);
                                         if (!(temp_fa0_2 <= 0.0f)) {
                                             if (arg0->unkC4C < temp_fa0_2) {
                                                 arg0->unkC4C = temp_fa0_2;

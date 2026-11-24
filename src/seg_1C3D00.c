@@ -77,14 +77,16 @@ Gfx* func_1C3D00_802C58DC(Gfx* gDisplayListHead) {
 
     for (var = (s32) D_1C3D00_802C5EB0, i = 0; i < 4; i++, var += sizeof(Struct_1C3D00_802C5EB0)) {
         if (i != D_802C5EF0) {
-            gDisplayListHead = func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4, ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, i * 0x12 + 0x8F, 0);
+            gDisplayListHead = func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4,
+                                             ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, i * 0x12 + 0x8F, 0);
         }
     }
 
     gDisplayListHead =
         func_801E946C(gDisplayListHead, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     var = (s32) &D_1C3D00_802C5EB0[D_802C5EF0];
-    return func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4, ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, D_802C5EF0 * 0x12 + 0x8F, 0);
+    return func_801E3EE0(gDisplayListHead, 1, ((Struct_1C3D00_802C5EB0*) var)->unk4,
+                         ((Struct_1C3D00_802C5EB0*) var)->unk0 + 0x8A, D_802C5EF0 * 0x12 + 0x8F, 0);
 }
 
 void func_1C3D00_802C5C4C(s32 arg0) {

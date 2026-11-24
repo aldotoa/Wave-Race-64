@@ -18,9 +18,10 @@ void func_801E80B0(void) {
 extern s32 D_80228A40;
 extern Gfx D_7000000[];
 
-/* Builds a textured quad (4 Vtx at D_80228A40 in the D_801CE5F8 vertex pool, one color per corner) and its display list. */
-Gfx* func_801E8800(Gfx* gfx, u32 w, u32 h, s32 x, s32 y, u8 r0, u8 g0, u8 b0, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2,
-                   u8 b2, u8 r3, u8 g3, u8 b3, f32 scale) {
+/* Builds a textured quad (4 Vtx at D_80228A40 in the D_801CE5F8 vertex pool, one color per corner) and its display
+ * list. */
+Gfx* func_801E8800(Gfx* gfx, u32 w, u32 h, s32 x, s32 y, u8 r0, u8 g0, u8 b0, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2, u8 b2,
+                   u8 r3, u8 g3, u8 b3, f32 scale) {
     u32 j; /* unsigned copy of i: load-bearing for register allocation */
     Vtx* vtx;
     s32 i;
@@ -254,26 +255,28 @@ s32 func_801E9B04(s32 fontMode, s8 character) {
 
 void func_801E9D6C(void) {
     switch (D_80228A78.unk2) {
-    case 0:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unk10 = 0;
-        break;
-    case 1:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 2:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 3:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unk10 = 0;
-        break;
+        case 0:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
+        case 1:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 2:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 3:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0;
+            break;
     }
 }
 
@@ -291,11 +294,13 @@ void func_801EA0B0(void) {
             break;
         case 2:
             D_80228A78.unkC = 0xFF;
-            D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
             D_80228A78.unk10 = 0;
             break;
         case 3:
-            D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkC =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
             D_80228A78.unkE = 0;
             D_80228A78.unk10 = 0;
             break;
@@ -304,26 +309,28 @@ void func_801EA0B0(void) {
 
 void func_801EA3EC(void) {
     switch (D_80228A78.unk2) {
-    case 0:
-        D_80228A78.unkC = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = 0;
-        break;
-    case 1:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 2:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 3:
-        D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unkE = 0xFF;
-        D_80228A78.unk10 = 0;
-        break;
+        case 0:
+            D_80228A78.unkC = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = 0;
+            break;
+        case 1:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 2:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 3:
+            D_80228A78.unkC =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE = 0xFF;
+            D_80228A78.unk10 = 0;
+            break;
     }
 }
 
@@ -340,13 +347,15 @@ void func_801EA730(void) {
             D_80228A78.unk10 = 0;
             break;
         case 2:
-            D_80228A78.unkC = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkC =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
             D_80228A78.unkE = 0xFF;
             D_80228A78.unk10 = 0;
             break;
         case 3:
             D_80228A78.unkC = 0;
-            D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unkE =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
             D_80228A78.unk10 = 0;
             break;
     }
@@ -354,26 +363,28 @@ void func_801EA730(void) {
 
 void func_801EAA6C(void) {
     switch (D_80228A78.unk2) {
-    case 0:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 128.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unk10 = 0xFF;
-        break;
-    case 1:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0;
-        D_80228A78.unk10 = (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 2:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = 0;
-        D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
-        break;
-    case 3:
-        D_80228A78.unkC = 0xFF;
-        D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 128.0f) / (f32) D_80228A78.unk8);
-        D_80228A78.unk10 = 0xFF;
-        break;
+        case 0:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 128.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0xFF;
+            break;
+        case 1:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0;
+            D_80228A78.unk10 =
+                (s16) (u32) (((f32) (D_80228A78.unk8 - D_80228A78.unk4) * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 2:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = 0;
+            D_80228A78.unk10 = (s16) (u32) (((f32) D_80228A78.unk4 * 255.0f) / (f32) D_80228A78.unk8);
+            break;
+        case 3:
+            D_80228A78.unkC = 0xFF;
+            D_80228A78.unkE = (s16) (u32) (((f32) D_80228A78.unk4 * 128.0f) / (f32) D_80228A78.unk8);
+            D_80228A78.unk10 = 0xFF;
+            break;
     }
 }
 

@@ -119,8 +119,8 @@ Gfx* func_1B1FB0_802C67BC(Gfx* gdl, s32 arg1, s32 arg2) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        gDPLoadTextureBlock(gdl++, &D_804A460[i * 2048], G_IM_FMT_RGBA, G_IM_SIZ_16b, 512, 4, 0, G_TX_CLAMP,
-                            G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gdl++, &D_804A460[i * 2048], G_IM_FMT_RGBA, G_IM_SIZ_16b, 512, 4, 0, G_TX_CLAMP, G_TX_CLAMP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gdl++, arg1 << 2, (arg2 + i * 4) << 2, (arg1 + 511) << 2, (arg2 + i * 4 + 3) << 2,
                             G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
     }
@@ -170,8 +170,8 @@ Gfx* func_1B1FB0_802C6C1C(Gfx* gdl) {
         dp = &D_1B1FB0_802C767C[digit];
         gDPLoadTextureBlock(gdl++, *dp, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 18, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gdl++, (544 - i * 18) << 2, 368 << 2, (560 - i * 18) << 2, 386 << 2, G_TX_RENDERTILE, 0,
-                            0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gdl++, (544 - i * 18) << 2, 368 << 2, (560 - i * 18) << 2, 386 << 2, G_TX_RENDERTILE, 0, 0,
+                            1 << 10, 1 << 10);
     }
     return gdl;
 }
@@ -199,8 +199,8 @@ Gfx* func_1B1FB0_802C6FF8(Gfx* gdl) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        gDPLoadTextureTile(gdl++, &D_800A618[i * 0x9B0], G_IM_FMT_IA, G_IM_SIZ_8b, 496, 5, 0, 0, 495, 4, 0,
-                           G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(gdl++, &D_800A618[i * 0x9B0], G_IM_FMT_IA, G_IM_SIZ_8b, 496, 5, 0, 0, 495, 4, 0, G_TX_CLAMP,
+                           G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gdl++, 72 << 2, (D_1B1FB0_802C76B0 * 20 + i * 5 + 248) << 2, 568 << 2,
                             (D_1B1FB0_802C76B0 * 20 + i * 5 + 253) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
@@ -237,7 +237,7 @@ s32 func_1B1FB0_802C7304(s32 arg0, s8* arg1, s32 arg2, s32 arg3, s32 arg4) {
         if (*arg1 != 0) {
             D_802C7718++;
         }
-        arg0 = (s32)func_1B1FB0_802C71B8((Gfx*)arg0, *(arg1++), s1, arg4);
+        arg0 = (s32) func_1B1FB0_802C71B8((Gfx*) arg0, *(arg1++), s1, arg4);
         arg2--;
         s1 += 0x10;
     }

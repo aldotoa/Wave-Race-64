@@ -923,7 +923,6 @@ void func_80053C08(s32 arg0, s32 arg1) {
 
 #undef SLOT
 
-
 s32 func_80053EAC(s32 arg0, s32 arg1, s32 arg2, f32 arg3, u16 arg4) {
     UnkStruct_80192690* temp_v0;
 
@@ -2419,17 +2418,18 @@ extern f32 D_800D4ADC;
 extern f32 D_800D4AE0;
 extern s32 D_800D4AE4;
 void func_80062E50(s32 arg0);
-void func_8004AFE8(void *arg0, s32 arg1, s32 arg2);
-void func_8004AE88(void *arg0);
-void func_800629A8(Vec3f *arg0);
+void func_8004AFE8(void* arg0, s32 arg1, s32 arg2);
+void func_8004AE88(void* arg0);
+void func_800629A8(Vec3f* arg0);
 
 void func_8006390C(s32 arg0) {
-    UnkStruct_80192690 *rider;
-    s8 *p;
-    u8 *v0;
+    UnkStruct_80192690* rider;
+    s8* p;
+    u8* v0;
     s32 tmp;
 
-    if ((gCourseID == 0) && (D_800DAB60 != 0) && (gGameModes != GMODE_STUNT) && ((D_800DAB64 != 0) || ((D_801CE638 == 0) && (D_800D4928 != 0)))) {
+    if ((gCourseID == 0) && (D_800DAB60 != 0) && (gGameModes != GMODE_STUNT) &&
+        ((D_800DAB64 != 0) || ((D_801CE638 == 0) && (D_800D4928 != 0)))) {
         rider = &D_80192690[arg0];
         rider->unk16CC = 1;
     } else {
@@ -2437,58 +2437,58 @@ void func_8006390C(s32 arg0) {
         rider->unk16CC = 0;
     }
     if ((D_801CE638 == 8) || (D_801CE638 == 0)) {
-        *(s32 *) ((u8 *) rider + 0xB64) = 0;
+        *(s32*) ((u8*) rider + 0xB64) = 0;
     } else {
-        *(s32 *) ((u8 *) rider + 0xB64) = rider->unkB68;
+        *(s32*) ((u8*) rider + 0xB64) = rider->unkB68;
     }
-    *(f32 *) ((u8 *) rider + 0x0) = D_800D4AC0;
-    *(f32 *) ((u8 *) rider + 0xC) = D_800D4AC4;
-    *(f32 *) ((u8 *) rider + 0x10) = D_800D4AD0;
-    *(f32 *) ((u8 *) rider + 0x18) = D_800D4AD8;
-    *(f32 *) ((u8 *) rider + 0x1C) = D_800D4ADC;
-    *(f32 *) ((u8 *) rider + 0x20) = D_800D4AE0;
-    *(s32 *) ((u8 *) rider + 0x28) = 0xB;
-    *(s32 *) ((u8 *) rider + 0x2C) = 0x41;
-    *(void **) ((u8 *) rider + 0x30) = (u8 *) rider + 0x90;
-    *(void **) ((u8 *) rider + 0x34) = (u8 *) rider + 0x210;
-    *(void **) ((u8 *) rider + 0x38) = (u8 *) rider + 0x528;
-    *(s32 *) ((u8 *) rider + 0x24) = D_800D4AE4;
+    *(f32*) ((u8*) rider + 0x0) = D_800D4AC0;
+    *(f32*) ((u8*) rider + 0xC) = D_800D4AC4;
+    *(f32*) ((u8*) rider + 0x10) = D_800D4AD0;
+    *(f32*) ((u8*) rider + 0x18) = D_800D4AD8;
+    *(f32*) ((u8*) rider + 0x1C) = D_800D4ADC;
+    *(f32*) ((u8*) rider + 0x20) = D_800D4AE0;
+    *(s32*) ((u8*) rider + 0x28) = 0xB;
+    *(s32*) ((u8*) rider + 0x2C) = 0x41;
+    *(void**) ((u8*) rider + 0x30) = (u8*) rider + 0x90;
+    *(void**) ((u8*) rider + 0x34) = (u8*) rider + 0x210;
+    *(void**) ((u8*) rider + 0x38) = (u8*) rider + 0x528;
+    *(s32*) ((u8*) rider + 0x24) = D_800D4AE4;
     func_80062E50(0);
-    func_8004AFE8((Vec3f *) rider, 0, 0xB);
-    func_8004AE88((Vec3f *) rider);
-    *(void **) ((u8 *) rider + 0x1624) = (u8 *) rider + 0x110;
-    *(void **) ((u8 *) rider + 0x1628) = (u8 *) rider + 0x130;
-    *(void **) ((u8 *) rider + 0x162C) = (u8 *) rider + 0xF0;
-    *(void **) ((u8 *) rider + 0x1648) = (u8 *) rider + 0x190;
-    *(void **) ((u8 *) rider + 0x164C) = (u8 *) rider + 0x170;
-    *(void **) ((u8 *) rider + 0x1650) = (u8 *) rider + 0x150;
-    *(void **) ((u8 *) rider + 0x166C) = (u8 *) rider + 0x1F0;
-    *(void **) ((u8 *) rider + 0x1670) = (u8 *) rider + 0x1D0;
-    *(void **) ((u8 *) rider + 0x1674) = (u8 *) rider + 0x1B0;
-    *(void **) ((u8 *) rider + 0x1690) = (u8 *) rider + 0xB0;
-    *(void **) ((u8 *) rider + 0x1694) = (u8 *) rider + 0xD0;
-    *(void **) ((u8 *) rider + 0x1698) = (u8 *) rider + 0x90;
-    func_800629A8((Vec3f *) rider);
+    func_8004AFE8((Vec3f*) rider, 0, 0xB);
+    func_8004AE88((Vec3f*) rider);
+    *(void**) ((u8*) rider + 0x1624) = (u8*) rider + 0x110;
+    *(void**) ((u8*) rider + 0x1628) = (u8*) rider + 0x130;
+    *(void**) ((u8*) rider + 0x162C) = (u8*) rider + 0xF0;
+    *(void**) ((u8*) rider + 0x1648) = (u8*) rider + 0x190;
+    *(void**) ((u8*) rider + 0x164C) = (u8*) rider + 0x170;
+    *(void**) ((u8*) rider + 0x1650) = (u8*) rider + 0x150;
+    *(void**) ((u8*) rider + 0x166C) = (u8*) rider + 0x1F0;
+    *(void**) ((u8*) rider + 0x1670) = (u8*) rider + 0x1D0;
+    *(void**) ((u8*) rider + 0x1674) = (u8*) rider + 0x1B0;
+    *(void**) ((u8*) rider + 0x1690) = (u8*) rider + 0xB0;
+    *(void**) ((u8*) rider + 0x1694) = (u8*) rider + 0xD0;
+    *(void**) ((u8*) rider + 0x1698) = (u8*) rider + 0x90;
+    func_800629A8((Vec3f*) rider);
     p = &D_800D4A40;
-    v0 = (u8 *) rider + 0xA60;
-    *(void **) (v0 - 0x18) = (u8 *) rider + 0x660 + D_800D4A3C * 0x28;
-    *(void **) (v0 - 0x14) = (u8 *) rider + 0x660 + D_800D4A3D * 0x28;
-    *(void **) (v0 - 0xC) = (u8 *) rider + 0x660 + D_800D4A3E * 0x28;
-    *(void **) (v0 - 0x8) = (u8 *) rider + 0x660 + D_800D4A3F * 0x28;
+    v0 = (u8*) rider + 0xA60;
+    *(void**) (v0 - 0x18) = (u8*) rider + 0x660 + D_800D4A3C * 0x28;
+    *(void**) (v0 - 0x14) = (u8*) rider + 0x660 + D_800D4A3D * 0x28;
+    *(void**) (v0 - 0xC) = (u8*) rider + 0x660 + D_800D4A3E * 0x28;
+    *(void**) (v0 - 0x8) = (u8*) rider + 0x660 + D_800D4A3F * 0x28;
     do {
         tmp = p[0];
         p += 8;
         v0 += 0x30;
-        *(void **) (v0 - 0x30) = (u8 *) rider + 0x660 + tmp * 0x28;
-        *(void **) (v0 - 0x2C) = (u8 *) rider + 0x660 + p[-7] * 0x28;
-        *(void **) (v0 - 0x24) = (u8 *) rider + 0x660 + p[-6] * 0x28;
-        *(void **) (v0 - 0x20) = (u8 *) rider + 0x660 + p[-5] * 0x28;
-        *(void **) (v0 - 0x18) = (u8 *) rider + 0x660 + p[-4] * 0x28;
-        *(void **) (v0 - 0x14) = (u8 *) rider + 0x660 + p[-3] * 0x28;
-        *(void **) (v0 - 0xC) = (u8 *) rider + 0x660 + p[-2] * 0x28;
-        *(void **) (v0 - 0x8) = (u8 *) rider + 0x660 + p[-1] * 0x28;
-    } while (p != (s8 *) D_800D4A68);
-    func_80062918((Vec3f *) rider);
+        *(void**) (v0 - 0x30) = (u8*) rider + 0x660 + tmp * 0x28;
+        *(void**) (v0 - 0x2C) = (u8*) rider + 0x660 + p[-7] * 0x28;
+        *(void**) (v0 - 0x24) = (u8*) rider + 0x660 + p[-6] * 0x28;
+        *(void**) (v0 - 0x20) = (u8*) rider + 0x660 + p[-5] * 0x28;
+        *(void**) (v0 - 0x18) = (u8*) rider + 0x660 + p[-4] * 0x28;
+        *(void**) (v0 - 0x14) = (u8*) rider + 0x660 + p[-3] * 0x28;
+        *(void**) (v0 - 0xC) = (u8*) rider + 0x660 + p[-2] * 0x28;
+        *(void**) (v0 - 0x8) = (u8*) rider + 0x660 + p[-1] * 0x28;
+    } while (p != (s8*) D_800D4A68);
+    func_80062918((Vec3f*) rider);
 }
 #else
 #pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_8006390C.s")
@@ -2557,8 +2557,10 @@ Gfx* func_8006719C(Gfx* glistp, s32 arg1) {
         gDPPipeSync(glistp++);
         gDPSetTextureLUT(glistp++, G_TT_NONE);
         gDPSetEnvColor(glistp++, 255, 255, 255, D_800D492C);
-        _gDPLoadTextureBlockTile(glistp++, D_800D48D0[D_800D4930], 0, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-        gDPSetCombineLERP(glistp++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, SHADE, TEXEL0, COMBINED, ENV_ALPHA, COMBINED, 0, 0, 0, SHADE);
+        _gDPLoadTextureBlockTile(glistp++, D_800D48D0[D_800D4930], 0, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
+                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetCombineLERP(glistp++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, SHADE, TEXEL0, COMBINED, ENV_ALPHA, COMBINED, 0, 0,
+                          0, SHADE);
         gSPMatrix(glistp++, (u8*) D_3000000 + (arg1 * sizeof(Mtx)) + 0xE308, G_MTX_LOAD | G_MTX_NOPUSH);
         gSPDisplayList(glistp++, D_80227A60[arg1].unk[2]);
         gSPClearGeometryMode(glistp++, 0x00040000);
@@ -2765,8 +2767,6 @@ void func_800683A0(s32 arg0) {
     }
 }
 
-
-
 extern Gfx D_1007968[];
 
 /*
@@ -2946,11 +2946,11 @@ void func_80069798(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, v
     f32 adj;
 
     dist = S->unk14 * SC->y;
-    eye[0] = ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * COS((s32) ((S->unk18 * 4096.0f) / 360.0f))) +
-             S->unk8;
+    eye[0] =
+        ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * COS((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk8;
     eye[1] = (SIN((s32) ((S->unk20 * 4096.0f) / 360.0f)) * dist) + S->unkC;
-    eye[2] = ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * SIN((s32) ((S->unk18 * 4096.0f) / 360.0f))) +
-             S->unk10;
+    eye[2] =
+        ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * SIN((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk10;
     if (1) {
         if ((S->unk18 + (S->unk1C * SC->z)) > 360.0f) {
             adj = -360.0f;

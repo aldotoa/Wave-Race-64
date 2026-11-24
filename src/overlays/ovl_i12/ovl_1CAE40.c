@@ -94,8 +94,8 @@ Gfx* func_i12_802C58A0(Gfx* dList) {
             color = 0;
         }
         dList = func_801E946C(dList, color, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-        dList = func_801E3EE0(dList, 1, D_800DAA10[D_800DAAD8[i]], D_i12_802C648C[D_800DAAD8[i]] + (i / 5) * 0x85 + 0x37,
-                              (i % 5) * 0x12 + 0x58, 0);
+        dList = func_801E3EE0(dList, 1, D_800DAA10[D_800DAAD8[i]],
+                              D_i12_802C648C[D_800DAAD8[i]] + (i / 5) * 0x85 + 0x37, (i % 5) * 0x12 + 0x58, 0);
     }
 
     for (i = 0; i < 2; i++) {

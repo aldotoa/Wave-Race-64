@@ -110,12 +110,14 @@ Gfx* func_i7_802C5A18(Gfx* glistp) {
             continue;
         } else {
         }
-        glistp = func_801E3EE0(glistp, 1, ((Struct_i7_802C5D3C*) var)->unk4, ((Struct_i7_802C5D3C*) var)->unk0 + 0x6D, y, 0);
+        glistp =
+            func_801E3EE0(glistp, 1, ((Struct_i7_802C5D3C*) var)->unk4, ((Struct_i7_802C5D3C*) var)->unk0 + 0x6D, y, 0);
     }
 
     glistp = func_801E946C(glistp, 6, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     var = (s32) &D_i7_802C5D3C[gCurrentOptionsMenuItem];
-    return func_801E3EE0(glistp, 1, ((Struct_i7_802C5D3C*) var)->unk4, ((Struct_i7_802C5D3C*) var)->unk0 + 0x6D, gCurrentOptionsMenuItem * 0x13 + 0x4C, 0);
+    return func_801E3EE0(glistp, 1, ((Struct_i7_802C5D3C*) var)->unk4, ((Struct_i7_802C5D3C*) var)->unk0 + 0x6D,
+                         gCurrentOptionsMenuItem * 0x13 + 0x4C, 0);
 }
 
 void func_i7_802C5C94(s32 arg0) {

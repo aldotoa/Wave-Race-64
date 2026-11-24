@@ -33,7 +33,7 @@ extern s32 D_i3_802C6FE4[];
 extern const s16 D_800EABB0[];
 extern const s16 D_800EABBC[][8];
 extern u8 D_800E9AB0[];
-extern void *D_800DAAB4[];
+extern void* D_800DAAB4[];
 extern RiderStruct D_801C2C70[];
 
 void func_i3_802C5800(void) {
@@ -96,7 +96,7 @@ void func_i3_802C5800(void) {
             }
             D_801CE704 = D_801CE708[D_800D48DC];
         }
-        func_80069740((UnkStruct_80069740 *) &D_80198310, (UnkStruct_80069740 *) D_800DAAB4[gCourseID]);
+        func_80069740((UnkStruct_80069740*) &D_80198310, (UnkStruct_80069740*) D_800DAAB4[gCourseID]);
         func_8006977C(&D_80198350, (s32) D_800E9AB0);
         if (D_800DAB68 != 0) {
             D_i3_802C6F8C = 2;
@@ -105,12 +105,12 @@ void func_i3_802C5800(void) {
         }
     }
     switch (D_802C7028) {
-    case 0:
-        func_i3_802C5AE8();
-        break;
-    case 1:
-        func_i3_802C5AF0();
-        break;
+        case 0:
+            func_i3_802C5AE8();
+            break;
+        case 1:
+            func_i3_802C5AF0();
+            break;
     }
 }
 
@@ -277,9 +277,11 @@ Gfx* func_i3_802C5D54(Gfx* gfx) {
     gfx = Menu_DrawFrame(gfx, 2, 0x20, 0x4B, 0x100, 0x20);
     gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0xFF, D_i3_802C6F7C);
     gfx = Menu_DrawFrame(gfx, 0, 0x20, 0x85, 0x100, 0x20);
-    gfx = func_801E946C(gfx, 10, *((u8*)&D_i3_802C6F6C + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gfx = func_801E946C(gfx, 10, *((u8*) &D_i3_802C6F6C + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                        0xFF, 0xFF);
     gfx = func_801E3EE0(gfx, 2, 0x22, 0x48, 0x51, 0);
-    gfx = func_801E946C(gfx, 10, *((u8*)&D_i3_802C6F78 + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gfx = func_801E946C(gfx, 10, *((u8*) &D_i3_802C6F78 + 3), 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                        0xFF, 0xFF);
     if (D_800DAB68 != 0) {
         e = &D_i3_802C6FCC;
     } else {
@@ -311,9 +313,15 @@ extern s32 D_800DB688[];
 extern s32 D_800DB718[];
 extern s32 D_801CB340[];
 extern const s16 D_800EABBC[][8];
-typedef struct { s32 w; s32 pad[14]; } I3Ent60;
+typedef struct {
+    s32 w;
+    s32 pad[14];
+} I3Ent60;
 extern I3Ent60 D_801C1FF0[];
-typedef struct { s32 w; s32 pad[4]; } I3Ent20;
+typedef struct {
+    s32 w;
+    s32 pad[4];
+} I3Ent20;
 extern I3Ent20 D_801C22C0[];
 extern I3Ent20 D_801C23B0[];
 extern s32 D_804E418[];
@@ -326,7 +334,6 @@ extern s32 D_801CB334;
 Gfx* func_801E9858(Gfx*, s32, char*, s32, s32);
 Gfx* func_801E8B24(Gfx*, s32, s32, s32, s32);
 Gfx* func_801EB00C(Gfx*, s32, s32, s32, s32);
-
 
 Gfx* func_i3_802C6344(Gfx* gfx) {
     s32 u2;
@@ -342,27 +349,27 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
 
     sp50 = D_i3_802C6FD4[gDifficulty];
     switch (D_i3_802C6F64) {
-    case 0:
-        if ((D_i3_802C6F68 = D_i3_802C6F68 + 1) >= 0x14) {
-            D_i3_802C6F64 = 1;
-            D_i3_802C6F68 = 0;
-        }
-        D_i3_802C6F6C = 0;
-        D_i3_802C6F70 = 0;
-        break;
-    case 1:
-        if (++D_i3_802C6F68 >= 0x14) {
-            D_i3_802C6F64 = 2;
-            D_i3_802C6F68 = 0;
-            D_i3_802C6F6C = 0xFF;
-            D_i3_802C6F70 = 0xAA;
-            D_i3_802C6F80 = 1;
-            D_i3_802C6F84 = 1;
-        } else {
-            D_i3_802C6F6C = (D_i3_802C6F68 * 0xFF) / 20;
-            D_i3_802C6F70 = (D_i3_802C6F68 * 0xAA) / 20;
-        }
-        break;
+        case 0:
+            if ((D_i3_802C6F68 = D_i3_802C6F68 + 1) >= 0x14) {
+                D_i3_802C6F64 = 1;
+                D_i3_802C6F68 = 0;
+            }
+            D_i3_802C6F6C = 0;
+            D_i3_802C6F70 = 0;
+            break;
+        case 1:
+            if (++D_i3_802C6F68 >= 0x14) {
+                D_i3_802C6F64 = 2;
+                D_i3_802C6F68 = 0;
+                D_i3_802C6F6C = 0xFF;
+                D_i3_802C6F70 = 0xAA;
+                D_i3_802C6F80 = 1;
+                D_i3_802C6F84 = 1;
+            } else {
+                D_i3_802C6F6C = (D_i3_802C6F68 * 0xFF) / 20;
+                D_i3_802C6F70 = (D_i3_802C6F68 * 0xAA) / 20;
+            }
+            break;
     }
 
     gSPDisplayList(gfx++, D_106F628);
@@ -378,8 +385,8 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gfx = Menu_DrawFrame(gfx, 0, 0xDE, 0xB0, 0x46, 0x22);
 
     gSPDisplayList(gfx++, D_804E4E0);
-    gfx = func_801E946C(func_801E7C58(gfx, 0x1F, 0x3F, 0xB4, 0xA7, 0, 0, 0, (u32)D_i3_802C6F70), 0xA,
-                        D_i3_802C6F6F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
+    gfx = func_801E946C(func_801E7C58(gfx, 0x1F, 0x3F, 0xB4, 0xA7, 0, 0, 0, (u32) D_i3_802C6F70), 0xA, D_i3_802C6F6F,
+                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     idx = D_801CB334;
     if (gDifficulty == DIFFICULTY_NORMAL) {
         idx -= 1;
@@ -409,7 +416,8 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     } else if (D_800DAB68 != 0) {
         gfx = func_801E9858(func_801E8B24(gfx, 2, D_801C23B0[D_801CB330].w, 0xCB, 0x69), 2, "-'--@---", 0xCB, 0x99);
     } else {
-        gfx = func_801E8B24(func_801E8B24(gfx, 2, D_801C1FF0[D_801CB330].w, 0xCB, 0x69), 2, D_801C22C0[D_801CB330].w, 0xCB, 0x99);
+        gfx = func_801E8B24(func_801E8B24(gfx, 2, D_801C1FF0[D_801CB330].w, 0xCB, 0x69), 2, D_801C22C0[D_801CB330].w,
+                            0xCB, 0x99);
     }
     gfx = func_801EB00C(gfx, 2, D_801CB340[D_800D48DC], 0xCA, 0xC2);
     if (D_i3_802C6FE0 != 0) {
@@ -420,30 +428,32 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gfx = func_801EB00C(gfx, 2, D_800EABBC[gDifficulty][D_801CB334], 0xCA, 0xB5);
 
     if (sp50) {}
-    gDPLoadTextureBlock(gfx++, D_i3_802C6F50[D_801CE704], G_IM_FMT_IA, G_IM_SIZ_8b, 64, 22, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(gfx++, D_i3_802C6F50[D_801CE704], G_IM_FMT_IA, G_IM_SIZ_8b, 64, 22, 0,
+                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                        G_TX_NOLOD);
     gSPTextureRectangle(gfx++, 900, 728, 1156, 816, G_TX_RENDERTILE, 0, 0, 1024, 1024);
 
     courseOff = gCourseID * 8;
-    t5 = (s32*)((u8*)D_800DB5B0 + courseOff);
+    t5 = (s32*) ((u8*) D_800DB5B0 + courseOff);
     if (t5) {}
     t2 = 1;
     if (D_i3_802C6F8C == 0) {
-        var_t4 = (s32*)((u8*)D_800DB5F8 + courseOff);
+        var_t4 = (s32*) ((u8*) D_800DB5F8 + courseOff);
         if (gCourseID == DOLPHIN_PARK) {
             t2 = 0;
         } else if (gCourseID == PORT_BLUE) {
             if (gDifficulty == DIFFICULTY_EXPERT) {
-                var_t4 = (s32*)((u8*)D_800DB640 + courseOff);
+                var_t4 = (s32*) ((u8*) D_800DB640 + courseOff);
             } else if (gDifficulty == DIFFICULTY_HARD) {
-                var_t4 = (s32*)((u8*)D_800DB688 + courseOff);
+                var_t4 = (s32*) ((u8*) D_800DB688 + courseOff);
             }
-        } else if (gCourseID == MARINE_FORTRESS && (gDifficulty == DIFFICULTY_HARD || gDifficulty == DIFFICULTY_EXPERT)) {
-            var_t4 = (s32*)((u8*)D_800DB640 + courseOff);
+        } else if (gCourseID == MARINE_FORTRESS &&
+                   (gDifficulty == DIFFICULTY_HARD || gDifficulty == DIFFICULTY_EXPERT)) {
+            var_t4 = (s32*) ((u8*) D_800DB640 + courseOff);
         }
         if (var_t4) {}
     } else if (D_i3_802C6F8C == 2) {
-        var_t4 = (s32*)((u8*)D_800DB718 + courseOff);
+        var_t4 = (s32*) ((u8*) D_800DB718 + courseOff);
         if (gCourseID == DOLPHIN_PARK) {
             t2 = 0;
         }
@@ -454,7 +464,7 @@ Gfx* func_i3_802C6344(Gfx* gfx) {
     gSPDisplayList(gfx++, D_804E418);
     gDPPipeSync(gfx++);
     gDPSetColorImage(gfx++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, OS_PHYSICAL_TO_K0(gFrameBuffers[gFramebuffersIdx]));
-    gSPPerspNormalize(gfx++, *(u16*)&D_802C7024);
+    gSPPerspNormalize(gfx++, *(u16*) &D_802C7024);
     gSPMatrix(gfx++, D_7000A40, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gfx++, D_801CE5F8->unkA80, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPViewport(gfx++, D_106F728);

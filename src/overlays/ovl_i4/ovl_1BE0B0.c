@@ -259,8 +259,8 @@ Gfx* func_i4_802C5CDC(Gfx* gdl) {
                     } else {
                         h = 0x10;
                     }
-                    gDPLoadTextureTile(gdl++, D_80A3DD8 + tex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, h, 0, 0, 117, h - 1,
-                                       0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureTile(gdl++, D_80A3DD8 + tex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 118, h, 0, 0, 117, h - 1, 0,
+                                       G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     gSPTextureRectangle(gdl++, 0xA2 << 2, y << 2, (0xA2 + 0x76) << 2, (k + h + 0x7C) << 2,
                                         G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                 }
@@ -277,8 +277,8 @@ Gfx* func_i4_802C5CDC(Gfx* gdl) {
         gdl = func_801E3EE0(gdl, 0, 0xE, 0xC3, 0xA3, 0);
         gdl = func_801E3EE0(gdl, 0, 0xD, 0xC5, 0xBE, 0);
         if ((D_i4_802C754C == 3) && (D_i4_802C7548 != 0)) {
-            gdl = func_801E9858(func_801E8B24(gdl, 1, D_801C23B0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xB0), 1,
-                                "-'--@---", 0xC3, 0xCB);
+            gdl = func_801E9858(func_801E8B24(gdl, 1, D_801C23B0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xB0), 1, "-'--@---",
+                                0xC3, 0xCB);
         } else {
             gdl = func_801E8B24(func_801E8B24(gdl, 1, D_801C1FF0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xB0), 1,
                                 D_801C22C0[D_800DAAD8[D_800DA9D0]].w, 0xC3, 0xCB);
@@ -294,8 +294,7 @@ Gfx* func_i4_802C5CDC(Gfx* gdl) {
             color = 7;
         }
         gdl = func_801E946C(gdl, color, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-        gdl = func_801E3EE0(gdl, 1, D_800DAA10[D_800DAAD8[i]], D_i4_802C7660[D_800DAAD8[i]] + 0x30, i * 0x12 + 0x38,
-                            0);
+        gdl = func_801E3EE0(gdl, 1, D_800DAA10[D_800DAAD8[i]], D_i4_802C7660[D_800DAAD8[i]] + 0x30, i * 0x12 + 0x38, 0);
     }
 
     if (D_i4_802C7548 != 0) {
@@ -343,8 +342,7 @@ Gfx* func_i4_802C5CDC(Gfx* gdl) {
                 }
             }
             gdl = func_801E946C(gdl, color, 0x80, 0x80, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
-            gdl = func_801E3EE0(gdl, 1, p->id, p->x + 0xC2, base + off + 0x14 + i * 0xF,
-                                0);
+            gdl = func_801E3EE0(gdl, 1, p->id, p->x + 0xC2, base + off + 0x14 + i * 0xF, 0);
         }
     }
     return gdl;

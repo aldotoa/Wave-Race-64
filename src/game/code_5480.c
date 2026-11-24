@@ -259,22 +259,18 @@ void func_8004B1B4(struct UnkStruct_8004B0F8* arg0) {
     sx = sy = sz = 0.0f;
     i = arg0->unk28;
     var_v1 = &D_80158450[i];
-    if (cnt) {
-    }
+    if (cnt) {}
     while (var_s1 >= arg0->unk30) {
         sx += var_s1->unk0;
         dx = var_s1->unk0 - var_v1->x;
         dy = var_s1->unk4 - var_v1->y;
         sy += var_s1->unk4;
-        if (sy) {
-        }
+        if (sy) {}
         dz = var_s1->unk8 - var_v1->z;
-        if (new_x) {
-        }
+        if (new_x) {}
         sz += var_s1->unk8;
         d = (1.0f - var_s1->unk18) * (dx * arg0->unk5C + dy * arg0->unk60 + dz * arg0->unk64);
-        if (sz) {
-        }
+        if (sz) {}
         var_s1->unkC = arg0->unk5C * d + var_s1->unk18 * dx;
         var_s1->unk10 = arg0->unk60 * d + var_s1->unk18 * dy;
         var_s1->unk14 = arg0->unk64 * d + var_s1->unk18 * dz;
