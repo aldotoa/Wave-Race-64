@@ -2907,7 +2907,6 @@ void func_8006977C(void* arg0, s32 arg1) {
     *(UnkStruct_8006977C*) arg0 = *(UnkStruct_8006977C*) arg1;
 }
 
-#ifdef NON_MATCHING
 typedef struct UnkStruct_80069798_s {
     /* 0x00 */ f32 unk0;
     /* 0x04 */ f32 unk4;
@@ -2932,48 +2931,33 @@ void func_801EE91C(MtxF* mf, f32 x, f32 y, f32 z);
 
 #define S ((UnkStruct_80069798*) arg4)
 #define SC ((Vec3f*) arg5)
-// Floor: 9 rows, register allocation only (yaw temp and the <0 adjust swapped: f2/f0, retail f0/f2).
-// Load-bearing: Vec3f access for arg5 (f32[] indexing lets IDO reorder mul operands); yaw as a repeated
-// expression (a named yaw or `?:` grows the 0x120 frame); `dist` reused for the <0 adjust with `adj`
-// declared after the matrices; `if (dist) {}` after the yaw store (gives dist f0, 4096.0f f2); the
-// `if (1) {}` block from the wrap through the matrix multiply (permuter find, gives adj f14).
+/*
+ * Orbit camera: spherical eye from distance/yaw/pitch, yaw wrapped to [0, 360), look-at * uniform scale, perspective.
+ * Load-bearing: one `tmp` for the distance, the yaw and the scale; both wraps as `?:` inside the sum; Vec3f access
+ * for arg5 (f32[] indexing lets IDO reorder the mul operands).
+ */
 void func_80069798(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, void* arg5) {
     f32 eye[3];
-    f32 dist;
+    f32 tmp;
     MtxF spD0;
     MtxF sp90;
     MtxF sp50;
-    f32 adj;
 
-    dist = S->unk14 * SC->y;
+    tmp = S->unk14 * SC->y;
     eye[0] =
-        ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * COS((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk8;
-    eye[1] = (SIN((s32) ((S->unk20 * 4096.0f) / 360.0f)) * dist) + S->unkC;
+        ((tmp * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * COS((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk8;
+    eye[1] = (SIN((s32) ((S->unk20 * 4096.0f) / 360.0f)) * tmp) + S->unkC;
     eye[2] =
-        ((dist * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * SIN((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk10;
-    if (1) {
-        if ((S->unk18 + (S->unk1C * SC->z)) > 360.0f) {
-            adj = -360.0f;
-        } else {
-            adj = 0.0f;
-        }
-        if ((S->unk18 + (S->unk1C * SC->z)) < 0.0f) {
-            dist = 360.0f;
-        } else {
-            dist = 0.0f;
-        }
-        S->unk18 = dist + ((S->unk18 + (S->unk1C * SC->z)) + adj);
-        if (dist) {}
-        func_800484C8(arg0, &spD0, eye[0], eye[1], eye[2], S->unk8, S->unkC, S->unk10, 0.0f, 1.0f, 0.0f);
-        func_801EE91C(&sp90, S->unk0 * SC->x, S->unk0 * SC->x, S->unk0 * SC->x);
-        SysUtils_MatrixAffineMultiply(&spD0, &sp90, &sp50);
-    }
+        ((tmp * COS((s32) ((S->unk20 * 4096.0f) / 360.0f))) * SIN((s32) ((S->unk18 * 4096.0f) / 360.0f))) + S->unk10;
+    tmp = S->unk18 + (S->unk1C * SC->z);
+    S->unk18 = tmp + ((tmp > 360.0f) ? -360.0f : 0.0f) + ((tmp < 0.0f) ? 360.0f : 0.0f);
+    func_800484C8(arg0, &spD0, eye[0], eye[1], eye[2], S->unk8, S->unkC, S->unk10, 0.0f, 1.0f, 0.0f);
+    tmp = S->unk0 * SC->x;
+    func_801EE91C(&sp90, tmp, tmp, tmp);
+    SysUtils_MatrixAffineMultiply(&spD0, &sp90, &sp50);
     SysUtils_MtxFToMtx(&sp50, arg0);
     *(UnkStruct_80069798_copy*) arg1 = *(UnkStruct_80069798_copy*) S->unk28;
     func_800481E0(arg2, arg3, S->unk4, 1.0f, D_800D4AF0, D_800D4AF4, 0.0f, 0.0f);
 }
 #undef S
 #undef SC
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/game/code_C6C0/func_80069798.s")
-#endif

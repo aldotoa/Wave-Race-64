@@ -3521,6 +3521,38 @@ class TestBatch20261110(unittest.TestCase):
 # END batch-2026-11-10
 
 
+class TestBatch20261124(unittest.TestCase):
+    """Matrix builders matched in the 2026-11-24 batch (last Tier 4 functions, their siblings, orbit camera)."""
+
+    def _check(self, func, unit):
+        source_path = os.path.join(PROJECT_ROOT, "src", unit + ".c")
+        stub_path = os.path.join(NONMATCHINGS_DIR, unit, func + ".s")
+        with open(source_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        self.assertRegex(source, r"\b%s\([^;]*\)\s*\{" % func)
+        self.assertNotIn('GLOBAL_ASM("asm/us/rev1/nonmatchings/%s/%s.s")' % (unit, func), source)
+        self.assertFalse(os.path.exists(stub_path), "%s must not have a GLOBAL_ASM stub" % func)
+        self.assertEqual(get_file_sha1(ROM_PATH), EXPECTED_SHA1)
+
+    def test_func_801EE274_matched(self):
+        self._check("func_801EE274", "codeseg/B97B0")
+
+    def test_func_800498A4_matched(self):
+        self._check("func_800498A4", "sys/sys_utils")
+
+    def test_func_80049A94_matched(self):
+        self._check("func_80049A94", "sys/sys_utils")
+
+    def test_func_80049C9C_matched(self):
+        self._check("func_80049C9C", "sys/sys_utils")
+
+    def test_func_80069798_matched(self):
+        self._check("func_80069798", "game/code_C6C0")
+
+
+# END batch-2026-11-24
+
+
 def run_tests():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -3544,6 +3576,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestTier4FloatMatches))
     suite.addTests(loader.loadTestsFromTestCase(TestBatch20261109))
     suite.addTests(loader.loadTestsFromTestCase(TestBatch20261110))
+    suite.addTests(loader.loadTestsFromTestCase(TestBatch20261124))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1

@@ -652,117 +652,100 @@ void func_80049710(Mtx* arg0, MtxF* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5
 
     SysUtils_MtxFToMtx(arg1, arg0);
 }
-#ifdef NON_MATCHING
 /*
- * Draft, strict probe floor 31 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ * Euler angles (radians) -> MtxF/Mtx. Load-bearing: `tmp` carries both the sy load and the sysz product, and the
+ * four products are assigned inside the matrix expressions.
  */
 void func_800498A4(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz) {
-    s32 idx;
+    f32 sx;
     f32 sy;
-    f32 cycz;
-    f32 sysz;
-    f32 cy;
-    f32 cz;
-    f32 sycz;
     f32 sz;
     f32 cx;
-    f32 sx;
+    f32 cy;
+    f32 cz;
+    f32 sysz;
+    s32 idxy;
+    s32 idxz;
+    f32 sycz;
     f32 szcy;
-    idx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
-    sx = gSinTable[idx & 0xFFF];
+    f32 tmp;
+    f32 cycz;
+    s32 idxx;
+    idxx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
+    sx = gSinTable[idxx & 0xFFF];
     arg1->mf[2][1] = -sx;
-    cx = gSinTable[(idx + 0x400) & 0xFFF];
-    idx = ((ry * 4096.0f) / 6.283186f) + 0.5f;
-    sysz = gSinTable[idx & 0xFFF];
-    sy = sysz;
-    arg1->mf[2][0] = cx * sy;
-    cy = gSinTable[(idx + 0x400) & 0xFFF];
+    idxy = ((ry * 4096.0f) / 6.283186f) + 0.5f;
+    tmp = gSinTable[idxy & 0xFFF];
+    sy = tmp;
+    cx = gSinTable[(idxx + 0x400) & 0xFFF];
+    arg1->mf[2][0] = cx * tmp;
+    cy = gSinTable[(idxy + 0x400) & 0xFFF];
     arg1->mf[2][2] = cy * cx;
-    idx = ((rz * 4096.0f) / 6.283186f) + (1.0f / 2.0f);
-    sz = gSinTable[idx & 0xFFF];
+    idxz = ((rz * 4096.0f) / 6.283186f) + 0.5f;
+    sz = gSinTable[idxz & 0xFFF];
     arg1->mf[0][1] = sz * cx;
-    cz = gSinTable[(idx + 0x400) & 0xFFF];
+    cz = gSinTable[(idxz + 0x400) & 0xFFF];
     arg1->mf[1][1] = cz * cx;
-    sysz = sy * sz;
-    cycz = cy * cz;
-    arg1->mf[0][0] = cycz + (sx * sysz);
-    sycz = sy * cz;
-    szcy = sz * cy;
-    arg1->mf[1][0] = (sx * sycz) - (sz * cy);
+    arg1->mf[0][0] = (sx * (sysz = tmp = sy * sz)) + (cycz = cy * cz);
+    arg1->mf[1][0] = (sx * (sycz = sy * cz)) - (szcy = sz * cy);
     arg1->mf[0][2] = (sx * szcy) - sycz;
-    arg1->mf[3][0] = 0.0f;
-    arg1->mf[3][1] = 0.0f;
-    arg1->mf[3][2] = 0.0f;
-    arg1->mf[0][3] = 0.0f;
     arg1->mf[1][2] = (sx * cycz) + sysz;
-    arg1->mf[1][3] = 0.0f;
-    arg1->mf[2][3] = 0.0f;
+    arg1->mf[3][0] = arg1->mf[3][1] = arg1->mf[3][2] = 0.0f;
+    arg1->mf[0][3] = arg1->mf[1][3] = arg1->mf[2][3] = 0.0f;
     arg1->mf[3][3] = 1.0f;
     SysUtils_MtxFToMtx(arg1, arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_800498A4.s")
-#endif
 
-#ifdef NON_MATCHING
 /*
- * Euler angles (radians) + translation -> matrix. Floor: 64 diff rows (probe), register/schedule only;
- * instruction count matches. Load-bearing: decl order; routing the sy load through sycz; sysz still
- * declared but m00 uses the inline (sy * sz). The target has three separate 2pi pool entries
- * (D_800E9254/58/5C), so the original likely spells the three 2pi literals differently.
- * Search with empty-if insertions reached 41.
+ * func_800498A4 plus translation. The three 2pi and 0.5 literals are spelled differently on purpose: retail has
+ * three 2pi pool entries and rematerializes 0.5 for each axis.
  */
 void func_80049A94(Mtx* arg0, MtxF* arg1, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz) {
-    f32 sy;
-    f32 cz;
-    f32 cy;
-    s32 idx;
     f32 sx;
-    f32 cycz;
-    f32 sycz;
+    f32 sy;
     f32 sz;
-    f32 sysz;
-    f32 szcy;
     f32 cx;
-    idx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
-    sx = gSinTable[idx & 0xFFF];
+    f32 cy;
+    f32 cz;
+    f32 sysz;
+    s32 idxy;
+    s32 idxz;
+    f32 sycz;
+    f32 szcy;
+    f32 tmp;
+    f32 cycz;
+    s32 idxx;
+    idxx = ((rx * 4096.0f) / 6.283186f) + 0.5f;
+    sx = gSinTable[idxx & 0xFFF];
     arg1->mf[2][1] = -sx;
-    cx = gSinTable[(idx + 0x400) & 0xFFF];
-    idx = ((ry * 4096.0f) / 6.283186f) + 0.5f;
-    sycz = gSinTable[idx & 0xFFF];
-    sy = sycz;
-    arg1->mf[2][0] = cx * sy;
-    cy = gSinTable[(idx + 0x400) & 0xFFF];
+    idxy = ((ry * 4096.0f) / 6.2831860f) + .5f;
+    tmp = gSinTable[idxy & 0xFFF];
+    sy = tmp;
+    cx = gSinTable[(idxx + 0x400) & 0xFFF];
+    arg1->mf[2][0] = cx * tmp;
+    cy = gSinTable[(idxy + 0x400) & 0xFFF];
     arg1->mf[2][2] = cy * cx;
-    idx = ((rz * 4096.0f) / 6.283186f) + 0.5f;
-    sz = gSinTable[idx & 0xFFF];
+    idxz = ((rz * 4096.0f) / 6.28318600f) + 0.50f;
+    sz = gSinTable[idxz & 0xFFF];
     arg1->mf[0][1] = sz * cx;
-    cz = gSinTable[(idx + 0x400) & 0xFFF];
+    cz = gSinTable[(idxz + 0x400) & 0xFFF];
     arg1->mf[1][1] = cz * cx;
-    sysz = sy * sz;
-    cycz = cy * cz;
-    arg1->mf[0][0] = cycz + (sx * (sy * sz));
-    sycz = sy * cz;
-    szcy = sz * cy;
-    arg1->mf[1][0] = (sx * sycz) - szcy;
+    arg1->mf[0][0] = (sx * (sysz = tmp = sy * sz)) + (cycz = cy * cz);
+    arg1->mf[1][0] = (sx * (sycz = sy * cz)) - (szcy = sz * cy);
     arg1->mf[0][2] = (sx * szcy) - sycz;
     arg1->mf[1][2] = (sx * cycz) + sysz;
     arg1->mf[3][0] = tx;
     arg1->mf[3][1] = ty;
-    arg1->mf[0][3] = 0.0f;
-    arg1->mf[1][3] = 0.0f;
-    arg1->mf[2][3] = 0.0f;
-    arg1->mf[3][3] = 1.0f;
     arg1->mf[3][2] = tz;
+    arg1->mf[0][3] = arg1->mf[1][3] = arg1->mf[2][3] = 0.0f;
+    arg1->mf[3][3] = 1.0f;
     SysUtils_MtxFToMtx(arg1, arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_80049A94.s")
-#endif
 
-#ifdef NON_MATCHING
 /*
- * Draft, strict probe floor 26 rows (2026-11-16). Notes: scratch/goal agent NOTES.md / see PR.
+ * Euler angles (degrees) * scale + translation -> Mtx. Load-bearing: `tmp` carries the sy load, the sysz product
+ * and the zero chain (one $f0 web, which leaves sy/sysz in their stack homes); `cycz` assigned inside the m00
+ * expression keeps it as the left add operand.
  */
 void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f32 scale) {
     f32 sx;
@@ -771,50 +754,44 @@ void func_80049C9C(Mtx* arg0, f32 rx, f32 ry, f32 rz, f32 tx, f32 ty, f32 tz, f3
     f32 cx;
     f32 cy;
     f32 cz;
+    f32 sysz;
+    f32 tmp;
     f32 cycz;
     f32 sycz;
     f32 szcy;
-    f32 sysz;
-    s32 idxz;
     s32 idxy;
     s32 idx;
     MtxF mtx;
-
     idx = (rx * 4096.0f) / 360.0f;
     sx = gSinTable[idx & 0xFFF];
     mtx.mf[2][1] = -sx * scale;
     idxy = (ry * 4096.0f) / 360.0f;
-    sysz = gSinTable[idxy & 0xFFF];
-    sy = sysz;
+    tmp = gSinTable[idxy & 0xFFF];
+    sy = tmp;
     cx = gSinTable[(idx + 0x400) & 0xFFF];
-    mtx.mf[2][0] = sy * cx * scale;
+    mtx.mf[2][0] = cx * tmp * scale;
     cy = gSinTable[(idxy + 0x400) & 0xFFF];
-    idxz = (rz * 4096.0f) / 360.0f;
+    idxy = (rz * 4096.0f) / 360.0f;
     mtx.mf[2][2] = cy * cx * scale;
-    sz = gSinTable[idxz & 0xFFF];
+    sz = gSinTable[idxy & 0xFFF];
     mtx.mf[0][1] = sz * cx * scale;
-    cz = gSinTable[(idxz + 0x400) & 0xFFF];
+    cz = gSinTable[(idxy + 0x400) & 0xFFF];
     mtx.mf[1][1] = cz * cx * scale;
-    sysz = sy * sz;
-    cycz = cy * cz;
+    tmp = sy * sz;
+    sysz = tmp;
+    mtx.mf[0][0] = ((cycz = cy * cz) + sx * tmp) * scale;
     sycz = sy * cz;
-    mtx.mf[0][0] = (cycz + sx * sysz) * scale;
     szcy = sz * cy;
     mtx.mf[1][0] = (sx * sycz - szcy) * scale;
     mtx.mf[0][2] = (sx * szcy - sycz) * scale;
-    mtx.mf[3][0] = tx;
     mtx.mf[1][2] = (sx * cycz + sysz) * scale;
-    mtx.mf[3][3] = 1.0f;
+    mtx.mf[3][0] = tx;
     mtx.mf[3][1] = ty;
     mtx.mf[3][2] = tz;
-    mtx.mf[0][3] = mtx.mf[1][3] = mtx.mf[2][3] = 0.0f;
-    if (sy) {}
-
+    mtx.mf[0][3] = mtx.mf[1][3] = tmp = mtx.mf[2][3] = 0.0f;
+    mtx.mf[3][3] = 1.0f;
     SysUtils_MtxFToMtx(&mtx, arg0);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/rev1/nonmatchings/sys/sys_utils/func_80049C9C.s")
-#endif
 
 void SysUtils_MatrixAffineMultiply(MtxF* dest, MtxF* mtxFA, MtxF* mtxFB) {
     mtxFB->mf[0][0] =

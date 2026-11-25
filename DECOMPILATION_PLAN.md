@@ -1,6 +1,6 @@
 # Wave Race 64 Decompilation Plan & Priority Matrix
 
-An exhaustive, prioritized decompilation plan for all **159 remaining non-matching functions** (142 matched in prioritized matrix, 1,209 matched overall) in Wave Race 64 (US Rev 1).
+An exhaustive, prioritized decompilation plan for all **154 remaining non-matching functions** (147 matched in prioritized matrix, 1,214 matched overall) in Wave Race 64 (US Rev 1).
 
 ---
 
@@ -8,11 +8,11 @@ An exhaustive, prioritized decompilation plan for all **159 remaining non-matchi
 
 | Metric | Current Status | Total Target | Percentage |
 | :--- | :--- | :--- | :--- |
-| **Matched Functions** | **1,209** | 1,368 | **88.38%** |
-| **Non-Matching Functions** | **159** | 1,368 | **11.62%** |
-| **Matched Code Bytes** | **457,184 B** | 834,028 B | **54.82%** |
+| **Matched Functions** | **1,214** | 1,368 | **88.74%** |
+| **Non-Matching Functions** | **154** | 1,368 | **11.26%** |
+| **Matched Code Bytes** | **459,968 B** | 834,024 B | **55.15%** |
 | **Target Retail ROM** | `waverace64.us.rev1.z64` | SHA-1: `508dfc2d4caa42b6f6de5263d0aed5e44ac7966a` | Byte-for-byte exact (OK) |
-| **Passing Regression Tests** | **449** | 449 | **100% OK** |
+| **Passing Regression Tests** | **454** | 454 | **100% OK** |
 
 ---
 
@@ -25,10 +25,10 @@ The 301 functions are categorized into 6 distinct tiers based on instruction cou
 | **1** | Immediate Quick Wins | 0 | 11 | 11 | Low | High-velocity leaf & overlay routines |
 | **2** | Small Refinements & Floor Solvers | 0 | 19 | 19 | Low-Medium | Allocator bisecting & float leaf math |
 | **3** | Medium Integer & Overlay Logic | 0 | 31 | 31 | Medium | HUD, menus, and state dispatchers |
-| **4** | Medium Floating-Point & Physics | 2 | 21 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
-| **5** | Rodata & Jump Table Blocked | 15 | 16 | 31 | High | Multi-case switches & rodata migration |
-| **6** | Monolithic Routines & Core Engines | 146 | 40 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
-| **Total** | | **163** | **138** | **301** | | |
+| **4** | Medium Floating-Point & Physics | 0 | 23 | 23 | Medium-High | Buoyancy, wave sampling, camera math |
+| **5** | Rodata & Jump Table Blocked | 11 | 20 | 31 | High | Multi-case switches & rodata migration |
+| **6** | Monolithic Routines & Core Engines | 143 | 43 | 186 | Very High | Physics solver, AI navigation, audio synthesis |
+| **Total** | | **154** | **147** | **301** | | |
 
 ---
 
@@ -140,9 +140,9 @@ Mid-sized functions (100–180 instructions) performing single-precision floatin
 | 74 | `func_801DF38C` | `src/codeseg/A95D0.c` | 123 | 6/1  | Floats  | **MATCHED** | Look-at orbit camera update: eases distance/yaw/pitch, builds the offset vector from gSinTable, then writes eye/target by type (2 or 3) and calls func_801DEEC4. Load-bearing: typed sub-struct pointers `a = (A*)(arg0 + 4)`, `b = (B*)(arg0 + 0x5C)` (house style, see func_801DF128) so retail reloads the source after each store; f32 `yaw`/`pitch` inside inline `COS((s32)((yaw * 4096.0f) / 360.0f))`; `i` declared after `vec`  |
 | 75 | `func_80061708` | `src/game/code_C6C0.c` | 123 | 11/5  | Floats  | **MATCHED** | Rider controller latch (`OSContPad` copy into `unkB50`, zeroed by a chained `stick_x = stick_y = button = 0` store) and analog stick rescale through `func_80061644` (`scale, x, y, mag` declaration order lays out the 0x30 frame's spill slots)  |
 | 76 | `func_i4_802C6ED0` | `src/overlays/ovl_i4/ovl_1BE0B0.c` | 124 | 4/0  | Floats  | **MATCHED** | Course preview panel open/close zoom animation (both arms compute the `(5 - n) / 5.0f` term first)  |
-| 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats, ParkedFloor  | Pending (Floor 32) | Axis-angle rotation + translation MtxF (sibling of func_801EE040); draft parked behind NON_MATCHING (insn count and frame exact; only xx/zz FPR choice left, retail acts as if a hidden range holds $f2)  |
+| 77 | `func_801EE274` | `src/codeseg/B97B0.c` | 126 | 1/1  | Floats  | **MATCHED** | Axis-angle rotation + translation MtxF (sibling of func_801EE040). Load-bearing: ab/bc/ca named and computed up front (libultra guRotateF order), `s` doubling as the vector length, only xx named and assigned inside the sqrtf argument (`(xx = x * x) + y * y + z * z`), `s > .0f`. No empty ifs: they split the last block and let xx take `$f2` |
 | 78 | `func_80088EA8` | `src/game/code_43A60.c` | 131 | 17/2  | Floats  | **MATCHED** | Rider grid slot shuffle  |
-| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats, ParkedFloor  | Pending (Floor 26) | Euler angles (degrees) * scale + translation; improved draft in src (26 strict rows; cx/sy f0/f2 swap + tail order left) |
+| 79 | `func_80049C9C` | `src/sys/sys_utils.c` | 135 | 0/1  | Floats  | **MATCHED** | Euler angles (degrees) * scale + translation. Load-bearing: one `tmp` carries the sy load, the sysz product and the zero chain (`[0][3] = [1][3] = tmp = [2][3] = 0.0f`); `(cycz = cy * cz) + sx * tmp` assigned in the expression keeps cycz as the left add operand |
 | 80 | `func_8007FD80` | `src/game/code_3A580.c` | 138 | 3/1  | Floats  | **MATCHED** | Spray emitter seeding and quad texcoord init  |
 | 81 | `func_801E6074` | `src/codeseg/B3AA0.c` | 141 | 11/4  | Floats  | **MATCHED** | Menu banner slide-in (state 0, func_80048A88 with eased offsets) / hold (state 1, SysUtils_MatrixLookAt, then closes after 11 frames by game mode). Load-bearing: `1 - scale` spelled differently from the `1.0f` call args (breaks IDO constant CSE); param retyped to `UnkStruct_menu_buffer_1*`  |
 | 82 | `func_801F23A0` | `src/codeseg/B97B0.c` | 144 | 20/1  | Floats  | **MATCHED** | Per-rider lean target: maps the unkB98 position into 0-180 (with Math_Rand jitter) in unk2CC, then steps unk2C8 toward it. Load-bearing: `ABS()` / `SIGNUM()` from macros.h over the inline `unk2CC - unk2C8` (no named diff), one float var reused for the delta and t; new RiderStruct unk2C8/unk2CC and UnkStruct_80192690 unkB98/BBC/BC0 fields  |
@@ -168,9 +168,9 @@ Functions containing `switch` statements with compiler-generated jump tables (`j
 | 94 | `func_800C1BD8` | `src/audio/audio_general.c` | 116 | 18/6  | Floats, Rodata  | **MATCHED** | Dynamic music volume and menu-state modulator; case 3 falls through into a shared `case 0: default:` block holding a redundant `var_a1 = 0x40`, which leaves the case-0 `beqz` and default `b` delay slots as nops (the old probe score ignored branch targets and hid this)  |
 | 95 | `func_i5_802C781C` | `src/overlays/ovl_i5/ovl_1C17E0.c` | 118 | 15/2  | JumpTable, Rodata  | **MATCHED** | Results-panel slide state machine: slides the panel in, steps the buoy path index, waits for A/B/Start, then slides out and hands off to func_801EC9C8 or func_801EC830  |
 | 96 | `func_8004F1EC` | `src/game/water_69D0.c` | 122 | 13/0  | Floats, Rodata  | Pending | Routine logic  |
-| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 31) | Euler angles (radians) to rotation MtxF/Mtx; improved draft in src (31 strict rows, 2026-11-16) |
+| 97 | `func_800498A4` | `src/sys/sys_utils.c` | 124 | 0/1  | Floats, Rodata  | **MATCHED** | Euler angles (radians) to rotation MtxF/Mtx. Load-bearing: `tmp` carries the sy load and the sysz product, the four products are assigned inside the matrix expressions, two 3-long zero chains |
 | 98 | `func_801E66F4` | `src/codeseg/B3AA0.c` | 126 | 8/2  | Floats, Rodata  | **MATCHED** | Pause-menu cursor spin matrix; three MtxF locals give the 0x100 frame, `D_802C6BD0 + 6 + (D_802C6EE4 * 0x14)` sets the load order, one `0` and one `0.0f` argument stop the zero constants sharing a register |
-| 99 | `func_80049A94` | `src/sys/sys_utils.c` | 130 | 0/1  | Floats, Rodata, ParkedFloor  | Pending (Floor 64) | Euler angles (radians) + translation to MtxF/Mtx; draft parked behind NON_MATCHING (insn count exact; target has 3 distinct 2pi pool entries)  |
+| 99 | `func_80049A94` | `src/sys/sys_utils.c` | 130 | 0/1  | Floats, Rodata  | **MATCHED** | Euler angles (radians) + translation to MtxF/Mtx (func_800498A4 shape). Load-bearing: the 2pi and 0.5 literals spelled differently per axis (three 2pi pool entries) |
 | 100 | `func_8009D96C` | `src/game/code_57EB0.c` | 137 | 4/5  | Floats, JumpTable  | Pending | Buoy miss warning flash animator  |
 | 101 | `func_8004EFB4` | `src/game/water_69D0.c` | 142 | 32/0  | Floats, Rodata  | Pending (Floor 39) | Water grid cell clear; draft in src (39 strict rows; base lui hoisted to the top, retail keeps it in the branch delay slot) |
 | 102 | `func_i5_802C5850` | `src/overlays/ovl_i5/ovl_1BFF50.c` | 146 | 3/6  | Floats, Rodata, ParkedFloor  | **MATCHED** | Port Blue banner matrices and viewports (mirrors B17D0 func_801E3250); y arg passed as a literal `0` gives `li a3,0` |
@@ -195,7 +195,7 @@ Large, monolithic subroutines (180+ instructions, up to 1,500+ instructions) com
 
 | # | Function | Source File | Insns | Br/Jal | Flags / Attributes | Status | Description / Purpose |
 | :---: | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
-| 116 | `func_80069798` | `src/game/code_C6C0.c` | 181 | 4/5  | Floats, ParkedFloor  | Pending (Floor 9) | Orbit camera: spherical eye from distance/yaw/pitch, yaw wrap to [0,360), look-at * uniform scale MtxF, then perspective; draft parked behind NON_MATCHING (frame 0x120 and insn sequence exact; `Vec3f*` arg5 keeps mul operand order; `if (dist) {}` and a permuter-found `if (1) {}` block fix dist/4096 and adj; only the yaw temp vs <0 adjust f0/f2 swap left)  |
+| 116 | `func_80069798` | `src/game/code_C6C0.c` | 181 | 4/5  | Floats  | **MATCHED** | Orbit camera: spherical eye from distance/yaw/pitch, yaw wrap to [0,360), look-at * uniform scale MtxF, then perspective. Load-bearing: one `tmp` for the distance, the yaw and the scale, both wraps as `?:` inside the sum (`tmp + (tmp > 360 ? -360 : 0) + (tmp < 0 ? 360 : 0)`), `Vec3f*` access for arg5. No fakes |
 | 117 | `func_8004C998` | `src/game/water_69D0.c` | 185 | 6/2  | Floats  | Pending | Routine logic  |
 | 118 | `func_8008E4B0` | `src/game/code_43DA0.c` | 185 | 6/0  | Floats  | Pending | AI difficulty rubberbanding speed multiplier  |
 | 119 | `func_801E1BA8` | `src/codeseg/AF8C0.c` | 185 | 26/0  | Floats, Rodata  | Pending | Machine tuning interaction and controller input loop  |
